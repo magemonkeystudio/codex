@@ -23,7 +23,15 @@ public interface NMS {
     }
 
     @Nullable
-    ItemStack fromBase64(@NotNull String data);
+    default ItemStack fromBase64(@NotNull String data) {
+        try {
+            return ReflectionUtil.fromBase64(data);
+        } catch (Exception e) {
+            System.err.println("Error parsing item from data!");
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     @NotNull
     String getNbtString(@NotNull ItemStack item);

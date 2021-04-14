@@ -191,19 +191,28 @@ public class ReflectionUtil {
         return new BigInteger(1, outputStream.toByteArray()).toString(32);
     }
 
-    public ItemStack fromBase64(@NotNull String data) {
+    public static ItemStack fromBase64(@NotNull String data) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
 
-        NBTTagCompound nbtTagCompoundRoot;
+        Object nbtTagCompoundRoot;
         try {
-            nbtTagCompoundRoot = NBTCompressedStreamTools.a(new DataInputStream(inputStream));
-        } catch (IOException e) {
+            Class compressedClass = getNMSClass("NBTCompressedStreamTools");
+            Method a = compressedClass.getMethod("a", DataInputStream.class);
+
+            nbtTagCompoundRoot = a.invoke(compressedClass, new DataInputStream(inputStream));
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
             return null;
         }
 
-        net.minecraft.server.v1_14_R1.ItemStack nmsItem = net.minecraft.server.v1_14_R1.ItemStack.a(nbtTagCompoundRoot);  //.createStack(nbtTagCompoundRoot);
-        ItemStack item = (ItemStack) CraftItemStack.asBukkitCopy(nmsItem);
+        Class nmsItemClass = getNMSClass("ItemStack");
+        Method a = nmsItemClass.getMethod("a", getNMSClass("NBTTagCompound"));
+
+        Object nmsItem = a.invoke(nbtTagCompoundRoot);
+
+        Method asBukkitCopy = getCraftClass("inventory.CraftItemStack").getMethod("asBukkitCopy", nmsItemClass);
+
+        ItemStack item = (ItemStack) asBukkitCopy.invoke(null, nmsItem);
 
         return item;
     }

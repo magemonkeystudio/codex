@@ -94,24 +94,24 @@ public class V1_16_R2 implements NMS {
 //        return new BigInteger(1, outputStream.toByteArray()).toString(32);
 //    }
 
-    @Override
-    @Nullable
-    public ItemStack fromBase64(@NotNull String data) {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
-
-        NBTTagCompound nbtTagCompoundRoot;
-        try {
-            nbtTagCompoundRoot = NBTCompressedStreamTools.a((DataInput) new DataInputStream(inputStream));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        net.minecraft.server.v1_16_R2.ItemStack nmsItem = net.minecraft.server.v1_16_R2.ItemStack.a(nbtTagCompoundRoot);  //.createStack(nbtTagCompoundRoot);
-        ItemStack item = (ItemStack) CraftItemStack.asBukkitCopy(nmsItem);
-
-        return item;
-    }
+//    @Override
+//    @Nullable
+//    public ItemStack fromBase64(@NotNull String data) {
+//        ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
+//
+//        NBTTagCompound nbtTagCompoundRoot;
+//        try {
+//            nbtTagCompoundRoot = NBTCompressedStreamTools.a((DataInput) new DataInputStream(inputStream));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return null;
+//        }
+//
+//        net.minecraft.server.v1_16_R2.ItemStack nmsItem = net.minecraft.server.v1_16_R2.ItemStack.a(nbtTagCompoundRoot);  //.createStack(nbtTagCompoundRoot);
+//        ItemStack item = (ItemStack) CraftItemStack.asBukkitCopy(nmsItem);
+//
+//        return item;
+//    }
 
     @Override
     @NotNull
