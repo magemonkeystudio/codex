@@ -1,19 +1,7 @@
 package su.nexmedia.engine.nms;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
-import java.io.DataInputStream;
-import java.io.DataOutput;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Collection;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
-import org.bukkit.craftbukkit.v1_16_R2.CraftWorld;
+import com.google.common.collect.Multimap;
+import net.minecraft.server.v1_16_R2.*;
 import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_16_R2.util.CraftChatMessage;
@@ -21,65 +9,46 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import com.google.common.collect.Multimap;
-
-import io.netty.channel.Channel;
-import net.minecraft.server.v1_16_R2.AttributeBase;
-import net.minecraft.server.v1_16_R2.AttributeModifier;
-import net.minecraft.server.v1_16_R2.BlockPosition;
-import net.minecraft.server.v1_16_R2.EntityPlayer;
-import net.minecraft.server.v1_16_R2.EnumItemSlot;
-import net.minecraft.server.v1_16_R2.GenericAttributes;
-import net.minecraft.server.v1_16_R2.IChatBaseComponent;
-import net.minecraft.server.v1_16_R2.Item;
-import net.minecraft.server.v1_16_R2.ItemArmor;
-import net.minecraft.server.v1_16_R2.ItemAxe;
-import net.minecraft.server.v1_16_R2.ItemSword;
-import net.minecraft.server.v1_16_R2.ItemTool;
-import net.minecraft.server.v1_16_R2.ItemTrident;
-import net.minecraft.server.v1_16_R2.NBTCompressedStreamTools;
-import net.minecraft.server.v1_16_R2.NBTTagCompound;
-import net.minecraft.server.v1_16_R2.NBTTagList;
-import net.minecraft.server.v1_16_R2.Packet;
-import net.minecraft.server.v1_16_R2.PacketPlayOutAnimation;
-import net.minecraft.server.v1_16_R2.World;
 import su.nexmedia.engine.utils.random.Rnd;
+
+import java.io.*;
+import java.math.BigInteger;
+import java.util.Collection;
 
 public class V1_16_R2 implements NMS {
 
-	@Override
-	@NotNull
-	public Channel getChannel(@NotNull Player p) {
-		return ((CraftPlayer)p).getHandle().playerConnection.networkManager.channel;
-	}
-	
-	@Override
-	public void sendPacket(@NotNull Player p, @NotNull Object packet) {
-		((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet<?>) packet);
-	}
-	
-	@Override
-	public void sendAttackPacket(@NotNull Player p, int id) {
-		CraftPlayer player = (CraftPlayer) p;
-        net.minecraft.server.v1_16_R2.Entity entity = (net.minecraft.server.v1_16_R2.Entity) player.getHandle();
-        PacketPlayOutAnimation packet = new PacketPlayOutAnimation(entity, id);
-        player.getHandle().playerConnection.sendPacket(packet);
-	}
-	
-	@Override
-	public void openChestAnimation(@NotNull Block chest, boolean open) {
-		if (chest.getState() instanceof Chest) {
-			Location lo = chest.getLocation();
-			org.bukkit.World bWorld = lo.getWorld();
-			if (bWorld == null) return;
-			
-			World world = ((CraftWorld) bWorld).getHandle();
-	        BlockPosition position = new BlockPosition(lo.getX(), lo.getY(), lo.getZ());
-	        //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
-		}
-	}
+//	@Override
+//	@NotNull
+//	public Channel getChannel(@NotNull Player p) {
+//		return ((CraftPlayer)p).getHandle().playerConnection.networkManager.channel;
+//	}
+//
+//	@Override
+//	public void sendPacket(@NotNull Player p, @NotNull Object packet) {
+//		((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet<?>) packet);
+//	}
+//
+//	@Override
+//	public void sendAttackPacket(@NotNull Player p, int id) {
+//		CraftPlayer player = (CraftPlayer) p;
+//        net.minecraft.server.v1_16_R2.Entity entity = (net.minecraft.server.v1_16_R2.Entity) player.getHandle();
+//        PacketPlayOutAnimation packet = new PacketPlayOutAnimation(entity, id);
+//        player.getHandle().playerConnection.sendPacket(packet);
+//	}
+//
+//	@Override
+//	public void openChestAnimation(@NotNull Block chest, boolean open) {
+//		if (chest.getState() instanceof Chest) {
+//			Location lo = chest.getLocation();
+//			org.bukkit.World bWorld = lo.getWorld();
+//			if (bWorld == null) return;
+//
+//			World world = ((CraftWorld) bWorld).getHandle();
+//	        BlockPosition position = new BlockPosition(lo.getX(), lo.getY(), lo.getZ());
+//	        //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+//	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
+//		}
+//	}
 	
 	@Override
 	@NotNull

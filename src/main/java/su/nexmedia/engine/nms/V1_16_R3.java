@@ -68,19 +68,19 @@ public class V1_16_R3 implements NMS {
 //        player.getHandle().playerConnection.sendPacket(packet);
 //	}
 	
-	@Override
-	public void openChestAnimation(@NotNull Block chest, boolean open) {
-		if (chest.getState() instanceof Chest) {
-			Location lo = chest.getLocation();
-			org.bukkit.World bWorld = lo.getWorld();
-			if (bWorld == null) return;
-			
-			World world = ((CraftWorld) bWorld).getHandle();
-	        BlockPosition position = new BlockPosition(lo.getX(), lo.getY(), lo.getZ());
-	        //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
-		}
-	}
+//	@Override
+//	public void openChestAnimation(@NotNull Block chest, boolean open) {
+//		if (chest.getState() instanceof Chest) {
+//			Location lo = chest.getLocation();
+//			org.bukkit.World bWorld = lo.getWorld();
+//			if (bWorld == null) return;
+//
+//			World world = ((CraftWorld) bWorld).getHandle();
+//	        BlockPosition position = new BlockPosition(lo.getX(), lo.getY(), lo.getZ());
+//	        //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+//	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
+//		}
+//	}
 	
 	@Override
 	@NotNull

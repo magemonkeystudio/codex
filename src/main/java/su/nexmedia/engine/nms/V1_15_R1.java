@@ -45,38 +45,38 @@ import su.nexmedia.engine.utils.random.Rnd;
 
 public class V1_15_R1 implements NMS {
 
-	@Override
-	@NotNull
-	public Channel getChannel(@NotNull Player p) {
-		return ((CraftPlayer)p).getHandle().playerConnection.networkManager.channel;
-	}
-	
-	@Override
-	public void sendPacket(@NotNull Player p, @NotNull Object packet) {
-		((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet<?>) packet);
-	}
-	
-	@Override
-	public void sendAttackPacket(@NotNull Player p, int id) {
-		CraftPlayer player = (CraftPlayer) p;
-        net.minecraft.server.v1_15_R1.Entity entity = (net.minecraft.server.v1_15_R1.Entity) player.getHandle();
-        PacketPlayOutAnimation packet = new PacketPlayOutAnimation(entity, id);
-        player.getHandle().playerConnection.sendPacket(packet);
-	}
-	
-	@Override
-	public void openChestAnimation(@NotNull Block chest, boolean open) {
-		if (chest.getState() instanceof Chest) {
-			Location lo = chest.getLocation();
-			org.bukkit.World bWorld = lo.getWorld();
-			if (bWorld == null) return;
-			
-			World world = ((CraftWorld) bWorld).getHandle();
-	        BlockPosition position = new BlockPosition(lo.getX(), lo.getY(), lo.getZ());
-	        //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
-	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
-		}
-	}
+//	@Override
+//	@NotNull
+//	public Channel getChannel(@NotNull Player p) {
+//		return ((CraftPlayer)p).getHandle().playerConnection.networkManager.channel;
+//	}
+//
+//	@Override
+//	public void sendPacket(@NotNull Player p, @NotNull Object packet) {
+//		((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet<?>) packet);
+//	}
+//
+//	@Override
+//	public void sendAttackPacket(@NotNull Player p, int id) {
+//		CraftPlayer player = (CraftPlayer) p;
+//        net.minecraft.server.v1_15_R1.Entity entity = (net.minecraft.server.v1_15_R1.Entity) player.getHandle();
+//        PacketPlayOutAnimation packet = new PacketPlayOutAnimation(entity, id);
+//        player.getHandle().playerConnection.sendPacket(packet);
+//	}
+//
+//	@Override
+//	public void openChestAnimation(@NotNull Block chest, boolean open) {
+//		if (chest.getState() instanceof Chest) {
+//			Location lo = chest.getLocation();
+//			org.bukkit.World bWorld = lo.getWorld();
+//			if (bWorld == null) return;
+//
+//			World world = ((CraftWorld) bWorld).getHandle();
+//	        BlockPosition position = new BlockPosition(lo.getX(), lo.getY(), lo.getZ());
+//	        //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
+//	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
+//		}
+//	}
 	
 	@Override
 	@NotNull

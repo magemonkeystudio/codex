@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.utils.reflection.ReflectionUtil;
 
+import java.lang.reflect.InvocationTargetException;
+
 public interface NMS {
 
     @NotNull
@@ -22,12 +24,16 @@ public interface NMS {
     @NotNull
     String getNbtString(@NotNull ItemStack item);
 
-    void openChestAnimation(@NotNull Block chest, boolean open);
+    default void openChestAnimation(@NotNull Block chest, boolean open) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        ReflectionUtil.openChestAnimation(chest, open);
+    }
 
-    void sendAttackPacket(@NotNull Player p, int i);
+    default void sendAttackPacket(@NotNull Player p, int i) {
+        ReflectionUtil.sendAttackPacket(p, i);
+    }
 
     @NotNull
-    default Channel getChannel(@NotNull Player p) {
+    default Channel getChannel(@NotNull Player p) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
         return ReflectionUtil.getChannel(p);
     }
 
