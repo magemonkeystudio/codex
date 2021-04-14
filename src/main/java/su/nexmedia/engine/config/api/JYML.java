@@ -193,7 +193,6 @@ public class JYML extends YamlConfiguration {
 		return new HashSet<>(this.getStringList(path));
 	}
 	
-	@Override
 	@Nullable
 	public Location getLocation(String path) {
 		String raw = this.getString(path);
@@ -460,8 +459,13 @@ public class JYML extends YamlConfiguration {
 			this.set(path, null);
 		}
 		else {
-			String code = ItemUT.toBase64(item);
-			this.set(path, code);
+			try {
+				String code = ItemUT.toBase64(item);
+				this.set(path, code);
+			} catch (Exception e) {
+				System.err.println("Could not set Item64");
+				e.printStackTrace();
+			}
 		}
 	}
 	

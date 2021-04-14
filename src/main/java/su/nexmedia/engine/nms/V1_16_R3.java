@@ -82,46 +82,46 @@ public class V1_16_R3 implements NMS {
 //		}
 //	}
 	
-	@Override
-	@NotNull
-    public String toJSON(@NotNull ItemStack item) {
-        NBTTagCompound c = new NBTTagCompound();
-        net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        c = nmsItem.save(c);
-        String js  = c.toString();
-        if (js.length() > 32767) {
-        	ItemStack item2 = new ItemStack(item.getType());
-        	return toJSON(item2);
-        }
-        
-        return js;
-    }
+//	@Override
+//	@NotNull
+//    public String toJSON(@NotNull ItemStack item) {
+//        NBTTagCompound c = new NBTTagCompound();
+//        net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+//        c = nmsItem.save(c);
+//        String js  = c.toString();
+//        if (js.length() > 32767) {
+//        	ItemStack item2 = new ItemStack(item.getType());
+//        	return toJSON(item2);
+//        }
+//
+//        return js;
+//    }
 	
-	@Override
-	@Nullable
-    public String toBase64(@NotNull ItemStack item) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutput = new DataOutputStream(outputStream);
-
-        NBTTagList nbtTagListItems = new NBTTagList();
-        NBTTagCompound nbtTagCompoundItem = new NBTTagCompound();
-
-        net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-
-        nmsItem.save(nbtTagCompoundItem);
-
-        nbtTagListItems.add(nbtTagCompoundItem);
-
-        try {
-			NBTCompressedStreamTools.a(nbtTagCompoundItem, (DataOutput) dataOutput);
-		} 
-        catch (IOException e) {
-        	e.printStackTrace();
-			return null;
-		}
-
-        return new BigInteger(1, outputStream.toByteArray()).toString(32);
-    }
+//	@Override
+//	@Nullable
+//    public String toBase64(@NotNull ItemStack item) {
+//        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+//        DataOutputStream dataOutput = new DataOutputStream(outputStream);
+//
+//        NBTTagList nbtTagListItems = new NBTTagList();
+//        NBTTagCompound nbtTagCompoundItem = new NBTTagCompound();
+//
+//        net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+//
+//        nmsItem.save(nbtTagCompoundItem);
+//
+//        nbtTagListItems.add(nbtTagCompoundItem);
+//
+//        try {
+//			NBTCompressedStreamTools.a(nbtTagCompoundItem, (DataOutput) dataOutput);
+//		}
+//        catch (IOException e) {
+//        	e.printStackTrace();
+//			return null;
+//		}
+//
+//        return new BigInteger(1, outputStream.toByteArray()).toString(32);
+//    }
 
     @Override
 	@Nullable

@@ -13,10 +13,14 @@ import java.lang.reflect.InvocationTargetException;
 public interface NMS {
 
     @NotNull
-    String toJSON(@NotNull ItemStack item);
+    default String toJSON(@NotNull ItemStack item) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        return ReflectionUtil.toJSON(item);
+    }
 
     @Nullable
-    String toBase64(@NotNull ItemStack item);
+    default String toBase64(@NotNull ItemStack item) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        return ReflectionUtil.toBase64(item);
+    }
 
     @Nullable
     ItemStack fromBase64(@NotNull String data);
