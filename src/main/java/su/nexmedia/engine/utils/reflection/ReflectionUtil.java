@@ -21,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collection;
+import java.util.Random;
 
 public class ReflectionUtil {
 
@@ -38,7 +39,7 @@ public class ReflectionUtil {
         try {
             Class nbtTagClass = getNMSClass("NBTTagList");
             return nbtTagClass.getConstructor().newInstance();
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -51,7 +52,20 @@ public class ReflectionUtil {
             Method asNMSCopy = craftItemClass.getMethod("asNMSCopy", ItemStack.class);
 
             return asNMSCopy.invoke(null, item);
-        } catch(Exception e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    private static ItemStack toBukkitCopy(Object nmsItem) {
+        try {
+            Class craftItem = getCraftClass("inventory.CraftItemStack");
+            Method asBukkitCopy = craftItem.getMethod("asBukkitCopy", getNMSClass("ItemStack"));
+
+            return (ItemStack) asBukkitCopy.invoke(null, craftItem);
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -71,10 +85,10 @@ public class ReflectionUtil {
     }
 
     public static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
-            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-            String name = "net.minecraft.server." + version + nmsClassString;
-            Class<?> nmsClass = Class.forName(name);
-            return nmsClass;
+        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+        String name = "net.minecraft.server." + version + nmsClassString;
+        Class<?> nmsClass = Class.forName(name);
+        return nmsClass;
     }
 
     public static Class<?> getCraftClass(String craftClassString) throws ClassNotFoundException {
@@ -91,7 +105,7 @@ public class ReflectionUtil {
             Field conField = nmsPlayer.getClass().getField("playerConnection");
             Object con = conField.get(nmsPlayer);
             return con;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -116,7 +130,7 @@ public class ReflectionUtil {
             Method getHandle = craftPlayer.getClass().getMethod("getHandle");
 
             return craftClass.cast(getHandle.invoke(craftPlayer));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -218,7 +232,7 @@ public class ReflectionUtil {
             }
 
             return js;
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -301,14 +315,23 @@ public class ReflectionUtil {
         return null;
     }
 
-    public ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
+    public static ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
         //CraftItemStack craftItem = (CraftItemStack) item;
-        net.minecraft.server.v1_14_R1.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+        try {
+            Object nmsStack = getNMSCopy(item);
 
-        EntityPlayer nmsPlayer = player != null ? ((CraftPlayer) player).getHandle() : null;
-        nmsStack.isDamaged(amount, Rnd.rnd, nmsPlayer);
+            Object nmsPlayer = player != null ? getEntity(getCraftPlayer(player)) : null;
 
-        return CraftItemStack.asBukkitCopy(nmsStack);
+            Method isDamaged = nmsStack.getClass().getMethod("isDamaged", int.class, Random.class, getNMSClass("EntityPlayer"));
+
+            isDamaged.invoke(nmsStack, amount, Rnd.rnd, nmsPlayer);
+
+            return toBukkitCopy(nmsStack);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     public String fixColors(@NotNull String str) {

@@ -113,23 +113,23 @@ public class V1_16_R2 implements NMS {
 //        return item;
 //    }
 
-    @Override
-    @NotNull
-    public String getNbtString(@NotNull ItemStack item) {
-        return CraftItemStack.asNMSCopy(item).getOrCreateTag().asString();
-    }
+//    @Override
+//    @NotNull
+//    public String getNbtString(@NotNull ItemStack item) {
+//        return CraftItemStack.asNMSCopy(item).getOrCreateTag().asString();
+//    }
 
-    @Override
-    @NotNull
-    public ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
-        //CraftItemStack craftItem = (CraftItemStack) item;
-        net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
-
-        EntityPlayer nmsPlayer = player != null ? ((CraftPlayer) player).getHandle() : null;
-        nmsStack.isDamaged(amount, Rnd.rnd, nmsPlayer);
-
-        return CraftItemStack.asBukkitCopy(nmsStack);
-    }
+//    @Override
+//    @NotNull
+//    public ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
+//        //CraftItemStack craftItem = (CraftItemStack) item;
+//        net.minecraft.server.v1_16_R2.ItemStack nmsStack = CraftItemStack.asNMSCopy(item);
+//
+//        EntityPlayer nmsPlayer = player != null ? ((CraftPlayer) player).getHandle() : null;
+//        nmsStack.isDamaged(amount, Rnd.rnd, nmsPlayer);
+//
+//        return CraftItemStack.asBukkitCopy(nmsStack);
+//    }
 
     @Override
     @NotNull

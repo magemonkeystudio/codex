@@ -34,7 +34,9 @@ public interface NMS {
     }
 
     @NotNull
-    String getNbtString(@NotNull ItemStack item);
+    default String getNbtString(@NotNull ItemStack item) {
+        return ReflectionUtil.getNbtString(item);
+    }
 
     default void openChestAnimation(@NotNull Block chest, boolean open) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         ReflectionUtil.openChestAnimation(chest, open);
@@ -54,7 +56,9 @@ public interface NMS {
     }
 
     @NotNull
-    ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player);
+    default ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
+        return ReflectionUtil.damageItem(item, amount, player);
+    }
 
     @NotNull
     String fixColors(@NotNull String str);
