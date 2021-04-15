@@ -1,21 +1,5 @@
 package su.nexmedia.engine.nms;
 
-import com.google.common.collect.Multimap;
-import net.minecraft.server.v1_15_R1.*;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.utils.random.Rnd;
-
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.math.BigInteger;
-import java.util.Collection;
-
 public class V1_15_R1 implements NMS {
 
 //	@Override
@@ -130,79 +114,79 @@ public class V1_15_R1 implements NMS {
 //        return CraftItemStack.asBukkitCopy(nmsStack);
 //    }
 
-    @Override
-    @NotNull
-    public String fixColors(@NotNull String str) {
-        return str;
-    }
+//    @Override
+//    @NotNull
+//    public String fixColors(@NotNull String str) {
+//        return str;
+//    }
 
-    @Nullable
-    private Multimap<String, AttributeModifier> getAttributes(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        Multimap<String, AttributeModifier> attMap = null;
+//    @Nullable
+//    private Multimap<String, AttributeModifier> getAttributes(@NotNull ItemStack itemStack) {
+//        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
+//        Multimap<String, AttributeModifier> attMap = null;
+//
+//        if (item instanceof ItemArmor) {
+//            ItemArmor tool = (ItemArmor) item;
+//            attMap = tool.a(tool.b());
+//        } else if (item instanceof ItemTool) {
+//            ItemTool tool = (ItemTool) item;
+//            attMap = tool.a(EnumItemSlot.MAINHAND);
+//        } else if (item instanceof ItemSword) {
+//            ItemSword tool = (ItemSword) item;
+//            attMap = tool.a(EnumItemSlot.MAINHAND);
+//        } else if (item instanceof ItemTrident) {
+//            ItemTrident tool = (ItemTrident) item;
+//            attMap = tool.a(EnumItemSlot.MAINHAND);
+//        }
+//
+//        return attMap;
+//    }
 
-        if (item instanceof ItemArmor) {
-            ItemArmor tool = (ItemArmor) item;
-            attMap = tool.a(tool.b());
-        } else if (item instanceof ItemTool) {
-            ItemTool tool = (ItemTool) item;
-            attMap = tool.a(EnumItemSlot.MAINHAND);
-        } else if (item instanceof ItemSword) {
-            ItemSword tool = (ItemSword) item;
-            attMap = tool.a(EnumItemSlot.MAINHAND);
-        } else if (item instanceof ItemTrident) {
-            ItemTrident tool = (ItemTrident) item;
-            attMap = tool.a(EnumItemSlot.MAINHAND);
-        }
+//    private double getAttributeValue(@NotNull ItemStack item, @NotNull IAttribute attackDamage) {
+//        Multimap<String, Object> attMap = ReflectionUtil.getAttributes(item);
+//        if (attMap == null) return 0D;
+//
+//        Collection<AttributeModifier> att = attMap.get(attackDamage.getName());
+//        double damage = (att == null || att.isEmpty()) ? 0 : att.stream().findFirst().get().getAmount();
+//
+//        return damage;// + 1;
+//    }
 
-        return attMap;
-    }
+//    @Override
+//    public boolean isWeapon(@NotNull ItemStack itemStack) {
+//        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
+//        return item instanceof ItemSword || item instanceof ItemAxe || item instanceof ItemTrident;
+//    }
+//
+//    @Override
+//    public boolean isTool(@NotNull ItemStack itemStack) {
+//        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
+//        return item instanceof ItemTool;
+//    }
+//
+//    @Override
+//    public boolean isArmor(@NotNull ItemStack itemStack) {
+//        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
+//        return item instanceof ItemArmor;
+//    }
 
-    private double getAttributeValue(@NotNull ItemStack item, @NotNull IAttribute attackDamage) {
-        Multimap<String, AttributeModifier> attMap = this.getAttributes(item);
-        if (attMap == null) return 0D;
-
-        Collection<AttributeModifier> att = attMap.get(attackDamage.getName());
-        double damage = (att == null || att.isEmpty()) ? 0 : att.stream().findFirst().get().getAmount();
-
-        return damage;// + 1;
-    }
-
-    @Override
-    public boolean isWeapon(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        return item instanceof ItemSword || item instanceof ItemAxe || item instanceof ItemTrident;
-    }
-
-    @Override
-    public boolean isTool(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        return item instanceof ItemTool;
-    }
-
-    @Override
-    public boolean isArmor(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        return item instanceof ItemArmor;
-    }
-
-    @Override
-    public double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ATTACK_DAMAGE);
-    }
-
-    @Override
-    public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ATTACK_SPEED);
-    }
-
-    @Override
-    public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ARMOR);
-    }
-
-    @Override
-    public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ARMOR_TOUGHNESS);
-    }
+//    @Override
+//    public double getDefaultDamage(@NotNull ItemStack itemStack) {
+//        return this.getAttributeValue(itemStack, GenericAttributes.ATTACK_DAMAGE);
+//    }
+//
+//    @Override
+//    public double getDefaultSpeed(@NotNull ItemStack itemStack) {
+//        return this.getAttributeValue(itemStack, GenericAttributes.ATTACK_SPEED);
+//    }
+//
+//    @Override
+//    public double getDefaultArmor(@NotNull ItemStack itemStack) {
+//        return this.getAttributeValue(itemStack, GenericAttributes.ARMOR);
+//    }
+//
+//    @Override
+//    public double getDefaultToughness(@NotNull ItemStack itemStack) {
+//        return this.getAttributeValue(itemStack, GenericAttributes.ARMOR_TOUGHNESS);
+//    }
 }

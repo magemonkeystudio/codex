@@ -12,7 +12,6 @@ import su.nexmedia.engine.manager.IManager;
 import su.nexmedia.engine.nms.packets.events.EnginePlayerPacketEvent;
 import su.nexmedia.engine.nms.packets.events.EngineServerPacketEvent;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -58,14 +57,7 @@ public class PacketManager extends IManager<NexEngine> {
     }
 
     public Channel getChannel(@NotNull Player player) {
-        try {
-            return this.plugin.getNMS().getChannel(player);
-        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | NoSuchFieldException e) {
-            //We shouldn't run into issues here... Unless the Reflection is fundamentally wrong.
-            System.err.println("Could not get channel!");
-            e.printStackTrace();
-            return null;
-        }
+        return this.plugin.getNMS().getChannel(player);
     }
 
     public void sendPacket(@NotNull Player player, @NotNull Object packet) {

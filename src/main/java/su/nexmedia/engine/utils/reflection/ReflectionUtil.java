@@ -25,6 +25,8 @@ import java.util.Random;
 
 public class ReflectionUtil {
 
+    public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+
     private static Object newNBTTagCompound() {
         try {
             Class nbtTagClass = getNMSClass("NBTTagCompound");
@@ -85,7 +87,7 @@ public class ReflectionUtil {
     }
 
     public static Class<?> getNMSClass(String nmsClassString) throws ClassNotFoundException {
-        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+        String version = VERSION + ".";
         String name = "net.minecraft.server." + version + nmsClassString;
         Class<?> nmsClass = Class.forName(name);
         return nmsClass;
@@ -327,77 +329,202 @@ public class ReflectionUtil {
             isDamaged.invoke(nmsStack, amount, Rnd.rnd, nmsPlayer);
 
             return toBukkitCopy(nmsStack);
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    public String fixColors(@NotNull String str) {
-        return str;
-    }
+    public static Multimap<Object, Object> getAttributes(@NotNull ItemStack itemStack) {
+        try {
+            Multimap<Object, Object> attMap = null;
+            Object nmsItem = getNMSCopy(itemStack);
+            Method getItem = nmsItem.getClass().getMethod("getItem");
+            Object item = getItem.invoke(nmsItem);
 
-    private Multimap<String, AttributeModifier> getAttributes(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        Multimap<String, AttributeModifier> attMap = null;
 
-        if (item instanceof ItemArmor) {
-            ItemArmor tool = (ItemArmor) item;
-            attMap = tool.a(tool.b());
-        } else if (item instanceof ItemTool) {
-            ItemTool tool = (ItemTool) item;
-            attMap = tool.a(EnumItemSlot.MAINHAND);
-        } else if (item instanceof ItemSword) {
-            ItemSword tool = (ItemSword) item;
-            attMap = tool.a(EnumItemSlot.MAINHAND);
-        } else if (item instanceof ItemTrident) {
-            ItemTrident tool = (ItemTrident) item;
-            attMap = tool.a(EnumItemSlot.MAINHAND);
+            Class<Enum> enumItemSlotClass = (Class<Enum>) getNMSClass("EnumItemSlot");
+//            Class attributeModClass = getNMSClass("AttributeModifier");
+            Class itemArmorClass = getNMSClass("ItemArmor");
+            Class itemToolClass = getNMSClass("ItemTool");
+            Class itemSwordClass = getNMSClass("ItemSword");
+            Class itemTridentClass = getNMSClass("ItemTrident");
+
+
+            if (itemArmorClass.isInstance(item)) {
+                Object tool = itemArmorClass.cast(item);
+                Method b = itemArmorClass.getMethod("b");
+                Object bObj = b.invoke(tool);
+                Method a = itemArmorClass.getMethod("a", enumItemSlotClass);
+
+                attMap = (Multimap<Object, Object>) a.invoke(tool, bObj);
+            } else if (itemToolClass.isInstance(item)) {
+                Object tool = itemToolClass.cast(item);
+                Method a = itemToolClass.getMethod("a", enumItemSlotClass);
+                attMap = (Multimap<Object, Object>) a.invoke(tool, Enum.valueOf(enumItemSlotClass, "MAINHAND"));
+            } else if (itemSwordClass.isInstance(item)) {
+                Object tool = itemSwordClass.cast(item);
+                Method a = itemSwordClass.getMethod("a", enumItemSlotClass);
+                attMap = (Multimap<Object, Object>) a.invoke(tool, Enum.valueOf(enumItemSlotClass, "MAINHAND"));
+            } else if (itemTridentClass.isInstance(item)) {
+                Object tool = itemTridentClass.cast(item);
+                Method a = itemTridentClass.getMethod("a", enumItemSlotClass);
+                attMap = (Multimap<Object, Object>) a.invoke(tool, Enum.valueOf(enumItemSlotClass, "MAINHAND"));
+            }
+
+            return attMap;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return attMap;
+        return null;
     }
 
-    private double getAttributeValue(@NotNull ItemStack item, @NotNull IAttribute attackDamage) {
-        Multimap<String, AttributeModifier> attMap = this.getAttributes(item);
-        if (attMap == null) return 0D;
+    public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attackDamage) {
+        try {
+            Class attributeModifierClass = getNMSClass("AttributeModifier");
+            if (attackDamage.getClass().getSimpleName().equals("IAttribute")) {
+                Class iAttributeClass = getNMSClass("IAttribute");
+                Multimap<Object, Object> attMap = getAttributes(item);
+                if (attMap == null) return 0D;
+                Object atkDmg = iAttributeClass.cast(attackDamage);
+                Method getName = iAttributeClass.getMethod("getName");
 
-        Collection<AttributeModifier> att = attMap.get(attackDamage.getName());
-        double damage = (att == null || att.isEmpty()) ? 0 : att.stream().findFirst().get().getAmount();
+                //Collection<AttributeModifier>
+                Collection<Object> att = attMap.get(getName.invoke(atkDmg));
+                Object mod = attributeModifierClass.cast((att == null || att.isEmpty()) ? 0 : att.stream().findFirst().get());
 
-        return damage;// + 1;
+                Method getAmount = attributeModifierClass.getMethod("getAmount");
+                double damage = (double) getAmount.invoke(mod);
+
+                return damage;// + 1;
+            } else if (attackDamage.getClass().getSimpleName().equals("AttributeBase")) {
+                Class attributeBaseClass = getNMSClass("AttributeBase");
+                Multimap<Object, Object> attMap = getAttributes(item);
+                if (attMap == null) return 0D;
+
+                Collection<Object> att = attMap.get(attributeBaseClass.cast(attackDamage));
+                Object mod = attributeModifierClass.cast((att == null || att.isEmpty()) ? 0 : att.stream().findFirst().get());
+
+                Method getAmount = attributeModifierClass.getMethod("getAmount");
+                double damage = (double) getAmount.invoke(mod);
+
+                return damage;// + 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
     }
 
-    public boolean isWeapon(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        return item instanceof ItemSword || item instanceof ItemAxe || item instanceof ItemTrident;
+    public static double getDefaultDamage(@NotNull ItemStack itemStack) {
+        return getAttributeValue(itemStack, getGenericAttribute("ATTACK_DAMAGE"));
     }
 
-    public boolean isTool(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        return item instanceof ItemTool;
+    public static double getDefaultSpeed(@NotNull ItemStack itemStack) {
+        return getAttributeValue(itemStack, getGenericAttribute("ATTACK_SPEED"));
     }
 
-    public boolean isArmor(@NotNull ItemStack itemStack) {
-        Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
-        return item instanceof ItemArmor;
+    public static double getDefaultArmor(@NotNull ItemStack itemStack) {
+        return getAttributeValue(itemStack, getGenericAttribute("ARMOR"));
     }
 
-    public double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ATTACK_DAMAGE);
+    public static double getDefaultToughness(@NotNull ItemStack itemStack) {
+        return getAttributeValue(itemStack, getGenericAttribute("ARMOR_TOUGHNESS"));
     }
 
-    public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ATTACK_SPEED);
+    public static Object getGenericAttribute(String field) {
+        try {
+            Class attributes = getNMSClass("GenericAttributes");
+            Field f = attributes.getField(field);
+            Object value = f.get(null);
+
+            //AttributeBase or IAttribute
+            return value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
-    public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ARMOR);
+    public static boolean isWeapon(@NotNull ItemStack itemStack) {
+        try {
+            Object nmsItem = getNMSCopy(itemStack);
+
+            Method getItem = nmsItem.getClass().getMethod("getItem");
+
+            Object item = getItem.invoke(nmsItem);
+
+            Class swordClass = getNMSClass("ItemSword");
+            Class axeClass = getNMSClass("ItemAxe");
+            Class tridentClass = getNMSClass("ItemTrident");
+
+            return swordClass.isInstance(item) || axeClass.isInstance(item) || tridentClass.isInstance(item);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return this.getAttributeValue(itemStack, GenericAttributes.ARMOR_TOUGHNESS);
+    public static boolean isTool(@NotNull ItemStack itemStack) {
+        try {
+            Object nmsItem = getNMSCopy(itemStack);
+
+            Method getItem = nmsItem.getClass().getMethod("getItem");
+
+            Object item = getItem.invoke(nmsItem);
+
+            Class toolClass = getNMSClass("ItemTool");
+
+            return toolClass.isInstance(item);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isArmor(@NotNull ItemStack itemStack) {
+        try {
+            Object nmsItem = getNMSCopy(itemStack);
+
+            Method getItem = nmsItem.getClass().getMethod("getItem");
+
+            Object item = getItem.invoke(nmsItem);
+
+            Class armorClass = getNMSClass("ItemArmor");
+
+            return armorClass.isInstance(item);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static String fixColors(@NotNull String str) {
+//        if (VERSION.startsWith("v1_16") || VERSION.startsWith("v1_17")) {
+        try {
+            str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
+
+            Class baseComponentClass = getNMSClass("IChatBaseComponent");
+            Class chatMessageClass = getCraftClass("util.CraftChatMessage");
+
+            Method fromComponent = chatMessageClass.getMethod("fromComponent", baseComponentClass);
+            Method fromStringOrNull = chatMessageClass.getMethod("fromStringOrNull", String.class);
+
+            Object baseComponent = fromStringOrNull.invoke(null, str);
+            String singleColor = (String) fromComponent.invoke(null, baseComponentClass.cast(baseComponent));
+            return singleColor.replace("%n%", "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return str;
+//        } else {
+//            return str;
+//        }
     }
 
 }

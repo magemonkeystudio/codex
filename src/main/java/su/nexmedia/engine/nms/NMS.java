@@ -13,12 +13,12 @@ import java.lang.reflect.InvocationTargetException;
 public interface NMS {
 
     @NotNull
-    default String toJSON(@NotNull ItemStack item) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    default String toJSON(@NotNull ItemStack item) {
         return ReflectionUtil.toJSON(item);
     }
 
     @Nullable
-    default String toBase64(@NotNull ItemStack item) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    default String toBase64(@NotNull ItemStack item) {
         return ReflectionUtil.toBase64(item);
     }
 
@@ -38,7 +38,7 @@ public interface NMS {
         return ReflectionUtil.getNbtString(item);
     }
 
-    default void openChestAnimation(@NotNull Block chest, boolean open) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    default void openChestAnimation(@NotNull Block chest, boolean open) {
         ReflectionUtil.openChestAnimation(chest, open);
     }
 
@@ -47,7 +47,7 @@ public interface NMS {
     }
 
     @NotNull
-    default Channel getChannel(@NotNull Player p) throws InvocationTargetException, NoSuchMethodException, IllegalAccessException, NoSuchFieldException {
+    default Channel getChannel(@NotNull Player p) {
         return ReflectionUtil.getChannel(p);
     }
 
@@ -61,19 +61,35 @@ public interface NMS {
     }
 
     @NotNull
-    String fixColors(@NotNull String str);
+    default String fixColors(@NotNull String str) {
+        return ReflectionUtil.fixColors(str);
+    }
 
-    double getDefaultDamage(@NotNull ItemStack itemStack);
+    default double getDefaultDamage(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ATTACK_DAMAGE"));
+    }
 
-    double getDefaultSpeed(@NotNull ItemStack itemStack);
+    default double getDefaultSpeed(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ATTACK_SPEED"));
+    }
 
-    double getDefaultArmor(@NotNull ItemStack itemStack);
+    default double getDefaultArmor(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ARMOR"));
+    }
 
-    double getDefaultToughness(@NotNull ItemStack itemStack);
+    default double getDefaultToughness(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ARMOR_TOUGHNESS"));
+    }
 
-    boolean isWeapon(@NotNull ItemStack itemStack);
+    default boolean isWeapon(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.isWeapon(itemStack);
+    }
 
-    boolean isTool(@NotNull ItemStack itemStack);
+    default boolean isTool(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.isTool(itemStack);
+    }
 
-    boolean isArmor(@NotNull ItemStack itemStack);
+    default boolean isArmor(@NotNull ItemStack itemStack) {
+        return ReflectionUtil.isArmor(itemStack);
+    }
 }
