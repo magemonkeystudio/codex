@@ -19,7 +19,6 @@ import su.nexmedia.engine.config.ConfigManager;
 import su.nexmedia.engine.core.Version;
 import su.nexmedia.engine.hooks.Hooks;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -353,8 +352,13 @@ public class ItemUT {
     }
 
     @Nullable
-    public static String toBase64(@NotNull ItemStack item) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
-        return ENGINE.getNMS().toBase64(item);
+    public static String toBase64(@NotNull ItemStack item) {
+        try {
+            return ENGINE.getNMS().toBase64(item);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @NotNull
