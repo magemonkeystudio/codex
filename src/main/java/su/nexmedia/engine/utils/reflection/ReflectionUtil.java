@@ -106,7 +106,7 @@ public class ReflectionUtil {
 
     public static Object getConnection(Player player) {
         try {
-            Class craftPlayerClass = getCraftClass("CraftPlayer");
+            Class craftPlayerClass = getCraftClass("entity.CraftPlayer");
 
             Method getHandle = Reflex.getMethod(craftPlayerClass, "getHandle");
             Object nmsPlayer = Reflex.invokeMethod(getHandle, getCraftPlayer(player));
@@ -253,13 +253,17 @@ public class ReflectionUtil {
 
             Object nbtTagListItems = newNBTTagList();
             Object nbtTagCompoundItem = newNBTTagCompound();
+            Class nbtBaseClass = getNMSClass("NBTBase");
 
             Object nmsItem = getNMSCopy(item);
 
             save(nmsItem, nbtTagCompoundItem);
 
-            //TODO Not sure this will work as 'add' uses generics
-            Method add = Reflex.getMethod(nbtTagListItems.getClass(), "add", nbtTagCompoundItem.getClass());
+            for (Method meth : getNMSClass("NBTTagList").getMethods()) {
+                System.out.println(meth.getName() + ", " + meth.getParameterTypes());
+            }
+
+            Method add = Reflex.getMethod(getNMSClass("NBTTagList"), "add", nbtBaseClass);
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
 
@@ -534,19 +538,24 @@ public class ReflectionUtil {
     public static float getAttackCooldown(Player p) {
         try {
             Class<?> entityPlayerClass = getNMSClass("EntityPlayer");
+            Class entityHumanClass = getNMSClass("EntityHuman");
             Object craftPlayer = getCraftPlayer(p);
             Method getHandle = Reflex.getMethod(craftPlayer.getClass(), "getHandle");
 
             Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
 
             if (MAJOR_VERISON < 16) {
-                Method s = Reflex.getMethod(ep.getClass(), "s", float.class);
+                Method s = Reflex.getMethod(entityHumanClass, "s", float.class);
+                if (s == null)
+                    throw new NullPointerException("Could not find a \"s\" method using Reflection.");
 
-                return (float) Reflex.invokeMethod(s, ep, 0);
+                return (float) Reflex.invokeMethod(s, entityHumanClass.cast(ep), 0f);
             } else {
-                Method getAttackCooldown = Reflex.getMethod(ep.getClass(), "getAttackCooldown", float.class);
+                Method getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
+                if (getAttackCooldown == null)
+                    throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");
 
-                return (float) Reflex.invokeMethod(getAttackCooldown, ep, 0);
+                return (float) Reflex.invokeMethod(getAttackCooldown, entityHumanClass.cast(ep), 0f);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -559,13 +568,14 @@ public class ReflectionUtil {
         try {
             Class<?> tileSkullClass = getNMSClass("TileEntitySkull");
             Class<?> craftWorldClass = getCraftClass("CraftWorld");
-            Class<?> worldServerClass = getNMSClass("WorldServer");
+//            Class<?> worldServerClass = getNMSClass("WorldServer");
+            Class<?> blockAccessClass = getNMSClass("IBlockAccess");
             Class<?> blockPosClass = getNMSClass("BlockPosition");
 
             Constructor ctor = Reflex.getConstructor(blockPosClass, int.class, int.class, int.class);
 
             Method getHandle = Reflex.getMethod(craftWorldClass, "getHandle");
-            Method getTileEntity = Reflex.getMethod(worldServerClass, "getTileEntity", blockPosClass);
+            Method getTileEntity = Reflex.getMethod(blockAccessClass, "getTileEntity", blockPosClass);
 
             Object bPos = Reflex.invokeConstructor(ctor, b.getX(), b.getY(), b.getZ());
 

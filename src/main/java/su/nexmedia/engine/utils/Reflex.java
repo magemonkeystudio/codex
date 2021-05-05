@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.NexEngine;
-import su.nexmedia.engine.core.Version;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -17,6 +16,7 @@ import java.util.List;
 
 public class Reflex {
 
+    public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     private static final NexEngine ENGINE;
 
     static {
@@ -68,12 +68,12 @@ public class Reflex {
 
     @Nullable
     public static Class<?> getNMSClass(@NotNull String name) {
-        return getClass("net.minecraft.server." + Version.CURRENT.name().toLowerCase(), name);
+        return getClass("net.minecraft.server." + VERSION,
+                name);
     }
 
     public static Class<?> getCraftClass(String craftClassString) {
-        String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        return getClass("org.bukkit.craftbukkit." + version, craftClassString);
+        return getClass("org.bukkit.craftbukkit." + VERSION, craftClassString);
     }
 
     @NotNull
