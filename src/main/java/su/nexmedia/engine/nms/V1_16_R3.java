@@ -1,5 +1,18 @@
 package su.nexmedia.engine.nms;
 
+import net.minecraft.server.v1_16_R3.NBTCompressedStreamTools;
+import net.minecraft.server.v1_16_R3.NBTTagCompound;
+import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nullable;
+import java.io.ByteArrayInputStream;
+import java.io.DataInput;
+import java.io.DataInputStream;
+import java.io.IOException;
+import java.math.BigInteger;
+
 public class V1_16_R3 implements NMS {
 
 //	@Override
@@ -7,12 +20,12 @@ public class V1_16_R3 implements NMS {
 //	public Channel getChannel(@NotNull Player p) {
 //		return ((CraftPlayer)p).getHandle().playerConnection.networkManager.channel;
 //	}
-	
+
 //	@Override
 //	public void sendPacket(@NotNull Player p, @NotNull Object packet) {
 //		((CraftPlayer)p).getHandle().playerConnection.sendPacket((Packet<?>) packet);
 //	}
-	
+
 //	@Override
 //	public void sendAttackPacket(@NotNull Player p, int id) {
 //		CraftPlayer player = (CraftPlayer) p;
@@ -20,7 +33,7 @@ public class V1_16_R3 implements NMS {
 //        PacketPlayOutAnimation packet = new PacketPlayOutAnimation(entity, id);
 //        player.getHandle().playerConnection.sendPacket(packet);
 //	}
-	
+
 //	@Override
 //	public void openChestAnimation(@NotNull Block chest, boolean open) {
 //		if (chest.getState() instanceof Chest) {
@@ -34,7 +47,7 @@ public class V1_16_R3 implements NMS {
 //	        world.playBlockAction(position, world.getType(position).getBlock(), 1, open ? 1 : 0);
 //		}
 //	}
-	
+
 //	@Override
 //	@NotNull
 //    public String toJSON(@NotNull ItemStack item) {
@@ -49,7 +62,7 @@ public class V1_16_R3 implements NMS {
 //
 //        return js;
 //    }
-	
+
 //	@Override
 //	@Nullable
 //    public String toBase64(@NotNull ItemStack item) {
@@ -123,7 +136,7 @@ public class V1_16_R3 implements NMS {
 //		String singleColor = CraftChatMessage.fromComponent(baseComponent);
 //		return singleColor.replace("%n%", "\n");
 //	}
-	
+
 //	@Nullable
 //	private Multimap<AttributeBase, AttributeModifier> getAttributes(@NotNull ItemStack itemStack) {
 //		Item item = CraftItemStack.asNMSCopy(itemStack).getItem();
@@ -158,7 +171,7 @@ public class V1_16_R3 implements NMS {
 //
 //		return damage;// + 1;
 //	}
-	
+
 //	@Override
 //	public boolean isWeapon(@NotNull ItemStack itemStack) {
 //		Item item = CraftItemStack.asNMSCopy(itemStack).getItem();

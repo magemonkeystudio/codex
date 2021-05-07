@@ -21,6 +21,7 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
@@ -253,26 +254,23 @@ public class ReflectionUtil {
 
             Object nbtTagListItems = newNBTTagList();
             Object nbtTagCompoundItem = newNBTTagCompound();
-            Class nbtBaseClass = getNMSClass("NBTBase");
 
             Object nmsItem = getNMSCopy(item);
 
             save(nmsItem, nbtTagCompoundItem);
 
-            for (Method meth : getNMSClass("NBTTagList").getMethods()) {
-                System.out.println(meth.getName() + ", " + meth.getParameterTypes());
-            }
-
-            Method add = Reflex.getMethod(getNMSClass("NBTTagList"), "add", nbtBaseClass);
+            Method add = Reflex.getMethod(AbstractList.class, "add", Object.class);
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
-
 
             Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
             Method a = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 
-            return new BigInteger(1, outputStream.toByteArray()).toString(32);
+            String str = new BigInteger(1, outputStream.toByteArray()).toString(32);
+
+
+            return str;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -287,9 +285,9 @@ public class ReflectionUtil {
             Object nbtTagCompoundRoot;
             try {
                 Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-                Method a = Reflex.getMethod(compressedClass, "a", DataInputStream.class);
+                Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
-                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
+                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, (DataInput) new DataInputStream(inputStream));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 return null;
