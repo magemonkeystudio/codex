@@ -16,7 +16,6 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.api.chat.hover.content.Text;
 import su.nexmedia.engine.core.Version;
 import su.nexmedia.engine.utils.constants.JStrings;
 
@@ -146,7 +145,7 @@ public class ClickText {
 			
 			BaseComponent[] base = TextComponent.fromLegacyText(StringUT.color(textBuilder.toString()));
 			if (Version.CURRENT.isHigher(Version.V1_15_R1)) {
-				this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(base));
+				this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(base)});
 			}
 			else {
 				this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, base);

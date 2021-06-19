@@ -8,6 +8,7 @@ import su.nexmedia.engine.utils.CollectionsUT;
 public enum Version {
 
 	// !!! KEEP THE VERSIONS LIST IN A ORDER FROM LOWER TO HIGHER !!!
+	V1_13_R2,
 	V1_14_R1,
 	V1_15_R1,
 	V1_16_R2,

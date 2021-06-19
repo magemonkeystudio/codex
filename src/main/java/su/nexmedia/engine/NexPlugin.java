@@ -65,13 +65,13 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
 		this.logger = this.getLogger();
 		this.isEngine = this instanceof NexEngine;
 		
-		if (!(this.isSpigot = this.getServer().getVersion().toLowerCase().contains("spigot"))) {
-			this.warn("============== DISCLAIMER ==============");
-			this.warn("> You're running an unknown Spigot fork.");
-			this.warn("> This plugin is designed to work on Spigot (spigotmc.org) only!");
-			this.warn("> You won't get any support for any issues unless they persist on regular Spigot.");
-			this.warn("========================================");
-		}
+//		if (!(this.isSpigot = this.getServer().getVersion().toLowerCase().contains("spigot"))) {
+//			this.warn("============== DISCLAIMER ==============");
+//			this.warn("> You're running an unknown Spigot fork.");
+//			this.warn("> This plugin is designed to work on Spigot (spigotmc.org) only!");
+//			this.warn("> You won't get any support for any issues unless they persist on regular Spigot.");
+//			this.warn("========================================");
+//		}
 		
 		NexEngine engine = getEngine();
 		if (this.isEngine()) {
