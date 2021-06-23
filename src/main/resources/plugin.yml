@@ -1,6 +1,6 @@
 name: ProMCCore
-main: su.nexmedia.engine.NexEngine
-version: 2.0.6
+main: com.promcteam.engine.NexEngine
+version: %PROJECT_VERSION%
 description: ProRPG Core plugin
 authors: [Travja, goflish]
 softdepend: [Vault, WorldGuard, MythicMobs]
