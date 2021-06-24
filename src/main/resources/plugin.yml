@@ -1,5 +1,5 @@
 name: ProMCCore
-main: com.promcteam.engine.NexEngine
+main: mc.promcteam.engine.NexEngine
 version: %PROJECT_VERSION%
 description: ProRPG Core plugin
 authors: [Travja, goflish]
