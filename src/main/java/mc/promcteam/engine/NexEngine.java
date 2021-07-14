@@ -86,6 +86,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
     private boolean setupNMS() {
     	Version current = Version.CURRENT;
+    	this.info("You are running MC version " + current);
     	if (current == null) return false;
     	
     	String pack = NMS.class.getPackage().getName();
@@ -105,6 +106,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 	@Override
 	public void enable() {
 		EditorManager.setup();
+		getLogger().info("ProMCCore has been enabled!");
 	}
 
 	@Override
