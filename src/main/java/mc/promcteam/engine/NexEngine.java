@@ -50,7 +50,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     //TODO chatEnabled = settings.getBoolean("Features.chat-enabled", true);
     private boolean chatEnabled;
     //commandMessage = settings.getString("Settings.command-cooldown-message", "&4Please wait &6{time} seconds &4before using the command again.");
-    private String commandMessage;
+    private String commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
 
     public NexEngine() {
         instance = this;
