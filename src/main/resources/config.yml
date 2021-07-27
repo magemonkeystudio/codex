@@ -7,3 +7,9 @@ locale:
     world: 'World'
     world_nether: 'Nether'
     world_the_end: 'The End'
+
+Features:
+  chat-enabled: true
+
+Settings:
+  command-cooldown-message: "&4Please wait &6{time} seconds &4before using the command again."

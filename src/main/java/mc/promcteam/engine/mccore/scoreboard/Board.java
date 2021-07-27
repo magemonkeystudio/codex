@@ -102,7 +102,6 @@ public abstract class Board {
      *
      * @param scoreboard BoardManager's scoreboard
      */
-    // TODO Fix reflection stuff for 1.17
     public static void init(Scoreboard scoreboard) {
         if (getScore != null)
             return;

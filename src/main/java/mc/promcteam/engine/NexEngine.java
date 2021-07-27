@@ -47,9 +47,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     private CoreLang lang;
     private Set<NexPlugin<?>> plugins;
     private HookManager hookManager;
-    //TODO chatEnabled = settings.getBoolean("Features.chat-enabled", true);
     private boolean chatEnabled;
-    //commandMessage = settings.getString("Settings.command-cooldown-message", "&4Please wait &6{time} seconds &4before using the command again.");
     private String commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
 
     public NexEngine() {
@@ -145,6 +143,9 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     public void setConfig() {
         this.cfg = new CoreConfig(this);
         this.cfg.setup();
+
+        commandMessage = this.cfg.getJYML().getString("Settings.command-cooldown-message", "&4Please wait &6{time} seconds &4before using the command again.");
+        chatEnabled = this.cfg.getJYML().getBoolean("Features.chat-enabled", true);
 
         this.lang = new CoreLang(this);
         this.lang.setup();
