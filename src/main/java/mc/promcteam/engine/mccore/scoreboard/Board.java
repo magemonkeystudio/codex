@@ -26,6 +26,7 @@
  */
 package mc.promcteam.engine.mccore.scoreboard;
 
+import mc.promcteam.engine.mccore.util.VersionManager;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.reflection.ReflectionUtil;
 import org.bukkit.Bukkit;
@@ -109,21 +110,37 @@ public abstract class Board {
         try {
             String pkg = Reflex.getNMSPackage();
 
-            Class<?> criteria = Class.forName(pkg + "IScoreboardCriteria");
-            Class<?> objective = Class.forName(pkg + "ScoreboardObjective");
+            Class<?> criteria = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
+                    : Class.forName(pkg + "IScoreboardCriteria");
+            Class<?> objective = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.world.scores.ScoreboardObjective")
+                    : Class.forName(pkg + "ScoreboardObjective");
 
-            getScore = Class.forName(pkg + "Scoreboard")
+            getScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.world.scores.Scoreboard")
+                    : Class.forName(pkg + "Scoreboard"))
                     .getDeclaredMethod("getPlayerScoreForObjective", String.class, objective);
-            setScore = Class.forName(pkg + "ScoreboardScore")
+            setScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.world.scores.ScoreboardScore")
+                    : Class.forName(pkg + "ScoreboardScore"))
                     .getDeclaredMethod("setScore", int.class);
-            getPackets = Class.forName(pkg + "ScoreboardServer")
+            getPackets = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.server.ScoreboardServer")
+                    : Class.forName(pkg + "ScoreboardServer"))
                     .getDeclaredMethod("getScoreboardScorePacketsForObjective", objective);
             sidebarCriteria = criteria.getDeclaredField("b").get(null);
-            objConstructor = objective.getConstructor(Class.forName(pkg + "Scoreboard"), String.class, criteria);
+            objConstructor = objective.getConstructor(VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.world.scores.Scoreboard")
+                    : Class.forName(pkg + "Scoreboard"), String.class, criteria);
             scoreboardServer = scoreboard.getClass().getDeclaredMethod("getHandle").invoke(scoreboard);
-            displayConstructor = Class.forName(pkg + "PacketPlayOutScoreboardDisplayObjective")
+            displayConstructor = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective")
+                    : Class.forName(pkg + "PacketPlayOutScoreboardDisplayObjective"))
                     .getConstructor(int.class, objective);
-            packetConstructor = Class.forName(pkg + "PacketPlayOutScoreboardObjective")
+            packetConstructor = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? Class.forName("net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective")
+                    : Class.forName(pkg + "PacketPlayOutScoreboardObjective"))
                     .getConstructor(objective, int.class);
         } catch (Exception ex) {
             System.out.println("Failed to set up reflection for scoreboards - restoring to slow method");
