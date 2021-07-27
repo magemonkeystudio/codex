@@ -1,21 +1,21 @@
 /**
  * MCCore
  * com.rit.sucy.chat.Prefix
- *
+ * <p>
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2014 Steven Sucy
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -24,20 +24,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mc.promcteam.engine.mccore.util;
+package mc.promcteam.engine.mccore.chat;
 
 import org.bukkit.ChatColor;
 
 /**
  * Unlockable Prefix Data
  */
-public class Prefix
-{
+public class Prefix {
 
     ChatColor braceColor;
-    String    pluginName;
-    String    textWithoutColor;
-    String    text;
+    String pluginName;
+    String textWithoutColor;
+    String text;
 
     /**
      * Constructor for prefixes with white square braces
@@ -45,8 +44,7 @@ public class Prefix
      * @param pluginName name of the plugin that gives the prefix
      * @param prefix     prefix text (with colors)
      */
-    public Prefix(String pluginName, String prefix)
-    {
+    public Prefix(String pluginName, String prefix) {
         this(pluginName, prefix, ChatColor.WHITE);
     }
 
@@ -57,8 +55,7 @@ public class Prefix
      * @param prefix     prefix text (with colors)
      * @param braceColor color of the braces containing the prefix
      */
-    public Prefix(String pluginName, String prefix, ChatColor braceColor)
-    {
+    public Prefix(String pluginName, String prefix, ChatColor braceColor) {
         this.pluginName = pluginName;
         text = prefix;
         textWithoutColor = ChatColor.stripColor(text);
@@ -70,8 +67,7 @@ public class Prefix
      *
      * @param data config data
      */
-    Prefix(String data)
-    {
+    Prefix(String data) {
         String[] values = data.split(",");
         pluginName = values[0];
         text = values[1];
@@ -82,32 +78,28 @@ public class Prefix
     /**
      * @return tag for the prefix
      */
-    public String tag()
-    {
+    public String tag() {
         return braceColor + "[" + text + braceColor + "]";
     }
 
     /**
      * @return the name of the plugin that gives this prefix
      */
-    public String pluginName()
-    {
+    public String pluginName() {
         return pluginName;
     }
 
     /**
      * @return the text of the prefix including colors
      */
-    public String text()
-    {
+    public String text() {
         return text;
     }
 
     /**
      * @return the text of the prefix without colors
      */
-    public String textWithoutColor()
-    {
+    public String textWithoutColor() {
         return textWithoutColor;
     }
 
@@ -117,8 +109,7 @@ public class Prefix
      * @return prefix data represented as a string
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return pluginName + "," + text + "," + braceColor.name();
     }
 }

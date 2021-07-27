@@ -1,5 +1,6 @@
 package mc.promcteam.engine;
 
+import lombok.Getter;
 import mc.promcteam.engine.commands.api.IGeneralCommand;
 import mc.promcteam.engine.commands.list.Base64Command;
 import mc.promcteam.engine.core.Version;
@@ -12,7 +13,13 @@ import mc.promcteam.engine.hooks.external.VaultHK;
 import mc.promcteam.engine.hooks.external.WorldGuardHK;
 import mc.promcteam.engine.hooks.external.citizens.CitizensHK;
 import mc.promcteam.engine.manager.editor.EditorManager;
+import mc.promcteam.engine.mccore.chat.ChatCommander;
+import mc.promcteam.engine.mccore.chat.ChatListener;
 import mc.promcteam.engine.mccore.config.Config;
+import mc.promcteam.engine.mccore.scoreboard.BoardListener;
+import mc.promcteam.engine.mccore.scoreboard.CycleTask;
+import mc.promcteam.engine.mccore.scoreboard.ScoreboardCommander;
+import mc.promcteam.engine.mccore.scoreboard.UpdateTask;
 import mc.promcteam.engine.nms.NMS;
 import mc.promcteam.engine.nms.packets.PacketManager;
 import mc.promcteam.engine.utils.Reflex;
@@ -47,8 +54,14 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     private CoreLang lang;
     private Set<NexPlugin<?>> plugins;
     private HookManager hookManager;
+
     private boolean chatEnabled;
     private String commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
+    @Getter
+    private boolean scoreboardsEnabled;
+
+    private CycleTask cTask;
+    private UpdateTask uTask;
 
     public NexEngine() {
         instance = this;
@@ -126,6 +139,12 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
             this.craftManager.shutdown();
             this.craftManager = null;
         }
+
+        if (isScoreboardsEnabled()) {
+            cTask.cancel();
+            uTask.cancel();
+        }
+
         EditorManager.shutdown();
     }
 
@@ -146,6 +165,18 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
         commandMessage = this.cfg.getJYML().getString("Settings.command-cooldown-message", "&4Please wait &6{time} seconds &4before using the command again.");
         chatEnabled = this.cfg.getJYML().getBoolean("Features.chat-enabled", true);
+        scoreboardsEnabled = this.cfg.getJYML().getBoolean("Features.scoreboards-enabled", true);
+
+        if (chatEnabled) {
+            new ChatCommander(this);
+            new ChatListener(this);
+        }
+        if (scoreboardsEnabled) {
+            new ScoreboardCommander(this);
+            new BoardListener(this);
+            cTask = new CycleTask(this);
+            uTask = new UpdateTask(this);
+        }
 
         this.lang = new CoreLang(this);
         this.lang.setup();

@@ -24,7 +24,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package mc.promcteam.engine.mccore.util;
+package mc.promcteam.engine.mccore.chat;
 
 import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.mccore.config.ISavable;
