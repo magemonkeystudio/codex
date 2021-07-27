@@ -34,7 +34,7 @@ public class Reflex {
     }
 
     @Nullable
-    private static Class<?> getClass(@NotNull String path) {
+    public static Class<?> getClass(@NotNull String path) {
         try {
             return Class.forName(path);
         } catch (ClassNotFoundException e) {
@@ -66,10 +66,19 @@ public class Reflex {
         return obj;
     }
 
+
+    public static String getNMSPackage() {
+        return "net.minecraft.server." + VERSION;
+    }
+
     @Nullable
     public static Class<?> getNMSClass(@NotNull String name) {
         return getClass("net.minecraft.server." + VERSION,
                 name);
+    }
+
+    public static String getCraftPackage() {
+        return "org.bukkit.craftbukkit." + VERSION;
     }
 
     public static Class<?> getCraftClass(String craftClassString) {
@@ -139,6 +148,22 @@ public class Reflex {
         return false;
     }
 
+    /**
+     * Tries to get a method from the object
+     *
+     * @param o          object reference
+     * @param methodName name of the field to retrieve the value from
+     * @return the value of the field or null if not found
+     */
+    public static Method getMethod(Object o, String methodName, Class<?>... params) {
+        try {
+            Method method = o.getClass().getMethod(methodName, params);
+            if (!method.isAccessible()) method.setAccessible(true);
+            return method;
+        } catch (Exception ex) { /* Do nothing */ }
+        return null;
+    }
+
     @Nullable
     public static Method getMethod(@NotNull Class<?> clazz, @NotNull String fieldName, @NotNull Class<?>... o) {
         try {
@@ -170,5 +195,53 @@ public class Reflex {
 
     public static <T extends Enum> T getEnum(Class<?> clazz, String enumName) {
         return (T) Enum.valueOf((Class<T>) clazz, enumName);
+    }
+
+    /**
+     * Tries to set a value for the object
+     *
+     * @param o         object reference
+     * @param fieldName name of the field to set
+     * @param value     value to set
+     */
+    public static void setValue(Object o, String fieldName, Object value) {
+        try {
+            Field field = o.getClass().getDeclaredField(fieldName);
+            if (!field.isAccessible()) field.setAccessible(true);
+            field.set(o, value);
+        } catch (Exception ex) { /* Do Nothing */ }
+    }
+
+    /**
+     * Tries to get a value from the object
+     *
+     * @param o         object reference
+     * @param fieldName name of the field to retrieve the value from
+     * @return the value of the field or null if not found
+     */
+    public static Object getValue(Object o, String fieldName) {
+        try {
+            Field field = o.getClass().getDeclaredField(fieldName);
+            if (!field.isAccessible()) field.setAccessible(true);
+            return field.get(o);
+        } catch (Exception ex) { /* Do nothing */ }
+        return null;
+    }
+
+    /**
+     * Gets an instance of the class
+     *
+     * @param c    class to get an instance of
+     * @param args constructor arguments
+     * @return instance of the class or null if unable to create the object
+     */
+    public static Object getInstance(Class<?> c, Object... args) {
+        if (c == null) return null;
+        try {
+            for (Constructor<?> constructor : c.getDeclaredConstructors())
+                if (constructor.getGenericParameterTypes().length == args.length)
+                    return constructor.newInstance(args);
+        } catch (Exception ex) { /* */ }
+        return null;
     }
 }

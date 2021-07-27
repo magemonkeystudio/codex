@@ -29,10 +29,10 @@ import java.util.UUID;
 public class ReflectionUtil {
 
     public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-    public static final int MAJOR_VERISON = Integer.parseInt(VERSION.split("_")[1]);
+    public static final int MINOR_VERSION = Integer.parseInt(VERSION.split("_")[1]);
 
     protected static Object newNBTTagCompound() {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.newNBTTagCompound();
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.newNBTTagCompound();
 
         try {
             Class<?> nbtTagClass = getNMSClass("NBTTagCompound");
@@ -44,7 +44,7 @@ public class ReflectionUtil {
     }
 
     protected static Object newNBTTagList() {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.newNBTTagList();
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.newNBTTagList();
 
         try {
             Class<?> nbtTagClass = getNMSClass("NBTTagList");
@@ -70,7 +70,7 @@ public class ReflectionUtil {
     }
 
     protected static ItemStack toBukkitCopy(Object nmsItem) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.toBukkitCopy(nmsItem);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.toBukkitCopy(nmsItem);
 
         try {
             Class<?> craftItem = getCraftClass("inventory.CraftItemStack");
@@ -112,7 +112,7 @@ public class ReflectionUtil {
     }
 
     public static Object getConnection(Player player) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getConnection(player);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getConnection(player);
 
         try {
             Class craftPlayerClass = getCraftClass("entity.CraftPlayer");
@@ -141,7 +141,7 @@ public class ReflectionUtil {
     }
 
     public static Object getEntity(Object craftEntity) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getEntity(craftEntity);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getEntity(craftEntity);
 
         try {
             Class<?> craftClass = getNMSClass("Entity");
@@ -157,7 +157,7 @@ public class ReflectionUtil {
     }
 
     public static Channel getChannel(Player p) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getChannel(p);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getChannel(p);
 
         try {
             Object conn = getConnection(p);
@@ -172,8 +172,14 @@ public class ReflectionUtil {
         return null;
     }
 
+    public static void sendPackets(Player p, Collection<Object> packets) {
+        for (Object packet : packets) {
+            sendPacket(p, packet);
+        }
+    }
+
     public static void sendPacket(Player p, Object packet) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) {
+        if (ReflectionUtil.MINOR_VERSION >= 17) {
             Reflection_1_17.sendPacket(p, packet);
             return;
         }
@@ -190,7 +196,7 @@ public class ReflectionUtil {
     }
 
     public static void sendAttackPacket(Player p, int id) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) {
+        if (ReflectionUtil.MINOR_VERSION >= 17) {
             Reflection_1_17.sendAttackPacket(p, id);
             return;
         }
@@ -211,7 +217,7 @@ public class ReflectionUtil {
     }
 
     public static void openChestAnimation(Block chest, boolean open) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) {
+        if (ReflectionUtil.MINOR_VERSION >= 17) {
             Reflection_1_17.openChestAnimation(chest, open);
             return;
         }
@@ -275,7 +281,7 @@ public class ReflectionUtil {
     }
 
     public static String toBase64(@NotNull ItemStack item) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.toBase64(item);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.toBase64(item);
 
         try {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -308,7 +314,7 @@ public class ReflectionUtil {
     }
 
     public static ItemStack fromBase64(@NotNull String data) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.fromBase64(data);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.fromBase64(data);
 
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
@@ -356,7 +362,7 @@ public class ReflectionUtil {
     }
 
     public static ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.damageItem(item, amount, player);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.damageItem(item, amount, player);
 
         //CraftItemStack craftItem = (CraftItemStack) item;
         try {
@@ -377,7 +383,7 @@ public class ReflectionUtil {
     }
 
     public static Multimap<Object, Object> getAttributes(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getAttributes(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getAttributes(itemStack);
 
         try {
             Multimap<Object, Object> attMap = null;
@@ -424,7 +430,7 @@ public class ReflectionUtil {
     }
 
     public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attackDamage) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getAttributeValue(item, attackDamage);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getAttributeValue(item, attackDamage);
 
         try {
             Class<?> attributeModifierClass = getNMSClass("AttributeModifier");
@@ -464,31 +470,31 @@ public class ReflectionUtil {
     }
 
     public static double getDefaultDamage(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getDefaultDamage(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getDefaultDamage(itemStack);
 
         return getAttributeValue(itemStack, getGenericAttribute("ATTACK_DAMAGE"));
     }
 
     public static double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getDefaultSpeed(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getDefaultSpeed(itemStack);
 
         return getAttributeValue(itemStack, getGenericAttribute("ATTACK_SPEED"));
     }
 
     public static double getDefaultArmor(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getDefaultArmor(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getDefaultArmor(itemStack);
 
         return getAttributeValue(itemStack, getGenericAttribute("ARMOR"));
     }
 
     public static double getDefaultToughness(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getDefaultToughness(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getDefaultToughness(itemStack);
 
         return getAttributeValue(itemStack, getGenericAttribute("ARMOR_TOUGHNESS"));
     }
 
     public static Object getGenericAttribute(String field) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getGenericAttribute(field);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getGenericAttribute(field);
 
         try {
             Class<?> attributes = getNMSClass("GenericAttributes");
@@ -504,7 +510,7 @@ public class ReflectionUtil {
     }
 
     public static boolean isWeapon(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.isWeapon(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.isWeapon(itemStack);
 
         try {
             Object nmsItem = getNMSCopy(itemStack);
@@ -525,7 +531,7 @@ public class ReflectionUtil {
     }
 
     public static boolean isTool(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.isTool(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.isTool(itemStack);
 
         try {
             Object nmsItem = getNMSCopy(itemStack);
@@ -544,7 +550,7 @@ public class ReflectionUtil {
     }
 
     public static boolean isArmor(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.isArmor(itemStack);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.isArmor(itemStack);
 
         try {
             Object nmsItem = getNMSCopy(itemStack);
@@ -563,7 +569,7 @@ public class ReflectionUtil {
     }
 
     public static String fixColors(@NotNull String str) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.fixColors(str);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.fixColors(str);
 
         try {
             str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
@@ -585,7 +591,7 @@ public class ReflectionUtil {
     }
 
     public static float getAttackCooldown(Player p) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) return Reflection_1_17.getAttackCooldown(p);
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getAttackCooldown(p);
 
         try {
             Class<?> entityPlayerClass = getNMSClass("EntityPlayer");
@@ -595,7 +601,7 @@ public class ReflectionUtil {
 
             Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
 
-            if (MAJOR_VERISON < 16) {
+            if (MINOR_VERSION < 16) {
                 Method s = Reflex.getMethod(entityHumanClass, "s", float.class);
                 if (s == null)
                     throw new NullPointerException("Could not find a \"s\" method using Reflection.");
@@ -616,7 +622,7 @@ public class ReflectionUtil {
     }
 
     public static void changeSkull(Block b, String hash) {
-        if (ReflectionUtil.MAJOR_VERISON >= 17) {
+        if (ReflectionUtil.MINOR_VERSION >= 17) {
             Reflection_1_17.changeSkull(b, hash);
             return;
         }
