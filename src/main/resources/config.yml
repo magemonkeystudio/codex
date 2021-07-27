@@ -10,6 +10,7 @@ locale:
 
 Features:
   chat-enabled: true
+  scoreboards-enabled: true
 
 Settings:
   command-cooldown-message: "&4Please wait &6{time} seconds &4before using the command again."
