@@ -56,6 +56,7 @@ public class VersionManager {
     public static int V1_8_3 = 10803;
     public static int V1_8_8 = 10808;
     public static int V1_9_0 = 10900;
+    public static int V1_13 = 11300;
     public static int V1_17 = 11700;
 
     /**
