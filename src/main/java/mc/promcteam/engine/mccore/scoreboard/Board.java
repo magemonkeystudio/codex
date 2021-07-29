@@ -107,7 +107,7 @@ public abstract class Board {
             return;
 
         try {
-            String pkg = Reflex.getNMSPackage();
+            String pkg = Reflex.getNMSPackage() + ".";
 
             Class<?> criteria = VersionManager.isVersionAtLeast(VersionManager.V1_17)
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
@@ -142,7 +142,9 @@ public abstract class Board {
                     : Class.forName(pkg + "PacketPlayOutScoreboardObjective"))
                     .getConstructor(objective, int.class);
         } catch (Exception ex) {
-            System.out.println("Failed to set up reflection for scoreboards - restoring to slow method");
+            System.err.println("Failed to set up reflection for scoreboards - restoring to slow method");
+            System.out.println("Please send this stacktrace to a developer.");
+            ex.printStackTrace();
         }
     }
 

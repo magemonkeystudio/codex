@@ -15,11 +15,13 @@ import mc.promcteam.engine.hooks.external.citizens.CitizensHK;
 import mc.promcteam.engine.manager.editor.EditorManager;
 import mc.promcteam.engine.mccore.chat.ChatCommander;
 import mc.promcteam.engine.mccore.chat.ChatListener;
+import mc.promcteam.engine.mccore.commands.CommandLog;
 import mc.promcteam.engine.mccore.config.Config;
 import mc.promcteam.engine.mccore.scoreboard.BoardListener;
 import mc.promcteam.engine.mccore.scoreboard.CycleTask;
 import mc.promcteam.engine.mccore.scoreboard.ScoreboardCommander;
 import mc.promcteam.engine.mccore.scoreboard.UpdateTask;
+import mc.promcteam.engine.mccore.util.VersionManager;
 import mc.promcteam.engine.nms.NMS;
 import mc.promcteam.engine.nms.packets.PacketManager;
 import mc.promcteam.engine.utils.Reflex;
@@ -119,6 +121,10 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     @Override
     public void enable() {
         EditorManager.setup();
+
+        CommandLog.callback = msg -> VersionManager.initialize(msg);
+        getServer().dispatchCommand(new CommandLog(), "version");
+
         getLogger().info("ProMCCore has been enabled!");
     }
 
