@@ -2,10 +2,8 @@ package mc.promcteam.engine.utils.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import io.netty.channel.Channel;
 import mc.promcteam.engine.utils.Reflex;
-import mc.promcteam.engine.utils.constants.JNumbers;
 import mc.promcteam.engine.utils.random.Rnd;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -23,7 +21,6 @@ import java.math.BigInteger;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
-import java.util.UUID;
 
 public class Reflection_1_17 extends ReflectionUtil {
 
@@ -216,7 +213,7 @@ public class Reflection_1_17 extends ReflectionUtil {
                 Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
                 Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
-                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, (DataInput) new DataInputStream(inputStream));
+                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 return null;
@@ -272,6 +269,9 @@ public class Reflection_1_17 extends ReflectionUtil {
             Class<?> itemSwordClass = getClazz("net.minecraft.world.item.ItemSword");
             Class<?> itemTridentClass = getClazz("net.minecraft.world.item.ItemTrident");
 
+            Enum mainhand = (Enum) Reflex.invokeMethod(
+                    Reflex.getMethod(enumItemSlotClass, "fromName", String.class),
+                    null, "mainhand");
 
             if (itemArmorClass.isInstance(item)) {
                 Object tool = itemArmorClass.cast(item);
@@ -283,15 +283,15 @@ public class Reflection_1_17 extends ReflectionUtil {
             } else if (itemToolClass.isInstance(item)) {
                 Object tool = itemToolClass.cast(item);
                 Method a = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, Enum.valueOf(enumItemSlotClass, "a"));
+                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
             } else if (itemSwordClass.isInstance(item)) {
                 Object tool = itemSwordClass.cast(item);
                 Method a = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, Enum.valueOf(enumItemSlotClass, "a"));
+                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
             } else if (itemTridentClass.isInstance(item)) {
                 Object tool = itemTridentClass.cast(item);
                 Method a = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, Enum.valueOf(enumItemSlotClass, "a"));
+                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
             }
 
             return attMap;
