@@ -37,6 +37,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -119,8 +120,12 @@ public abstract class Board {
                     ? Class.forName("net.minecraft.network.chat.IChatBaseComponent")
                     : Class.forName(pkg + "IChatBaseComponent");
             Class<?> enumScoreboard = VersionManager.isVersionAtLeast(VersionManager.V1_17)
-                    ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria.EnumScoreboardHealthDisplay")
-                    : Class.forName(pkg + "IScoreboardCriteria.EnumScoreboardHealthDisplay");
+                    ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
+                    : Class.forName(pkg + "IScoreboardCriteria");
+            Class<?> tempEnum = enumScoreboard;
+            enumScoreboard = Arrays.stream(enumScoreboard.getDeclaredClasses())
+                    .filter(clazz -> clazz.getSimpleName().equals("EnumScoreboardHealthDisplay")).findFirst()
+                    .orElseThrow(() -> new ClassNotFoundException("Could not find class '" + tempEnum.getPackage().getName() + "IScoreboardCriteria.EnumScoreboardHealthDisplay'"));
 
             getScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
                     ? Class.forName("net.minecraft.world.scores.Scoreboard")
@@ -134,7 +139,8 @@ public abstract class Board {
                     ? Class.forName("net.minecraft.server.ScoreboardServer")
                     : Class.forName(pkg + "ScoreboardServer"))
                     .getDeclaredMethod("getScoreboardScorePacketsForObjective", objective);
-            sidebarCriteria = criteria.getDeclaredField("b").get(null);
+            sidebarCriteria = criteria.getDeclaredField(VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    ? "b" : "TRIGGER").get(null);
 
             objConstructor = VersionManager.isVersionAtLeast(VersionManager.V1_13)
                     ? objective.getConstructor(

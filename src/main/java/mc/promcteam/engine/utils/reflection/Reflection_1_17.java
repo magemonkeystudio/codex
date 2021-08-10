@@ -310,7 +310,8 @@ public class Reflection_1_17 extends ReflectionUtil {
             if (attMap == null) return 0D;
 
             Collection<Object> att = attMap.get(attributeBaseClass.cast(attackDamage));
-            Object mod = attributeModifierClass.cast((att == null || att.isEmpty()) ? 0 : att.stream().findFirst().get());
+            if (att == null || att.isEmpty()) return 0D;
+            Object mod = attributeModifierClass.cast(att.stream().findFirst().get());
 
             Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
             double damage = (double) Reflex.invokeMethod(getAmount, mod);

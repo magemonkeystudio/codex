@@ -324,7 +324,7 @@ public class ReflectionUtil {
                 Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
                 Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
-                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, (DataInput) new DataInputStream(inputStream));
+                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 return null;
@@ -398,6 +398,9 @@ public class ReflectionUtil {
             Class<?> itemToolClass = getNMSClass("ItemTool");
             Class<?> itemSwordClass = getNMSClass("ItemSword");
             Class<?> itemTridentClass = getNMSClass("ItemTrident");
+            Enum mainhand = (Enum) Reflex.invokeMethod(
+                    Reflex.getMethod(enumItemSlotClass, "fromName", String.class),
+                    null, "mainhand");
 
 
             if (itemArmorClass.isInstance(item)) {
@@ -410,15 +413,15 @@ public class ReflectionUtil {
             } else if (itemToolClass.isInstance(item)) {
                 Object tool = itemToolClass.cast(item);
                 Method a = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, Enum.valueOf(enumItemSlotClass, "MAINHAND"));
+                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
             } else if (itemSwordClass.isInstance(item)) {
                 Object tool = itemSwordClass.cast(item);
                 Method a = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, Enum.valueOf(enumItemSlotClass, "MAINHAND"));
+                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
             } else if (itemTridentClass.isInstance(item)) {
                 Object tool = itemTridentClass.cast(item);
                 Method a = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, Enum.valueOf(enumItemSlotClass, "MAINHAND"));
+                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
             }
 
             return attMap;
@@ -434,7 +437,7 @@ public class ReflectionUtil {
 
         try {
             Class<?> attributeModifierClass = getNMSClass("AttributeModifier");
-            if (attackDamage.getClass().getSimpleName().equals("IAttribute")) {
+            if (attackDamage.getClass().getSuperclass().getSimpleName().equals("IAttribute")) {
                 Class<?> iAttributeClass = getNMSClass("IAttribute");
                 Multimap<Object, Object> attMap = getAttributes(item);
                 if (attMap == null) return 0D;
@@ -449,7 +452,7 @@ public class ReflectionUtil {
                 double damage = (double) Reflex.invokeMethod(getAmount, mod);
 
                 return damage;// + 1;
-            } else if (attackDamage.getClass().getSimpleName().equals("AttributeBase")) {
+            } else if (getNMSClass("AttributeBase").isInstance(attackDamage)) {
                 Class<?> attributeBaseClass = getNMSClass("AttributeBase");
                 Multimap<Object, Object> attMap = getAttributes(item);
                 if (attMap == null) return 0D;
@@ -463,7 +466,6 @@ public class ReflectionUtil {
                 return damage;// + 1;
             }
         } catch (Exception e) {
-            e.printStackTrace();
         }
 
         return 0;
@@ -657,7 +659,7 @@ public class ReflectionUtil {
 
     protected static GameProfile getNonPlayerProfile(String hash) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
-        profile.getProperties().put("textures", new Property("textures", new String(hash)));
+        profile.getProperties().put("textures", new Property("textures", hash));
         return profile;
     }
 
