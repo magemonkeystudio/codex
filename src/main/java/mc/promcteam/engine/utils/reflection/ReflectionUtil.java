@@ -56,7 +56,7 @@ public class ReflectionUtil {
         return null;
     }
 
-    protected static Object getNMSCopy(ItemStack item) {
+    public static Object getNMSCopy(ItemStack item) {
         try {
             Class<?> craftItemClass = getCraftClass("inventory.CraftItemStack");
             Method asNMSCopy = Reflex.getMethod(craftItemClass, "asNMSCopy", ItemStack.class);

@@ -54,12 +54,10 @@ public class CommandLog implements CommandSender {
         }
     }
 
-    @Override
     public void sendMessage(@Nullable UUID uuid, @NotNull String s) {
         callback.execute(s);
     }
 
-    @Override
     public void sendMessage(@Nullable UUID uuid, @NotNull String[] strings) {
         for (String str : strings) {
             callback.execute(str);
