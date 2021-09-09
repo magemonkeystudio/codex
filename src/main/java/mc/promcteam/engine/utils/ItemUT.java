@@ -25,22 +25,28 @@ import java.util.stream.Collectors;
 
 public class ItemUT {
 
-    public static final String LORE_FIX_PREFIX = "fogus_loren-";
-    public static final String NAME_FIX_PREFIX = "fogus_namel-";
-    public static final String TAG_SPLITTER = "__x__";
-    private static final NexEngine ENGINE;
+    public static final  String                     LORE_FIX_PREFIX = "fogus_loren-";
+    public static final  String                     NAME_FIX_PREFIX = "fogus_namel-";
+    public static final  String                     TAG_SPLITTER    = "__x__";
+    private static final NexEngine                  ENGINE;
     private static final Map<String, NamespacedKey> LORE_KEYS_CACHE;
+    private static final Map<String, NamespacedKey> LORE_KEYS_CACHE2;
     private static final Map<String, NamespacedKey> NAME_KEYS_CACHE;
+    private static final Map<String, NamespacedKey> NAME_KEYS_CACHE2;
 
     static {
         ENGINE = NexEngine.get();
         LORE_KEYS_CACHE = new HashMap<>();
+        LORE_KEYS_CACHE2 = new HashMap<>();
         NAME_KEYS_CACHE = new HashMap<>();
+        NAME_KEYS_CACHE2 = new HashMap<>();
     }
 
     public static void clear() {
         LORE_KEYS_CACHE.clear();
+        LORE_KEYS_CACHE2.clear();
         NAME_KEYS_CACHE.clear();
+        NAME_KEYS_CACHE2.clear();
     }
 
     public static int addToLore(@NotNull List<String> lore, int pos, @NotNull String value) {
@@ -92,7 +98,7 @@ public class ItemUT {
         if (index < 0) return;
 
         int lastIndex = getLoreIndex(item, id, 1);
-        int diff = lastIndex - index;
+        int diff      = lastIndex - index;
 
         for (int i = 0; i < (diff + 1); i++) {
             lore.remove(index);
@@ -110,6 +116,7 @@ public class ItemUT {
 
     public static int getLoreIndex(@NotNull ItemStack item, @NotNull String id, int type) {
         String storedText = DataUT.getStringData(item, ItemUT.getLoreKey(id));
+        if (storedText == null) storedText = DataUT.getStringData(item, ItemUT.getLoreKey2(id));
         if (storedText == null) return -1;
 
         ItemMeta meta = item.getItemMeta();
@@ -118,9 +125,9 @@ public class ItemUT {
         List<String> lore = meta.getLore();
         if (lore == null) return -1;
 
-        String[] lines = storedText.split(TAG_SPLITTER);
-        String lastText = null;
-        int count = 0;
+        String[] lines    = storedText.split(TAG_SPLITTER);
+        String   lastText = null;
+        int      count    = 0;
 
         if (type == 0) {
             for (int i = 0; i < lines.length; i++) {
@@ -158,6 +165,12 @@ public class ItemUT {
     }
 
     @NotNull
+    private static NamespacedKey getLoreKey2(@NotNull String id2) {
+        String id = id2.toLowerCase();
+        return LORE_KEYS_CACHE2.computeIfAbsent(id, key -> NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
+    }
+
+    @NotNull
     private static NamespacedKey getNameKey(@NotNull String id2) {
         String id = id2.toLowerCase();
         return NAME_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(ENGINE, NAME_FIX_PREFIX + id));
@@ -169,11 +182,13 @@ public class ItemUT {
 
     public static void delLoreTag(@NotNull ItemStack item, @NotNull String id) {
         DataUT.removeData(item, ItemUT.getLoreKey(id));
+        DataUT.removeData(item, NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
     }
 
     @Nullable
     public static String getLoreTag(@NotNull ItemStack item, @NotNull String id) {
-        return DataUT.getStringData(item, ItemUT.getLoreKey(id));
+        String data = DataUT.getStringData(item, ItemUT.getLoreKey(id));
+        return data != null ? data : DataUT.getStringData(item, NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
     }
 
     public static void addNameTag(@NotNull ItemStack item, @NotNull String id, @NotNull String text) {
@@ -182,11 +197,13 @@ public class ItemUT {
 
     public static void delNameTag(@NotNull ItemStack item, @NotNull String id) {
         DataUT.removeData(item, ItemUT.getNameKey(id));
+        DataUT.removeData(item, NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id));
     }
 
     @Nullable
     public static String getNameTag(@NotNull ItemStack item, @NotNull String id) {
-        return DataUT.getStringData(item, ItemUT.getNameKey(id));
+        String data = DataUT.getStringData(item, ItemUT.getNameKey(id));
+        return data != null ? data : DataUT.getStringData(item, NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id));
     }
 
     @NotNull
@@ -214,7 +231,7 @@ public class ItemUT {
         if (meta == null) return;
 
         GameProfile profile = new GameProfile(uuid, null);
-        profile.getProperties().put("textures", new Property("textures", new String(value)));
+        profile.getProperties().put("textures", new Property("textures", value));
         Reflex.setFieldValue(meta, "profile", profile);
 
         item.setItemMeta(meta);
@@ -279,8 +296,8 @@ public class ItemUT {
     }
 
     public static void addItem(@NotNull Player player, @NotNull ItemStack... items) {
-        Inventory inv = player.getInventory();
-        World world = player.getWorld();
+        Inventory inv   = player.getInventory();
+        World     world = player.getWorld();
 
         for (ItemStack item : items) {
             if (isAir(item)) continue;
@@ -369,14 +386,14 @@ public class ItemUT {
     @NotNull
     public static List<String> toBase64(@NotNull List<ItemStack> items) {
         List<String> list = items.stream().map(item -> {
-            try {
-                return toBase64(item);
-            } catch (Exception e) {
-                System.err.println("Could not convert to b64.");
-                e.printStackTrace();
-            }
-            return null;
-        })
+                    try {
+                        return toBase64(item);
+                    } catch (Exception e) {
+                        System.err.println("Could not convert to b64.");
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
                 .collect(Collectors.toList());
         list.removeIf(data -> data == null);
         return list;

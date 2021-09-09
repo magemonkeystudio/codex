@@ -1,11 +1,5 @@
 package mc.promcteam.engine.utils;
 
-import java.nio.ByteBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.UUID;
-
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
@@ -17,10 +11,17 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.ByteBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.UUID;
+
 public class DataUT {
 
 	public static final PersistentDataType<byte[], double[]> DOUBLE_ARRAY = new DoubleArray();
-	public static final PersistentDataType<byte[], String[]> STRING_ARRAY = new StringArray(Charset.forName("UTF-8"));
+	public static final PersistentDataType<byte[], String[]> STRING_ARRAY = new StringArray(StandardCharsets.UTF_8);
 	public static final PersistentDataType<byte[], UUID> UUID = new UUIDDataType();
 	
 	@Nullable
@@ -119,7 +120,7 @@ public class DataUT {
 	public static boolean getBooleanData(@NotNull PersistentDataHolder holder, @NotNull NamespacedKey key) {
 		int i = getIntData(holder, key);
 		
-		return i == 0 ? false : true;
+		return i != 0;
 	}
 	
 	// ==================================================== //
@@ -133,7 +134,7 @@ public class DataUT {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return null;
 		
-		return getData((PersistentDataHolder) meta, type, key);
+		return getData(meta, type, key);
 	}
 	
 	public static void setData(
@@ -144,7 +145,7 @@ public class DataUT {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
 		
-		setData((PersistentDataHolder) meta, key, value);
+		setData(meta, key, value);
 		item.setItemMeta(meta);
 	}
 	
@@ -155,40 +156,40 @@ public class DataUT {
 		ItemMeta meta = item.getItemMeta();
 		if (meta == null) return;
 		
-		removeData((PersistentDataHolder) meta, key);
+		removeData(meta, key);
 		item.setItemMeta(meta);
 	}
 	
 	@Nullable
 	public static String getStringData(@NotNull ItemStack item, @NotNull NamespacedKey key) {
 		ItemMeta meta = item.getItemMeta();
-		return meta == null ? null : getStringData((PersistentDataHolder) meta, key);
+		return meta == null ? null : getStringData(meta, key);
 	}
 	
 	public static int getIntData(@NotNull ItemStack item, @NotNull NamespacedKey key) {
 		ItemMeta meta = item.getItemMeta();
-		return meta == null ? 0 : getIntData((PersistentDataHolder) meta, key);
+		return meta == null ? 0 : getIntData(meta, key);
 	}
 	
 	@Nullable
 	public static String[] getStringArrayData(@NotNull ItemStack item, @NotNull NamespacedKey key) {
 		ItemMeta meta = item.getItemMeta();
-		return meta == null ? null : getStringArrayData((PersistentDataHolder) meta, key);
+		return meta == null ? null : getStringArrayData(meta, key);
 	}
 	
 	public static double[] getDoubleArrayData(@NotNull ItemStack item, @NotNull NamespacedKey key) {
 		ItemMeta meta = item.getItemMeta();
-		return meta == null ? null : getDoubleArrayData((PersistentDataHolder) meta, key);
+		return meta == null ? null : getDoubleArrayData(meta, key);
 	}
 	
 	public static double getDoubleData(@NotNull ItemStack item, @NotNull NamespacedKey key) {
 		ItemMeta meta = item.getItemMeta();
-		return meta == null ? 0 : getDoubleData((PersistentDataHolder) meta, key);
+		return meta == null ? 0 : getDoubleData(meta, key);
 	}
 	
 	public static boolean getBooleanData(@NotNull ItemStack item, @NotNull NamespacedKey key) {
 		ItemMeta meta = item.getItemMeta();
-		return meta == null ? false : getBooleanData((PersistentDataHolder) meta, key);
+		return meta != null && getBooleanData(meta, key);
 	}
 	
 	
@@ -229,7 +230,7 @@ public class DataUT {
 	
 	public static class StringArray implements PersistentDataType<byte[], String[]> {
 		 
-	    private Charset charset;
+	    private final Charset charset;
 	 
 	    public StringArray(Charset charset) {
 	        this.charset = charset;
