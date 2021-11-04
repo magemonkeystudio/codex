@@ -451,7 +451,7 @@ public class ReflectionUtil {
                 Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
                 double damage = (double) Reflex.invokeMethod(getAmount, mod);
 
-                return damage;// + 1;
+                return damage + 1;
             } else if (getNMSClass("AttributeBase").isInstance(attackDamage)) {
                 Class<?> attributeBaseClass = getNMSClass("AttributeBase");
                 Multimap<Object, Object> attMap = getAttributes(item);
@@ -463,7 +463,7 @@ public class ReflectionUtil {
                 Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
                 double damage = (double) Reflex.invokeMethod(getAmount, mod);
 
-                return damage;// + 1;
+                return damage + 1;
             }
         } catch (Exception e) {
         }
