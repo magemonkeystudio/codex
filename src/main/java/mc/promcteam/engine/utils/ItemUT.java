@@ -248,9 +248,9 @@ public class ItemUT {
         if (profile == null) return null;
 
         Collection<Property> properties = profile.getProperties().get("textures");
-        Optional<Property> opt = properties.stream().filter(prop -> {
-            return prop.getName().equalsIgnoreCase("textures") || prop.getSignature().equalsIgnoreCase("textures");
-        }).findFirst();
+        Optional<Property> opt = properties.stream()
+                .filter(prop -> prop.getName().equalsIgnoreCase("textures") || prop.getSignature().equalsIgnoreCase("textures"))
+                .findFirst();
 
         return opt.isPresent() ? opt.get().getValue() : null;
     }

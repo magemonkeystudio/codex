@@ -30,6 +30,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,8 +39,8 @@ import java.util.List;
  * the key they preceed
  */
 public class YAMLParser {
-    private static int i = 0;
-    private static ArrayList<String> comments = new ArrayList<String>();
+    private static final ArrayList<String> comments = new ArrayList<String>();
+    private static       int               i        = 0;
 
     /**
      * Reads and then parses data from an embedded plugin resource. If
@@ -59,7 +60,7 @@ public class YAMLParser {
             int bytes;
             do {
                 bytes = read.read(data);
-                builder.append(new String(data, 0, bytes, "UTF-8"));
+                builder.append(new String(data, 0, bytes, StandardCharsets.UTF_8));
             }
             while (bytes == 1024);
             read.close();
@@ -101,7 +102,7 @@ public class YAMLParser {
                 byte[] data = new byte[(int) file.length()];
                 read.read(data);
                 read.close();
-                return parseText(new String(data, "UTF-8"));
+                return parseText(new String(data, StandardCharsets.UTF_8));
             }
         } catch (Exception ex) {
             // Do nothing
@@ -265,7 +266,7 @@ public class YAMLParser {
     public static void save(DataSection data, File file) {
         try {
             FileOutputStream out = new FileOutputStream(file);
-            BufferedWriter write = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            BufferedWriter write = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
 
             save(data, write);
 
@@ -369,14 +370,14 @@ public class YAMLParser {
 
     private static void writeValue(StringBuilder builder, Object value, char quote) {
         if (value instanceof Number) {
-            builder.append(value.toString());
+            builder.append(value);
         } else if (value.toString().contains("" + quote)) {
             builder.append('"');
-            builder.append(value.toString());
+            builder.append(value);
             builder.append('"');
         } else {
             builder.append(quote);
-            builder.append(value.toString());
+            builder.append(value);
             builder.append(quote);
         }
     }

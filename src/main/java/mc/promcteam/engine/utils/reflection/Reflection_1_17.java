@@ -316,7 +316,7 @@ public class Reflection_1_17 extends ReflectionUtil {
             Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
             double damage = (double) Reflex.invokeMethod(getAmount, mod);
 
-            return damage;// + 1;
+            return damage + 1;
         } catch (Exception e) {
             e.printStackTrace();
         }
