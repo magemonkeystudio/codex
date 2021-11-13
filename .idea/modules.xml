@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ProMCCore.iml" filepath="$PROJECT_DIR$/ProMCCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../RiseCore Parent/RiseCore Parent.iml" filepath="$PROJECT_DIR$/../RiseCore Parent/RiseCore Parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/../prorpgitems/prorpgitems.iml" filepath="$PROJECT_DIR$/../prorpgitems/prorpgitems.iml" />
     </modules>
   </component>
