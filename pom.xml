@@ -5,7 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mc.promcteam</groupId>
-    <artifactId>ProMCCore</artifactId>
+    <artifactId>promccore</artifactId>
+    <name>ProMCCore</name>
     <version>1.0.3.3-ALPHA</version>
 
     <properties>
@@ -91,7 +92,7 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>1.18-R0.1-SNAPSHOT</version>
-<!--            <classifier>remapped-mojang</classifier>-->
+            <!--            <classifier>remapped-mojang</classifier>-->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -104,7 +105,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.15</version>
+            <version>8.0.26</version>
         </dependency>
 
     </dependencies>
@@ -146,5 +147,13 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>ProMCTeam</name>
+            <url>https://maven.pkg.github.com/promcteam/promccore</url>
+        </repository>
+    </distributionManagement>
 
 </project>
