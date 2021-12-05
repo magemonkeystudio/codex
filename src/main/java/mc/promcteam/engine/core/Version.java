@@ -1,9 +1,8 @@
 package mc.promcteam.engine.core;
 
+import mc.promcteam.engine.utils.CollectionsUT;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
-
-import mc.promcteam.engine.utils.CollectionsUT;
 
 public enum Version {
 
@@ -13,7 +12,8 @@ public enum Version {
 	V1_15_R1,
 	V1_16_R2,
 	V1_16_R3,
-    V1_17_R1
+    V1_17_R1,
+    V1_18_R1
 	;
     
     public static final Version CURRENT;
