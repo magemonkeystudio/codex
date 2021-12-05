@@ -6,7 +6,7 @@
 
     <groupId>mc.promcteam</groupId>
     <artifactId>ProMCCore</artifactId>
-    <version>1.0.3.2-ALPHA</version>
+    <version>1.0.3.3-ALPHA</version>
     <build>
         <plugins>
             <plugin>
