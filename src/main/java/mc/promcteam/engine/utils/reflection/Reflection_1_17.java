@@ -272,8 +272,9 @@ public class Reflection_1_17 extends ReflectionUtil {
         try {
             Multimap<Object, Object> attMap  = null;
             Object                   nmsItem = getNMSCopy(itemStack);
-            Method                   getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
-            Object                   item    = Reflex.invokeMethod(getItem, nmsItem);
+            Method getItem = Reflex.getMethod(nmsItem.getClass(),
+                    ReflectionUtil.MINOR_VERSION > 1.17 ? "c" : "getItem");
+            Object item = Reflex.invokeMethod(getItem, nmsItem);
 
 
             Class<Enum> enumItemSlotClass = (Class<Enum>) getClazz("net.minecraft.world.entity.EnumItemSlot");
