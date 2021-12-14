@@ -87,7 +87,11 @@ public class ReflectionUtil {
 
     protected static Object save(Object nmsItem, Object nbtCompound) {
         try {
-            Method save = Reflex.getMethod(nmsItem.getClass(), "save", nbtCompound.getClass());
+            Method save = Reflex.getMethod(nmsItem.getClass(),
+                    ReflectionUtil.MINOR_VERSION >= 18
+                            ? "b"
+                            : "save",
+                    nbtCompound.getClass());
 
             return Reflex.invokeMethod(save, nmsItem, nbtCompound);
         } catch (Exception e) {
@@ -448,7 +452,7 @@ public class ReflectionUtil {
 
                 //Collection<AttributeModifier>
                 Collection<Object> att = attMap.get(Reflex.invokeMethod(getName, atkDmg));
-                Object             mod = attributeModifierClass.cast((att == null || att.isEmpty())
+                Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
                         ? 0
                         : att.stream().findFirst().get());
 
@@ -462,7 +466,7 @@ public class ReflectionUtil {
                 if (attMap == null) return 0D;
 
                 Collection<Object> att = attMap.get(attributeBaseClass.cast(attackDamage));
-                Object             mod = attributeModifierClass.cast((att == null || att.isEmpty())
+                Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
                         ? 0
                         : att.stream().findFirst().get());
 

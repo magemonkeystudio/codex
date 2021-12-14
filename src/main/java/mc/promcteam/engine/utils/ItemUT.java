@@ -188,7 +188,9 @@ public class ItemUT {
     @Nullable
     public static String getLoreTag(@NotNull ItemStack item, @NotNull String id) {
         String data = DataUT.getStringData(item, ItemUT.getLoreKey(id));
-        return data != null ? data : DataUT.getStringData(item, NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
+        return data != null
+                ? data
+                : DataUT.getStringData(item, NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
     }
 
     public static void addNameTag(@NotNull ItemStack item, @NotNull String id, @NotNull String text) {
@@ -203,16 +205,19 @@ public class ItemUT {
     @Nullable
     public static String getNameTag(@NotNull ItemStack item, @NotNull String id) {
         String data = DataUT.getStringData(item, ItemUT.getNameKey(id));
-        return data != null ? data : DataUT.getStringData(item, NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id));
+        String name = data != null
+                ? data
+                : DataUT.getStringData(item, NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id));
+        return name;
     }
 
     @NotNull
     public static String getItemName(@NotNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        if (meta != null && meta.hasDisplayName()) {
-            return meta.getDisplayName();
-        }
-        return ENGINE.lang().getEnum(item.getType());
+        String name = meta != null && meta.hasDisplayName()
+                ? meta.getDisplayName()
+                : ENGINE.lang().getEnum(item.getType());
+        return name;
     }
 
     @NotNull
@@ -275,7 +280,8 @@ public class ItemUT {
         item.setItemMeta(meta);
     }
 
-    public static void replaceLore(@NotNull ItemStack item, @NotNull String placeholder, @NotNull List<String> replacer) {
+    public static void replaceLore(
+            @NotNull ItemStack item, @NotNull String placeholder, @NotNull List<String> replacer) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return;
 

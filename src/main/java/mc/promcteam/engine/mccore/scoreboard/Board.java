@@ -52,13 +52,13 @@ public abstract class Board {
     private static Method getScore;
     private static Method setScore;
 
-    private static Object scoreboardServer;
-    private static Object sidebarCriteria;
-    protected final String plugin;
-    private final String title;
-    private final Scoreboard scoreboard;
-    private final Object objective;
-    private Player player;
+    private static  Object     scoreboardServer;
+    private static  Object     sidebarCriteria;
+    protected final String     plugin;
+    private final   String     title;
+    private final   Scoreboard scoreboard;
+    private final   Object     objective;
+    private         Player     player;
 
     /**
      * Constructs a new scoreboard manager with a desired type
@@ -81,7 +81,7 @@ public abstract class Board {
         this.title = title;
 
         Scoreboard scoreboard = null;
-        Object objective = null;
+        Object     objective  = null;
         if (packetConstructor != null) {
             try {
                 objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria);
@@ -130,15 +130,21 @@ public abstract class Board {
             getScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
                     ? Class.forName("net.minecraft.world.scores.Scoreboard")
                     : Class.forName(pkg + "Scoreboard"))
-                    .getDeclaredMethod("getPlayerScoreForObjective", String.class, objective);
+                    .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
+                            ? "c"
+                            : "getPlayerScoreForObjective", String.class, objective);
             setScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
                     ? Class.forName("net.minecraft.world.scores.ScoreboardScore")
                     : Class.forName(pkg + "ScoreboardScore"))
-                    .getDeclaredMethod("setScore", int.class);
+                    .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
+                            ? "b"
+                            : "setScore", int.class);
             getPackets = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
                     ? Class.forName("net.minecraft.server.ScoreboardServer")
                     : Class.forName(pkg + "ScoreboardServer"))
-                    .getDeclaredMethod("getScoreboardScorePacketsForObjective", objective);
+                    .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
+                            ? "d"
+                            : "getScoreboardScorePacketsForObjective", objective);
             sidebarCriteria = criteria.getDeclaredField(VersionManager.isVersionAtLeast(VersionManager.V1_17)
                     ? "b" : "TRIGGER").get(null);
 
