@@ -6,3 +6,4 @@ authors: [Travja, goflish]
 softdepend: [Vault, WorldGuard, MythicMobs]
 api-version: 1.14
 load: STARTUP
+libraries: [mysql:mysql-connector-java:8.0.27]

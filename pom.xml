@@ -106,14 +106,15 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.22</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.26</version>
+            <version>8.0.27</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -123,6 +124,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -139,6 +141,21 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <artifactSet>
+                                <excludes>
+                                    <exclude>com.google.protobuf:protobuf-java</exclude>
+                                </excludes>
+                            </artifactSet>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
