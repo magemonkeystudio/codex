@@ -273,7 +273,7 @@ public class Reflection_1_17 extends ReflectionUtil {
             Multimap<Object, Object> attMap  = null;
             Object                   nmsItem = getNMSCopy(itemStack);
             Method getItem = Reflex.getMethod(nmsItem.getClass(),
-                    ReflectionUtil.MINOR_VERSION > 1.17 ? "c" : "getItem");
+                    ReflectionUtil.MINOR_VERSION > 17 ? "c" : "getItem");
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
 
