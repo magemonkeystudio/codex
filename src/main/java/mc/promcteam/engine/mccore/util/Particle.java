@@ -91,7 +91,7 @@ public class Particle {
 
         // Otherwise get the instance for 1.7.2 and later
         if (packetClass == null) {
-            packetClass = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            packetClass = ReflectionUtil.MINOR_VERSION >= 17
                     ? Reflex.getClass("net.minecraft.network.protocol.game.PacketPlayOutWorldParticles")
                     : Reflex.getNMSClass("PacketPlayOutWorldParticles");
         }

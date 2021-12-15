@@ -109,17 +109,16 @@ public abstract class Board {
 
         try {
             String pkg = Reflex.getNMSPackage() + ".";
-
-            Class<?> criteria = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            Class<?> criteria = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
                     : Class.forName(pkg + "IScoreboardCriteria");
-            Class<?> objective = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            Class<?> objective = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.ScoreboardObjective")
                     : Class.forName(pkg + "ScoreboardObjective");
-            Class<?> baseComp = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            Class<?> baseComp = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.chat.IChatBaseComponent")
                     : Class.forName(pkg + "IChatBaseComponent");
-            Class<?> enumScoreboard = VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            Class<?> enumScoreboard = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
                     : Class.forName(pkg + "IScoreboardCriteria");
             Class<?> tempEnum = enumScoreboard;
@@ -127,40 +126,40 @@ public abstract class Board {
                     .filter(clazz -> clazz.getSimpleName().equals("EnumScoreboardHealthDisplay")).findFirst()
                     .orElseThrow(() -> new ClassNotFoundException("Could not find class '" + tempEnum.getPackage().getName() + "IScoreboardCriteria.EnumScoreboardHealthDisplay'"));
 
-            getScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            getScore = (ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.Scoreboard")
                     : Class.forName(pkg + "Scoreboard"))
                     .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
                             ? "c"
                             : "getPlayerScoreForObjective", String.class, objective);
-            setScore = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            setScore = (ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.ScoreboardScore")
                     : Class.forName(pkg + "ScoreboardScore"))
                     .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
                             ? "b"
                             : "setScore", int.class);
-            getPackets = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            getPackets = (ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.server.ScoreboardServer")
                     : Class.forName(pkg + "ScoreboardServer"))
                     .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
                             ? "d"
                             : "getScoreboardScorePacketsForObjective", objective);
-            sidebarCriteria = criteria.getDeclaredField(VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            sidebarCriteria = criteria.getDeclaredField(ReflectionUtil.MINOR_VERSION >= 17
                     ? "b" : "TRIGGER").get(null);
 
             objConstructor = VersionManager.isVersionAtLeast(VersionManager.V1_13)
                     ? objective.getConstructor(
-                    Class.forName(VersionManager.isVersionAtLeast(VersionManager.V1_17)
+                    Class.forName(ReflectionUtil.MINOR_VERSION >= 17
                             ? "net.minecraft.world.scores.Scoreboard"
                             : pkg + "Scoreboard"
                     ), String.class, criteria, baseComp, enumScoreboard)
                     : objective.getConstructor(Class.forName(pkg + "Scoreboard"), String.class, criteria);
             scoreboardServer = scoreboard.getClass().getDeclaredMethod("getHandle").invoke(scoreboard);
-            displayConstructor = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            displayConstructor = (ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective")
                     : Class.forName(pkg + "PacketPlayOutScoreboardDisplayObjective"))
                     .getConstructor(int.class, objective);
-            packetConstructor = (VersionManager.isVersionAtLeast(VersionManager.V1_17)
+            packetConstructor = (ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective")
                     : Class.forName(pkg + "PacketPlayOutScoreboardObjective"))
                     .getConstructor(objective, int.class);
