@@ -26,6 +26,7 @@
  */
 package mc.promcteam.engine.mccore.scoreboard;
 
+import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.mccore.util.VersionManager;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.reflection.ReflectionUtil;
@@ -52,13 +53,15 @@ public abstract class Board {
     private static Method getScore;
     private static Method setScore;
 
-    private static  Object     scoreboardServer;
-    private static  Object     sidebarCriteria;
-    protected final String     plugin;
-    private final   String     title;
-    private final   Scoreboard scoreboard;
-    private final   Object     objective;
-    private         Player     player;
+    private static  Object      scoreboardServer;
+    private static  Object      sidebarCriteria;
+    private static  Class<?>    enumScoreboard;
+    private static  Constructor chatCtor;
+    protected final String      plugin;
+    private final   String      title;
+    private final   Scoreboard  scoreboard;
+    private final   Object      objective;
+    private         Player      player;
 
     /**
      * Constructs a new scoreboard manager with a desired type
@@ -84,9 +87,14 @@ public abstract class Board {
         Object     objective  = null;
         if (packetConstructor != null) {
             try {
-                objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria);
+                if (ReflectionUtil.MINOR_VERSION >= 17) {
+                    objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria,
+                            Reflex.invokeConstructor(chatCtor, title),
+                            Reflex.getEnum(enumScoreboard, "HEARTS"));
+                } else
+                    objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria);
             } catch (Exception ex) {
-                System.out.println("Failed to create objective for scoreboard - resorting to slow method");
+                NexEngine.get().getLogger().warning("Failed to create objective for scoreboard - resorting to slow method");
             }
         }
         if (objective == null) {
@@ -118,7 +126,11 @@ public abstract class Board {
             Class<?> baseComp = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.chat.IChatBaseComponent")
                     : Class.forName(pkg + "IChatBaseComponent");
-            Class<?> enumScoreboard = ReflectionUtil.MINOR_VERSION >= 17
+            Class<?> chatComp = ReflectionUtil.MINOR_VERSION >= 17
+                    ? Class.forName("net.minecraft.network.chat.ChatComponentText")
+                    : Class.forName(pkg + "ChatComponentText");
+            chatCtor = Reflex.getConstructor(chatComp, String.class);
+            enumScoreboard = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
                     : Class.forName(pkg + "IScoreboardCriteria");
             Class<?> tempEnum = enumScoreboard;
@@ -164,8 +176,8 @@ public abstract class Board {
                     : Class.forName(pkg + "PacketPlayOutScoreboardObjective"))
                     .getConstructor(objective, int.class);
         } catch (Exception ex) {
-            System.err.println("Failed to set up reflection for scoreboards - restoring to slow method");
-            System.out.println("Please send this stacktrace to a developer.");
+            NexEngine.get().getLogger().info("Failed to set up reflection for scoreboards - restoring to slow method");
+            NexEngine.get().getLogger().info("Please send this stacktrace to a developer.");
             ex.printStackTrace();
         }
     }
