@@ -1,8 +1,9 @@
 package mc.promcteam.engine.data.serial;
 
 import com.google.gson.*;
-import org.bukkit.inventory.ItemStack;
+import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.utils.ItemUT;
+import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Type;
 
@@ -14,7 +15,7 @@ public class ItemStackSerializer implements JsonSerializer<ItemStack>, JsonDeser
         try {
             o.addProperty("data64", ItemUT.toBase64(item));
         } catch (Exception e) {
-            System.err.println("Could not convert to Base64!");
+            NexEngine.get().getLogger().warning("Could not convert to Base64!");
             e.printStackTrace();
         }
 
@@ -25,8 +26,8 @@ public class ItemStackSerializer implements JsonSerializer<ItemStack>, JsonDeser
     public ItemStack deserialize(JsonElement json, Type type, JsonDeserializationContext context)
             throws JsonParseException {
 
-        JsonObject o = json.getAsJsonObject();
-        ItemStack item = ItemUT.fromBase64(o.get("data64").getAsString());
+        JsonObject o    = json.getAsJsonObject();
+        ItemStack  item = ItemUT.fromBase64(o.get("data64").getAsString());
 
         return item;
     }

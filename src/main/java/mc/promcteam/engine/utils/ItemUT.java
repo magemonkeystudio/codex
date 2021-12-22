@@ -395,7 +395,7 @@ public class ItemUT {
                     try {
                         return toBase64(item);
                     } catch (Exception e) {
-                        System.err.println("Could not convert to b64.");
+                        NexEngine.get().getLogger().warning("Could not convert to b64.");
                         e.printStackTrace();
                     }
                     return null;

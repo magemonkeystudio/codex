@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.netty.channel.Channel;
+import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.constants.JNumbers;
 import mc.promcteam.engine.utils.random.Rnd;
@@ -215,7 +216,7 @@ public class ReflectionUtil {
 
             sendPacket(p, packet);
         } catch (ClassNotFoundException e) {
-            System.err.println("Could not send attack packet.");
+            NexEngine.get().getLogger().warning("Could not send attack packet.");
             e.printStackTrace();
         }
     }
@@ -257,7 +258,7 @@ public class ReflectionUtil {
                 //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
                 Reflex.invokeMethod(playBlockAction, world, position, getBlock.invoke(data), 1, open ? 1 : 0);
             } catch (Exception e) {
-                System.err.println("Problem sending chest animation");
+                NexEngine.get().getLogger().warning("Problem sending chest animation");
                 e.printStackTrace();
             }
         }
@@ -662,7 +663,7 @@ public class ReflectionUtil {
             Reflex.invokeMethod(setGameProfile, skullTile, getNonPlayerProfile(hash));
             b.getState().update(true);
         } catch (Exception e) {
-            System.err.println("Could not update skull");
+            NexEngine.get().getLogger().warning("Could not update skull");
             e.printStackTrace();
         }
     }

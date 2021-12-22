@@ -26,12 +26,14 @@
  */
 package mc.promcteam.engine.mccore.config;
 
+import mc.promcteam.engine.NexEngine;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -45,10 +47,10 @@ import java.util.logging.Level;
 public class Config {
 
     private final HashMap<ISavable, String> savables = new HashMap<>();
-    private final String fileName;
-    private final JavaPlugin plugin;
+    private final String                    fileName;
+    private final JavaPlugin                plugin;
 
-    private File configFile;
+    private File              configFile;
     private FileConfiguration fileConfiguration;
 
     /**
@@ -191,13 +193,8 @@ public class Config {
         InputStream defConfigStream = plugin.getResource(fileName);
         if (defConfigStream != null) {
             YamlConfiguration defConfig = null;
-            try {
-                defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, "UTF-8"));
-                fileConfiguration.setDefaults(defConfig);
-            } catch (UnsupportedEncodingException e) {
-                System.err.println("Incorrect file encoding");
-                e.printStackTrace();
-            }
+            defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8));
+            fileConfiguration.setDefaults(defConfig);
         }
     }
 

@@ -1,12 +1,13 @@
 package mc.promcteam.engine.nms;
 
 import io.netty.channel.Channel;
+import mc.promcteam.engine.NexEngine;
+import mc.promcteam.engine.utils.reflection.ReflectionUtil;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import mc.promcteam.engine.utils.reflection.ReflectionUtil;
 
 public interface NMS {
 
@@ -25,7 +26,7 @@ public interface NMS {
         try {
             return ReflectionUtil.fromBase64(data);
         } catch (Exception e) {
-            System.err.println("Error parsing item from data!");
+            NexEngine.get().getLogger().warning("Error parsing item from data!");
             e.printStackTrace();
             return null;
         }
