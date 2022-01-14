@@ -1,6 +1,7 @@
 package mc.promcteam.engine;
 
 import lombok.Getter;
+import mc.promcteam.engine.api.armor.ArmorListener;
 import mc.promcteam.engine.commands.api.IGeneralCommand;
 import mc.promcteam.engine.commands.list.Base64Command;
 import mc.promcteam.engine.core.Version;
@@ -41,8 +42,8 @@ import java.util.Set;
 
 public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
-    private static NexEngine instance;
-    private static Hashtable<String, Config> configs = new Hashtable<>();
+    private static       NexEngine                 instance;
+    private static final Hashtable<String, Config> configs = new Hashtable<>();
     NMS nms;
     PluginManager pluginManager;
     PacketManager packetManager;
@@ -53,9 +54,9 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     WorldGuardHK hookWorldGuard;
     MythicMobsHK hookMythicMobs;
     private CoreConfig cfg;
-    private CoreLang lang;
-    private Set<NexPlugin<?>> plugins;
-    private HookManager hookManager;
+    private       CoreLang          lang;
+    private final Set<NexPlugin<?>> plugins;
+    private       HookManager       hookManager;
 
     private boolean chatEnabled;
     private String commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
@@ -84,6 +85,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
         }
 
         this.getPluginManager().registerEvents(this, this);
+        this.getPluginManager().registerEvents(new ArmorListener(), this);
 
         this.hookManager = new HookManager(this);
         this.hookManager.setup();
