@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockDispenseArmorEvent;
 import org.bukkit.event.inventory.*;
@@ -18,7 +19,7 @@ import java.util.List;
 import static mc.promcteam.engine.api.armor.ArmorEquipEvent.EquipMethod;
 import static org.bukkit.event.inventory.InventoryType.SlotType;
 
-public class ArmorListener {
+public class ArmorListener implements Listener {
 
     private final List<Material> blockedMaterials = Arrays.asList(
             Material.FURNACE,

@@ -1,6 +1,6 @@
-# promccore
+# ProMCCore
 
-If you wish to use promccore as a dependency in your projects, include the following in your `pom.xml`
+If you wish to use ProMCCore as a dependency in your projects, include the following in your `pom.xml`
 
 ```xml
 <repository>
@@ -11,7 +11,7 @@ If you wish to use promccore as a dependency in your projects, include the follo
 <dependency>
     <groupId>mc.promcteam</groupId>
     <artifactId>promccore</artifactId>
-    <version>1.0.3.5-ALPHA</version>
+    <version>1.0.3.6-ALPHA</version>
 </dependency>
 ```
 
