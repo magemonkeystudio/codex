@@ -324,7 +324,7 @@ public class Reflection_1_17 extends ReflectionUtil {
             Class<?>                 attributeModifierClass = getClazz("net.minecraft.world.entity.ai.attributes.AttributeModifier");
             Class<?>                 attributeBaseClass     = getClazz("net.minecraft.world.entity.ai.attributes.AttributeBase");
             Multimap<Object, Object> attMap                 = getAttributes(item);
-            if (attMap == null) return 0D;
+            if (attMap == null || attMap.isEmpty()) return 0D;
 
             Collection<Object> att = attMap.get(attributeBaseClass.cast(attackDamage));
             if (att == null || att.isEmpty()) return 0D;

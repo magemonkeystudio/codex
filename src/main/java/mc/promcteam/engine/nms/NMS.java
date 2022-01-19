@@ -65,19 +65,19 @@ public interface NMS {
     }
 
     default double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ATTACK_DAMAGE"));
+        return ReflectionUtil.getDefaultDamage(itemStack);
     }
 
     default double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ATTACK_SPEED"));
+        return ReflectionUtil.getDefaultSpeed(itemStack);
     }
 
     default double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ARMOR"));
+        return ReflectionUtil.getDefaultArmor(itemStack);
     }
 
     default double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return ReflectionUtil.getAttributeValue(itemStack, ReflectionUtil.getGenericAttribute("ARMOR_TOUGHNESS"));
+        return ReflectionUtil.getDefaultToughness(itemStack);
     }
 
     default boolean isWeapon(@NotNull ItemStack itemStack) {
