@@ -182,7 +182,8 @@ public class ArmorListener implements Listener {
             ItemStack newArmorPiece = e.getCursor();
             ItemStack oldArmorPiece = e.getCurrentItem();
             if (numberkey) {
-                if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {// Prevents shit in the 2by2 crafting
+                if (e.getClickedInventory().getType().equals(InventoryType.PLAYER)) {// Prevents shift in the 2by2
+                    // crafting
                     // e.getClickedInventory() == The players inventory
                     // e.getHotBarButton() == key people are pressing to equip or unequip the item to or from.
                     // e.getRawSlot() == The slot the item is going to.
@@ -207,8 +208,8 @@ public class ArmorListener implements Listener {
                 // newArmorType = ArmorType.matchType(!isAirOrNull(e.getCurrentItem()) ? e.getCurrentItem() : e.getCursor());
             }
             if (newArmorType != null && e.getRawSlot() == newArmorType.getSlot()) {
-                EquipMethod method = EquipMethod.PICK_DROP;
-                if (e.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey) method = EquipMethod.HOTBAR_SWAP;
+                EquipMethod method = e.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey
+                        ? EquipMethod.HOTBAR_SWAP : EquipMethod.PICK_DROP;
                 ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), method, newArmorType, oldArmorPiece, newArmorPiece);
                 Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                 if (armorEquipEvent.isCancelled()) {

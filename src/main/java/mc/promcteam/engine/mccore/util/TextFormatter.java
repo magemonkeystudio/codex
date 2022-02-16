@@ -2,8 +2,8 @@ package mc.promcteam.engine.mccore.util;
 
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TextFormatter {
 
@@ -21,7 +21,7 @@ public class TextFormatter {
             return string;
 
         String[] pieces = string.split("[ _]");
-        String result = pieces[0].substring(0, 1).toUpperCase() + pieces[0].substring(1).toLowerCase();
+        String   result = pieces[0].substring(0, 1).toUpperCase() + pieces[0].substring(1).toLowerCase();
         for (int i = 1; i < pieces.length; i++) {
             result += " " + pieces[i].substring(0, 1).toUpperCase() + pieces[i].substring(1).toLowerCase();
         }
@@ -67,8 +67,8 @@ public class TextFormatter {
      */
     public static void colorString(StringBuilder sb, char token) {
         if (sb == null) return;
-        String t = token + "";
-        int index = sb.indexOf(t);
+        String t     = token + "";
+        int    index = sb.indexOf(t);
         while (index >= 0 && index < sb.length() - 1) {
             ChatColor color = ChatColor.getByChar(sb.charAt(index + 1));
             if (color != null) {
@@ -96,11 +96,8 @@ public class TextFormatter {
      * @return colored string list
      */
     public static List<String> colorStringList(List<String> list, char token) {
-        ArrayList<String> copy = new ArrayList<String>();
-        for (String string : list) {
-            copy.add(colorString(string, token));
-        }
-        return copy;
+        return list.stream().map(string -> colorString(string, token))
+                .collect(Collectors.toList());
     }
 
 }

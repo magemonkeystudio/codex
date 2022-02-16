@@ -11,7 +11,7 @@ If you wish to use ProMCCore as a dependency in your projects, include the follo
 <dependency>
     <groupId>mc.promcteam</groupId>
     <artifactId>promccore</artifactId>
-    <version>1.0.3.6-ALPHA</version>
+    <version>1.0.3.7</version>
 </dependency>
 ```
 
