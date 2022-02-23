@@ -39,14 +39,15 @@ import java.util.HashMap;
  * Main accessor for player scoreboards
  */
 public class BoardManager {
-    private static final HashMap<String, PlayerBoards> players = new HashMap<String, PlayerBoards>();
-    private static final HashMap<String, String> teams = new HashMap<String, String>();
+    private static final HashMap<String, PlayerBoards> players = new HashMap<>();
+    private static final HashMap<String, String>       teams   = new HashMap<>();
 
     private static Scoreboard scoreboard;
 
     private static boolean scoreboardUsed = false;
 
     static void init(Player player) {
+        init();
         if (scoreboardUsed && player != null)
             player.setScoreboard(scoreboard);
     }
@@ -55,10 +56,10 @@ public class BoardManager {
      * Initializes the scoreboard utility
      */
     public static void init() {
-        if (scoreboard == null) {
-            scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-            Board.init(scoreboard);
-        }
+        if (scoreboard != null) return;
+
+        scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
+        Board.init(scoreboard);
     }
 
     /**
@@ -79,6 +80,7 @@ public class BoardManager {
      * @param team team to register
      */
     public static void registerTeam(Team team) {
+        init();
         org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(team.getName());
         if (sbTeam == null) {
             sbTeam = scoreboard.registerNewTeam(team.getName());
@@ -94,6 +96,7 @@ public class BoardManager {
      * @param team team to update
      */
     public static void updateTeam(Team team) {
+        init();
         org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(team.getName());
         if (team.getPrefix() != null)
             sbTeam.setPrefix(team.getPrefix());
@@ -128,6 +131,7 @@ public class BoardManager {
         if (!teams.containsKey(player))
             return;
 
+        init();
         org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(teams.remove(player));
         if (sbTeam != null) sbTeam.removeEntry(player);
     }
@@ -152,6 +156,7 @@ public class BoardManager {
      */
     private static void enableScoreboard() {
         if (!scoreboardUsed) {
+            init();
             for (Player player : Bukkit.getOnlinePlayers())
                 player.setScoreboard(scoreboard);
             scoreboardUsed = true;
@@ -168,6 +173,7 @@ public class BoardManager {
         if (!scoreboardUsed)
             throw new IllegalStateException("Cannot set below name score before text");
 
+        init();
         scoreboard.getObjective(DisplaySlot.BELOW_NAME)
                 .getScore(player)
                 .setScore(score);
@@ -179,6 +185,7 @@ public class BoardManager {
      * @param player player to clear for
      */
     public static void clearScore(String player) {
+        init();
         scoreboard.resetScores(player);
     }
 
@@ -235,7 +242,6 @@ public class BoardManager {
      * @param name player name
      */
     public static void clearPlayer(String name) {
-        if (players.containsKey(name.toLowerCase()))
-            players.remove(name.toLowerCase());
+        players.remove(name.toLowerCase());
     }
 }
