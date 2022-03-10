@@ -118,10 +118,10 @@ public class Reflection_1_17 extends ReflectionUtil {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        Method sendPacket = null;
+        Method sendPacket;
         if (ReflectionUtil.MINOR_VERSION == 17) {
             sendPacket = Reflex.getMethod(conn.getClass(), "sendPacket", packetClass);
-        } else { // if (ReflectionUtil.MINOR_VERSION > 17) { // If we're newer.. we're using obfuscated methods ;(
+        } else { // if (ReflectionUtil.MINOR_VERSION > 17) { // If we're newer.. we're using obfuscated methods again ;(
             sendPacket = Reflex.getMethod(conn.getClass(), "a", packetClass);
         }
         Reflex.invokeMethod(sendPacket, conn, packet);
@@ -319,14 +319,14 @@ public class Reflection_1_17 extends ReflectionUtil {
         return null;
     }
 
-    public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attackDamage) {
+    public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attribute) {
         try {
             Class<?>                 attributeModifierClass = getClazz("net.minecraft.world.entity.ai.attributes.AttributeModifier");
             Class<?>                 attributeBaseClass     = getClazz("net.minecraft.world.entity.ai.attributes.AttributeBase");
             Multimap<Object, Object> attMap                 = getAttributes(item);
             if (attMap == null || attMap.isEmpty()) return 0D;
 
-            Collection<Object> att = attMap.get(attributeBaseClass.cast(attackDamage));
+            Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
             if (att == null || att.isEmpty()) return 0D;
             Object mod = attributeModifierClass.cast(att.stream().findFirst().get());
 
@@ -343,19 +343,19 @@ public class Reflection_1_17 extends ReflectionUtil {
     }
 
     public static double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("f"));
+        return getAttributeValue(itemStack, getGenericAttribute("f")); // generic.attack_damage
     }
 
     public static double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("h"));
+        return getAttributeValue(itemStack, getGenericAttribute("h")); // generic.attack_speed
     }
 
     public static double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("i"));
+        return getAttributeValue(itemStack, getGenericAttribute("i")); // generic.armor
     }
 
     public static double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("j"));
+        return getAttributeValue(itemStack, getGenericAttribute("j")); // generic.armor_toughness
     }
 
     public static Object getGenericAttribute(String field) {
