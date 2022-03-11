@@ -7,7 +7,7 @@
     <groupId>mc.promcteam</groupId>
     <artifactId>promccore</artifactId>
     <name>ProMCCore</name>
-    <version>1.0.3.7</version>
+    <version>1.0.3.8</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -128,7 +128,14 @@
     </dependencies>
 
     <build>
+        <directory>../ProBuilds</directory>
         <finalName>${project.artifactId}-${project.version}-${maven.build.timestamp}</finalName>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -154,31 +161,6 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.google.code.maven-replacer-plugin</groupId>
-                <artifactId>replacer</artifactId>
-                <version>1.5.3</version>
-                <executions>
-                    <execution>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>replace</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <basedir>${project.build.directory}</basedir>
-                    <includes>
-                        <include>**/*.yml</include>
-                    </includes>
-                    <replacements>
-                        <replacement>
-                            <token>%PROJECT_VERSION%</token>
-                            <value>${project.version}</value>
-                        </replacement>
-                    </replacements>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

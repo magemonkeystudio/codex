@@ -1,6 +1,6 @@
-name: ProMCCore
+name: ${project.name}
 main: mc.promcteam.engine.NexEngine
-version: %PROJECT_VERSION%
+version: ${project.version}
 description: ProRPG Core plugin
 authors: [ Travja, goflish ]
 softdepend: [ Vault, WorldGuard, MythicMobs ]

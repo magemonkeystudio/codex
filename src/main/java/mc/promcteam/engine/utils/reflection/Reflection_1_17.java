@@ -4,6 +4,7 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
 import mc.promcteam.engine.NexEngine;
+import mc.promcteam.engine.core.Version;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.random.Rnd;
 import org.bukkit.Location;
@@ -84,7 +85,8 @@ public class Reflection_1_17 extends ReflectionUtil {
         try {
             Object  conn    = getConnection(p);
             Object  manager = Reflex.getFieldValue(conn, "a");
-            Channel channel = (Channel) Reflex.getFieldValue(manager, "k");
+            String  field   = Version.CURRENT == Version.V1_18_R2 ? "m" : "k";
+            Channel channel = (Channel) Reflex.getFieldValue(manager, field);
 
             return channel;
         } catch (Exception e) {
