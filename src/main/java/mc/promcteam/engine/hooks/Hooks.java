@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import mc.promcteam.engine.hooks.external.IMythicHook;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -118,12 +119,12 @@ public class Hooks {
 	}
 	
 	public static boolean isNPC(@NotNull Entity e) {
-		return hasPlugin(CITIZENS) ? CitizensAPI.getNPCRegistry().isNPC(e) : false;
+		return hasPlugin(CITIZENS) && CitizensAPI.getNPCRegistry().isNPC(e);
 	}
 	
 	public static boolean isMythic(@NotNull Entity e) {
-		MythicMobsHK mobsHK = ENGINE.getMythicMobs();
-		return mobsHK == null ? false : mobsHK.isMythicMob(e);
+		IMythicHook mobsHK = ENGINE.getMythicMobs();
+		return mobsHK != null && mobsHK.isMythicMob(e);
 	}
 	
 	public static boolean hasPlugin(@NotNull String plugin) {
@@ -152,9 +153,7 @@ public class Hooks {
 		
 		WorldGuardHK wg = ENGINE.getWorldGuard();
 		if (wg != null) {
-			if (!wg.canFights(attacker, victim)) {
-				return false;
-			}
+			return wg.canFights(attacker, victim);
 		}
 		
 		return true;

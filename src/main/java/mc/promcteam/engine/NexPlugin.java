@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import mc.promcteam.engine.commands.CommandManager;
 import mc.promcteam.engine.core.config.CoreLang;
+import mc.promcteam.engine.hooks.external.IMythicHook;
 import mc.promcteam.engine.hooks.external.MythicMobsHK;
 import mc.promcteam.engine.hooks.external.VaultHK;
 import mc.promcteam.engine.hooks.external.WorldGuardHK;
@@ -38,8 +39,8 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
 	public static final String TM = "NEX-Media";
 	
 	private Logger logger;
-	private boolean isEngine;
-	private boolean isSpigot = true;
+	private       boolean isEngine;
+	private final boolean isSpigot = true;
 	
 	protected ConfigManager<P> configManager;
 	protected CommandManager<P> cmdManager;
@@ -335,7 +336,7 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
 	}
 	
 	@Nullable
-	public final MythicMobsHK getMythicMobs() {
+	public final IMythicHook getMythicMobs() {
 		return getEngine().hookMythicMobs;
 	}
 	

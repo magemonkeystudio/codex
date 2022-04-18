@@ -9,9 +9,7 @@ import mc.promcteam.engine.core.config.CoreConfig;
 import mc.promcteam.engine.core.config.CoreLang;
 import mc.promcteam.engine.hooks.HookManager;
 import mc.promcteam.engine.hooks.Hooks;
-import mc.promcteam.engine.hooks.external.MythicMobsHK;
-import mc.promcteam.engine.hooks.external.VaultHK;
-import mc.promcteam.engine.hooks.external.WorldGuardHK;
+import mc.promcteam.engine.hooks.external.*;
 import mc.promcteam.engine.hooks.external.citizens.CitizensHK;
 import mc.promcteam.engine.manager.editor.EditorManager;
 import mc.promcteam.engine.mccore.chat.ChatCommander;
@@ -52,7 +50,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     VaultHK hookVault;
     CitizensHK hookCitizens;
     WorldGuardHK hookWorldGuard;
-    MythicMobsHK hookMythicMobs;
+    IMythicHook  hookMythicMobs;
     private CoreConfig cfg;
     private       CoreLang          lang;
     private final Set<NexPlugin<?>> plugins;
@@ -225,7 +223,11 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     public void onHookLate(PluginEnableEvent e) {
         String name = e.getPlugin().getName();
         if (this.hookMythicMobs == null && name.equalsIgnoreCase(Hooks.MYTHIC_MOBS)) {
-            this.hookMythicMobs = this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHK.class);
+            try {
+                this.hookMythicMobs = this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHK.class);
+            } catch (Exception ex) {
+                this.hookMythicMobs = this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHKv5.class);
+            }
             return;
         }
         if (this.hookWorldGuard == null && name.equalsIgnoreCase(Hooks.WORLD_GUARD)) {
