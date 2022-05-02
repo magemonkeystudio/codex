@@ -40,28 +40,28 @@ import java.util.Set;
 
 public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
-    private static       NexEngine                 instance;
     private static final Hashtable<String, Config> configs = new Hashtable<>();
-    NMS nms;
-    PluginManager pluginManager;
-    PacketManager packetManager;
+    private static       NexEngine                 instance;
+    private final        Set<NexPlugin<?>>         plugins;
+    NMS            nms;
+    PluginManager  pluginManager;
+    PacketManager  packetManager;
     ActionsManager actionsManager;
-    CraftManager craftManager;
-    VaultHK hookVault;
-    CitizensHK hookCitizens;
-    WorldGuardHK hookWorldGuard;
-    IMythicHook  hookMythicMobs;
-    private CoreConfig cfg;
-    private       CoreLang          lang;
-    private final Set<NexPlugin<?>> plugins;
-    private       HookManager       hookManager;
+    CraftManager   craftManager;
+    VaultHK        hookVault;
+    CitizensHK     hookCitizens;
+    WorldGuardHK   hookWorldGuard;
+    IMythicHook    hookMythicMobs;
+    private CoreConfig  cfg;
+    private CoreLang    lang;
+    private HookManager hookManager;
 
     private boolean chatEnabled;
-    private String commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
+    private String  commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
     @Getter
     private boolean scoreboardsEnabled;
 
-    private CycleTask cTask;
+    private CycleTask  cTask;
     private UpdateTask uTask;
 
     public NexEngine() {
@@ -105,7 +105,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
         this.info("You are running MC version " + current);
         if (current == null) return false;
 
-        String pack = NMS.class.getPackage().getName();
+        String   pack  = NMS.class.getPackage().getName();
         Class<?> clazz = Reflex.getClass(pack, current.name());
         if (clazz == null) return false;
 
@@ -155,16 +155,6 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     }
 
     @Override
-    public void registerHooks() {
-        this.hookVault = this.registerHook(Hooks.VAULT, VaultHK.class);
-    }
-
-    @Override
-    public void registerCmds(@NotNull IGeneralCommand<NexEngine> mainCommand) {
-        mainCommand.addSubCommand(new Base64Command(this));
-    }
-
-    @Override
     public void setConfig() {
         this.cfg = new CoreConfig(this);
         this.cfg.setup();
@@ -186,6 +176,23 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
         this.lang = new CoreLang(this);
         this.lang.setup();
+    }
+
+    @Override
+    public void registerHooks() {
+        try {
+            this.hookVault = this.registerHook(Hooks.VAULT, VaultHK.class);
+        } catch (Exception e) {}
+    }
+
+    @Override
+    public void registerCmds(@NotNull IGeneralCommand<NexEngine> mainCommand) {
+        mainCommand.addSubCommand(new Base64Command(this));
+    }
+
+    @Override
+    public void registerEditor() {
+
     }
 
     @Override
@@ -214,30 +221,32 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
         return this.plugins;
     }
 
-    @Override
-    public void registerEditor() {
-
-    }
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void onHookLate(PluginEnableEvent e) {
         String name = e.getPlugin().getName();
-        if (this.hookMythicMobs == null && name.equalsIgnoreCase(Hooks.MYTHIC_MOBS)) {
-            try {
-                this.hookMythicMobs = this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHK.class);
-            } catch (Exception ex) {
-                this.hookMythicMobs = this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHKv5.class);
+        try {
+            if (this.hookMythicMobs == null && name.equalsIgnoreCase(Hooks.MYTHIC_MOBS)) {
+                boolean mythic4 = true;
+                try {
+                    Class.forName("io.lumine.xikage.mythicmobs.MythicMobs");
+                } catch (ClassNotFoundException classNotFoundException) {
+                    mythic4 = false;
+                }
+
+                this.hookMythicMobs = mythic4
+                        ? this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHK.class)
+                        : this.registerHook(Hooks.MYTHIC_MOBS, MythicMobsHKv5.class);
+                return;
             }
-            return;
-        }
-        if (this.hookWorldGuard == null && name.equalsIgnoreCase(Hooks.WORLD_GUARD)) {
-            this.hookWorldGuard = this.registerHook(Hooks.WORLD_GUARD, WorldGuardHK.class);
-            return;
-        }
-        if (this.hookCitizens == null && name.equalsIgnoreCase(Hooks.CITIZENS)) {
-            this.hookCitizens = this.registerHook(Hooks.CITIZENS, CitizensHK.class);
-            return;
-        }
+            if (this.hookWorldGuard == null && name.equalsIgnoreCase(Hooks.WORLD_GUARD)) {
+                this.hookWorldGuard = this.registerHook(Hooks.WORLD_GUARD, WorldGuardHK.class);
+                return;
+            }
+            if (this.hookCitizens == null && name.equalsIgnoreCase(Hooks.CITIZENS)) {
+                this.hookCitizens = this.registerHook(Hooks.CITIZENS, CitizensHK.class);
+                return;
+            }
+        } catch (Exception ex) {}
     }
 
     /**

@@ -1,5 +1,6 @@
 package mc.promcteam.engine.hooks;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -36,7 +37,7 @@ public class HookManager extends IManager<NexEngine> {
 	}
 	
 	@Nullable
-	public <T extends NHook<?>> T register(@NotNull NexPlugin<?> holder, @NotNull String pluginName, @NotNull Class<T> clazz) {
+	public <T extends NHook<?>> T register(@NotNull NexPlugin<?> holder, @NotNull String pluginName, @NotNull Class<T> clazz) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
 		if (!Hooks.hasPlugin(pluginName)) return null;
 		
 		T hook;

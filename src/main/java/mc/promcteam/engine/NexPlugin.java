@@ -1,5 +1,6 @@
 package mc.promcteam.engine;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -137,7 +138,7 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
 	}
 	
 	@Nullable
-	public final <T extends NHook<P>> T registerHook(@NotNull String pluginName, @NotNull Class<T> clazz) {
+	public final <T extends NHook<P>> T registerHook(@NotNull String pluginName, @NotNull Class<T> clazz) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
 		return this.getHooks().register(this, pluginName, clazz);
 	}
 	
