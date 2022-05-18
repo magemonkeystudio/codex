@@ -15,9 +15,9 @@ import java.util.*;
  */
 public class ClickText {
 
-    private final String           text;
-    private       ComponentBuilder builder;
+    private final String                 text;
     private final Map<String, ClickWord> replacers;
+    private       ComponentBuilder       builder;
 
     public ClickText(@NotNull String text) {
         this.text = StringUT.color(text);
@@ -50,23 +50,37 @@ public class ClickText {
             return this.builder.create();
         }
 
-        String[] words = line.split(" ");
-        for (String word : words) {
+        List<String> pieces = new LinkedList<>(Arrays.asList(line));
+        for (String s : this.replacers.keySet()) {
+            List<String> tmp = new LinkedList<>();
+            for (String piece : pieces) {
+                if (!piece.contains(s)) {
+                    tmp.add(piece);
+                    continue;
+                }
 
+                String[] split = piece.split(s);
+                for (int i = 0; i < split.length; i++) {
+                    tmp.add(split[i]);
+                    if (piece.endsWith(s) || i < split.length - 1)
+                        tmp.add(s);
+                }
+            }
+
+            pieces = new ArrayList<>(tmp);
+        }
+
+        for (String word : pieces) {
             // Get text Json data if it present.
             Optional<String> optWord = this.replacers.keySet().stream()
                     .filter(holder -> word.contains(holder)).findFirst();
             ClickWord clickWord = optWord.isPresent() ? this.replacers.get(optWord.get()) : null;
 
             if (clickWord != null) {
-                this.builder.append(clickWord.build());
+                this.builder.append(clickWord.build(), ComponentBuilder.FormatRetention.NONE);
+            } else {
+                this.builder.append(TextComponent.fromLegacyText(word), ComponentBuilder.FormatRetention.NONE);
             }
-            // FIXME: Saves bold, underline, etc. formatting for the next words even with &r.
-            // Probably needs to be reworked for 1.16+
-            else {
-                this.builder.append(TextComponent.fromLegacyText(word), ComponentBuilder.FormatRetention.FORMATTING);
-            }
-            this.builder.append(TextComponent.fromLegacyText(" "), ComponentBuilder.FormatRetention.FORMATTING);
         }
         return this.builder.create();
     }
@@ -90,9 +104,9 @@ public class ClickText {
 
     public class ClickWord {
 
-        public  HoverEvent hover;
-        public        ClickEvent click;
         private final String     text;
+        public        HoverEvent hover;
+        public        ClickEvent click;
 
         public ClickWord(@NotNull String text) {
             this.text = StringUT.color(text);
@@ -222,8 +236,8 @@ public class ClickText {
             String json = ItemUT.toJson(item);
             if (json != null)
                 return TextComponent.fromLegacyText(json);
-			else
-				return new BaseComponent[0];
+            else
+                return new BaseComponent[0];
         }
     }
 }
