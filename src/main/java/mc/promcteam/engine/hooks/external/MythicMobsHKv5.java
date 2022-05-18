@@ -136,11 +136,16 @@ public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
     @Override
     public void taunt(LivingEntity target, LivingEntity source, double amount) {
         AbstractEntity abs = BukkitAdapter.adapt(source);
-        if (amount > 0) {
-            getActiveMythicInstance(target).getThreatTable().threatGain(abs, amount);
-        } else if (amount < 0) {
-            getActiveMythicInstance(target).getThreatTable().threatLoss(abs, -amount);
+        ActiveMob      mob = getActiveMythicInstance(target);
+        if (!mob.hasThreatTable()) {
+            if (amount > 0) mob.setTarget(abs);
+            else if (amount < 0) mob.getNewTarget();
+            return;
         }
+
+        ActiveMob.ThreatTable table = mob.getThreatTable();
+        if (amount > 0) table.threatGain(abs, amount);
+        else if (amount < 0) table.threatLoss(abs, -amount);
     }
 
     public ActiveMob getActiveMythicInstance(@NotNull Entity e) {
