@@ -174,7 +174,6 @@ public class Reflection_1_17 extends ReflectionUtil {
                 Class<?> blockData = getClazz("net.minecraft.world.level.block.state.IBlockData");
                 Object   data      = blockData.cast(Reflex.invokeMethod(getType, world, position));
 
-                net.minecraft.world.level.World w = null;
                 Method getBlock = Reflex.getMethod(blockData,
                         ReflectionUtil.MINOR_VERSION == 17 ? "getBlock" : "b");
 
