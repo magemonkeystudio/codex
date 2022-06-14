@@ -57,6 +57,7 @@ public abstract class Board {
     private static  Object      sidebarCriteria;
     private static  Class<?>    enumScoreboard;
     private static  Constructor chatCtor;
+    private static  Method      chatMethod;
     protected final String      plugin;
     private final   String      title;
     private final   Scoreboard  scoreboard;
@@ -89,7 +90,9 @@ public abstract class Board {
             try {
                 if (ReflectionUtil.MINOR_VERSION >= 17) {
                     objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria,
-                            Reflex.invokeConstructor(chatCtor, title),
+                            ReflectionUtil.MINOR_VERSION >= 19 || (chatCtor == null && chatMethod != null)
+                                    ? Reflex.invokeMethod(chatMethod, null, title)
+                                    : Reflex.invokeConstructor(chatCtor, title),
                             Reflex.getEnum(enumScoreboard, "HEARTS"));
                 } else
                     objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria);
@@ -126,10 +129,17 @@ public abstract class Board {
             Class<?> baseComp = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.chat.IChatBaseComponent")
                     : Class.forName(pkg + "IChatBaseComponent");
-            Class<?> chatComp = ReflectionUtil.MINOR_VERSION >= 17
-                    ? Class.forName("net.minecraft.network.chat.ChatComponentText")
-                    : Class.forName(pkg + "ChatComponentText");
-            chatCtor = Reflex.getConstructor(chatComp, String.class);
+            if (ReflectionUtil.MINOR_VERSION >= 19)
+                chatMethod = Reflex.getMethod(baseComp, "b", String.class);
+            else {
+                Class<?> chatComp;
+                if (ReflectionUtil.MINOR_VERSION >= 17)
+                    chatComp = Class.forName("net.minecraft.network.chat.ChatComponentText");
+                else
+                    chatComp = Class.forName(pkg + "ChatComponentText");
+                chatCtor = Reflex.getConstructor(chatComp, String.class);
+            }
+
             enumScoreboard = ReflectionUtil.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
                     : Class.forName(pkg + "IScoreboardCriteria");
