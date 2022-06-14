@@ -69,9 +69,10 @@ public class Reflection_1_17 extends ReflectionUtil {
 
     public static Object getEntity(Object craftEntity) {
         try {
-            Class<?> craftClass = getClazz("net.minecraft.world.entity.Entity");
+            Class<?> craftClass       = getClazz("net.minecraft.world.entity.Entity");
+            Class<?> craftEntityClass = getCraftClass("org.bukkit.entity.Entity");
 
-            Method getHandle = Reflex.getMethod(craftClass, "getHandle");
+            Method getHandle = Reflex.getMethod(craftEntityClass, "getHandle");
 
             return craftClass.cast(getHandle.invoke(craftEntity));
         } catch (Exception e) {
@@ -83,9 +84,10 @@ public class Reflection_1_17 extends ReflectionUtil {
 
     public static Channel getChannel(Player p) {
         try {
-            Object  conn    = getConnection(p);
-            Object  manager = Reflex.getFieldValue(conn, "a");
-            String  field   = Version.CURRENT == Version.V1_18_R2 ? "m" : "k";
+            Object conn = getConnection(p);
+            Object manager = Reflex.getFieldValue(conn,
+                    Version.CURRENT == Version.V1_19_R1 ? "b" : "a");
+            String  field   = Version.CURRENT.isHigher(Version.V1_18_R1) ? "m" : "k";
             Channel channel = (Channel) Reflex.getFieldValue(manager, field);
 
             return channel;
@@ -169,7 +171,7 @@ public class Reflection_1_17 extends ReflectionUtil {
                 Object      position = Reflex.invokeConstructor(ctor, lo.getX(), lo.getY(), lo.getZ());
 
                 Method getType = Reflex.getMethod(world.getClass(),
-                        ReflectionUtil.MINOR_VERSION == 17 ? "getType" : "_a",
+                        ReflectionUtil.MINOR_VERSION == 17 ? "getType" : "a_",
                         blockPosClass);
                 Class<?> blockData = getClazz("net.minecraft.world.level.block.state.IBlockData");
                 Object   data      = blockData.cast(Reflex.invokeMethod(getType, world, position));
@@ -201,13 +203,14 @@ public class Reflection_1_17 extends ReflectionUtil {
             Method add = Reflex.getMethod(AbstractList.class, "add", Object.class);
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
-            Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-            Method   a               = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
+            Class<?> compressedClass = ReflectionUtil.MINOR_VERSION >= 17
+                    ? getClazz("net.minecraft.nbt.NBTCompressedStreamTools")
+                    : getNMSClass("NBTCompressedStreamTools");
+            Method a = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 
             String str = new BigInteger(1, outputStream.toByteArray()).toString(32);
-
 
             return str;
         } catch (Exception e) {
@@ -223,8 +226,10 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Object nbtTagCompoundRoot;
             try {
-                Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-                Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
+                Class<?> compressedClass = ReflectionUtil.MINOR_VERSION >= 17
+                        ? getClazz("net.minecraft.nbt.NBTCompressedStreamTools")
+                        : getNMSClass("NBTCompressedStreamTools");
+                Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
                 nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
             } catch (ClassNotFoundException e) {
@@ -232,8 +237,13 @@ public class Reflection_1_17 extends ReflectionUtil {
                 return null;
             }
 
-            Class<?> nmsItemClass = getClazz("net.minecraft.world.item.ItemStack");
-            Method   a            = Reflex.getMethod(nmsItemClass, "a", getClazz("net.minecraft.nbt.NBTTagCompound"));
+            Class<?> nmsItemClass = ReflectionUtil.MINOR_VERSION >= 17
+                    ? getClazz("net.minecraft.world.item.ItemStack")
+                    : getNMSClass("ItemStack");
+            Class<?> compoundClass = ReflectionUtil.MINOR_VERSION >= 17
+                    ? getClazz("net.minecraft.nbt.NBTTagCompound")
+                    : getNMSClass("NBTTagCompound");
+            Method a = Reflex.getMethod(nmsItemClass, "a", compoundClass);
 
             Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
 
@@ -256,11 +266,29 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Object nmsPlayer = player != null ? getEntity(getCraftPlayer(player)) : null;
 
-            Method isDamaged = Reflex.getMethod(nmsStack.getClass(),
-                    ReflectionUtil.MINOR_VERSION == 17 ? "isDamaged" : "a",
-                    int.class, Random.class, getClazz("net.minecraft.server.level.EntityPlayer"));
+            if (ReflectionUtil.MINOR_VERSION == 19) {
+                Class<?> randSourceClass = getClazz("net.minecraft.util.RandomSource");
+                Method isDamaged = Reflex.getMethod(
+                        nmsStack.getClass(),
+                        "a",
+                        int.class,
+                        randSourceClass,
+                        getClazz("net.minecraft.server.level.EntityPlayer")
+                );
 
-            Reflex.invokeMethod(isDamaged, nmsStack, amount, Rnd.rnd, nmsPlayer);
+                Object randSource = Reflex.invokeMethod(Reflex.getMethod(randSourceClass, "c"), null);
+                Reflex.invokeMethod(isDamaged, nmsStack, amount, randSource, nmsPlayer);
+            } else {
+                Method isDamaged = Reflex.getMethod(
+                        nmsStack.getClass(),
+                        ReflectionUtil.MINOR_VERSION == 17 ? "isDamaged" : "a",
+                        int.class,
+                        Random.class,
+                        getClazz("net.minecraft.server.level.EntityPlayer")
+                );
+
+                Reflex.invokeMethod(isDamaged, nmsStack, amount, Rnd.rnd, nmsPlayer);
+            }
 
             return toBukkitCopy(nmsStack);
         } catch (Exception e) {
@@ -280,14 +308,22 @@ public class Reflection_1_17 extends ReflectionUtil {
 
 
             Class<Enum> enumItemSlotClass = (Class<Enum>) getClazz("net.minecraft.world.entity.EnumItemSlot");
-            Class<?>    itemArmorClass    = getClazz("net.minecraft.world.item.ItemArmor");
-            Class<?>    itemToolClass     = getClazz("net.minecraft.world.item.ItemTool");
-            Class<?>    itemSwordClass    = getClazz("net.minecraft.world.item.ItemSword");
-            Class<?>    itemTridentClass  = getClazz("net.minecraft.world.item.ItemTrident");
+            Class<?> itemArmorClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemArmor")
+                    : getClazz("net.minecraft.world.item.ItemArmor");
+            Class<?> itemToolClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemTool")
+                    : getClazz("net.minecraft.world.item.ItemTool");
+            Class<?> itemSwordClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemSword")
+                    : getClazz("net.minecraft.world.item.ItemSword");
+            Class<?> itemTridentClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemTrident")
+                    : getClazz("net.minecraft.world.item.ItemTrident");
 
             Enum mainhand = (Enum) Reflex.invokeMethod(
                     Reflex.getMethod(enumItemSlotClass,
-                            ReflectionUtil.MINOR_VERSION == 17 ? "fromName" : "a",
+                            ReflectionUtil.MINOR_VERSION <= 17 ? "fromName" : "a",
                             String.class),
                     null, "mainhand");
 
@@ -297,22 +333,25 @@ public class Reflection_1_17 extends ReflectionUtil {
                 Object bObj = Reflex.invokeMethod(b, tool);
                 Method a    = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
 
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, bObj);
-            } else if (itemToolClass.isInstance(item)) {
-                Object tool = itemToolClass.cast(item);
-                Method a    = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
-            } else if (itemSwordClass.isInstance(item)) {
-                Object tool = itemSwordClass.cast(item);
-                Method a    = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
-            } else if (itemTridentClass.isInstance(item)) {
-                Object tool = itemTridentClass.cast(item);
-                Method a    = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
+                return (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, bObj);
             }
 
-            return attMap;
+            Object tool;
+            Method a;
+            if (itemToolClass.isInstance(item)) {
+                tool = itemToolClass.cast(item);
+                a = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
+            } else if (itemSwordClass.isInstance(item)) {
+                tool = itemSwordClass.cast(item);
+                a = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
+            } else if (itemTridentClass.isInstance(item)) {
+                tool = itemTridentClass.cast(item);
+                a = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
+            } else {
+                return null;
+            }
+
+            return (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -381,9 +420,15 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> swordClass   = getClazz("net.minecraft.world.item.ItemSword");
-            Class<?> axeClass     = getClazz("net.minecraft.world.item.ItemAxe");
-            Class<?> tridentClass = getClazz("net.minecraft.world.item.ItemTrident");
+            Class<?> swordClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemSword")
+                    : getClazz("net.minecraft.world.item.ItemSword");
+            Class<?> axeClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemAxe")
+                    : getClazz("net.minecraft.world.item.ItemAxe");
+            Class<?> tridentClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemTrident")
+                    : getClazz("net.minecraft.world.item.ItemTrident");
 
             return swordClass.isInstance(item) || axeClass.isInstance(item) || tridentClass.isInstance(item);
         } catch (Exception e) {
@@ -400,7 +445,9 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> toolClass = getClazz("net.minecraft.world.item.ItemTool");
+            Class<?> toolClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemTool")
+                    : getClazz("net.minecraft.world.item.ItemTool");
 
             return toolClass.isInstance(item);
         } catch (Exception e) {
@@ -417,7 +464,9 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> armorClass = getClazz("net.minecraft.world.item.ItemArmor");
+            Class<?> armorClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("ItemArmor")
+                    : getClazz("net.minecraft.world.item.ItemArmor");
 
             return armorClass.isInstance(item);
         } catch (Exception e) {
@@ -430,8 +479,10 @@ public class Reflection_1_17 extends ReflectionUtil {
         try {
             str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
 
-            Class<?> baseComponentClass = getClazz("net.minecraft.network.chat.IChatBaseComponent");
-            Class<?> chatMessageClass   = getCraftClass("util.CraftChatMessage");
+            Class<?> baseComponentClass = ReflectionUtil.MINOR_VERSION < 17
+                    ? getNMSClass("IChatBaseComponent")
+                    : getClazz("net.minecraft.network.chat.IChatBaseComponent");
+            Class<?> chatMessageClass = getCraftClass("util.CraftChatMessage");
 
             Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
             Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromStringOrNull", String.class);

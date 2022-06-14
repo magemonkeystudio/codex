@@ -18,11 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
-import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;
@@ -288,70 +285,11 @@ public class ReflectionUtil {
     }
 
     public static String toBase64(@NotNull ItemStack item) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.toBase64(item);
-
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            DataOutputStream      dataOutput   = new DataOutputStream(outputStream);
-
-            Object nbtTagListItems    = newNBTTagList();
-            Object nbtTagCompoundItem = newNBTTagCompound();
-
-            Object nmsItem = getNMSCopy(item);
-
-            save(nmsItem, nbtTagCompoundItem);
-
-            Method add = Reflex.getMethod(AbstractList.class, "add", Object.class);
-            Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
-
-            Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-            Method   a               = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
-
-            Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
-
-            String str = new BigInteger(1, outputStream.toByteArray()).toString(32);
-
-
-            return str;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return Reflection_1_17.toBase64(item);
     }
 
     public static ItemStack fromBase64(@NotNull String data) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.fromBase64(data);
-
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
-
-            Object nbtTagCompoundRoot;
-            try {
-                Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-                Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
-
-                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            Class<?> nmsItemClass = getNMSClass("ItemStack");
-            Method   a            = Reflex.getMethod(nmsItemClass, "a", getNMSClass("NBTTagCompound"));
-
-            Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
-
-            Method asBukkitCopy = Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
-
-            ItemStack item = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
-
-            return item;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return Reflection_1_17.fromBase64(data);
     }
 
     public static String getNbtString(@NotNull ItemStack item) {
@@ -390,53 +328,7 @@ public class ReflectionUtil {
     }
 
     public static Multimap<Object, Object> getAttributes(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getAttributes(itemStack);
-
-        try {
-            Multimap<Object, Object> attMap  = null;
-            Object                   nmsItem = getNMSCopy(itemStack);
-            Method                   getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
-            Object                   item    = Reflex.invokeMethod(getItem, nmsItem);
-
-
-            Class<Enum> enumItemSlotClass = (Class<Enum>) getNMSClass("EnumItemSlot");
-//            Class<?> attributeModClass = getNMSClass("AttributeModifier");
-            Class<?> itemArmorClass   = getNMSClass("ItemArmor");
-            Class<?> itemToolClass    = getNMSClass("ItemTool");
-            Class<?> itemSwordClass   = getNMSClass("ItemSword");
-            Class<?> itemTridentClass = getNMSClass("ItemTrident");
-            Enum mainhand = (Enum) Reflex.invokeMethod(
-                    Reflex.getMethod(enumItemSlotClass, "fromName", String.class),
-                    null, "mainhand");
-
-
-            if (itemArmorClass.isInstance(item)) {
-                Object tool = itemArmorClass.cast(item);
-                Method b    = Reflex.getMethod(itemArmorClass, "b");
-                Object bObj = Reflex.invokeMethod(b, tool);
-                Method a    = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
-
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, bObj);
-            } else if (itemToolClass.isInstance(item)) {
-                Object tool = itemToolClass.cast(item);
-                Method a    = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
-            } else if (itemSwordClass.isInstance(item)) {
-                Object tool = itemSwordClass.cast(item);
-                Method a    = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
-            } else if (itemTridentClass.isInstance(item)) {
-                Object tool = itemTridentClass.cast(item);
-                Method a    = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
-                attMap = (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
-            }
-
-            return attMap;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return Reflection_1_17.getAttributes(itemStack);
     }
 
     public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attackDamage) {
@@ -523,84 +415,19 @@ public class ReflectionUtil {
     }
 
     public static boolean isWeapon(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.isWeapon(itemStack);
-
-        try {
-            Object nmsItem = getNMSCopy(itemStack);
-
-            Method getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
-
-            Object item = Reflex.invokeMethod(getItem, nmsItem);
-
-            Class<?> swordClass   = getNMSClass("ItemSword");
-            Class<?> axeClass     = getNMSClass("ItemAxe");
-            Class<?> tridentClass = getNMSClass("ItemTrident");
-
-            return swordClass.isInstance(item) || axeClass.isInstance(item) || tridentClass.isInstance(item);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return Reflection_1_17.isWeapon(itemStack);
     }
 
     public static boolean isTool(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.isTool(itemStack);
-
-        try {
-            Object nmsItem = getNMSCopy(itemStack);
-
-            Method getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
-
-            Object item = Reflex.invokeMethod(getItem, nmsItem);
-
-            Class<?> toolClass = getNMSClass("ItemTool");
-
-            return toolClass.isInstance(item);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return Reflection_1_17.isTool(itemStack);
     }
 
     public static boolean isArmor(@NotNull ItemStack itemStack) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.isArmor(itemStack);
-
-        try {
-            Object nmsItem = getNMSCopy(itemStack);
-
-            Method getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
-
-            Object item = Reflex.invokeMethod(getItem, nmsItem);
-
-            Class<?> armorClass = getNMSClass("ItemArmor");
-
-            return armorClass.isInstance(item);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return Reflection_1_17.isArmor(itemStack);
     }
 
     public static String fixColors(@NotNull String str) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.fixColors(str);
-
-        try {
-            str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
-
-            Class<?> baseComponentClass = getNMSClass("IChatBaseComponent");
-            Class<?> chatMessageClass   = getCraftClass("util.CraftChatMessage");
-
-            Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
-            Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromStringOrNull", String.class);
-
-            Object baseComponent = Reflex.invokeMethod(fromStringOrNull, null, str);
-            String singleColor   = (String) Reflex.invokeMethod(fromComponent, null, baseComponentClass.cast(baseComponent));
-            return singleColor.replace("%n%", "\n");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return str;
+        return Reflection_1_17.fixColors(str);
     }
 
     public static float getAttackCooldown(Player p) {

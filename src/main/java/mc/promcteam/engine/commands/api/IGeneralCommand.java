@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import mc.promcteam.engine.NexPlugin;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,8 +23,8 @@ import mc.promcteam.engine.utils.StringUT;
 
 public abstract class IGeneralCommand<P extends NexPlugin<P>> extends IAbstractCommand<P> implements CommandExecutor, TabExecutor {
 
-	private Map<String, ISubCommand<P>> subCommands;
-	private ISubCommand<P> defaultCommand;
+	private final Map<String, ISubCommand<P>> subCommands;
+	private       ISubCommand<P>              defaultCommand;
 	
 	public IGeneralCommand(@NotNull P plugin, @NotNull List<String> aliases) {
 		this(plugin, aliases.toArray(new String[aliases.size()]));

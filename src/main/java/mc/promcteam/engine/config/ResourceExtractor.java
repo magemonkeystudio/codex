@@ -9,7 +9,7 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import mc.promcteam.engine.utils.FileUT;
@@ -127,7 +127,7 @@ public final class ResourceExtractor {
                             if (subpaths) {
                                     file = new File(this.extractfolder, path.replaceFirst(this.folderpath, ""));
                             } else {
-                                    file = new File(this.extractfolder, path.substring(path.indexOf(File.separatorChar), path.length()));
+                                    file = new File(this.extractfolder, path.substring(path.indexOf(File.separatorChar)));
                             }
 
                             String name = file.getName();
