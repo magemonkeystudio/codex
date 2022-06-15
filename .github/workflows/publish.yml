@@ -30,3 +30,5 @@ jobs:
         run: mvn clean deploy -e -DskipTests
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Notify Discord
+        run: python ./.github/notify_published.py
