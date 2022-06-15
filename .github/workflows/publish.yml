@@ -1,4 +1,4 @@
-name: Build Artifacts
+name: Dev Build
 
 on:
   push:
@@ -31,4 +31,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Notify Discord
-        run: python ./.github/notify_published.py
+        run: python ./.github/notify_published.py ${{ secrets.CORE_WEBHOOK }}

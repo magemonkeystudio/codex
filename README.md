@@ -1,3 +1,5 @@
+[![Build](https://github.com/promcteam/promccore/actions/workflows/publish.yml/badge.svg?branch=dev)](https://github.com/promcteam/promccore/packages/1129377)
+
 # ProMCCore
 
 If you wish to use ProMCCore as a dependency in your projects, include the following in your `pom.xml`
@@ -11,8 +13,12 @@ If you wish to use ProMCCore as a dependency in your projects, include the follo
 <dependency>
     <groupId>mc.promcteam</groupId>
     <artifactId>promccore</artifactId>
-    <version>1.0.3.9-2530413</version>
+    <version>VERSION</version>
 </dependency>
 ```
 
+Find version numbers [here](https://github.com/promcteam/promccore/packages/1129377).
+
 Additionally, you'll need to make sure that you have properly configured [Authentication with GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages).
+
+You may also use JitPack!
