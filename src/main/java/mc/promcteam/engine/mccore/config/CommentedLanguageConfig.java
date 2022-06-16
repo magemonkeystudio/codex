@@ -36,10 +36,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -54,10 +51,10 @@ import java.util.regex.Pattern;
  */
 public class CommentedLanguageConfig extends CommentedConfig {
 
-    private static final String EXPAND_FONT_REGEX = "\\{expandFront\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
-    private static final Pattern EXPAND_FRONT = Pattern.compile(EXPAND_FONT_REGEX);
-    private static final String EXPAND_BACK_REGEX = "\\{expandBack\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
-    private static final Pattern EXPAND_BACK = Pattern.compile(EXPAND_BACK_REGEX);
+    private static final String  EXPAND_FONT_REGEX = "\\{expandFront\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
+    private static final Pattern EXPAND_FRONT      = Pattern.compile(EXPAND_FONT_REGEX);
+    private static final String  EXPAND_BACK_REGEX = "\\{expandBack\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
+    private static final Pattern EXPAND_BACK       = Pattern.compile(EXPAND_BACK_REGEX);
 
     /**
      * <p>Constructs a language config from the defaults in the file</p>
@@ -75,6 +72,21 @@ public class CommentedLanguageConfig extends CommentedConfig {
         saveDefaultConfig();
         trim();
         checkDefaults();
+    }
+
+    /**
+     * <p>Gets a message without any filters</p>
+     * <p>You can use this method instead of the sendMessage methods
+     * if you want to manipulate the string outside of the provided
+     * filters before sending the message.</p>
+     *
+     * @param key key for the language message
+     * @param def The default value to be returned if one does not exist
+     * @return unfiltered message or null if an invalid key
+     */
+    public List<String> getMessage(String key, String def) {
+        List<String> msg = getMessage(key);
+        return msg != null ? msg : Collections.singletonList(def);
     }
 
     /**
@@ -111,10 +123,10 @@ public class CommentedLanguageConfig extends CommentedConfig {
         } else if (getConfig().isList(key)) {
             lines = getConfig().getList(key);
         } else {
-            lines = new ArrayList<String>();
+            lines = new ArrayList<>();
             lines.add(getConfig().getString(key));
         }
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
 
         // Filter each line
         for (String line : lines) {
@@ -157,11 +169,11 @@ public class CommentedLanguageConfig extends CommentedConfig {
     private void filterSizer(StringBuilder sb, boolean front, boolean player) {
         Pattern regex = front ? EXPAND_FRONT : EXPAND_BACK;
         Matcher match = regex.matcher(sb);
-        int size = sb.length();
+        int     size  = sb.length();
         while (match.find()) {
-            int playerSize = Integer.parseInt(match.group(2));
-            int consoleSize = Integer.parseInt(match.group(3));
-            String string = match.group(1);
+            int    playerSize  = Integer.parseInt(match.group(2));
+            int    consoleSize = Integer.parseInt(match.group(3));
+            String string      = match.group(1);
             if (player) {
                 sb.replace(match.start() + sb.length() - size, match.end(),
                         (TextSizer.measureString(string) > playerSize - 2 ? string : TextSizer.expand(
@@ -185,7 +197,7 @@ public class CommentedLanguageConfig extends CommentedConfig {
         if (index >= 0) {
             sb.delete(index, index + 7);
             String without = sb.toString();
-            int size = TextSizer.measureString(without);
+            int    size    = TextSizer.measureString(without);
             for (int i = 0; i < (320 - size) / 6; i++) {
                 sb.insert(index, '-');
             }
