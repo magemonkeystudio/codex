@@ -49,15 +49,14 @@ public class YAMLParser {
      *
      * @param plugin plugin containing the embedded resource
      * @param path   path to the resource (not including the beginning slash)
-     *
      * @return loaded data
      */
     public static DataSection parseResource(Plugin plugin, String path) {
         try {
-            InputStream read = plugin.getClass().getResourceAsStream("/" + path);
+            InputStream   read    = plugin.getClass().getResourceAsStream("/" + path);
             StringBuilder builder = new StringBuilder();
-            byte[] data = new byte[1024];
-            int bytes;
+            byte[]        data    = new byte[1024];
+            int           bytes;
             do {
                 bytes = read.read(data);
                 builder.append(new String(data, 0, bytes, StandardCharsets.UTF_8));
@@ -79,7 +78,6 @@ public class YAMLParser {
      * will return an empty DataSection object.
      *
      * @param path path to the file load from
-     *
      * @return loaded data
      */
     public static DataSection parseFile(String path) {
@@ -92,14 +90,13 @@ public class YAMLParser {
      * will return an empty DataSection object.
      *
      * @param file the file load from
-     *
      * @return loaded data
      */
     public static DataSection parseFile(File file) {
         try {
             if (file.exists()) {
                 FileInputStream read = new FileInputStream(file);
-                byte[] data = new byte[(int) file.length()];
+                byte[]          data = new byte[(int) file.length()];
                 read.read(data);
                 read.close();
                 return parseText(new String(data, StandardCharsets.UTF_8));
@@ -116,7 +113,6 @@ public class YAMLParser {
      * is passed in, this will return an empty data section.
      *
      * @param text text to parse
-     *
      * @return parsed data
      */
     public static DataSection parseText(String text) {
@@ -129,7 +125,6 @@ public class YAMLParser {
      *
      * @param text  text to parse
      * @param quote character strings are wrapped in
-     *
      * @return parsed data
      */
     public static DataSection parseText(String text, char quote) {
@@ -146,13 +141,12 @@ public class YAMLParser {
      *
      * @param lines  lines to parse
      * @param indent current indent
-     * @param quote character strings are wrapped in
-     *
+     * @param quote  character strings are wrapped in
      * @return parsed data
      */
     private static DataSection parse(String[] lines, int indent, char quote) {
         DataSection data = new DataSection();
-        int spaces;
+        int         spaces;
         while (i < lines.length && ((spaces = countSpaces(lines[i])) >= indent || lines[i].length() == 0 || lines[i].charAt(spaces) == '#')) {
             // When the entire line is just spaces, continue
             if (lines[i].length() == spaces) {
@@ -209,8 +203,8 @@ public class YAMLParser {
             // New section with content
             else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
                 i++;
-                int newIndent = countSpaces(lines[i]);
-                DataSection node = parse(lines, newIndent, quote);
+                int         newIndent = countSpaces(lines[i]);
+                DataSection node      = parse(lines, newIndent, quote);
                 data.set(key, node);
                 continue;
             }
@@ -240,7 +234,6 @@ public class YAMLParser {
      * Counts the number of leading spaces in the string
      *
      * @param line line to count the leading spaces for
-     *
      * @return the number of leading spaces
      */
     private static int countSpaces(String line) {
@@ -265,8 +258,8 @@ public class YAMLParser {
      */
     public static void save(DataSection data, File file) {
         try {
-            FileOutputStream out = new FileOutputStream(file);
-            BufferedWriter write = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+            FileOutputStream out   = new FileOutputStream(file);
+            BufferedWriter   write = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
 
             save(data, write);
 
@@ -279,8 +272,7 @@ public class YAMLParser {
     /**
      * Dumps the data contents into the stream
      *
-     * @param write  stream to dump to
-     *
+     * @param write stream to dump to
      * @throws IOException
      */
     public static void save(DataSection data, BufferedWriter write) throws IOException {

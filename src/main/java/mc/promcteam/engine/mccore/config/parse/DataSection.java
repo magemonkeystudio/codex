@@ -37,13 +37,13 @@ import java.util.*;
 public class DataSection
 {
     // Comments attached to each node
-    private HashMap<String, List<String>> comments = new HashMap<String, List<String>>();
+    private final HashMap<String, List<String>> comments = new HashMap<>();
 
     // Values attached to each node
-    private HashMap<String, Object> data = new HashMap<String, Object>();
+    private final HashMap<String, Object> data = new HashMap<>();
 
     // All of the available keys
-    private ArrayList<String> keys = new ArrayList<String>();
+    private final ArrayList<String> keys = new ArrayList<>();
 
     /**
      * Clears all data and comments from the data section
