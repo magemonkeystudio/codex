@@ -193,8 +193,8 @@ public class Reflection_1_17 extends ReflectionUtil {
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             DataOutputStream      dataOutput   = new DataOutputStream(outputStream);
 
-            Object nbtTagListItems    = newNBTTagList();
-            Object nbtTagCompoundItem = newNBTTagCompound();
+            Object nbtTagListItems    = ReflectionUtil.newNBTTagList();
+            Object nbtTagCompoundItem = ReflectionUtil.newNBTTagCompound();
 
             Object nmsItem = getNMSCopy(item);
 
@@ -300,7 +300,6 @@ public class Reflection_1_17 extends ReflectionUtil {
 
     public static Multimap<Object, Object> getAttributes(@NotNull ItemStack itemStack) {
         try {
-            Multimap<Object, Object> attMap  = null;
             Object                   nmsItem = getNMSCopy(itemStack);
             Method getItem = Reflex.getMethod(nmsItem.getClass(),
                     ReflectionUtil.MINOR_VERSION > 17 ? "c" : "getItem");
