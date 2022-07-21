@@ -300,13 +300,17 @@ public class Reflection_1_17 extends ReflectionUtil {
 
     public static Multimap<Object, Object> getAttributes(@NotNull ItemStack itemStack) {
         try {
-            Object                   nmsItem = getNMSCopy(itemStack);
+            Object nmsItem = getNMSCopy(itemStack);
             Method getItem = Reflex.getMethod(nmsItem.getClass(),
                     ReflectionUtil.MINOR_VERSION > 17 ? "c" : "getItem");
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
 
-            Class<Enum> enumItemSlotClass = (Class<Enum>) getClazz("net.minecraft.world.entity.EnumItemSlot");
+            Class<Enum> enumItemSlotClass = (Class<Enum>) (
+                    ReflectionUtil.MINOR_VERSION < 17
+                            ? getNMSClass("EnumItemSlot")
+                            : getClazz("net.minecraft.world.entity.EnumItemSlot")
+            );
             Class<?> itemArmorClass = ReflectionUtil.MINOR_VERSION < 17
                     ? getNMSClass("ItemArmor")
                     : getClazz("net.minecraft.world.item.ItemArmor");

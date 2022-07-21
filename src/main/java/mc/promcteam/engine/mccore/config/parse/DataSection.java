@@ -135,7 +135,7 @@ public class DataSection
      */
     public void setComments(String key, List<String> comments)
     {
-        ArrayList<String> list = new ArrayList<String>(comments.size());
+        ArrayList<String> list = new ArrayList<>(comments.size());
         list.addAll(comments);
         this.comments.put(key, list);
         if (!keys.contains(key)) keys.add(key);

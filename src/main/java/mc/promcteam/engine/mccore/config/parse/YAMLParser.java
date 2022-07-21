@@ -36,10 +36,10 @@ import java.util.List;
 
 /**
  * Custom parser for YAML that preserves comments with
- * the key they preceed
+ * the key they precede
  */
 public class YAMLParser {
-    private static final ArrayList<String> comments = new ArrayList<String>();
+    private static final ArrayList<String> comments = new ArrayList<>();
     private static       int               i        = 0;
 
     /**
@@ -52,17 +52,14 @@ public class YAMLParser {
      * @return loaded data
      */
     public static DataSection parseResource(Plugin plugin, String path) {
-        try {
-            InputStream   read    = plugin.getClass().getResourceAsStream("/" + path);
+        try (InputStream read = plugin.getClass().getResourceAsStream("/" + path)) {
             StringBuilder builder = new StringBuilder();
             byte[]        data    = new byte[1024];
             int           bytes;
             do {
                 bytes = read.read(data);
                 builder.append(new String(data, 0, bytes, StandardCharsets.UTF_8));
-            }
-            while (bytes == 1024);
-            read.close();
+            } while (bytes == 1024);
             return parseText(builder.toString());
         } catch (Exception ex) {
             // Do nothing
@@ -149,7 +146,7 @@ public class YAMLParser {
         int         spaces;
         while (i < lines.length && ((spaces = countSpaces(lines[i])) >= indent || lines[i].length() == 0 || lines[i].charAt(spaces) == '#')) {
             // When the entire line is just spaces, continue
-            if (lines[i].length() == spaces) {
+            if (lines[i].trim().isEmpty()) {
                 i++;
                 continue;
             }
@@ -181,7 +178,7 @@ public class YAMLParser {
                     && lines[i + 1].charAt(indent) == '-'
                     && lines[i + 1].charAt(indent + 1) == ' '
                     && countSpaces(lines[i + 1]) == indent) {
-                ArrayList<String> stringList = new ArrayList<String>();
+                ArrayList<String> stringList = new ArrayList<>();
                 while (++i < lines.length
                         && lines[i].length() > indent
                         && lines[i].charAt(indent) == '-'
@@ -257,13 +254,10 @@ public class YAMLParser {
      * @param file file to dump to
      */
     public static void save(DataSection data, File file) {
-        try {
-            FileOutputStream out   = new FileOutputStream(file);
-            BufferedWriter   write = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+        try (FileOutputStream out = new FileOutputStream(file);
+             BufferedWriter write = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
 
             save(data, write);
-
-            write.close();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
