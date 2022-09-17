@@ -37,7 +37,7 @@ public class HookManager extends IManager<NexEngine> {
 	}
 	
 	@Nullable
-	public <T extends NHook<?>> T register(@NotNull NexPlugin<?> holder, @NotNull String pluginName, @NotNull Class<T> clazz) throws InvocationTargetException, InstantiationException, IllegalAccessException, NoSuchMethodException {
+	public <T extends NHook<?>> T register(@NotNull NexPlugin<?> holder, @NotNull String pluginName, @NotNull Class<T> clazz) {
 		if (!Hooks.hasPlugin(pluginName)) return null;
 		
 		T hook;
