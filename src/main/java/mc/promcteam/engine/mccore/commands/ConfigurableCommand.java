@@ -44,13 +44,12 @@ import java.util.Map;
 
 /**
  * <p>A command that is able to be modified via configuration</p>
- * <p/>
+ *
  * <p>To set up hierarchies of commands, simply start with your root command,
  * then create your sub commands, adding each to the root.</p>
- * <p/>
+ *
  * <p>Example:</p>
  * <code>
- * <p/>
  * // Root commands<br/>
  * ConfigurableCommand root = new ConfigurableCommand(this, "root", SenderType.ANYONE);<br/>
  * ConfigurableCommand group;<br/>
@@ -61,41 +60,41 @@ import java.util.Map;
  * &nbsp;&nbsp;&nbsp;&nbsp;group = new ConfigurableCommand(this, "group", SenderType.ANYONE, "Handles group functions")<br/>
  * );<br/>
  * group.addSubCommands(<br/>
- * &nbsp;&nbsp;&nbsp;&nbsp;new ConfigurableCommand(this, "add", SenderType.ANYONE, new AddFunction(), "Adds a member to a group", "<player>", "perm.add"),<br/>
- * &nbsp;&nbsp;&nbsp;&nbsp;new ConfigurableCommand(this, "remove", SenderType.ANYONE, new RemoveFunction(), "Removes a member from a group", "<player>", "perm.remove")<br/>
+ * &nbsp;&nbsp;&nbsp;&nbsp;new ConfigurableCommand(this, "add", SenderType.ANYONE, new AddFunction(), "Adds a member to a group", "&lt;player&gt;", "perm.add"),<br/>
+ * &nbsp;&nbsp;&nbsp;&nbsp;new ConfigurableCommand(this, "remove", SenderType.ANYONE, new RemoveFunction(), "Removes a member from a group", "&lt;player&gt;", "perm.remove")<br/>
  * );<br/>
  * <br/>
  * // Register everything<br/>
  * CommandManager.registerCommand(root);
- * <p/>
+ *
  * </code>
  */
 public class ConfigurableCommand extends Command {
-    private static final String SENDER_KEY = "sender";
-    private static final String ENABLED_KEY = "enabled";
+    private static final String SENDER_KEY      = "sender";
+    private static final String ENABLED_KEY     = "enabled";
     private static final String DESCRIPTION_KEY = "description";
-    private static final String PERMISSION_KEY = "permission";
-    private static final String NAME_KEY = "name";
-    private static final String ARGS_KEY = "args";
-    private static final String MESSAGES_KEY = "messages";
-    private static final String COOLDOWN_KEY = "cooldown";
+    private static final String PERMISSION_KEY  = "permission";
+    private static final String NAME_KEY        = "name";
+    private static final String ARGS_KEY        = "args";
+    private static final String MESSAGES_KEY    = "messages";
+    private static final String COOLDOWN_KEY    = "cooldown";
 
     private HashMap<String, ConfigurableCommand> subCommands = new HashMap<String, ConfigurableCommand>();
-    private HashMap<String, String> messages = new HashMap<String, String>();
+    private HashMap<String, String>              messages    = new HashMap<String, String>();
 
-    private JavaPlugin plugin;
+    private JavaPlugin          plugin;
     private ConfigurableCommand parent;
-    private IFunction function;
-    private SenderType senderType;
-    private String description;
-    private String permission;
-    private String name;
-    private String args;
-    private String key;
-    private boolean registered;
-    private boolean enabled;
-    private int cooldown;
-    private long timer;
+    private IFunction           function;
+    private SenderType          senderType;
+    private String              description;
+    private String              permission;
+    private String              name;
+    private String              args;
+    private String              key;
+    private boolean             registered;
+    private boolean             enabled;
+    private int                 cooldown;
+    private long                timer;
 
     /**************************************************************************
      Constructors
@@ -104,10 +103,10 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Creates a new command that can only hold other commands
      * and displays a command usage for sub commands when executed.</p>
-     * <p/>
+     *
      * <p>The key is used to tell commands apart and is also the default
      * name of the command.</p>
-     * <p/>
+     *
      * <p>The command created by this has no default description.
      * It must be set via the configuration.</p>
      *
@@ -122,7 +121,7 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Creates a new command that can only hold other commands
      * and displays a command usage for sub commands when executed.</p>
-     * <p/>
+     *
      * <p>The key is used to tell commands apart and is also the default
      * name of the command.</p>
      *
@@ -138,10 +137,10 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Creates a new command that performs its own action when run but
      * cannot have sub commands.</p>
-     * <p/>
+     *
      * <p>The key is used to tell commands apart and is also the default
      * name of the command.</p>
-     * <p/>
+     *
      * <p>The command created by this has no default description, arguments,
      * or required permission. They must be set via the configuration.</p>
      *
@@ -157,10 +156,10 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Creates a new command that performs its own action when run but
      * cannot have sub commands.</p>
-     * <p/>
+     *
      * <p>The key is used to tell commands apart and is also the default
      * name of the command.</p>
-     * <p/>
+     *
      * <p>The command created by this has no default arguments or required
      * permission. They must be set via the configuration.</p>
      *
@@ -177,10 +176,10 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Creates a new command that performs its own action when run but
      * cannot have sub commands.</p>
-     * <p/>
+     *
      * <p>The key is used to tell commands apart and is also the default
      * name of the command.</p>
-     * <p/>
+     *
      * <p>The command created by this has no default required permission. It
      * must be set via the configuration.</p>
      *
@@ -198,7 +197,7 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Creates a new command that performs its own action when run but
      * cannot have sub commands.</p>
-     * <p/>
+     *
      * <p>The key is used to tell commands apart and is also the default
      * name of the command.</p>
      *
@@ -257,7 +256,6 @@ public class ConfigurableCommand extends Command {
      * <p>This is not case-sensitive</p>
      *
      * @param name sub command name
-     *
      * @return true if has the sub command, false otherwise
      */
     public boolean hasSubCommand(String name) {
@@ -268,7 +266,6 @@ public class ConfigurableCommand extends Command {
      * <p>Checks whether or not the sender can use this command</p>
      *
      * @param sender sender of the command
-     *
      * @return true if can use, false otherwise
      */
     public boolean canUseCommand(CommandSender sender) {
@@ -349,7 +346,6 @@ public class ConfigurableCommand extends Command {
      * <p>Retrieves the list of commands that are usable by the sender</p>
      *
      * @param sender sender of the command
-     *
      * @return list of usable commands
      */
     public List<String> getUsableCommands(CommandSender sender) {
@@ -368,7 +364,6 @@ public class ConfigurableCommand extends Command {
      * this will return null instead</p>
      *
      * @param name sub command name
-     *
      * @return sub command or null if not found
      */
     public ConfigurableCommand getSubCommand(String name) {
@@ -439,7 +434,6 @@ public class ConfigurableCommand extends Command {
      * <p>You cannot register a command if this command is attached to a function</p>
      *
      * @param command sub command to add
-     *
      * @throws IllegalStateException    when unable to add sub commands
      * @throws IllegalArgumentException when the command is registered
      */
@@ -459,7 +453,6 @@ public class ConfigurableCommand extends Command {
      * <p>You cannot register a command if this command is attached to a function</p>
      *
      * @param commands sub commands to add
-     *
      * @throws IllegalStateException    when unable to add sub commands
      * @throws IllegalArgumentException when the command is registered
      */
@@ -476,7 +469,6 @@ public class ConfigurableCommand extends Command {
      * @param sender sender of the command
      * @param label  label of the command
      * @param args   arguments provided by the sender
-     *
      * @return true
      */
     @Override
@@ -501,7 +493,7 @@ public class ConfigurableCommand extends Command {
         // Check for a cooldown
         if (cooldown > 0 && System.currentTimeMillis() - timer < cooldown * 1000) {
             String message = TextFormatter.colorString(NexEngine.getPlugin(NexEngine.class).getCommandMessage());
-            int time = cooldown - (int) (System.currentTimeMillis() - timer + 999) / 1000;
+            int    time    = cooldown - (int) (System.currentTimeMillis() - timer + 999) / 1000;
             message = message.replace("{time}", "" + time);
             sender.sendMessage(message);
 
@@ -587,13 +579,12 @@ public class ConfigurableCommand extends Command {
      * @param key            the message key
      * @param defaultMessage the message to use if not set
      * @param filters        filters to use on the message
-     *
      * @return the message from the config or default message if not set
      */
     public String getMessage(String key, String defaultMessage, CustomFilter... filters) {
         // Get the configuration for this command
         CommentedConfig pluginConfig = CommandManager.getConfig(plugin);
-        DataSection main = pluginConfig.getConfig();
+        DataSection     main         = pluginConfig.getConfig();
         if (!main.has(this.key)) main.createSection(this.key);
         DataSection config = main.getSection(this.key);
 
@@ -644,8 +635,8 @@ public class ConfigurableCommand extends Command {
     private void load(String key, String description, String args, String permission) {
         // Get the configuration for this command
         CommentedConfig pluginConfig = CommandManager.getConfig(plugin);
-        DataSection main = pluginConfig.getConfig();
-        DataSection config = main.defaultSection(key);
+        DataSection     main         = pluginConfig.getConfig();
+        DataSection     config       = main.defaultSection(key);
 
         // Get the command details
         this.name = config.getString(NAME_KEY, key).toLowerCase();

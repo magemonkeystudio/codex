@@ -97,11 +97,11 @@ public class TextSizer {
         if (message == null)
             throw new IllegalArgumentException("Invalid string - null");
 
-        byte boldBonus = 0;
-        boolean skip = false;
+        byte    boldBonus = 0;
+        boolean skip      = false;
 
         int index = 0;
-        int size = 0;
+        int size  = 0;
         for (char c : message.toCharArray()) {
             if (skip) {
                 skip = false;
@@ -298,7 +298,7 @@ public class TextSizer {
      * <p>Splits the list of messages into a number of columns equal to the number of
      * alignments provided. Columns from left to right will have the provided alignments
      * in order. The returned list contains the rows resulting from the arrangement.</p>
-     * <p/>
+     *
      * <p>The vertical parameter refers to what order the messages are added to columns.
      * If true, then messages will appear in the following pattern assuming 3 columns
      * and 8 elements:</p>
@@ -311,13 +311,13 @@ public class TextSizer {
      * <p>6 7</p>
      *
      * @param messages   messages to split into columns
-     * @param vertical   whether or not to apply messages vertically
+     * @param vertical   whether to apply messages vertically
      * @param alignments the alignments for each column
      * @return the arranged message rows
      */
     public static List<String> split(List<String> messages, boolean vertical, TextAlignment... alignments) {
         int columnCount = alignments.length;
-        int rowCount = (messages.size() + columnCount - 1) / columnCount;
+        int rowCount    = (messages.size() + columnCount - 1) / columnCount;
 
         // Initialize rows
         String[] rows = new String[rowCount];
@@ -370,8 +370,8 @@ public class TextSizer {
             if (current.length() == 0) {
                 while (measureString(pieces[i]) <= maxSize) {
                     char[] chars = pieces[i].toCharArray();
-                    String temp = "";
-                    int index = 0;
+                    String temp  = "";
+                    int    index = 0;
                     while (measureString(temp) <= maxSize) {
                         temp += chars[index++];
                     }
@@ -402,9 +402,9 @@ public class TextSizer {
      * @return maximum size string line
      */
     public static String createLine(String begin, String end, String fill) {
-        int startingSize = measureString(begin) + measureString(end);
-        int fillCount = (320 - startingSize) / measureString(fill);
-        StringBuilder sb = new StringBuilder(begin);
+        int           startingSize = measureString(begin) + measureString(end);
+        int           fillCount    = (320 - startingSize) / measureString(fill);
+        StringBuilder sb           = new StringBuilder(begin);
         for (int i = 0; i < fillCount; i++) {
             sb.append(fill);
         }
@@ -422,9 +422,9 @@ public class TextSizer {
      * @return maximum size string line
      */
     public static String createLine(String begin, String end, String fill, ChatColor fillColor) {
-        int startingSize = measureString(begin) + measureString(end);
-        int fillCount = (320 - startingSize) / measureString(fill);
-        StringBuilder sb = new StringBuilder(begin);
+        int           startingSize = measureString(begin) + measureString(end);
+        int           fillCount    = (320 - startingSize) / measureString(fill);
+        StringBuilder sb           = new StringBuilder(begin);
         sb.append(fillColor);
         for (int i = 0; i < fillCount; i++) {
             sb.append(fill);
@@ -442,8 +442,8 @@ public class TextSizer {
      * @return line string
      */
     public static String createLine(String middle, String fill, ChatColor fillColor) {
-        int startingSize = measureString(middle);
-        StringBuilder sb = new StringBuilder(middle);
+        int           startingSize = measureString(middle);
+        StringBuilder sb           = new StringBuilder(middle);
         sb.insert(0, ChatColor.RESET);
         sb.append(fillColor);
         int fillCount = (320 - startingSize) / measureString(fill);

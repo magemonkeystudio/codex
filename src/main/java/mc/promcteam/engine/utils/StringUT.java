@@ -32,7 +32,7 @@ public class StringUT {
     }
 
     /**
-     * Removes multiple color codes that are 'color of color'. Example: '&a&b&cText' -> '&cText'.
+     * Removes multiple color codes that are 'color of color'. Example: '&amp;a&amp;b&amp;cText' -> '&amp;cText'.
      *
      * @param str String to fix.
      * @return A string with a proper color codes formatting.

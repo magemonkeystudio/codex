@@ -35,22 +35,22 @@ import java.lang.reflect.Method;
 /**
  * A specific MapImage used to represent a full map canvas
  * and draw to it as efficiently as possible.
- * <p/>
+ * <p>
  * Just as a comparison between render methods:
  * - Built in MapCanvas.drawImage: ~40ms for 128x128 image
  * - Slow MapBuffer method: ~ 0.08ms for 128x128 image
  * - Fast MapBuffer method: ~ 0.001ms for 128x128 image
- * <p/>
+ * <p>
  * In other words:
  * - Slow MapBuffer method is ~500x faster than MapCanvas.drawImage
  * - Fast MapBuffer method is ~40,000x faster than MapCanvas.drawImage
  */
 public class MapBuffer extends MapImage {
-    protected final int[] bounds;
-    protected boolean dirty = true;
-    private Object worldMap;
-    private Method flagDirty;
-    private Method flagDirty2;
+    protected final int[]   bounds;
+    protected       boolean dirty = true;
+    private         Object  worldMap;
+    private         Method  flagDirty;
+    private         Method  flagDirty2;
 
     /**
      * Initializes a new MapBuffer with a size of 128x128 that

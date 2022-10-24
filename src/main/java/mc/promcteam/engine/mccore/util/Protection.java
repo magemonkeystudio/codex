@@ -43,7 +43,7 @@ import java.util.List;
 public class Protection {
 
     /**
-     * Checks whether or not an entity can be attacked by a player
+     * Checks whether an entity can be attacked by a player
      *
      * @param attacker player trying to attack
      * @param target   target of the attack
@@ -55,11 +55,11 @@ public class Protection {
     }
 
     /**
-     * Checks whether or not an entity can be attacked by a player
+     * Checks whether an entity can be attacked by a player
      *
      * @param attacker    player trying to attack
      * @param target      target of the attack
-     * @param passiveAlly whether or not passive mobs are considered allies
+     * @param passiveAlly whether passive mobs are considered allies
      *
      * @return true if the target can be attacked, false otherwise
      */
@@ -84,7 +84,11 @@ public class Protection {
                 EntityDamageEvent.DamageCause.CUSTOM,
                 1.0);
         Bukkit.getPluginManager().callEvent(event);
-        return !event.isCancelled();
+        boolean canAttack = !event.isCancelled();
+
+        event.setCancelled(true);
+
+        return canAttack;
     }
 
     /**
@@ -93,7 +97,7 @@ public class Protection {
      * @param attacker entity attacking
      * @param target   ally of the player
      *
-     * @return true if ally, false otherwise
+     * @return true if allied, false otherwise
      */
     public static boolean isAlly(LivingEntity attacker, LivingEntity target) {
         return !canAttack(attacker, target);

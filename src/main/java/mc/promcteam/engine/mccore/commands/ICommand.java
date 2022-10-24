@@ -50,7 +50,7 @@ public interface ICommand {
     public String getPermissionNode();
 
     /**
-     * @return args string (e.g. <playerName> <message>)
+     * @return args string (e.g. &lt;playerName&gt; &lt;message&gt;)
      */
     public String getArgsString();
 

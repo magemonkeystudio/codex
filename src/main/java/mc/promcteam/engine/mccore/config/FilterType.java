@@ -38,7 +38,7 @@ public enum FilterType
     NONE,
 
     /**
-     * The string will be colored using '&' followed by a valid character
+     * The string will be colored using '&amp;' followed by a valid character
      * to represent color codes.
      */
     COLOR,
@@ -60,7 +60,7 @@ public enum FilterType
      * except it places the whitespace after the text.</li>
      * <li>{break} - Fills the remaining space on the line with
      * dashes. To make it a solid line, preceed it with
-     * strike-through (&m).</li>
+     * strike-through (&amp;m).</li>
      * </ul>
      */
     SPECIAL,

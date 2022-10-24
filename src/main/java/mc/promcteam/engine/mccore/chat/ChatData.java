@@ -73,7 +73,7 @@ public class ChatData implements ISavable {
     }
 
     /**
-     * Retrieves the player's chat tag (e.g. <[Prefix] DisplayName>)
+     * Retrieves the player's chat tag (e.g. &lt;[Prefix] DisplayName&gt;)
      *
      * @return the player's chat tag
      */

@@ -29,7 +29,7 @@ public class TextFormatter {
     }
 
     /**
-     * Colors a string using & as the color indicator
+     * Colors a string using &amp; as the color indicator
      *
      * @param string string to color
      * @return colored string
@@ -51,7 +51,7 @@ public class TextFormatter {
     }
 
     /**
-     * Colors a string builder using & as the color indicator
+     * Colors a string builder using &amp; as the color indicator
      *
      * @param sb string builder to color
      */
@@ -79,7 +79,7 @@ public class TextFormatter {
     }
 
     /**
-     * Colors a list of strings using & as the color indicator
+     * Colors a list of strings using &amp; as the color indicator
      *
      * @param list string list
      * @return colored string list

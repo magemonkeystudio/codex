@@ -57,47 +57,47 @@ import java.util.List;
 public class CommandManager {
 
     private static final HashMap<String, ConfigurableCommand> commands = new HashMap<>();
-    private static final HashMap<Plugin, List<String>> plugins = new HashMap<>();
-    private static final HashMap<Plugin, CommentedConfig> configs = new HashMap<>();
+    private static final HashMap<Plugin, List<String>>        plugins  = new HashMap<>();
+    private static final HashMap<Plugin, CommentedConfig>     configs  = new HashMap<>();
 
     // Configuration keys for the usage settings
     private static final String
-            HELP_BUTTON = "Format.help-button",
-            HELP_NO_BUTTON = "Format.help-no-button",
-            PAGE = "Format.page",
-            NO_DESCRIPTION = "Format.no-description",
-            COMMAND_USAGE = "Format.command-usage",
-            NO_COMMANDS = "Format.no-commands",
-            NEXT_PAGE = "Format.next-button",
+            HELP_BUTTON     = "Format.help-button",
+            HELP_NO_BUTTON  = "Format.help-no-button",
+            PAGE            = "Format.page",
+            NO_DESCRIPTION  = "Format.no-description",
+            COMMAND_USAGE   = "Format.command-usage",
+            NO_COMMANDS     = "Format.no-commands",
+            NEXT_PAGE       = "Format.next-button",
             NEXT_PAGE_HOVER = "Format.next-button-hover",
-            PREV_PAGE = "Format.prev-button",
+            PREV_PAGE       = "Format.prev-button",
             PREV_PAGE_HOVER = "Format.prev-button-hover",
-            COMMAND = "Colors.command",
-            REQUIRED = "Colors.required-args",
-            OPTIONAL = "Colors.optional-args",
-            DESCRIPTION = "Colors.description",
-            PLAYER_SIZE = "player-help-size",
-            CONSOLE_SIZE = "console-help-size";
+            COMMAND         = "Colors.command",
+            REQUIRED        = "Colors.required-args",
+            OPTIONAL        = "Colors.optional-args",
+            DESCRIPTION     = "Colors.description",
+            PLAYER_SIZE     = "player-help-size",
+            CONSOLE_SIZE    = "console-help-size";
 
     // Settings for usage sizes
     private static int
-            playerSize = 10,
+            playerSize  = 10,
             consoleSize = 15;
 
     // Settings for usage display colors
     private static ChatColor
-            command = ChatColor.GOLD,
+            command      = ChatColor.GOLD,
             requiredArgs = ChatColor.LIGHT_PURPLE,
             optionalArgs = ChatColor.GREEN,
-            description = ChatColor.GRAY;
+            description  = ChatColor.GRAY;
 
     // Settings for usage display formatting
     private static String
-            pageFormat = ChatColor.DARK_GREEN + "(" + ChatColor.GOLD + "{page}" + ChatColor.DARK_GREEN + "/" + ChatColor.GOLD + "{max}" + ChatColor.DARK_GREEN + ")",
+            pageFormat    = ChatColor.DARK_GREEN + "(" + ChatColor.GOLD + "{page}" + ChatColor.DARK_GREEN + "/" + ChatColor.GOLD + "{max}" + ChatColor.DARK_GREEN + ")",
             noDescription = "No description available",
-            noCommands = ChatColor.GRAY + "No commands available",
-            nextPage = "Next",
-            prevPage = "Previous",
+            noCommands    = ChatColor.GRAY + "No commands available",
+            nextPage      = "Next",
+            prevPage      = "Previous",
             nextPageHover = "Next Page",
             prevPageHover = "Previous Page";
     private static List<String>
@@ -108,14 +108,14 @@ public class CommandManager {
         add(ChatColor.DARK_GRAY + "-----------------------------------------------------");
         add("{buttons}");
     }},
-            helpNoButton = new ArrayList<String>() {{
+            helpNoButton   = new ArrayList<String>() {{
                 add(ChatColor.DARK_GRAY + "-----------------------------------------------------");
                 add(ChatColor.DARK_GREEN + "{title} - Command Usage {page}");
                 add(ChatColor.DARK_GRAY + "-----------------------------------------------------");
                 add("{commands}");
                 add(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             }},
-            commandUsage = new ArrayList<String>() {{
+            commandUsage   = new ArrayList<String>() {{
                 add(ChatColor.DARK_GRAY + "-----------------------------------------------------");
                 add(ChatColor.GOLD + "{command}");
                 add(ChatColor.DARK_GRAY + "-----------------------------------------------------");
@@ -187,7 +187,7 @@ public class CommandManager {
     /**
      * <p>Unregisters a command</p>
      * <p>If the command wasn't registered, this does nothing</p>
-     * <p/>
+     *
      * <p>Commands are automatically unregistered when your plugin
      * is disabled, so you generally do not need to manually
      * unregister your commands. This would be more for if you want
@@ -203,7 +203,7 @@ public class CommandManager {
     /**
      * <p>Unregisters all of the commands registered by a plugin</p>
      * <p>If the plugin didn't have any registered commands, this does nothing</p>
-     * <p/>
+     *
      * <p>Commands are automatically unregistered when your plugin
      * is disabled, so you generally do not need to manually
      * unregister your commands. This would be more for if you want
@@ -227,7 +227,7 @@ public class CommandManager {
     /**
      * <p>Unregisters all commands for all plugins</p>
      * <p>If no commands were registered, this does nothing</p>
-     * <p/>
+     *
      * <p>You shouldn't use this method as it's meant for MCCore to
      * clear the data when it's disabled.</p>
      */
@@ -269,10 +269,10 @@ public class CommandManager {
     /**
      * <p>Displays the usage help for the command, showing only the commands
      * that the sender can use.</p>
-     * <p/>
+     *
      * <p>The usage display adjusts to the sender, having different spacing
      * for players and the console.</p>
-     * <p/>
+     *
      * <p>When on 1.7.9+, players also can see buttons to navigate through
      * the help menu as long as it is included in the format.</p>
      *
@@ -286,10 +286,10 @@ public class CommandManager {
     /**
      * <p>Displays the usage help for the command, showing only the commands
      * that the sender can use.</p>
-     * <p/>
+     *
      * <p>The usage display adjusts to the sender, having different spacing
      * for players and the console.</p>
-     * <p/>
+     *
      * <p>When on 1.7.9+, players also can see buttons to navigate through
      * the help menu as long as it is included in the format.</p>
      *
@@ -358,17 +358,17 @@ public class CommandManager {
         if (page < 1) page = 1;
 
         // Get the strings to replace filters with
-        String pageString = maxPage == 1 ? "" : pageFormat.replace("{page}", page + "").replace("{max}", maxPage + "");
+        String pageString  = maxPage == 1 ? "" : pageFormat.replace("{page}", page + "").replace("{max}", maxPage + "");
         String titleString = "/" + c.toString();
 
         // Get the maximum length
         int maxSize = 0;
-        int index = 0;
+        int index   = 0;
         for (String key : keys) {
             index++;
             if (index <= (page - 1) * entries || index > page * entries) continue;
             String args = c.getSubCommand(key).getArgs();
-            int size = sender instanceof Player ? TextSizer.measureString(key + " " + args) : (key + " " + args).length();
+            int    size = sender instanceof Player ? TextSizer.measureString(key + " " + args) : (key + " " + args).length();
             if (size > maxSize) maxSize = size;
         }
         if (sender instanceof Player) maxSize += 4;
@@ -378,7 +378,7 @@ public class CommandManager {
         if (VersionManager.isTellRaw() && sender instanceof Player) {
 
             // Button JSON
-            String ends = "PreviousNext";
+            String ends    = "PreviousNext";
             String spacing = TextSizer.expand(" ", 320 - TextSizer.measureString(ends), true);
             if (!spacing.startsWith(" ")) spacing = spacing.substring(spacing.indexOf(' '));
             String buttons = "tellraw "
@@ -411,8 +411,8 @@ public class CommandManager {
                         index++;
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
-                        ConfigurableCommand sub = c.getSubCommand(key);
-                        String args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+                        ConfigurableCommand sub  = c.getSubCommand(key);
+                        String              args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
                                         + TextSizer.expand(key + " " + args, maxSize, false)
@@ -436,8 +436,8 @@ public class CommandManager {
                         index++;
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
-                        ConfigurableCommand sub = c.getSubCommand(key);
-                        String args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+                        ConfigurableCommand sub  = c.getSubCommand(key);
+                        String              args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
                                         + TextSizer.expand(key + " " + args, maxSize, false)
@@ -456,8 +456,8 @@ public class CommandManager {
                         index++;
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
-                        ConfigurableCommand sub = c.getSubCommand(key);
-                        String args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+                        ConfigurableCommand sub  = c.getSubCommand(key);
+                        String              args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
                                         + TextSizer.expandConsole(key + " " + args, maxSize, false)
