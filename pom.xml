@@ -10,7 +10,7 @@
         <artifactId>promc-parent</artifactId>
     </parent>
 
-    <groupId>mc.promcteam</groupId>
+    <groupId>com.promcteam</groupId>
     <artifactId>promccore</artifactId>
     <name>ProMCCore</name>
     <version>1.0.3.9-${maven.build.timestamp}</version>
