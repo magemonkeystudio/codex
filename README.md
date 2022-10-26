@@ -2,23 +2,18 @@
 
 # ProMCCore
 
-If you wish to use ProMCCore as a dependency in your projects, include the following in your `pom.xml`
+If you wish to use ProMCCore as a dependency in your projects, ProMCCore is available through Maven Central
+or snapshots through Sonatype.
 
 ```xml
 <repository>
-    <id>promcteam</id>
-    <url>https://maven.pkg.github.com/promcteam/promccore</url>
+    <id>sonatype</id>
+    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
 </repository>
         ...
 <dependency>
-    <groupId>mc.promcteam</groupId>
-    <artifactId>promccore</artifactId>
-    <version>VERSION</version>
+<groupId>com.promcteam</groupId>
+<artifactId>promccore</artifactId>
+<version>1.0.3.10-SNAPSHOT</version>
 </dependency>
 ```
-
-Find version numbers [here](https://github.com/promcteam/promccore/packages/1129377).
-
-Additionally, you'll need to make sure that you have properly configured [Authentication with GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry#authenticating-to-github-packages).
-
-You may also use JitPack!
