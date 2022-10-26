@@ -12,8 +12,8 @@ or snapshots through Sonatype.
 </repository>
         ...
 <dependency>
-<groupId>com.promcteam</groupId>
-<artifactId>promccore</artifactId>
-<version>1.0.3.10-SNAPSHOT</version>
+    <groupId>com.promcteam</groupId>
+    <artifactId>promccore</artifactId>
+    <version>1.0.3.10-SNAPSHOT</version>
 </dependency>
 ```
