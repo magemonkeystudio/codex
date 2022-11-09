@@ -6,6 +6,7 @@ import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.bukkit.BukkitAdapter;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import io.lumine.mythic.bukkit.utils.serialize.Position;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.skills.SkillMetadataImpl;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
 
-    private MythicPlugin mm;
+    private MythicBukkit mm;
 
     public MythicMobsHKv5(NexEngine plugin) {
         super(plugin);
@@ -34,7 +35,7 @@ public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
     @Override
     @NotNull
     protected HookState setup() {
-        this.mm = MythicProvider.get();
+        this.mm = MythicBukkit.inst();
         return HookState.SUCCESS;
     }
 
@@ -44,25 +45,22 @@ public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
     }
 
     @Override
-    public boolean isMythicMob(@NotNull Entity e) {
-        return mm.getMobManager().getActiveMobs().stream()
-                .filter(a -> a.getUniqueId().equals(e.getUniqueId())).findFirst().isPresent();
+    public boolean isMythicMob(@NotNull Entity entity) {
+        return getMythicInstance(entity) != null;
     }
 
     @Override
-    public String getMythicNameByEntity(@NotNull Entity e) {
-        MythicMob mob = getMythicInstance(e);
+    @NotNull
+    public String getMythicNameByEntity(@NotNull Entity entity) {
+        MythicMob mob = getMythicInstance(entity);
         return mob == null ? null : mob.getInternalName();
     }
 
-    @Override
-    public MythicMob getMythicInstance(@NotNull Entity e) {
-        Optional<ActiveMob> mob = mm.getMobManager().getActiveMobs().stream()
-                .filter(a -> a.getUniqueId().equals(e.getUniqueId())).findFirst();
+    public MythicMob getMythicInstance(@NotNull Entity entity) {
+        ActiveMob mob = getActiveMythicInstance(entity);
 
-        return mob.isPresent() ? mob.get().getType() : null;
+        return mob != null ? mob.getType() : null;
     }
-
     @Override
     public boolean isDropTable(@NotNull String table) {
         return mm.getDropManager().getDropTable(table) != null && mm.getDropManager().getDropTable(table).isPresent();
@@ -82,10 +80,10 @@ public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
     }
 
     @Override
-    public void setSkillDamage(@NotNull Entity e, double d) {
-        if (!isMythicMob(e)) return;
-        ActiveMob am1 = getActiveMythicInstance(e);
-        am1.setLastDamageSkillAmount(d);
+    public void setSkillDamage(@NotNull Entity entity, double amount) {
+        if (!isMythicMob(entity)) return;
+        ActiveMob am1 = getActiveMythicInstance(entity);
+        am1.setLastDamageSkillAmount(amount);
     }
 
     @Override
@@ -148,9 +146,8 @@ public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
         else if (amount < 0) table.threatLoss(abs, -amount);
     }
 
-    public ActiveMob getActiveMythicInstance(@NotNull Entity e) {
-        Optional<ActiveMob> mob = mm.getMobManager().getActiveMobs().stream()
-                .filter(a -> a.getUniqueId().equals(e.getUniqueId())).findFirst();
+    public ActiveMob getActiveMythicInstance(@NotNull Entity entity) {
+        Optional<ActiveMob> mob = mm.getMobManager().getActiveMob(entity.getUniqueId());
 
         return mob.isPresent() ? mob.get() : null;
     }
