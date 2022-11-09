@@ -32,16 +32,20 @@ import mc.promcteam.engine.mccore.util.TextFormatter;
 import mc.promcteam.engine.mccore.util.TextSizer;
 import mc.promcteam.engine.mccore.util.TextSplitter;
 import mc.promcteam.engine.mccore.util.VersionManager;
+import mc.promcteam.engine.utils.Reflex;
+import mc.promcteam.engine.utils.reflection.ReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -174,10 +178,25 @@ public class CommandManager {
 
         // Register it with Bukkit
         try {
-            Field field = SimplePluginManager.class.getDeclaredField("commandMap");
-            if (!field.isAccessible()) field.setAccessible(true);
-            CommandMap map = (CommandMap) field.get(Bukkit.getPluginManager());
-            map.register(command.getName(), command);
+            if (!Bukkit.getServer().getClass().getSimpleName().equals("ServerMock")) {
+                Field field = SimplePluginManager.class.getDeclaredField("commandMap");
+                if (!field.isAccessible()) field.setAccessible(true);
+                CommandMap map = (CommandMap) field.get(Bukkit.getPluginManager());
+                map.register(command.getName(), command);
+            } else {
+                Field field = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
+                Field commands = Class.forName("be.seeseemelk.mockbukkit.plugin.PluginManagerMock").getDeclaredField("commands");
+                if (!field.canAccess(Bukkit.getServer())) field.setAccessible(true);
+                if (!commands.canAccess(Bukkit.getServer().getPluginManager())) commands.setAccessible(true);
+                CommandMap                          map  = (CommandMap) field.get(Bukkit.getServer());
+                List<PluginCommand> cmds = (List<PluginCommand>) commands.get(Bukkit.getServer().getPluginManager());
+
+                Method m = Class.forName("org.bukkit.command.PluginCommandUtils").getMethod("createPluginCommand", String.class, Plugin.class);
+                PluginCommand cmd = (PluginCommand) m.invoke(null, command.getName(), command.getPlugin());
+
+                cmds.add(cmd);
+                map.register(command.getName(), command);
+            }
         } catch (Exception ex) {
             invalidRegistration = true;
             Bukkit.getLogger().severe("Failed to set up commands, using custom implementation instead");

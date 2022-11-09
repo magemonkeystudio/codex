@@ -16,7 +16,10 @@ import java.util.List;
 
 public class Reflex {
 
-    public static final String VERSION = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    public static final  String    VERSION =
+            !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit")
+                    ? Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]
+                    : "";
     private static final NexEngine ENGINE;
 
     static {
@@ -119,7 +122,7 @@ public class Reflex {
     public static Object getFieldValue(@NotNull Object from, @NotNull String fieldName) {
         try {
             Class<?> clazz = from instanceof Class<?> ? (Class<?>) from : from.getClass();
-            Field field = getField(clazz, fieldName);
+            Field    field = getField(clazz, fieldName);
             if (field == null) return null;
 
             field.setAccessible(true);
@@ -133,8 +136,8 @@ public class Reflex {
 
     public static boolean setFieldValue(@NotNull Object of, @NotNull String fieldName, @Nullable Object value) {
         try {
-            boolean isStatic = of instanceof Class;
-            Class<?> clazz = isStatic ? (Class<?>) of : of.getClass();
+            boolean  isStatic = of instanceof Class;
+            Class<?> clazz    = isStatic ? (Class<?>) of : of.getClass();
 
             Field field = getField(clazz, fieldName);
             if (field == null) return false;
