@@ -106,7 +106,6 @@
     </dependencies>
 
     <build>
-        <directory>../ProBuilds</directory>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>
             <resource>
@@ -166,6 +165,14 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
+                <configuration>
+                    <outputDirectory>${outputDir}</outputDirectory>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -254,6 +254,14 @@ public class YAMLParser {
      * @param file file to dump to
      */
     public static void save(DataSection data, File file) {
+        if (!file.exists()) {
+            file.getParentFile().mkdirs();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException("Couldn't save config to " + file.getName(), e);
+            }
+        }
         try (FileOutputStream out = new FileOutputStream(file);
              BufferedWriter write = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8))) {
 

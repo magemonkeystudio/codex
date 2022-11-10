@@ -6,36 +6,35 @@ import org.jetbrains.annotations.NotNull;
 
 public enum Version {
 
-	// !!! KEEP THE VERSIONS LIST IN A ORDER FROM LOWER TO HIGHER !!!
-	V1_13_R2,
-	V1_14_R1,
-	V1_15_R1,
-	V1_16_R2,
-	V1_16_R3,
+    // !!! KEEP THE VERSIONS LIST IN A ORDER FROM LOWER TO HIGHER !!!
+    V1_13_R2,
+    V1_14_R1,
+    V1_15_R1,
+    V1_16_R2,
+    V1_16_R3,
     V1_17_R1,
     V1_18_R1,
     V1_18_R2,
-    V1_19_R1
-	;
-    
+    V1_19_R1;
+
     public static final Version CURRENT;
-    
+
     static {
-    	String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
-        String versionRaw = split[split.length - 1];
+        String[] split      = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+        String   versionRaw = split[split.length - 1];
 
         CURRENT = CollectionsUT.getEnum(versionRaw, Version.class);
     }
-    
+
     public boolean isLower(@NotNull Version version) {
         return this.ordinal() < version.ordinal();
     }
-    
+
     public boolean isHigher(@NotNull Version version) {
         return this.ordinal() > version.ordinal();
     }
-    
+
     public boolean isCurrent() {
-    	return this == Version.CURRENT;
+        return this == Version.CURRENT;
     }
 }

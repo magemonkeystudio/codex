@@ -18,7 +18,7 @@ import java.util.Set;
 public class PacketManager extends IManager<NexEngine> {
 
     protected static final Set<IPacketHandler> PACKET_HANDLERS = new HashSet<>();
-    private static final String INJECTOR_ID = "nex_handler";
+    private static final   String              INJECTOR_ID     = "nex_handler";
 
     public PacketManager(@NotNull NexEngine plugin) {
         super(plugin);
@@ -65,7 +65,7 @@ public class PacketManager extends IManager<NexEngine> {
     }
 
 
-    private final void removePlayer(@NotNull Player player) {
+    private void removePlayer(@NotNull Player player) {
         Channel channel = this.getChannel(player);
         if (channel.pipeline().get(INJECTOR_ID) != null) {
             channel.pipeline().remove(INJECTOR_ID);
@@ -76,7 +76,7 @@ public class PacketManager extends IManager<NexEngine> {
 		});*/
     }
 
-    private final void injectPlayer(@NotNull Player player) {
+    private void injectPlayer(@NotNull Player player) {
         ChannelPipeline pipe = this.getChannel(player).pipeline();
         if (pipe.get(INJECTOR_ID) != null) return;
 
