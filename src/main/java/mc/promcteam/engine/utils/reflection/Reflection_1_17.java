@@ -375,9 +375,13 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Method getAmount = Reflex.getMethod(attributeModifierClass,
                     ReflectionUtil.MINOR_VERSION == 17 ? "getAmount" : "d");
-            double damage = (double) Reflex.invokeMethod(getAmount, mod);
-
-            return damage + 1;
+            double value = (double) Reflex.invokeMethod(getAmount, mod);
+            if (attribute.equals(getGenericAttribute("f"))) { // Damage
+                value += 1;
+            } else if (attribute.equals(getGenericAttribute("h"))) { // Attack Speed
+                value += 4;
+            }
+            return value;
         } catch (Exception e) {
             e.printStackTrace();
         }

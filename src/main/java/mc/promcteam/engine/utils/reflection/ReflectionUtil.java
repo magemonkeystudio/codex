@@ -331,16 +331,17 @@ public class ReflectionUtil {
         return Reflection_1_17.getAttributes(itemStack);
     }
 
-    public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attackDamage) {
-        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getAttributeValue(item, attackDamage);
+    public static double getAttributeValue(@NotNull ItemStack item, @NotNull Object attribute) {
+        if (ReflectionUtil.MINOR_VERSION >= 17) return Reflection_1_17.getAttributeValue(item, attribute);
 
+        double value = 0;
         try {
             Class<?> attributeModifierClass = getNMSClass("AttributeModifier");
-            if (attackDamage.getClass().getSuperclass().getSimpleName().equals("IAttribute")) {
+            if (attribute.getClass().getSuperclass().getSimpleName().equals("IAttribute")) {
                 Class<?>                 iAttributeClass = getNMSClass("IAttribute");
                 Multimap<Object, Object> attMap          = getAttributes(item);
                 if (attMap == null) return 0D;
-                Object atkDmg  = iAttributeClass.cast(attackDamage);
+                Object atkDmg  = iAttributeClass.cast(attribute);
                 Method getName = Reflex.getMethod(iAttributeClass, "getName");
 
                 //Collection<AttributeModifier>
@@ -350,28 +351,30 @@ public class ReflectionUtil {
                         : att.stream().findFirst().get());
 
                 Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
-                double damage    = (double) Reflex.invokeMethod(getAmount, mod);
-
-                return damage + 1;
-            } else if (getNMSClass("AttributeBase").isInstance(attackDamage)) {
+                value    = (double) Reflex.invokeMethod(getAmount, mod);
+            } else if (getNMSClass("AttributeBase").isInstance(attribute)) {
                 Class<?>                 attributeBaseClass = getNMSClass("AttributeBase");
                 Multimap<Object, Object> attMap             = getAttributes(item);
                 if (attMap == null) return 0D;
 
-                Collection<Object> att = attMap.get(attributeBaseClass.cast(attackDamage));
+                Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
                 Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
                         ? 0
                         : att.stream().findFirst().get());
 
                 Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
-                double damage    = (double) Reflex.invokeMethod(getAmount, mod);
-
-                return damage + 1;
+                value    = (double) Reflex.invokeMethod(getAmount, mod);
+            }
+            if (attribute.equals(getGenericAttribute("ATTACK_DAMAGE"))) {
+                value += 1;
+            } else if (attribute.equals(getGenericAttribute("ATTACK_SPEED"))) {
+                value += 4;
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return 0;
+        return value;
     }
 
     public static double getDefaultDamage(@NotNull ItemStack itemStack) {
