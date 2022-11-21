@@ -42,11 +42,6 @@ public enum NBTAttribute {
             "generic.knockbackResistance",
             Attribute.GENERIC_KNOCKBACK_RESISTANCE,
             "1f1173-9999-3333-5555-99cb0245f9c7"),
-
-    BASE_ATTACK_SPEED(
-            "generic.attackSpeed",
-            Attribute.GENERIC_ATTACK_SPEED,
-            "1f1173-9999-3333-5555-99cb0245f9c8"),
     ;
 
     private final String    nmsName;
