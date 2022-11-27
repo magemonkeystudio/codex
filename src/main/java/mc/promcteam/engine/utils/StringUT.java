@@ -275,4 +275,24 @@ public class StringUT {
         }
         return String.valueOf(dec);
     }
+
+    @NotNull
+    public static String getColor(String str) {
+        StringBuilder builder = new StringBuilder();
+        int j = 0;
+        while (true) {
+            int t = str.indexOf('§', j);
+            j = str.indexOf('&', j);
+            if (t >= 0 && (j < 0 || t < j)) { j = t; }
+            if (j >= 0) {
+                j++;
+                if (j >= str.length()) { break; }
+                ChatColor color = ChatColor.getByChar(str.charAt(j));
+                if (color != null) { builder.append(color); }
+            } else {
+                break;
+            }
+        }
+        return builder.toString();
+    }
 }
