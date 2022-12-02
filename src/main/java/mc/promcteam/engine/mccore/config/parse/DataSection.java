@@ -1,21 +1,21 @@
 /**
  * MCCore
  * com.rit.sucy.config.parse.DataSection
- *
+ * <p>
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2014 Steven Sucy
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -34,8 +34,7 @@ import java.util.*;
 /**
  * Represents a section of a config
  */
-public class DataSection
-{
+public class DataSection {
     // Comments attached to each node
     private final HashMap<String, List<String>> comments = new HashMap<>();
 
@@ -48,8 +47,7 @@ public class DataSection
     /**
      * Clears all data and comments from the data section
      */
-    public void clear()
-    {
+    public void clear() {
         keys.clear();
         comments.clear();
         data.clear();
@@ -60,16 +58,14 @@ public class DataSection
      *
      * @return keys in the data section
      */
-    public List<String> keys()
-    {
+    public List<String> keys() {
         return new ArrayList<String>(keys);
     }
 
     /**
      * @return number of key/value pairs
      */
-    public int size()
-    {
+    public int size() {
         return keys.size();
     }
 
@@ -78,8 +74,7 @@ public class DataSection
      *
      * @return entry set of the data section
      */
-    public Set<Map.Entry<String, Object>> entrySet()
-    {
+    public Set<Map.Entry<String, Object>> entrySet() {
         return data.entrySet();
     }
 
@@ -88,8 +83,7 @@ public class DataSection
      *
      * @return values contained in the keys for this section
      */
-    public Collection<Object> values()
-    {
+    public Collection<Object> values() {
         return data.values();
     }
 
@@ -99,8 +93,7 @@ public class DataSection
      * @param key     key of the value the comment is in front of
      * @param comment comment to add
      */
-    public void addComment(String key, String comment)
-    {
+    public void addComment(String key, String comment) {
         if (!comments.containsKey(key)) comments.put(key, new ArrayList<String>());
         comments.get(key).add(comment);
         if (!keys.contains(key)) keys.add(key);
@@ -112,8 +105,7 @@ public class DataSection
      * @param key data key
      * @return true if has comments
      */
-    public boolean hasComment(String key)
-    {
+    public boolean hasComment(String key) {
         return comments.containsKey(key);
     }
 
@@ -123,8 +115,7 @@ public class DataSection
      * @param key data key
      * @return list of comments
      */
-    public List<String> getComments(String key)
-    {
+    public List<String> getComments(String key) {
         return comments.get(key);
     }
 
@@ -133,8 +124,7 @@ public class DataSection
      *
      * @param comments comments above a given node
      */
-    public void setComments(String key, List<String> comments)
-    {
+    public void setComments(String key, List<String> comments) {
         ArrayList<String> list = new ArrayList<>(comments.size());
         list.addAll(comments);
         this.comments.put(key, list);
@@ -146,8 +136,7 @@ public class DataSection
      *
      * @param key key of the node to clear for
      */
-    public void clearComments(String key)
-    {
+    public void clearComments(String key) {
         this.comments.remove(key);
     }
 
@@ -156,15 +145,11 @@ public class DataSection
      *
      * @param deep true if to clear comments in all child sections as well
      */
-    public void clearAllComments(boolean deep)
-    {
+    public void clearAllComments(boolean deep) {
         this.comments.clear();
-        if (deep)
-        {
-            for (Object value : data.values())
-            {
-                if (value instanceof DataSection)
-                {
+        if (deep) {
+            for (Object value : data.values()) {
+                if (value instanceof DataSection) {
                     ((DataSection) value).clearAllComments(true);
                 }
             }
@@ -177,20 +162,15 @@ public class DataSection
      * @param key   key to represent the value
      * @param value value to set
      */
-    public void set(String key, Object value)
-    {
+    public void set(String key, Object value) {
         if (value == null) remove(key);
-        else if (value instanceof Map<?, ?>)
-        {
+        else if (value instanceof Map<?, ?>) {
             DataSection section = createSection(key);
-            Map<?, ?> map = (Map<?, ?>) value;
-            for (Map.Entry<?, ?> k : map.entrySet())
-            {
+            Map<?, ?>   map     = (Map<?, ?>) value;
+            for (Map.Entry<?, ?> k : map.entrySet()) {
                 section.set(k.getKey().toString(), k.getValue().toString());
             }
-        }
-        else
-        {
+        } else {
             data.put(key, value);
             if (!keys.contains(key)) keys.add(key);
         }
@@ -203,10 +183,8 @@ public class DataSection
      * @param key          key of the default value
      * @param defaultValue value to apply if no value is present
      */
-    public void checkDefault(String key, Object defaultValue)
-    {
-        if (!has(key))
-        {
+    public void checkDefault(String key, Object defaultValue) {
+        if (!has(key)) {
             set(key, defaultValue);
         }
     }
@@ -215,11 +193,9 @@ public class DataSection
      * Creates a new data section at the given key
      *
      * @param key key to create the section at
-     *
      * @return the created section
      */
-    public DataSection createSection(String key)
-    {
+    public DataSection createSection(String key) {
         DataSection section = new DataSection();
         data.put(key, section);
         if (!keys.contains(key)) keys.add(key);
@@ -232,11 +208,9 @@ public class DataSection
      * Otherwise, the existing section will be returned.
      *
      * @param key key to check for a section at
-     *
      * @return current section at the key, new or existing
      */
-    public DataSection defaultSection(String key)
-    {
+    public DataSection defaultSection(String key) {
         if (isSection(key)) return getSection(key);
         return createSection(key);
     }
@@ -245,14 +219,11 @@ public class DataSection
      * Removes a value at the given key along with its comments.
      *
      * @param key key to remove a value for
-     *
      * @return the removed value or null of no value was present
      */
-    public Object remove(String key)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public Object remove(String key) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             if (section != null) return section.remove(pieces[1]);
             return null;
@@ -267,11 +238,9 @@ public class DataSection
      * given key is a data section
      *
      * @param key key of the value
-     *
      * @return true if DataSection, false otherwise
      */
-    public boolean isSection(String key)
-    {
+    public boolean isSection(String key) {
         return getSection(key) != null;
     }
 
@@ -279,14 +248,11 @@ public class DataSection
      * Checks whether or not the data contains a value at the given key
      *
      * @param key key to check
-     *
      * @return true if contains a value, false otherwise
      */
-    public boolean has(String key)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public boolean has(String key) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section != null && section.has(pieces[1]);
         }
@@ -298,11 +264,9 @@ public class DataSection
      * at the given key
      *
      * @param key key to check for a list value at
-     *
      * @return true if a list value is set at the key, false otherwise
      */
-    public boolean isList(String key)
-    {
+    public boolean isList(String key) {
         return getList(key, null) != null;
     }
 
@@ -310,11 +274,9 @@ public class DataSection
      * Checks whether or not the value at the key is a number
      *
      * @param key key to check for a number value at
-     *
      * @return true if a number is at the key, false otherwise
      */
-    public boolean isNumber(String key)
-    {
+    public boolean isNumber(String key) {
         return getDouble(key, Double.MAX_VALUE) != Double.MAX_VALUE;
     }
 
@@ -322,23 +284,18 @@ public class DataSection
      * Retrieves a data section from the given location
      *
      * @param key key of the section to retrieve
-     *
      * @return found section or null if not found
      */
-    public DataSection getSection(String key)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public DataSection getSection(String key) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? null : section.getSection(pieces[1]);
         }
 
-        if (data.containsKey(key))
-        {
+        if (data.containsKey(key)) {
             Object obj = data.get(key);
-            if (obj instanceof DataSection)
-            {
+            if (obj instanceof DataSection) {
                 return (DataSection) obj;
             }
         }
@@ -350,11 +307,9 @@ public class DataSection
      * one characters are found, this will only return the first.
      *
      * @param key key of the value to retrieve
-     *
      * @return the character from the config or '\0' if not found
      */
-    public char getChar(String key)
-    {
+    public char getChar(String key) {
         return getChar(key, '\0');
     }
 
@@ -362,11 +317,9 @@ public class DataSection
      * Retrieves a string value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the string value from the config or null if not found
      */
-    public String getString(String key)
-    {
+    public String getString(String key) {
         return getString(key, null);
     }
 
@@ -374,11 +327,9 @@ public class DataSection
      * Retrieves a boolean value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the boolean value from the config or false if not found
      */
-    public boolean getBoolean(String key)
-    {
+    public boolean getBoolean(String key) {
         return getBoolean(key, false);
     }
 
@@ -386,11 +337,9 @@ public class DataSection
      * Retrieves a byte value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the byte value or 0 if not found or not a number
      */
-    public byte getByte(String key)
-    {
+    public byte getByte(String key) {
         return getByte(key, (byte) 0);
     }
 
@@ -398,11 +347,9 @@ public class DataSection
      * Retrieves a short value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the short value or 0 if not found or not a number
      */
-    public short getShort(String key)
-    {
+    public short getShort(String key) {
         return getShort(key, (short) 0);
     }
 
@@ -410,11 +357,9 @@ public class DataSection
      * Retrieves an integer value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the integer value or 0 if not found or not a number
      */
-    public int getInt(String key)
-    {
+    public int getInt(String key) {
         return getInt(key, 0);
     }
 
@@ -422,11 +367,9 @@ public class DataSection
      * Retrieves a float value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the float value or 0 if not found or not a number
      */
-    public float getFloat(String key)
-    {
+    public float getFloat(String key) {
         return getFloat(key, 0);
     }
 
@@ -434,11 +377,9 @@ public class DataSection
      * Retrieves a double value from the data
      *
      * @param key key of the value to retrieve
-     *
      * @return the double value or fallback if not found or not a number
      */
-    public double getDouble(String key)
-    {
+    public double getDouble(String key) {
         return getDouble(key, 0);
     }
 
@@ -446,11 +387,9 @@ public class DataSection
      * Retrieves a string list value from the config
      *
      * @param key key of the value to retrieve
-     *
      * @return the list value or an empty list if not found
      */
-    public List<String> getList(String key)
-    {
+    public List<String> getList(String key) {
         return getList(key, new ArrayList<String>());
     }
 
@@ -460,14 +399,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the character from the config or fallback if not found
      */
-    public char getChar(String key, char fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public char getChar(String key, char fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getChar(pieces[1], fallback);
         }
@@ -482,14 +418,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the string value from the config or fallback if not found
      */
-    public String getString(String key, String fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public String getString(String key, String fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getString(pieces[1], fallback);
         }
@@ -503,14 +436,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the boolean value from the config or fallback if not found
      */
-    public boolean getBoolean(String key, boolean fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public boolean getBoolean(String key, boolean fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getBoolean(pieces[1], fallback);
         }
@@ -518,7 +448,7 @@ public class DataSection
         if (!data.containsKey(key)) return fallback;
         String str = getString(key).toLowerCase();
         return str.equals("true") || str.equals("yes") || str.equals("t") || str.equals("y")
-               || (fallback && !str.equals("false") && !str.equals("no") && !str.equals("f") && !str.equals("n"));
+                || (fallback && !str.equals("false") && !str.equals("no") && !str.equals("f") && !str.equals("n"));
     }
 
     /**
@@ -526,14 +456,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the byte value or fallback if not found or not a number
      */
-    public byte getByte(String key, byte fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public byte getByte(String key, byte fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getByte(pieces[1], fallback);
         }
@@ -541,9 +468,8 @@ public class DataSection
         if (!data.containsKey(key)) return fallback;
         Object obj = data.get(key);
         try {
-            return (byte)NumberParser.parseInt(obj.toString());
-        }
-        catch (Exception ex) {
+            return (byte) NumberParser.parseInt(obj.toString());
+        } catch (Exception ex) {
             return fallback;
         }
     }
@@ -553,14 +479,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the short value or fallback if not found or not a number
      */
-    public short getShort(String key, short fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public short getShort(String key, short fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getShort(pieces[1], fallback);
         }
@@ -568,9 +491,8 @@ public class DataSection
         if (!data.containsKey(key)) return fallback;
         Object obj = data.get(key);
         try {
-            return (short)NumberParser.parseInt(obj.toString());
-        }
-        catch (Exception ex) {
+            return (short) NumberParser.parseInt(obj.toString());
+        } catch (Exception ex) {
             return fallback;
         }
     }
@@ -580,14 +502,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the integer value or fallback if not found or not a number
      */
-    public int getInt(String key, int fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public int getInt(String key, int fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getInt(pieces[1], fallback);
         }
@@ -596,8 +515,7 @@ public class DataSection
         Object obj = data.get(key);
         try {
             return Integer.parseInt(obj.toString());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return fallback;
         }
     }
@@ -607,14 +525,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the float value or fallback if not found or not a number
      */
-    public float getFloat(String key, float fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public float getFloat(String key, float fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getFloat(pieces[1], fallback);
         }
@@ -622,9 +537,8 @@ public class DataSection
         if (!data.containsKey(key)) return -1;
         Object obj = data.get(key);
         try {
-            return (float)NumberParser.parseDouble(obj.toString());
-        }
-        catch (Exception ex) {
+            return (float) NumberParser.parseDouble(obj.toString());
+        } catch (Exception ex) {
             return fallback;
         }
     }
@@ -634,14 +548,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the double value or fallback if not found or not a number
      */
-    public double getDouble(String key, double fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public double getDouble(String key, double fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getDouble(pieces[1], fallback);
         }
@@ -650,8 +561,7 @@ public class DataSection
         Object obj = data.get(key);
         try {
             return Double.parseDouble(obj.toString());
-        }
-        catch (Exception ex) {
+        } catch (Exception ex) {
             return fallback;
         }
     }
@@ -661,14 +571,11 @@ public class DataSection
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
-     *
      * @return the list value or fallback if not found
      */
-    public List<String> getList(String key, List<String> fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public List<String> getList(String key, List<String> fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.getList(pieces[1], fallback);
         }
@@ -677,28 +584,23 @@ public class DataSection
             return fallback;
         }
         Object obj = data.get(key);
-        if (obj instanceof List)
-        {
-            List l = (List) obj;
+        if (obj instanceof List) {
+            List              l    = (List) obj;
             ArrayList<String> list = new ArrayList<String>(l.size());
             list.addAll(l);
             return list;
-        }
-        else return fallback;
+        } else return fallback;
     }
 
     /**
      * Retrieves a generic value at the given key
      *
      * @param key key to get the value for
-     *
      * @return the value at the given key
      */
-    public Object get(String key)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public Object get(String key) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? null : section.get(pieces[1]);
         }
@@ -710,14 +612,11 @@ public class DataSection
      *
      * @param key      key to get the value for
      * @param fallback value to return if not found
-     *
      * @return the value at the given key or fallback if not found
      */
-    public Object get(String key, Object fallback)
-    {
-        if (key.contains("."))
-        {
-            String[] pieces = key.split("\\.", 2);
+    public Object get(String key, Object fallback) {
+        if (key.contains(".")) {
+            String[]    pieces  = key.split("\\.", 2);
             DataSection section = getSection(pieces[0]);
             return section == null ? fallback : section.get(pieces[1]);
         }
@@ -731,20 +630,15 @@ public class DataSection
      *
      * @param defaults defaults to apply
      */
-    public void applyDefaults(DataSection defaults)
-    {
-        for (String key : defaults.keys)
-        {
-            if (defaults.comments.containsKey(key))
-            {
+    public void applyDefaults(DataSection defaults) {
+        for (String key : defaults.keys) {
+            if (defaults.comments.containsKey(key)) {
                 setComments(key, defaults.comments.get(key));
             }
-            if (defaults.isSection(key))
-            {
+            if (defaults.isSection(key)) {
                 DataSection section = defaultSection(key);
                 section.applyDefaults(defaults.getSection(key));
-            }
-            else checkDefault(key, defaults.get(key));
+            } else checkDefault(key, defaults.get(key));
         }
     }
 
@@ -753,17 +647,12 @@ public class DataSection
      *
      * @param defaults default section to trim to
      */
-    public void trim(DataSection defaults)
-    {
+    public void trim(DataSection defaults) {
         ArrayList<String> copy = new ArrayList<String>(keys);
-        for (String key : copy)
-        {
-            if (!defaults.has(key))
-            {
+        for (String key : copy) {
+            if (!defaults.has(key)) {
                 remove(key);
-            }
-            else if (defaults.isSection(key))
-            {
+            } else if (defaults.isSection(key)) {
                 if (isSection(key)) getSection(key).trim(defaults.getSection(key));
                 else remove(key);
             }
@@ -775,8 +664,7 @@ public class DataSection
      *
      * @param path path to the file
      */
-    public void dump(String path)
-    {
+    public void dump(String path) {
         YAMLParser.save(this, path);
     }
 
@@ -785,20 +673,17 @@ public class DataSection
      *
      * @param file file to dump to
      */
-    public void dump(File file)
-    {
+    public void dump(File file) {
         YAMLParser.save(this, file);
     }
 
     /**
      * Dumps the data contents into the stream
      *
-     * @param write  stream to dump to
-     *
+     * @param write stream to dump to
      * @throws IOException
      */
-    public void dump(BufferedWriter write) throws IOException
-    {
+    public void dump(BufferedWriter write) throws IOException {
         YAMLParser.save(this, write);
     }
 
@@ -808,8 +693,7 @@ public class DataSection
      * @return YAML data string
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return toString('\'');
     }
 
@@ -819,8 +703,7 @@ public class DataSection
      * @param quote the character to wrap strings in
      * @return YAML data string
      */
-    public String toString(char quote)
-    {
+    public String toString(char quote) {
         StringBuilder builder = new StringBuilder();
         YAMLParser.dump(this, builder, 0, quote);
         return builder.toString();

@@ -197,7 +197,8 @@ public class JYML extends YamlConfiguration {
         for (int i = 0; i < raw.length; i++) {
             try {
                 slots[i] = Integer.parseInt(raw[i].trim());
-            } catch (NumberFormatException ex) {}
+            } catch (NumberFormatException ex) {
+            }
         }
         return slots;
     }

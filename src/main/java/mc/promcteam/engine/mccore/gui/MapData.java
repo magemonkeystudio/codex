@@ -44,10 +44,10 @@ public class MapData extends MapRenderer {
     private HashMap<String, MapMenu> current = new HashMap<String, MapMenu>();
 
     private MapBuffer buffer;
-    private MapMenu root;
-    private MapView view;
+    private MapMenu   root;
+    private MapView   view;
     private ItemStack map;
-    private boolean firstPass = true;
+    private boolean   firstPass = true;
 
     /**
      * Initializes a new renderer and data set for a map view using

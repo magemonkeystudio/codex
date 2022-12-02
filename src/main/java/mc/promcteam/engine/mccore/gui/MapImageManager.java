@@ -83,11 +83,11 @@ public class MapImageManager {
     public static boolean copyImageResource(JavaPlugin plugin, String name, String path) {
         try {
             // Prepare to copy the file
-            InputStream stream = plugin.getClass().getResourceAsStream("/" + name);
+            InputStream  stream = plugin.getClass().getResourceAsStream("/" + name);
             OutputStream resStreamOut;
-            int readBytes;
-            byte[] buffer = new byte[4096];
-            File dir = new File(path);
+            int          readBytes;
+            byte[]       buffer = new byte[4096];
+            File         dir    = new File(path);
             dir.mkdirs();
             resStreamOut = new FileOutputStream(new File(dir + File.separator + name));
 

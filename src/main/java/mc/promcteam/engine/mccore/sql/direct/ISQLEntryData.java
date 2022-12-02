@@ -42,7 +42,6 @@ public interface ISQLEntryData {
      * anywhere as it will be closed to prevent leaks.</p>
      *
      * @param set set to load from
-     *
      * @throws SQLException when retrieving a value from the result set goes wrong
      */
     public void loadData(ResultSet set) throws SQLException;

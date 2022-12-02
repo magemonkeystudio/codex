@@ -1,21 +1,21 @@
 /**
  * MCCore
  * com.rit.sucy.items.ItemManager
- *
+ * <p>
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2014 Steven Sucy
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -37,18 +37,15 @@ import java.util.Map;
 /**
  * Converts item names to/from vanilla names
  */
-public class ItemManager
-{
+public class ItemManager {
 
     /**
      * Gets the vanilla name from the bukkit name
      *
      * @param bukkitName bukkit name
-     *
      * @return vanilla name
      */
-    public static String getVanillaName(String bukkitName)
-    {
+    public static String getVanillaName(String bukkitName) {
         return getVanillaName(bukkitName, (short) 0);
     }
 
@@ -57,35 +54,28 @@ public class ItemManager
      *
      * @param bukkitName bukkit name
      * @param damage     damage ID
-     *
      * @return vanilla name
      */
-    public static String getVanillaName(String bukkitName, short damage)
-    {
+    public static String getVanillaName(String bukkitName, short damage) {
         bukkitName = bukkitName.toUpperCase();
         if (oddNames.containsKey(bukkitName))
             return oddNames.get(bukkitName);
 
-        if (special.containsKey(bukkitName))
-        {
+        if (special.containsKey(bukkitName)) {
             HashMap<Short, String> data = special.get(bukkitName);
             if (data.containsKey(damage))
                 return data.get(damage);
             else return data.get((short) 0);
-        }
-
-        else return TextFormatter.format(bukkitName);
+        } else return TextFormatter.format(bukkitName);
     }
 
     /**
      * Gets the vanilla name of the material
      *
      * @param type material
-     *
      * @return vanilla name
      */
-    public static String getVanillaName(Material type)
-    {
+    public static String getVanillaName(Material type) {
         return getVanillaName(type.name(), (short) 0);
     }
 
@@ -94,11 +84,9 @@ public class ItemManager
      *
      * @param type   material
      * @param damage damage ID
-     *
      * @return vanilla name
      */
-    public static String getVanillaName(Material type, short damage)
-    {
+    public static String getVanillaName(Material type, short damage) {
         return getVanillaName(type.name(), damage);
     }
 
@@ -106,11 +94,9 @@ public class ItemManager
      * Gets the vanilla name of the item stack
      *
      * @param item item stack
-     *
      * @return vanilla name
      */
-    public static String getVanillaName(ItemStack item)
-    {
+    public static String getVanillaName(ItemStack item) {
         return getVanillaName(item.getType().name(), item.getDurability());
     }
 
@@ -118,18 +104,14 @@ public class ItemManager
      * Restores the bukkit name from the vanilla name
      *
      * @param vanillaName vanilla name
-     *
      * @return bukkit name
      */
-    public static String getBukkitName(String vanillaName)
-    {
-        for (Map.Entry<String, String> entry : oddNames.entrySet())
-        {
+    public static String getBukkitName(String vanillaName) {
+        for (Map.Entry<String, String> entry : oddNames.entrySet()) {
             if (entry.getValue().equalsIgnoreCase(vanillaName))
                 return entry.getKey();
         }
-        for (Map.Entry<String, HashMap<Short, String>> entry : special.entrySet())
-        {
+        for (Map.Entry<String, HashMap<Short, String>> entry : special.entrySet()) {
             Collection<String> values = entry.getValue().values();
             for (String value : values)
                 if (value.equalsIgnoreCase(vanillaName))
@@ -138,10 +120,8 @@ public class ItemManager
         return vanillaName.replace(" ", "_").toUpperCase();
     }
 
-    private static final HashMap<String, HashMap<Short, String>> special = new HashMap<String, HashMap<Short, String>>()
-    {{
-        put("WOOD", new HashMap<Short, String>()
-        {{
+    private static final HashMap<String, HashMap<Short, String>> special = new HashMap<String, HashMap<Short, String>>() {{
+        put("WOOD", new HashMap<Short, String>() {{
             put((short) 0, "Oak Wood Planks");
             put((short) 1, "Spruce Wood Planks");
             put((short) 2, "Birch Wood Planks");
@@ -149,13 +129,11 @@ public class ItemManager
             put((short) 4, "Acacia Wood Planks");
             put((short) 5, "Dark Oak Wood Planks");
         }});
-        put("LOG_2", new HashMap<Short, String>()
-        {{
+        put("LOG_2", new HashMap<Short, String>() {{
             put((short) 0, "Acacia Wood");
             put((short) 1, "Dark Oak Wood");
         }});
-        put("SAPLING", new HashMap<Short, String>()
-        {{
+        put("SAPLING", new HashMap<Short, String>() {{
             put((short) 0, "Oak Sapling");
             put((short) 1, "Spruce Sapling");
             put((short) 2, "Birch Sapling");
@@ -163,22 +141,19 @@ public class ItemManager
             put((short) 4, "Acacia Sapling");
             put((short) 5, "Dark Oak Sapling");
         }});
-        put("LOG", new HashMap<Short, String>()
-        {{
+        put("LOG", new HashMap<Short, String>() {{
             put((short) 0, "Oak Wood");
             put((short) 1, "Spruce Wood");
             put((short) 2, "Birch Wood");
             put((short) 3, "Jungle Wood");
         }});
-        put("LEAVES", new HashMap<Short, String>()
-        {{
+        put("LEAVES", new HashMap<Short, String>() {{
             put((short) 0, "Oak Leaves");
             put((short) 1, "Spruce Leaves");
             put((short) 2, "Birch Leaves");
             put((short) 3, "Jungle Leaves");
         }});
-        put("SANDSTONE", new HashMap<Short, String>()
-        {{
+        put("SANDSTONE", new HashMap<Short, String>() {{
             put((short) 0, "Sandstone");
             put((short) 1, "Chiseled Sandstone");
             put((short) 2, "Smooth Sandstone");
@@ -188,14 +163,12 @@ public class ItemManager
             put((short) 1, "Chiseled Red Sandstone");
             put((short) 2, "Smooth Red Sandstone");
         }});
-        put("LONG_GRASS", new HashMap<Short, String>()
-        {{
+        put("LONG_GRASS", new HashMap<Short, String>() {{
             put((short) 0, "Dead Shrub");
             put((short) 1, "Tall Grass");
             put((short) 2, "Fern");
         }});
-        put("WOOL", new HashMap<Short, String>()
-        {{
+        put("WOOL", new HashMap<Short, String>() {{
             put((short) 0, "White Wool");
             put((short) 1, "Orange Wool");
             put((short) 2, "Magenta Wool");
@@ -213,8 +186,7 @@ public class ItemManager
             put((short) 14, "Red Wool");
             put((short) 15, "Black Wool");
         }});
-        put("DOUBLE_STEP", new HashMap<Short, String>()
-        {{
+        put("DOUBLE_STEP", new HashMap<Short, String>() {{
             put((short) 0, "Stone Slab");
             put((short) 1, "Sandstone Slab");
             put((short) 2, "Wooden Slab");
@@ -226,8 +198,7 @@ public class ItemManager
             put((short) 8, "Smooth Stone Slab");
             put((short) 9, "Smooth Sandstone Slab");
         }});
-        put("STEP", new HashMap<Short, String>()
-        {{
+        put("STEP", new HashMap<Short, String>() {{
             put((short) 0, "Stone Slab");
             put((short) 1, "Sandstone Slab");
             put((short) 2, "Wooden Slab");
@@ -237,26 +208,22 @@ public class ItemManager
             put((short) 6, "Nether Brick Slab");
             put((short) 7, "Quartz Slab");
         }});
-        put("MONSTER_EGGS", new HashMap<Short, String>()
-        {{
+        put("MONSTER_EGGS", new HashMap<Short, String>() {{
             put((short) 0, "Stone Monster Egg");
             put((short) 1, "Cobblestone Monster Egg");
             put((short) 2, "Stone Brick Monster Egg");
         }});
-        put("SMOOTH_BRICK", new HashMap<Short, String>()
-        {{
+        put("SMOOTH_BRICK", new HashMap<Short, String>() {{
             put((short) 0, "Stone Bricks");
             put((short) 1, "Mossy Stone Bricks");
             put((short) 2, "Cracked Stone Bricks");
             put((short) 3, "Chiseled Stone Bricks");
         }});
-        put("COAL", new HashMap<Short, String>()
-        {{
+        put("COAL", new HashMap<Short, String>() {{
             put((short) 0, "Coal");
             put((short) 1, "Charcoal");
         }});
-        put("INK_SACK", new HashMap<Short, String>()
-        {{
+        put("INK_SACK", new HashMap<Short, String>() {{
             put((short) 0, "Ink Sack");
             put((short) 1, "Rose Red");
             put((short) 2, "Cactus Green");
@@ -274,8 +241,7 @@ public class ItemManager
             put((short) 14, "Orange Dye");
             put((short) 15, "Bone Meal");
         }});
-        put("POTION", new HashMap<Short, String>()
-        {{
+        put("POTION", new HashMap<Short, String>() {{
             put((short) 0, "Water Bottle");
             put((short) 16, "Awkward Potion");
             put((short) 32, "Thick Potion");
@@ -342,8 +308,7 @@ public class ItemManager
             put((short) 16484, "Splash Potion of Poison");
             put((short) 16489, "Splash Potion of Strength");
         }});
-        put("MONSTER_EGG", new HashMap<Short, String>()
-        {{
+        put("MONSTER_EGG", new HashMap<Short, String>() {{
             put((short) 0, "Spawn");
             put((short) 50, "Spawn Creeper");
             put((short) 51, "Spawn Skeleton");
@@ -370,8 +335,7 @@ public class ItemManager
             put((short) 100, "Spawn Horse");
             put((short) 120, "Spawn Villager");
         }});
-        put("WOOD_STEP", new HashMap<Short, String>()
-        {{
+        put("WOOD_STEP", new HashMap<Short, String>() {{
             put((short) 0, "Oak Wood Slab");
             put((short) 1, "Spruce Wood Slab");
             put((short) 2, "Birch Wood Slab");
@@ -379,16 +343,14 @@ public class ItemManager
             put((short) 4, "Acacia Wood Slab");
             put((short) 5, "Dark Oak Wood Slab");
         }});
-        put("SKULL_ITEM", new HashMap<Short, String>()
-        {{
+        put("SKULL_ITEM", new HashMap<Short, String>() {{
             put((short) 0, "Skeleton Skull");
             put((short) 1, "Wither Skeleton Skull");
             put((short) 2, "Zombie Head");
             put((short) 3, "Head");
             put((short) 4, "Creeper Head");
         }});
-        put("FIREWORK_CHARGE", new HashMap<Short, String>()
-        {{
+        put("FIREWORK_CHARGE", new HashMap<Short, String>() {{
             put((short) 0, "Firework Star");
             put((short) 1, "White Firework Star");
             put((short) 2, "Orange Firework Star");
@@ -407,26 +369,22 @@ public class ItemManager
             put((short) 15, "Red Firework Star");
             put((short) 16, "Black Firework Star");
         }});
-        put("QUARTZ_BLOCK", new HashMap<Short, String>()
-        {{
+        put("QUARTZ_BLOCK", new HashMap<Short, String>() {{
             put((short) 0, "Quartz Block");
             put((short) 1, "Chiseled Quartz");
             put((short) 2, "Quartz Pillar");
         }});
-        put("RAW_FISH", new HashMap<Short, String>()
-        {{
+        put("RAW_FISH", new HashMap<Short, String>() {{
             put((short) 0, "Raw Fish");
             put((short) 1, "Raw Salmon");
             put((short) 2, "Clownfish");
             put((short) 3, "Pufferfish");
         }});
-        put("COOKED_FISH", new HashMap<Short, String>()
-        {{
+        put("COOKED_FISH", new HashMap<Short, String>() {{
             put((short) 0, "Cooked Fish");
             put((short) 1, "Cooked Salmon");
         }});
-        put("STAINED_GLASS", new HashMap<Short, String>()
-        {{
+        put("STAINED_GLASS", new HashMap<Short, String>() {{
             put((short) 0, "White Stained Glass");
             put((short) 1, "Orange Stained Glass");
             put((short) 2, "Magenta Stained Glass");
@@ -444,8 +402,7 @@ public class ItemManager
             put((short) 14, "Red Stained Glass");
             put((short) 15, "Black Stained Glass");
         }});
-        put("STAINED_CLAY", new HashMap<Short, String>()
-        {{
+        put("STAINED_CLAY", new HashMap<Short, String>() {{
             put((short) 0, "White Stained Clay");
             put((short) 1, "Orange Stained Clay");
             put((short) 2, "Magenta Stained Clay");
@@ -463,8 +420,7 @@ public class ItemManager
             put((short) 14, "Red Stained Clay");
             put((short) 15, "Black Stained Clay");
         }});
-        put("STAINED_GLASS_PANE", new HashMap<Short, String>()
-        {{
+        put("STAINED_GLASS_PANE", new HashMap<Short, String>() {{
             put((short) 0, "White Stained Glass Pane");
             put((short) 1, "Orange Stained Glass Pane");
             put((short) 2, "Magenta Stained Glass Pane");
@@ -482,8 +438,7 @@ public class ItemManager
             put((short) 14, "Red Stained Glass Pane");
             put((short) 15, "Black Stained Glass Pane");
         }});
-        put("CARPET", new HashMap<Short, String>()
-        {{
+        put("CARPET", new HashMap<Short, String>() {{
             put((short) 0, "White Carpet");
             put((short) 1, "Orange Carpet");
             put((short) 2, "Magenta Carpet");
@@ -501,19 +456,16 @@ public class ItemManager
             put((short) 14, "Red Carpet");
             put((short) 15, "Black Carpet");
         }});
-        put("DIRT", new HashMap<Short, String>()
-        {{
+        put("DIRT", new HashMap<Short, String>() {{
             put((short) 0, "Dirt");
             put((short) 1, "Coarse Dirt");
             put((short) 2, "Podzol");
         }});
-        put("COBBLE_WALL", new HashMap<Short, String>()
-        {{
+        put("COBBLE_WALL", new HashMap<Short, String>() {{
             put((short) 0, "Cobblestone Wall");
             put((short) 1, "Mossy Cobblestone Wall");
         }});
-        put("RED_ROSE", new HashMap<Short, String>()
-        {{
+        put("RED_ROSE", new HashMap<Short, String>() {{
             put((short) 0, "Poppy");
             put((short) 1, "Blue Orchid");
             put((short) 2, "Allium");
@@ -524,8 +476,7 @@ public class ItemManager
             put((short) 7, "Pink Tulip");
             put((short) 8, "Oxeye Daisy");
         }});
-        put("STONE", new HashMap<Short, String>()
-        {{
+        put("STONE", new HashMap<Short, String>() {{
             put((short) 0, "Stone");
             put((short) 1, "Granite");
             put((short) 2, "Polished Granite");
@@ -534,8 +485,7 @@ public class ItemManager
             put((short) 5, "Andesite");
             put((short) 6, "Polished Andesite");
         }});
-        put("DOUBLE_PLANT", new HashMap<Short, String>()
-        {{
+        put("DOUBLE_PLANT", new HashMap<Short, String>() {{
             put((short) 0, "Sunflower");
             put((short) 1, "Lilac");
             put((short) 2, "Double Tallgrass");
@@ -543,21 +493,18 @@ public class ItemManager
             put((short) 4, "Rose Bush");
             put((short) 5, "Peony");
         }});
-        put("SAND", new HashMap<Short, String>()
-        {{
+        put("SAND", new HashMap<Short, String>() {{
             put((short) 0, "Sand");
             put((short) 1, "Red Sand");
         }});
-        put("PRISMARINE", new HashMap<Short, String>()
-        {{
+        put("PRISMARINE", new HashMap<Short, String>() {{
             put((short) 0, "Prismarine");
             put((short) 1, "Prismarine Bricks");
             put((short) 2, "Dark Prismarine");
         }});
     }};
 
-    private static final HashMap<String, String> oddNames = new HashMap<String, String>()
-    {{
+    private static final HashMap<String, String> oddNames = new HashMap<String, String>() {{
         put("LAPIS_ORE", "Lapis Lazuli Ore");
         put("LAPIS_BLOCK", "Lapis Lazuli Block");
         put("STICKY_PISTON_BASE", "Sticky Piston");

@@ -37,8 +37,8 @@ import java.util.HashMap;
  * MapBuffer to reduce network bandwidth used by map menus.
  */
 public class MapScene {
-    private HashMap<String, MapObject> items = new HashMap<String, MapObject>();
-    private ArrayList<MapObject> ordered = new ArrayList<MapObject>();
+    private HashMap<String, MapObject> items   = new HashMap<String, MapObject>();
+    private ArrayList<MapObject>       ordered = new ArrayList<MapObject>();
 
     /**
      * Adds an object to the scene

@@ -38,11 +38,11 @@ import java.util.Map;
  */
 public class SQLEntry {
     private static final DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final char SQUOTE = '`';
+    private static final char       SQUOTE = '`';
 
     private SQLDatabase database;
-    private SQLTable table;
-    private String name;
+    private SQLTable    table;
+    private String      name;
 
     /**
      * <p>Initializes a new SQL entry</p>
@@ -72,7 +72,6 @@ public class SQLEntry {
      * error along the way.</p>
      *
      * @param container container for the entry data
-     *
      * @return loaded container for the entry data
      */
     public <T extends ISQLEntryData> T getData(T container) {
@@ -94,7 +93,6 @@ public class SQLEntry {
      * there is no data set for the entry's value</p>
      *
      * @param key value key
-     *
      * @return string value
      */
     public String getString(String key) {
@@ -116,7 +114,6 @@ public class SQLEntry {
      * there is no data set for the entry's value</p>
      *
      * @param key value key
-     *
      * @return int value
      */
     public int getInt(String key) {
@@ -137,7 +134,6 @@ public class SQLEntry {
      * there is no data set for the entry's value</p>
      *
      * @param key value key
-     *
      * @return float value
      */
     public float getFloat(String key) {
@@ -158,7 +154,6 @@ public class SQLEntry {
      * there is no data set for the entry's value</p>
      *
      * @param key value key
-     *
      * @return double value
      */
     public double getDouble(String key) {
@@ -179,7 +174,6 @@ public class SQLEntry {
      * there is no data set for the entry's value</p>
      *
      * @param key value key
-     *
      * @return date value
      */
     public Date getDate(String key) {

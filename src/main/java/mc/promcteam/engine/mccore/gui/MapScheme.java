@@ -44,22 +44,22 @@ public class MapScheme {
 
     private static final String SCHEME_FILE = "schemes.yml";
 
-    private static final String FONTS = "fonts";
+    private static final String FONTS  = "fonts";
     private static final String FAMILY = "family";
-    private static final String SIZE = "size";
-    private static final String STYLE = "style";
-    private static final String SPACE = "space";
+    private static final String SIZE   = "size";
+    private static final String STYLE  = "style";
+    private static final String SPACE  = "space";
     private static final String COLORS = "colors";
 
     private HashMap<String, MapImage> images = new HashMap<String, MapImage>();
-    private HashMap<String, MapFont> fonts = new HashMap<String, MapFont>();
-    private HashMap<String, Byte> colors = new HashMap<String, Byte>();
+    private HashMap<String, MapFont>  fonts  = new HashMap<String, MapFont>();
+    private HashMap<String, Byte>     colors = new HashMap<String, Byte>();
 
     private JavaPlugin plugin;
-    private File root;
-    private File folder;
-    private String key = "default";
-    private boolean finalized = false;
+    private File       root;
+    private File       folder;
+    private String     key       = "default";
+    private boolean    finalized = false;
 
     /**
      * Creates a map scheme for the given plugin
@@ -253,7 +253,7 @@ public class MapScheme {
         // Save fonts
         ConfigurationSection fontSection = scheme.createSection(FONTS);
         for (String s : fonts.keySet()) {
-            MapFont font = fonts.get(s);
+            MapFont              font     = fonts.get(s);
             ConfigurationSection fontData = fontSection.createSection(s);
             fontData.set(FAMILY, font.getFont().getFamily());
             fontData.set(SIZE, font.getFont().getSize());
@@ -272,12 +272,12 @@ public class MapScheme {
      * Loads a scheme from the given folder using the current
      * scheme as the default scheme
      *
-     * @param folder        folder containing the scheme images
+     * @param folder folder containing the scheme images
      * @return the loaded scheme or null if invalid
      */
     private MapScheme load(File folder) {
         try {
-            String name = folder.getName();
+            String    name   = folder.getName();
             MapScheme scheme = new MapScheme(name, plugin);
             scheme.key = name.toLowerCase();
 
@@ -293,8 +293,8 @@ public class MapScheme {
             }
 
             // Load data from the config
-            Config configFile = new Config(scheme.plugin, SCHEME_FILE);
-            ConfigurationSection config = configFile.getConfig();
+            Config               configFile = new Config(scheme.plugin, SCHEME_FILE);
+            ConfigurationSection config     = configFile.getConfig();
             if (config.contains(name)) {
                 ConfigurationSection data = config.getConfigurationSection(name);
 
@@ -305,11 +305,11 @@ public class MapScheme {
                         try {
                             if (fonts.contains(s)) {
                                 ConfigurationSection fontData = fonts.getConfigurationSection(s);
-                                MapFont d = this.fonts.get(s);
-                                String family = fontData.getString(FAMILY, d.getFont().getFamily());
-                                int size = fontData.getInt(SIZE, d.getFont().getSize());
-                                int style = fontData.getInt(STYLE, d.getFont().getStyle());
-                                int space = fontData.getInt(SPACE, d.getSpace());
+                                MapFont              d        = this.fonts.get(s);
+                                String               family   = fontData.getString(FAMILY, d.getFont().getFamily());
+                                int                  size     = fontData.getInt(SIZE, d.getFont().getSize());
+                                int                  style    = fontData.getInt(STYLE, d.getFont().getStyle());
+                                int                  space    = fontData.getInt(SPACE, d.getSpace());
                                 scheme.fonts.put(s, new MapFont(new Font(family, style, size), space));
                             }
                         } catch (Exception ex) {

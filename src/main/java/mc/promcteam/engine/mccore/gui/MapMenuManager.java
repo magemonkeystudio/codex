@@ -40,9 +40,9 @@ import java.util.HashMap;
  * Handles setting up
  */
 public class MapMenuManager {
-    private static HashMap<String, MapData> data = new HashMap<>();
+    private static HashMap<String, MapData>  data  = new HashMap<>();
     private static HashMap<Integer, MapData> idMap = new HashMap<>();
-    private static Config config;
+    private static Config                    config;
 
     /**
      * q
@@ -76,7 +76,7 @@ public class MapMenuManager {
 
         // Load the MapView for the
         MapView view = null;
-        int id = config.getConfig().getInt(key, -1);
+        int     id   = config.getConfig().getInt(key, -1);
         if (id >= 0) {
             view = Bukkit.getMap((short) id);
             if (view == null) id = -1;

@@ -40,10 +40,10 @@ import java.util.logging.Level;
  */
 public class DataFile {
 
-    private final String fileName;
+    private final String     fileName;
     private final JavaPlugin plugin;
 
-    private File configFile;
+    private File        configFile;
     private DataSection data;
 
     /**

@@ -80,7 +80,7 @@ public class MobManager {
      */
     public static String getDetailedName(LivingEntity entity) {
         String basic = getName(entity);
-        String type = entity.getType().name();
+        String type  = entity.getType().name();
 
         // Slimes are described with their size
         if (type.equals("SLIME")) {

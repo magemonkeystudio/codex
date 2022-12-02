@@ -1,21 +1,21 @@
 /**
  * MCCore
  * com.rit.sucy.config.Resources
- *
+ * <p>
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2014 Steven Sucy
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -36,8 +36,7 @@ import java.io.OutputStream;
 /**
  * <p>A utility class for copying resource files to the server directory.</p>
  */
-public class Resources
-{
+public class Resources {
 
     /**
      * <p>Copies a resource to the plugin's data folder using the same file name
@@ -46,8 +45,7 @@ public class Resources
      * @param plugin   plugin reference
      * @param resource resource to copy
      */
-    public static void copy(Plugin plugin, String resource)
-    {
+    public static void copy(Plugin plugin, String resource) {
         copy(plugin, plugin.getDataFolder().getAbsolutePath() + File.separator + resource, resource, true);
     }
 
@@ -59,8 +57,7 @@ public class Resources
      * @param resource  resource to copy
      * @param overwrite whether or not to overwrite existing files
      */
-    public static void copy(Plugin plugin, String resource, boolean overwrite)
-    {
+    public static void copy(Plugin plugin, String resource, boolean overwrite) {
         copy(plugin, plugin.getDataFolder().getAbsolutePath() + File.separator + resource, resource, overwrite);
     }
 
@@ -72,8 +69,7 @@ public class Resources
      * @param resource    resource to copy
      * @param destination destination to save the file to
      */
-    public static void copy(Plugin plugin, String resource, String destination)
-    {
+    public static void copy(Plugin plugin, String resource, String destination) {
         copy(plugin, resource, destination, true);
     }
 
@@ -86,12 +82,10 @@ public class Resources
      * @param destination destination to save the file to
      * @param overwrite   whether or not to overwrite existing files
      */
-    public static void copy(Plugin plugin, String resource, String destination, boolean overwrite)
-    {
+    public static void copy(Plugin plugin, String resource, String destination, boolean overwrite) {
         if (!resource.startsWith(File.separator)) resource = File.separator + resource;
         String folder = null;
-        if (destination.contains(File.separator))
-        {
+        if (destination.contains(File.separator)) {
             folder = destination.substring(0, destination.lastIndexOf(File.separator));
         }
 
@@ -99,24 +93,21 @@ public class Resources
         File target = new File(destination);
         if (!overwrite && target.exists()) return;
 
-        try
-        {
+        try {
 
             // Prepare to copy the file
-            InputStream stream = plugin.getClass().getResourceAsStream(resource);
+            InputStream  stream = plugin.getClass().getResourceAsStream(resource);
             OutputStream resStreamOut;
-            int readBytes;
-            byte[] buffer = new byte[4096];
-            if (folder != null)
-            {
+            int          readBytes;
+            byte[]       buffer = new byte[4096];
+            if (folder != null) {
                 File directory = new File(folder);
                 directory.mkdirs();
             }
             resStreamOut = new FileOutputStream(target);
 
             // Copy to the file
-            while ((readBytes = stream.read(buffer)) > 0)
-            {
+            while ((readBytes = stream.read(buffer)) > 0) {
                 resStreamOut.write(buffer, 0, readBytes);
             }
 
@@ -126,8 +117,7 @@ public class Resources
         }
 
         // An error occurred
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             plugin.getLogger().severe("Failed to copy the resource: " + resource);
         }
     }

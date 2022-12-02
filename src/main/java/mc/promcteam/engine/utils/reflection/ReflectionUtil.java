@@ -351,7 +351,7 @@ public class ReflectionUtil {
                         : att.stream().findFirst().get());
 
                 Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
-                value    = (double) Reflex.invokeMethod(getAmount, mod);
+                value = (double) Reflex.invokeMethod(getAmount, mod);
             } else if (getNMSClass("AttributeBase").isInstance(attribute)) {
                 Class<?>                 attributeBaseClass = getNMSClass("AttributeBase");
                 Multimap<Object, Object> attMap             = getAttributes(item);
@@ -363,7 +363,7 @@ public class ReflectionUtil {
                         : att.stream().findFirst().get());
 
                 Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
-                value    = (double) Reflex.invokeMethod(getAmount, mod);
+                value = (double) Reflex.invokeMethod(getAmount, mod);
             }
             if (attribute.equals(getGenericAttribute("ATTACK_DAMAGE"))) {
                 value += 1;

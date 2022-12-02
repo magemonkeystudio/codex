@@ -47,7 +47,6 @@ public class Protection {
      *
      * @param attacker player trying to attack
      * @param target   target of the attack
-     *
      * @return true if the target can be attacked, false otherwise
      */
     public static boolean canAttack(LivingEntity attacker, LivingEntity target) {
@@ -60,7 +59,6 @@ public class Protection {
      * @param attacker    player trying to attack
      * @param target      target of the attack
      * @param passiveAlly whether passive mobs are considered allies
-     *
      * @return true if the target can be attacked, false otherwise
      */
     public static boolean canAttack(LivingEntity attacker, LivingEntity target, boolean passiveAlly) {
@@ -96,7 +94,6 @@ public class Protection {
      *
      * @param attacker entity attacking
      * @param target   ally of the player
-     *
      * @return true if allied, false otherwise
      */
     public static boolean isAlly(LivingEntity attacker, LivingEntity target) {
@@ -108,7 +105,6 @@ public class Protection {
      *
      * @param attacker entity that is attacking
      * @param targets  targets the player is trying to attack
-     *
      * @return list of targets the player can attack
      */
     public static List<LivingEntity> canAttack(LivingEntity attacker, List<LivingEntity> targets) {
@@ -126,7 +122,6 @@ public class Protection {
      *
      * @param attacker entity that is attacking
      * @param targets  targets the player is trying to attack
-     *
      * @return list of targets the player cannot attack
      */
     public static List<LivingEntity> cannotAttack(LivingEntity attacker, List<LivingEntity> targets) {

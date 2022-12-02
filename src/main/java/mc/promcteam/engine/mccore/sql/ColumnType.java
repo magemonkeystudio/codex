@@ -109,7 +109,6 @@ public enum ColumnType {
      *
      * @param type type of the column
      * @param size size of the column
-     *
      * @return column type representation
      */
     public static ColumnType getByValues(String type, int size) {

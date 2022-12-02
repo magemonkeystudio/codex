@@ -41,12 +41,12 @@ import java.util.List;
  */
 public class ChatData implements ISavable {
 
-    NexEngine plugin;
+    NexEngine         plugin;
     ArrayList<Prefix> pluginPrefixes;
     ArrayList<Prefix> unlockedPrefixes;
-    Prefix playerPrefix;
-    String playerName;
-    String displayName;
+    Prefix            playerPrefix;
+    String            playerName;
+    String            displayName;
 
     /**
      * Initial constructor
@@ -131,7 +131,6 @@ public class ChatData implements ISavable {
      * Retrieves the current prefix for the given plugin
      *
      * @param pluginName name of the plugin
-     *
      * @return prefix currently assigned by the plugin
      */
     public Prefix getPrefix(String pluginName) {
@@ -149,7 +148,6 @@ public class ChatData implements ISavable {
      * Retrieves a list of all prefixes unlocked through a plugin
      *
      * @param pluginName name of the plugin that gives the prefixes
-     *
      * @return list of all unlocked prefixes from the plugin
      */
     public List<Prefix> getUnlockedPrefixes(String pluginName) {
@@ -163,7 +161,6 @@ public class ChatData implements ISavable {
      *
      * @param prefix prefix to unlock
      * @param apply  whether or not to apply it right away
-     *
      * @return true if successful, false if already unlocked
      */
     public boolean unlockPrefix(Prefix prefix, boolean apply) {
@@ -183,7 +180,6 @@ public class ChatData implements ISavable {
      *
      * @param pluginName name of the plugin that gives the prefix
      * @param prefixText prefix text (with or without color)
-     *
      * @return true if removed, false if it wasn't unlocked
      */
     public boolean removePrefix(String pluginName, String prefixText) {
@@ -255,7 +251,6 @@ public class ChatData implements ISavable {
      * Checks if the prefix has been obtained for the given plugin
      *
      * @param prefixText the text of the prefix (with or without color)
-     *
      * @return true if the prefix is unlocked
      */
     public boolean hasPrefix(String prefixText) {
@@ -271,7 +266,6 @@ public class ChatData implements ISavable {
      *
      * @param pluginName the plugin that gives the prefix
      * @param prefixText prefix (with or without color)
-     *
      * @return true if the prefix is unlocked, false otherwise
      */
     boolean isPrefixAvailable(String pluginName, String prefixText) {

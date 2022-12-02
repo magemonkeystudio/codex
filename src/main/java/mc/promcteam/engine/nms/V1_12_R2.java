@@ -181,7 +181,7 @@ public class V1_12_R2 implements NMS {
 
 
             Collection<Object> att = attMap.get((String) Reflex.invokeMethod(getName, attributeBaseClass.cast(attackDamage)));
-            Object             mod = attributeModifierClass.cast((att == null || att.isEmpty())
+            Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
                     ? 0
                     : att.stream().findFirst().get());
 

@@ -37,8 +37,8 @@ import java.util.HashMap;
 public abstract class MapMenu {
     private static final HashMap<String, HashMap<String, Object>> MISC = new HashMap<String, HashMap<String, Object>>();
 
-    private static final HashMap<String, Integer> SELECTIONS = new HashMap<String, Integer>();
-    private static final HashMap<String, MapScene> SCENES = new HashMap<String, MapScene>();
+    private static final HashMap<String, Integer>  SELECTIONS = new HashMap<String, Integer>();
+    private static final HashMap<String, MapScene> SCENES     = new HashMap<String, MapScene>();
 
     private MapMenu parent;
 

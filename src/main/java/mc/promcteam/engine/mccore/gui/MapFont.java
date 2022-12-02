@@ -36,8 +36,8 @@ import java.util.HashMap;
  */
 public class MapFont {
     private final HashMap<Character, MapChar> chars = new HashMap<Character, MapChar>();
-    private Font font;
-    private int space;
+    private       Font                        font;
+    private       int                         space;
 
     /**
      * Initializes a MapFont using a Font template
@@ -72,13 +72,12 @@ public class MapFont {
     /**
      * Measures the dimensions of a string
      *
-     * @param str   string to measure
-     *
+     * @param str string to measure
      * @return the dimensions of the string { width, height, yOffset }
      */
     public int[] measureString(String str) {
-        int minY = 999;
-        int maxY = 0;
+        int minY  = 999;
+        int maxY  = 0;
         int width = 0;
         for (int i = 0; i < str.length(); i++) {
             MapChar c = getChar(str.charAt(i));
@@ -94,7 +93,6 @@ public class MapFont {
      * it will be initialized first.
      *
      * @param c character to get the data of
-     *
      * @return character data for the font
      */
     public MapChar getChar(char c) {
@@ -104,15 +102,15 @@ public class MapFont {
                 chars.put(c, new MapChar(new boolean[]{true}, 1, 1, 0));
             } else {
                 BufferedImage buffer = new BufferedImage(32, 32, 2);
-                Graphics2D g = buffer.createGraphics();
+                Graphics2D    g      = buffer.createGraphics();
                 g.setFont(font);
                 Rectangle2D bounds = font.createGlyphVector(g.getFontRenderContext(), c + "").getPixelBounds(g.getFontRenderContext(), 0, 0);
                 if (bounds.getWidth() <= 0 || bounds.getHeight() <= 0 || bounds.getWidth() > 32 || bounds.getHeight() > 32) {
                     chars.put(c, new MapChar(new boolean[]{false}, 1, 1, 0));
                 } else {
                     g.drawString(c + "", 0, -(int) bounds.getY());
-                    boolean[] data = new boolean[(int) (bounds.getWidth() * bounds.getHeight())];
-                    int[] pixels = new int[data.length * 4];
+                    boolean[] data   = new boolean[(int) (bounds.getWidth() * bounds.getHeight())];
+                    int[]     pixels = new int[data.length * 4];
                     buffer.getData().getPixels(0, 0, (int) bounds.getWidth(), (int) bounds.getHeight(), pixels);
                     for (int j = 0; j < bounds.getHeight(); j++) {
                         for (int i = 0; i < bounds.getWidth(); i++) {
@@ -131,9 +129,9 @@ public class MapFont {
      */
     class MapChar {
         private boolean[] data;
-        private int width;
-        private int height;
-        private int base;
+        private int       width;
+        private int       height;
+        private int       base;
 
         private MapChar(boolean[] data, int w, int h, int b) {
             this.data = data;

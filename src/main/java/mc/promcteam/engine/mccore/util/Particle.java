@@ -40,7 +40,7 @@ import java.util.HashMap;
  */
 public class Particle {
 
-    public static final HashMap<String, String> CONVERSION = new HashMap<String, String>() {{
+    public static final HashMap<String, String> CONVERSION  = new HashMap<String, String>() {{
         put("angryVillager", "VILLAGER_ANGRY");
         put("bubble", "WATER_BUBBLE");
         put("blockcrack_", "BLOCK_CRACK");
@@ -78,9 +78,9 @@ public class Particle {
         put("townaura", "TOWN_AURA");
         put("witchMagic", "SPELL_WITCH");
     }};
-    private static Class<?> packetClass;
-    private static Class<?> particleEnum;
-    private static boolean initialized = false;
+    private static      Class<?>                packetClass;
+    private static      Class<?>                particleEnum;
+    private static      boolean                 initialized = false;
 
     private static void initialize() {
         initialized = true;
@@ -353,8 +353,8 @@ public class Particle {
             if (CONVERSION.containsKey(particle)) {
                 particle = CONVERSION.get(particle);
             } else particle = particle.toUpperCase().replace(" ", "_");
-            Object[] values = particleEnum.getEnumConstants();
-            Object enumValue = null;
+            Object[] values    = particleEnum.getEnumConstants();
+            Object   enumValue = null;
             for (Object value : values) {
                 if (value.toString().equals(particle)) {
                     enumValue = value;

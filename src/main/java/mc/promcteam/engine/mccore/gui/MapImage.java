@@ -46,7 +46,7 @@ import java.util.HashMap;
  */
 public class MapImage {
     // Available map palette colors
-    private static final Color[] colors = new Color[]{
+    private static final Color[]                  colors     = new Color[]{
             new Color(0, 0, 0, 0), new Color(0, 0, 0, 0),
             new Color(0, 0, 0, 0), new Color(0, 0, 0, 0),
             c(89, 125, 39), c(109, 153, 48), c(127, 178, 56), c(67, 94, 29),
@@ -104,10 +104,10 @@ public class MapImage {
         put('e', MapImage.matchColor(new Color(254, 254, 63)));
         put('f', MapImage.matchColor(new Color(255, 255, 255)));
     }};
-    protected int offset;
-    private byte[] data;
-    private int width;
-    private int height;
+    protected            int                      offset;
+    private              byte[]                   data;
+    private              int                      width;
+    private              int                      height;
 
     /**
      * Initializes a default map image matching
@@ -159,7 +159,6 @@ public class MapImage {
      * it to a format that works better with the map canvas
      *
      * @param file file to load from
-     *
      * @throws IOException
      */
     public MapImage(File file) throws IOException {
@@ -178,7 +177,6 @@ public class MapImage {
      * @param r red channel
      * @param g green channel
      * @param b blue channel
-     *
      * @return color object
      */
     private static Color c(int r, int g, int b) {
@@ -191,14 +189,13 @@ public class MapImage {
      *
      * @param c1 first color to compare
      * @param c2 second color to compare
-     *
      * @return the weighted similarity value between the two
      */
     private static double getDistance(Color c1, Color c2) {
-        double rmean = (c1.getRed() + c2.getRed()) * 0.5;
-        double r = c1.getRed() - c2.getRed();
-        double g = c1.getGreen() - c2.getGreen();
-        int b = c1.getBlue() - c2.getBlue();
+        double rmean   = (c1.getRed() + c2.getRed()) * 0.5;
+        double r       = c1.getRed() - c2.getRed();
+        double g       = c1.getGreen() - c2.getGreen();
+        int    b       = c1.getBlue() - c2.getBlue();
         double weightR = 2.0 + rmean * 0.00390625;
         double weightG = 4.0;
         double weightB = 2.0 + (255.0 - rmean) * 0.00390625;
@@ -209,12 +206,11 @@ public class MapImage {
      * Converts an image to a byte array to use for map drawing
      *
      * @param image image to convert
-     *
      * @return data byte array
      */
     private static byte[] imageToBytes(Image image) {
-        BufferedImage temp = new BufferedImage(image.getWidth(null), image.getHeight(null), 2);
-        Graphics2D graphics = temp.createGraphics();
+        BufferedImage temp     = new BufferedImage(image.getWidth(null), image.getHeight(null), 2);
+        Graphics2D    graphics = temp.createGraphics();
         graphics.drawImage(image, 0, 0, null);
         graphics.dispose();
 
@@ -233,14 +229,13 @@ public class MapImage {
      * is available for the map canvas.
      *
      * @param color color to convert to a map palette color
-     *
      * @return map palette color closest to the original
      */
     public static byte matchColor(Color color) {
         if (color.getAlpha() < 128) return 0;
 
-        int index = 0;
-        double best = Double.MAX_VALUE;
+        int    index = 0;
+        double best  = Double.MAX_VALUE;
 
         for (int i = 4; i < colors.length; i++) {
             double distance = getDistance(color, colors[i]);
@@ -258,7 +253,6 @@ public class MapImage {
      * Retrieves a color by a given Map Palette ID
      *
      * @param id map palette ID
-     *
      * @return java color represented by the ID
      */
     public static Color getColor(byte id) {
@@ -347,13 +341,12 @@ public class MapImage {
      * @param str   string to draw
      * @param x     starting horizontal position
      * @param y     baseline position of the text
-     *
      * @return x-coordinate at the end of the render
      */
     public int drawString(MapFont font, byte color, String str, int x, int y) {
         for (int i = 0; i < str.length() && x < width; i++) {
-            MapFont.MapChar c = font.getChar(str.charAt(i));
-            boolean[] data = c.getData();
+            MapFont.MapChar c    = font.getChar(str.charAt(i));
+            boolean[]       data = c.getData();
             for (int j = 0; j < c.getWidth(); j++) {
                 int a = j + x;
                 for (int k = 0; k < c.getHeight(); k++) {
@@ -376,13 +369,12 @@ public class MapImage {
      * @param str   string to draw
      * @param x     starting horizontal position
      * @param y     baseline position of the text
-     *
      * @return x-coordinate at the end of the render
      */
     public int drawColorString(MapFont font, byte color, String str, int x, int y, char token) {
         byte currentColor = color;
-        int first = 0;
-        int next = str.indexOf(ChatColor.COLOR_CHAR);
+        int  first        = 0;
+        int  next         = str.indexOf(ChatColor.COLOR_CHAR);
         while (next >= 0) {
             if (first != next) {
                 String part = str.substring(first, next);

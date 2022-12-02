@@ -47,7 +47,6 @@ public class Chat {
      * Retrieves the player with the given name
      *
      * @param playerName name of the player
-     *
      * @return chat data associated with the player
      */
     public static ChatData getPlayerData(String playerName) {
@@ -56,9 +55,9 @@ public class Chat {
 
         // Initialize data if it doesn't exist
         if (!players.containsKey(playerName)) {
-            NexEngine core = (NexEngine) Bukkit.getPluginManager().getPlugin("ProMCCore");
-            Config configFile = core.getConfigFile(core, "data");
-            ChatData data = new ChatData(configFile.getConfig(), playerName);
+            NexEngine core       = (NexEngine) Bukkit.getPluginManager().getPlugin("ProMCCore");
+            Config    configFile = core.getConfigFile(core, "data");
+            ChatData  data       = new ChatData(configFile.getConfig(), playerName);
             configFile.addSavable(data, playerName + ".");
             players.put(playerName, data);
         }

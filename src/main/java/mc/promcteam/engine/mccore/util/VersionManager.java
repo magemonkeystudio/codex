@@ -42,7 +42,7 @@ import java.util.regex.Pattern;
  * ways to detect what version is currently active.</p>
  */
 public class VersionManager {
-    private static final String ID_REGEX = ".{8}-.{4}-.{4}-.{4}-.{12}";
+    private static final String  ID_REGEX   = ".{8}-.{4}-.{4}-.{4}-.{12}";
     private static final Pattern ID_PATTERN = Pattern.compile(ID_REGEX);
 
     public static int V1_5_2 = 10502;
@@ -56,8 +56,8 @@ public class VersionManager {
     public static int V1_8_3 = 10803;
     public static int V1_8_8 = 10808;
     public static int V1_9_0 = 10900;
-    public static int V1_13 = 11300;
-    public static int V1_17 = 11700;
+    public static int V1_13  = 11300;
+    public static int V1_17  = 11700;
 
     /**
      * The build number for the first 1.5.2 version
@@ -151,7 +151,7 @@ public class VersionManager {
     public static int MC_1_7_8_MAX = 10708;
 
     private static ServerType server;
-    private static int version = -1;
+    private static int        version = -1;
 
     /**
      * <p>Initializes the version data</p>
@@ -175,7 +175,7 @@ public class VersionManager {
                 int i = vs.indexOf("MC:") + 4;
                 int j = vs.indexOf(")", i);
                 if (i < 0 || j < 0) return;
-                String v = vs.substring(i, j);
+                String   v      = vs.substring(i, j);
                 String[] pieces = v.split("\\.");
                 version = Integer.parseInt(pieces[0]) * 10000 + Integer.parseInt(pieces[1]) * 100;
                 if (pieces.length > 2) {
@@ -338,7 +338,7 @@ public class VersionManager {
      * @param amount amount to set the max health to
      */
     public static void setMaxHealth(LivingEntity entity, double amount) {
-        double prevMax = entity.getMaxHealth();
+        double prevMax    = entity.getMaxHealth();
         double prevHealth = entity.getHealth();
 
         // 1.5.2 and earlier used integer values
@@ -407,7 +407,7 @@ public class VersionManager {
     @SuppressWarnings("unchecked")
     public static Player[] getOnlinePlayers() {
         if (isVersionAtLeast(V1_8_8)) {
-            ArrayList<Player> list = new ArrayList<Player>();
+            ArrayList<Player>            list   = new ArrayList<Player>();
             Collection<? extends Player> online = Bukkit.getOnlinePlayers();
             for (Object player : online) {
                 if (player instanceof Player) {

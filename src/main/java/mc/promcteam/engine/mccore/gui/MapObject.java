@@ -30,13 +30,13 @@ public class MapObject {
     private static final int[] FLAG_BOUNDS = new int[4];
 
     protected MapImage img;
-    protected int x;
-    protected int y;
-    protected boolean visible;
+    protected int      x;
+    protected int      y;
+    protected boolean  visible;
 
-    private boolean first = true;
-    private int lastX = 0;
-    private int lastY = 0;
+    private boolean first       = true;
+    private int     lastX       = 0;
+    private int     lastY       = 0;
     private boolean lastVisible = false;
 
     /**

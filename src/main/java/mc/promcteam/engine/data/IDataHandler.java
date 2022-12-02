@@ -16,19 +16,20 @@ import java.util.function.Function;
 
 public abstract class IDataHandler<P extends NexPlugin<P>, U extends IAbstractUser<P>> {
 
-    protected static final   String              COL_USER_UUID        = "uuid";
-    protected static final   String              COL_USER_NAME        = "name";
-    protected static final   String              COL_USER_LAST_ONLINE = "last_online";
-    private static final     ItemStackSerializer ITEM_SERIALIZER      = new ItemStackSerializer();
-    @NotNull protected final P                   plugin;
-    protected final          String              TABLE_USERS;
-    private final            String              url;
-    protected                StorageType         dataType;
-    protected                Connection          con;
-    protected                long                lastLive;
-    protected                Gson                gson;
-    private                  String              user;
-    private                  String              password;
+    protected static final String              COL_USER_UUID        = "uuid";
+    protected static final String              COL_USER_NAME        = "name";
+    protected static final String              COL_USER_LAST_ONLINE = "last_online";
+    private static final   ItemStackSerializer ITEM_SERIALIZER      = new ItemStackSerializer();
+    @NotNull
+    protected final        P                   plugin;
+    protected final        String              TABLE_USERS;
+    private final          String              url;
+    protected              StorageType         dataType;
+    protected              Connection          con;
+    protected              long                lastLive;
+    protected              Gson                gson;
+    private                String              user;
+    private                String              password;
 
     protected IDataHandler(@NotNull P plugin) throws SQLException {
         this.plugin = plugin;
@@ -90,8 +91,12 @@ public abstract class IDataHandler<P extends NexPlugin<P>, U extends IAbstractUs
     private final void close() {
         try {
             if (con != null) con.close();
-        } catch (SQLException se) {} finally {
-            try {if (con != null) con.close();} catch (SQLException se) {}
+        } catch (SQLException se) {
+        } finally {
+            try {
+                if (con != null) con.close();
+            } catch (SQLException se) {
+            }
         }
     }
 

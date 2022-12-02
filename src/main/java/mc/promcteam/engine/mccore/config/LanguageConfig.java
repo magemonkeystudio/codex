@@ -54,10 +54,10 @@ import java.util.regex.Pattern;
  */
 public class LanguageConfig extends Config {
 
-    private static final String EXPAND_FONT_REGEX = "\\{expandFront\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
-    private static final Pattern EXPAND_FRONT = Pattern.compile(EXPAND_FONT_REGEX);
-    private static final String EXPAND_BACK_REGEX = "\\{expandBack\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
-    private static final Pattern EXPAND_BACK = Pattern.compile(EXPAND_BACK_REGEX);
+    private static final String  EXPAND_FONT_REGEX = "\\{expandFront\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
+    private static final Pattern EXPAND_FRONT      = Pattern.compile(EXPAND_FONT_REGEX);
+    private static final String  EXPAND_BACK_REGEX = "\\{expandBack\\(([^,]+),([0-9]+),([0-9]+)\\)\\}";
+    private static final Pattern EXPAND_BACK       = Pattern.compile(EXPAND_BACK_REGEX);
 
     /**
      * <p>Constructs a language config from the defaults in the file</p>
@@ -89,7 +89,6 @@ public class LanguageConfig extends Config {
      * filters before sending the message.</p>
      *
      * @param key key for the language message
-     *
      * @return unfiltered message or null if an invalid key
      */
     public List<String> getMessage(String key) {
@@ -107,7 +106,6 @@ public class LanguageConfig extends Config {
      * @param player     whether or not it is for a player
      * @param filterType type of built-in filter to use
      * @param filters    custom filters to use
-     *
      * @return filtered message or null if an invalid key
      */
     public List<String> getMessage(String key, boolean player, FilterType filterType, CustomFilter... filters) {
@@ -160,11 +158,11 @@ public class LanguageConfig extends Config {
     private void filterSizer(StringBuilder sb, boolean front, boolean player) {
         Pattern regex = front ? EXPAND_FRONT : EXPAND_BACK;
         Matcher match = regex.matcher(sb);
-        int size = sb.length();
+        int     size  = sb.length();
         while (match.find()) {
-            int playerSize = Integer.parseInt(match.group(2));
-            int consoleSize = Integer.parseInt(match.group(3));
-            String string = match.group(1);
+            int    playerSize  = Integer.parseInt(match.group(2));
+            int    consoleSize = Integer.parseInt(match.group(3));
+            String string      = match.group(1);
             if (player) {
                 sb.replace(match.start() + sb.length() - size, match.end(),
                         (TextSizer.measureString(string) > playerSize - 2 ? string : TextSizer.expand(string, playerSize, front)));
@@ -185,7 +183,7 @@ public class LanguageConfig extends Config {
         if (index >= 0) {
             sb.delete(index, index + 7);
             String without = sb.toString();
-            int size = TextSizer.measureString(without);
+            int    size    = TextSizer.measureString(without);
             for (int i = 0; i < (320 - size) / 6; i++) {
                 sb.insert(index, '-');
             }

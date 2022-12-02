@@ -64,7 +64,7 @@ public abstract class CommandHandler implements CommandExecutor {
     /**
      * Usage title
      */
-    protected String title;
+    protected       String title;
 
     /**
      * Constructor
@@ -214,7 +214,7 @@ public abstract class CommandHandler implements CommandExecutor {
 
         // Get the maximum length
         int maxSize = 0;
-        int index = 0;
+        int index   = 0;
         for (String key : keys) {
             if (!canUseCommand(sender, commands.get(key)))
                 continue;

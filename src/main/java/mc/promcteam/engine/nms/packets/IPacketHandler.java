@@ -1,13 +1,12 @@
 package mc.promcteam.engine.nms.packets;
 
 import mc.promcteam.engine.nms.packets.events.EnginePlayerPacketEvent;
-import org.jetbrains.annotations.NotNull;
-
 import mc.promcteam.engine.nms.packets.events.EngineServerPacketEvent;
+import org.jetbrains.annotations.NotNull;
 
 public interface IPacketHandler {
 
-	void managePlayerPacket(@NotNull EnginePlayerPacketEvent event);
-	
-	void manageServerPacket(@NotNull EngineServerPacketEvent event);
+    void managePlayerPacket(@NotNull EnginePlayerPacketEvent event);
+
+    void manageServerPacket(@NotNull EngineServerPacketEvent event);
 }

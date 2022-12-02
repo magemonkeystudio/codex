@@ -155,7 +155,8 @@ public class StringUT {
         for (int i = 0; i < raw.length; i++) {
             try {
                 slots[i] = Integer.parseInt(raw[i].trim());
-            } catch (NumberFormatException ex) {}
+            } catch (NumberFormatException ex) {
+            }
         }
         return slots;
     }
@@ -279,16 +280,22 @@ public class StringUT {
     @NotNull
     public static String getColor(String str) {
         StringBuilder builder = new StringBuilder();
-        int j = 0;
+        int           j       = 0;
         while (true) {
             int t = str.indexOf('§', j);
             j = str.indexOf('&', j);
-            if (t >= 0 && (j < 0 || t < j)) { j = t; }
+            if (t >= 0 && (j < 0 || t < j)) {
+                j = t;
+            }
             if (j >= 0) {
                 j++;
-                if (j >= str.length()) { break; }
+                if (j >= str.length()) {
+                    break;
+                }
                 ChatColor color = ChatColor.getByChar(str.charAt(j));
-                if (color != null) { builder.append(color); }
+                if (color != null) {
+                    builder.append(color);
+                }
             } else {
                 break;
             }

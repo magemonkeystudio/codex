@@ -32,8 +32,6 @@ import mc.promcteam.engine.mccore.util.TextFormatter;
 import mc.promcteam.engine.mccore.util.TextSizer;
 import mc.promcteam.engine.mccore.util.TextSplitter;
 import mc.promcteam.engine.mccore.util.VersionManager;
-import mc.promcteam.engine.utils.Reflex;
-import mc.promcteam.engine.utils.reflection.ReflectionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -184,14 +182,14 @@ public class CommandManager {
                 CommandMap map = (CommandMap) field.get(Bukkit.getPluginManager());
                 map.register(command.getName(), command);
             } else {
-                Field field = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
+                Field field    = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
                 Field commands = Class.forName("be.seeseemelk.mockbukkit.plugin.PluginManagerMock").getDeclaredField("commands");
                 if (!field.canAccess(Bukkit.getServer())) field.setAccessible(true);
                 if (!commands.canAccess(Bukkit.getServer().getPluginManager())) commands.setAccessible(true);
-                CommandMap                          map  = (CommandMap) field.get(Bukkit.getServer());
+                CommandMap          map  = (CommandMap) field.get(Bukkit.getServer());
                 List<PluginCommand> cmds = (List<PluginCommand>) commands.get(Bukkit.getServer().getPluginManager());
 
-                Method m = Class.forName("org.bukkit.command.PluginCommandUtils").getMethod("createPluginCommand", String.class, Plugin.class);
+                Method        m   = Class.forName("org.bukkit.command.PluginCommandUtils").getMethod("createPluginCommand", String.class, Plugin.class);
                 PluginCommand cmd = (PluginCommand) m.invoke(null, command.getName(), command.getPlugin());
 
                 cmds.add(cmd);

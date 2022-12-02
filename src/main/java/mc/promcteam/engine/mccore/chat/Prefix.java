@@ -34,9 +34,9 @@ import org.bukkit.ChatColor;
 public class Prefix {
 
     ChatColor braceColor;
-    String pluginName;
-    String textWithoutColor;
-    String text;
+    String    pluginName;
+    String    textWithoutColor;
+    String    text;
 
     /**
      * Constructor for prefixes with white square braces

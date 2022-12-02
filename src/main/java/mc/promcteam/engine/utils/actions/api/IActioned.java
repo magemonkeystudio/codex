@@ -5,6 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public interface IActioned {
 
-	@NotNull
-	public ActionManipulator getActions();
+    @NotNull
+    public ActionManipulator getActions();
 }

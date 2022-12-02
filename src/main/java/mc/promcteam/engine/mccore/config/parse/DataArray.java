@@ -1,21 +1,21 @@
 /**
  * MCCore
  * com.rit.sucy.config.parse.DataArray
- *
+ * <p>
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2014 Steven Sucy
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -32,24 +32,21 @@ import java.util.List;
 /**
  * Represents a section of a config
  */
-public class DataArray
-{
+public class DataArray {
     // Values attached to each node
     private ArrayList<Object> data = new ArrayList<Object>();
 
     /**
      * Clears all data and comments from the data section
      */
-    public void clear()
-    {
+    public void clear() {
         data.clear();
     }
 
     /**
      * @return number of key/value pairs
      */
-    public int size()
-    {
+    public int size() {
         return data.size();
     }
 
@@ -58,8 +55,7 @@ public class DataArray
      *
      * @return values contained in the keys for this section
      */
-    public ArrayList<Object> values()
-    {
+    public ArrayList<Object> values() {
         return new ArrayList<Object>(data);
     }
 
@@ -68,8 +64,7 @@ public class DataArray
      *
      * @param value value to add
      */
-    public void add(Object value)
-    {
+    public void add(Object value) {
         data.add(value);
     }
 
@@ -79,8 +74,7 @@ public class DataArray
      * @param index index to use
      * @return fetched value
      */
-    public Object get(int index)
-    {
+    public Object get(int index) {
         return data.get(index);
     }
 
@@ -89,8 +83,7 @@ public class DataArray
      *
      * @return string list representation
      */
-    public List<String> asStringList()
-    {
+    public List<String> asStringList() {
         ArrayList<String> list = new ArrayList<String>();
         for (Object obj : data)
             list.add(obj.toString());
@@ -102,11 +95,10 @@ public class DataArray
      *
      * @return data list representation
      */
-    public List<DataSection> asDataList()
-    {
+    public List<DataSection> asDataList() {
         ArrayList<DataSection> list = new ArrayList<DataSection>();
         for (Object obj : data)
-            list.add((DataSection)obj);
+            list.add((DataSection) obj);
         return list;
     }
 }

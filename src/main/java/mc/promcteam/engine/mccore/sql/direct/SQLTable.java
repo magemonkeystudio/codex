@@ -54,7 +54,7 @@ public class SQLTable {
             DELETE_ENTRY;
 
     private SQLDatabase database;
-    private String name;
+    private String      name;
 
     /**
      * <p>Constructs a new table. This should only be called by
@@ -93,9 +93,9 @@ public class SQLTable {
 
         // Check if the table exists
         try {
-            DatabaseMetaData meta = database.getMeta();
-            ResultSet result = meta.getColumns(null, null, this.name, name);
-            boolean exists = result.next();
+            DatabaseMetaData meta   = database.getMeta();
+            ResultSet        result = meta.getColumns(null, null, this.name, name);
+            boolean          exists = result.next();
             result.close();
             return exists;
         }

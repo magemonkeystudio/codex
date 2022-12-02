@@ -1,21 +1,21 @@
 /**
  * MCCore
  * com.rit.sucy.gui.MapListener
- *
+ * <p>
  * The MIT License (MIT)
- *
+ * <p>
  * Copyright (c) 2014 Steven Sucy
- *
+ * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * <p>
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * <p>
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -40,8 +40,7 @@ import org.bukkit.util.Vector;
 /**
  * Handles controls events for map menus
  */
-public class MapListener implements Listener
-{
+public class MapListener implements Listener {
     private static final Vector UP   = new Vector(0, 1, 0);
     private static final Vector ZERO = new Vector(0, 0, 0);
 
@@ -53,8 +52,7 @@ public class MapListener implements Listener
      *
      * @param core MCCore reference
      */
-    public MapListener(NexEngine core)
-    {
+    public MapListener(NexEngine core) {
         core.getServer().getPluginManager().registerEvents(this, core);
     }
 
@@ -64,8 +62,7 @@ public class MapListener implements Listener
      * @param event event details
      */
     @EventHandler
-    public void onMove(PlayerMoveEvent event)
-    {
+    public void onMove(PlayerMoveEvent event) {
         // If not holding onto a map, ignore it
         MapData data = MapMenuManager.getActiveMenuData(event.getPlayer());
         if (data == null) return;
@@ -89,8 +86,7 @@ public class MapListener implements Listener
         moving.normalize();
 
         // Ignore repeated updates, only want when they press down
-        if (System.currentTimeMillis() - last < 300)
-        {
+        if (System.currentTimeMillis() - last < 300) {
             last = System.currentTimeMillis();
             return;
         }
@@ -110,12 +106,11 @@ public class MapListener implements Listener
         // Forwards is a value of 1, so get close to that for up
         if (dot > 0.5) menu.onUp(event.getPlayer());
 
-        // Backwards is -1, so close to that will be down
+            // Backwards is -1, so close to that will be down
         else if (dot < -0.5) menu.onDown(event.getPlayer());
 
-        // Otherwise, check left and right
-        else
-        {
+            // Otherwise, check left and right
+        else {
 
             // Change the forward to face to the right
             facing.crossProduct(UP);
@@ -124,7 +119,7 @@ public class MapListener implements Listener
             // Positive would face to the right since that's the new forward
             if (dot > 0) menu.onRight(event.getPlayer());
 
-            // Otherwise it was left
+                // Otherwise it was left
             else menu.onLeft(event.getPlayer());
         }
     }
@@ -135,15 +130,13 @@ public class MapListener implements Listener
      * @param event event details
      */
     @EventHandler
-    public void onInteract(PlayerInteractEvent event)
-    {
+    public void onInteract(PlayerInteractEvent event) {
         // If not holding onto a map, ignore it
         MapData data = MapMenuManager.getActiveMenuData(event.getPlayer());
         if (data == null) return;
 
         // Left clicking selects
-        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK)
-        {
+        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
             event.setCancelled(true);
             data.getMenu(event.getPlayer()).onSelect(event.getPlayer());
         }
@@ -155,15 +148,13 @@ public class MapListener implements Listener
      * @param event event details
      */
     @EventHandler
-    public void onInteract(PlayerToggleSneakEvent event)
-    {
+    public void onInteract(PlayerToggleSneakEvent event) {
         // If not holding onto a map, ignore it
         MapData data = MapMenuManager.getActiveMenuData(event.getPlayer());
         if (data == null) return;
 
         // Starting to sneak goes back
-        if (event.isSneaking())
-        {
+        if (event.isSneaking()) {
             data.getMenu(event.getPlayer()).onBack(event.getPlayer());
             data.back(event.getPlayer());
         }
@@ -175,11 +166,9 @@ public class MapListener implements Listener
      * @param event event details
      */
     @EventHandler
-    public void onQuit(PlayerQuitEvent event)
-    {
+    public void onQuit(PlayerQuitEvent event) {
         MapData data = MapMenuManager.getActiveMenuData(event.getPlayer());
-        if (data != null)
-        {
+        if (data != null) {
             MapMenu menu = data.getMenu(event.getPlayer());
             menu.onExit(event.getPlayer());
             data.clear(event.getPlayer());

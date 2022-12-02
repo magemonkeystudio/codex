@@ -39,14 +39,14 @@ import java.util.List;
 public class PlayerBoards {
     private final List<Board> boards = new ArrayList<Board>();
 
-    private final String player;
+    private final String  player;
     /**
      * Whether or not the player's scoreboard is cycling
      */
-    protected boolean cycling;
-    private Board currentBoard;
-    private boolean enabled = true;
-    private int current = 0;
+    protected     boolean cycling;
+    private       Board   currentBoard;
+    private       boolean enabled = true;
+    private       int     current = 0;
 
     /**
      * Constructor

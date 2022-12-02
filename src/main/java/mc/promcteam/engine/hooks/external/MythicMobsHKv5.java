@@ -1,7 +1,5 @@
 package mc.promcteam.engine.hooks.external;
 
-import io.lumine.mythic.api.MythicPlugin;
-import io.lumine.mythic.api.MythicProvider;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.MythicMob;
@@ -61,6 +59,7 @@ public class MythicMobsHKv5 extends NHook<NexEngine> implements IMythicHook {
 
         return mob != null ? mob.getType() : null;
     }
+
     @Override
     public boolean isDropTable(@NotNull String table) {
         return mm.getDropManager().getDropTable(table) != null && mm.getDropManager().getDropTable(table).isPresent();

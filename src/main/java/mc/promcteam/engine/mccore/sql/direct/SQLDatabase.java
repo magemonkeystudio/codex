@@ -206,9 +206,9 @@ public class SQLDatabase {
 
         // Check if the table exists
         try {
-            DatabaseMetaData meta = connection.getMetaData();
-            ResultSet result = meta.getTables(null, null, name, null);
-            boolean exists = result.next();
+            DatabaseMetaData meta   = connection.getMetaData();
+            ResultSet        result = meta.getTables(null, null, name, null);
+            boolean          exists = result.next();
             result.close();
             return exists;
         }

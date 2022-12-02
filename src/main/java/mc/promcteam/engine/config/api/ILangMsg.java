@@ -18,8 +18,8 @@ import java.util.regex.Pattern;
 
 public class ILangMsg {
 
-    private static final Pattern PATTERN_MESSAGE = Pattern.compile("(\\{message:)+(.)+?(\\})+(.*?)(\\})?");
-    private static final String[] MESSAGE_ARGUMENTS = new String[]{"type", "prefix", "fadeIn", "stay", "fadeOut"};
+    private static final Pattern   PATTERN_MESSAGE   = Pattern.compile("(\\{message:)+(.)+?(\\})+(.*?)(\\})?");
+    private static final String[]  MESSAGE_ARGUMENTS = new String[]{"type", "prefix", "fadeIn", "stay", "fadeOut"};
     private static final Pattern[] PATTERN_ARGUMENTS = new Pattern[MESSAGE_ARGUMENTS.length];
 
     static {
@@ -29,13 +29,13 @@ public class ILangMsg {
     }
 
     private ILangTemplate template;
-    private String msgDefault;
-    private String msgColor;
-    private String path;
+    private String        msgDefault;
+    private String        msgColor;
+    private String        path;
 
-    private OutputType out = OutputType.CHAT;
-    private boolean isPrefix = true;
-    private int[] titlesTimes = new int[3];
+    private OutputType out         = OutputType.CHAT;
+    private boolean    isPrefix    = true;
+    private int[]      titlesTimes = new int[3];
 
     public ILangMsg(@NotNull ILangTemplate template, @NotNull String msg) {
         this.template = template;
@@ -67,13 +67,13 @@ public class ILangMsg {
         if (!mArgs.find()) return false;
 
         // String with only args
-        String extract = mArgs.group(0);
+        String extract   = mArgs.group(0);
         String arguments = extract.replace("{message:", "").replace("}", "").trim();
         this.msgColor = msg.replace(extract, "");
 
         for (int i = 0; i < MESSAGE_ARGUMENTS.length; i++) {
             // Search for flag of this parameter
-            String argType = MESSAGE_ARGUMENTS[i];
+            String  argType = MESSAGE_ARGUMENTS[i];
             Pattern pArgVal = PATTERN_ARGUMENTS[i];
             Matcher mArgVal = pArgVal.matcher(arguments); // TODO 200ms
 
@@ -197,7 +197,7 @@ public class ILangMsg {
                 List<String> list = this.asList();
                 if (list.isEmpty()) return;
 
-                String title = list.get(0);
+                String title    = list.get(0);
                 String subtitle = list.size() > 1 ? list.get(1) : "";
                 player.sendTitle(title, subtitle, this.titlesTimes[0], this.titlesTimes[1], this.titlesTimes[2]);
             }

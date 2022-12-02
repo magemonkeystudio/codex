@@ -46,15 +46,14 @@ public class JSONParser {
      *
      * @param plugin plugin containing the embedded resource
      * @param path   path to the resource (not including the beginning slash)
-     *
      * @return loaded data
      */
     public static DataSection parseResource(Plugin plugin, String path) {
         try {
-            InputStream read = plugin.getClass().getResourceAsStream("/" + path);
+            InputStream   read    = plugin.getClass().getResourceAsStream("/" + path);
             StringBuilder builder = new StringBuilder();
-            byte[] data = new byte[1024];
-            int bytes;
+            byte[]        data    = new byte[1024];
+            int           bytes;
             do {
                 bytes = read.read(data);
                 builder.append(new String(data, 0, bytes, "UTF-8"));
@@ -75,7 +74,6 @@ public class JSONParser {
      * will return an empty DataSection object.
      *
      * @param path path to the file load from
-     *
      * @return loaded data
      */
     public static DataSection parseFile(String path) {
@@ -88,14 +86,13 @@ public class JSONParser {
      * will return an empty DataSection object.
      *
      * @param file the file load from
-     *
      * @return loaded data
      */
     public static DataSection parseFile(File file) {
         try {
             if (file.exists()) {
                 FileInputStream read = new FileInputStream(file);
-                byte[] data = new byte[(int) file.length()];
+                byte[]          data = new byte[(int) file.length()];
                 read.read(data);
                 read.close();
                 return parseText(new String(data, "UTF-8"));
@@ -111,8 +108,7 @@ public class JSONParser {
      * Parses the text read in from a file. If a null string
      * is passed in, this will return an empty data section.
      *
-     * @param text  text to parse
-     *
+     * @param text text to parse
      * @return parsed data
      */
     public static DataSection parseText(String text) {
@@ -125,7 +121,6 @@ public class JSONParser {
      * Parses JSON data into DataSection objects
      *
      * @param text data to parse
-     *
      * @return parsed data
      */
     private static DataSection parse(String text) {
@@ -139,7 +134,7 @@ public class JSONParser {
 
         Object value;
         String key;
-        int next, end;
+        int    next, end;
         while (text.charAt(i) != '}') {
             i++;
 
@@ -184,7 +179,6 @@ public class JSONParser {
      * Parses JSON data into DataSection objects
      *
      * @param text data to parse
-     *
      * @return parsed data
      */
     private static DataArray parseArray(String text) {
@@ -197,7 +191,7 @@ public class JSONParser {
         }
 
         Object value;
-        int end;
+        int    end;
         while (text.charAt(i) != ']') {
             i++;
 
@@ -231,8 +225,8 @@ public class JSONParser {
     /**
      * Grabs the next index of a terminating character
      *
-     * @param text    text to search through
-     * @param index   index to start searching at
+     * @param text  text to search through
+     * @param index index to start searching at
      * @return terminating character index
      */
     private static int next(String text, int index) {
@@ -265,8 +259,8 @@ public class JSONParser {
      */
     public static void save(DataSection data, File file) {
         try {
-            FileOutputStream out = new FileOutputStream(file);
-            BufferedWriter write = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
+            FileOutputStream out   = new FileOutputStream(file);
+            BufferedWriter   write = new BufferedWriter(new OutputStreamWriter(out, "UTF-8"));
 
             save(data, write);
 
@@ -279,8 +273,7 @@ public class JSONParser {
     /**
      * Dumps the data contents into the stream
      *
-     * @param write  stream to dump to
-     *
+     * @param write stream to dump to
      * @throws IOException
      */
     public static void save(DataSection data, BufferedWriter write) throws IOException {
@@ -323,7 +316,7 @@ public class JSONParser {
         // Arrays
         else if (value instanceof DataArray) {
             builder.append('[');
-            boolean first = true;
+            boolean   first = true;
             DataArray array = (DataArray) value;
             for (int i = 0; i < array.size(); i++) {
                 if (first) first = false;

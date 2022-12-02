@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class StatBoard extends Board {
     private final List<StatHolder> holders = new ArrayList<>();
-    private final List<String> stats = new ArrayList<>();
+    private final List<String>     stats   = new ArrayList<>();
 
     /**
      * Constructor

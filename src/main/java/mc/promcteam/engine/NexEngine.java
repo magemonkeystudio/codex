@@ -182,7 +182,8 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     public void registerHooks() {
         try {
             this.hookVault = this.registerHook(Hooks.VAULT, VaultHK.class);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }
     }
 
     @Override
@@ -246,7 +247,8 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
                 this.hookCitizens = this.registerHook(Hooks.CITIZENS, CitizensHK.class);
                 return;
             }
-        } catch (Exception ex) {}
+        } catch (Exception ex) {
+        }
     }
 
     /**

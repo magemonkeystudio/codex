@@ -6,9 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class ParamStringParser implements IParamParser {
 
-	@Override
-	@NotNull
-	public IParamValue parseValue(@NotNull String str) {
-		return new IParamValue(StringUT.color(str));
-	}
+    @Override
+    @NotNull
+    public IParamValue parseValue(@NotNull String str) {
+        return new IParamValue(StringUT.color(str));
+    }
 }
