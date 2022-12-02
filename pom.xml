@@ -10,7 +10,6 @@
         <artifactId>promc-parent</artifactId>
     </parent>
 
-    <groupId>com.promcteam</groupId>
     <artifactId>promccore</artifactId>
     <name>ProMCCore</name>
     <version>1.0.3.10-SNAPSHOT</version>
@@ -89,10 +88,10 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-j -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>${mysql.version}</version>
         </dependency>
 
