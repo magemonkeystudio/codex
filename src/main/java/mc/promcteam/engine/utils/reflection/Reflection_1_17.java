@@ -7,6 +7,7 @@ import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.core.Version;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.random.Rnd;
+import net.minecraft.world.level.block.entity.TileEntitySkull;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -163,7 +164,7 @@ public class Reflection_1_17 extends ReflectionUtil {
                 Method getHandle = Reflex.getMethod(cWorld.getClass(), "getHandle");
 
                 Object world = worldClass.cast(Reflex.invokeMethod(getHandle, cWorld));
-                Method playBlockAction = Reflex.getMethod(craftWorld,
+                Method playBlockAction = Reflex.getMethod(worldClass,
                         ReflectionUtil.MINOR_VERSION == 17 ? "playBlockAction" : "a", //Curse you obfuscation
                         blockPosClass, blockClass, int.class, int.class);
 
@@ -513,8 +514,13 @@ public class Reflection_1_17 extends ReflectionUtil {
 
             Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
 
-            Method getAttackCooldown = Reflex.getMethod(entityHumanClass,
-                    ReflectionUtil.MINOR_VERSION == 17 ? "getAttackCooldown" : "v", float.class);
+            Method getAttackCooldown;
+            if (ReflectionUtil.MINOR_VERSION == 17) {
+                getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
+            } else {
+                getAttackCooldown = Reflex.getMethod(entityHumanClass,
+                        Version.V1_19_R2.isCurrent() ? "x" : "v", float.class);
+            }
             if (getAttackCooldown == null)
                 throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");
 
