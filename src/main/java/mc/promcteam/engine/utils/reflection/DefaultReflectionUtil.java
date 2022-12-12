@@ -4,7 +4,6 @@ import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
 import mc.promcteam.engine.NexEngine;
-import mc.promcteam.engine.core.Version;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.random.Rnd;
 import org.bukkit.Location;
@@ -24,12 +23,12 @@ import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
 
-public class Reflection_1_17 implements ReflectionUtil {
+public class DefaultReflectionUtil implements ReflectionUtil {
 
     @Override
     public Object newNBTTagCompound() {
         try {
-            Class<?> nbtTagClass = getClazz("net.minecraft.nbt.NBTTagCompound");
+            Class<?> nbtTagClass = getNMSClass("NBTTagCompound");
             return nbtTagClass.getConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,7 +39,7 @@ public class Reflection_1_17 implements ReflectionUtil {
     @Override
     public Object newNBTTagList() {
         try {
-            Class<?> nbtTagClass = getClazz("net.minecraft.nbt.NBTTagList");
+            Class<?> nbtTagClass = getNMSClass("NBTTagList");
             return nbtTagClass.getConstructor().newInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,11 +47,12 @@ public class Reflection_1_17 implements ReflectionUtil {
 
         return null;
     }
+
     @Override
     public ItemStack toBukkitCopy(Object nmsItem) {
         try {
             Class<?> craftItem    = getCraftClass("inventory.CraftItemStack");
-            Method   asBukkitCopy = Reflex.getMethod(craftItem, "asBukkitCopy", getClazz("net.minecraft.world.item.ItemStack"));
+            Method   asBukkitCopy = Reflex.getMethod(craftItem, "asBukkitCopy", getNMSClass("ItemStack"));
             if (asBukkitCopy == null) return null;
 
             return (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
@@ -67,51 +67,10 @@ public class Reflection_1_17 implements ReflectionUtil {
     public Object save(Object nmsItem, Object nbtCompound) {
         try {
             Method save = Reflex.getMethod(nmsItem.getClass(),
-                    ReflectionManager.MINOR_VERSION >= 18
-                            ? "b"
-                            : "save",
+                    "save",
                     nbtCompound.getClass());
 
             return Reflex.invokeMethod(save, nmsItem, nbtCompound);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    public Class<?> getClazz(String classString) throws ClassNotFoundException {
-        String   name  = classString;
-        Class<?> clazz = Class.forName(name);
-        return clazz;
-    }
-
-    @Override
-    public Object getEntity(Object craftEntity) {
-        try {
-            Class<?> craftClass       = getClazz("net.minecraft.world.entity.Entity");
-            Class<?> craftEntityClass = getCraftClass("org.bukkit.entity.Entity");
-
-            Method getHandle = Reflex.getMethod(craftEntityClass, "getHandle");
-
-            return craftClass.cast(getHandle.invoke(craftEntity));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    public Channel getChannel(Player p) {
-        try {
-            Object conn = getConnection(p);
-            Object manager = Reflex.getFieldValue(conn,
-                    Version.CURRENT == Version.V1_19_R1 ? "b" : "a");
-            String  field   = Version.CURRENT.isHigher(Version.V1_18_R1) ? "m" : "k";
-            Channel channel = (Channel) Reflex.getFieldValue(manager, field);
-
-            return channel;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -127,8 +86,38 @@ public class Reflection_1_17 implements ReflectionUtil {
             Method getHandle = Reflex.getMethod(craftPlayerClass, "getHandle");
             Object nmsPlayer = Reflex.invokeMethod(getHandle, getCraftPlayer(player));
 
-            Object con = Reflex.getFieldValue(nmsPlayer, "b"); //WHY must you obfuscate
+            Object con = Reflex.getFieldValue(nmsPlayer, "playerConnection");
             return con;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Object getEntity(Object craftEntity) {
+        try {
+            Class<?> craftClass = getNMSClass("Entity");
+
+            Method getHandle = Reflex.getMethod(craftClass, "getHandle");
+
+            return craftClass.cast(getHandle.invoke(craftEntity));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Channel getChannel(Player p) {
+        try {
+            Object  conn    = getConnection(p);
+            Object  manager = Reflex.getFieldValue(conn, "networkManager");
+            Channel channel = (Channel) Reflex.getFieldValue(manager, "channel");
+
+            return channel;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,17 +130,12 @@ public class Reflection_1_17 implements ReflectionUtil {
         Object   conn        = getConnection(p);
         Class<?> packetClass = null;
         try {
-            packetClass = getClazz("net.minecraft.network.protocol.Packet");
+            packetClass = getNMSClass("Packet");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        Method sendPacket;
-        if (ReflectionManager.MINOR_VERSION == 17) {
-            sendPacket = Reflex.getMethod(conn.getClass(), "sendPacket", packetClass);
-        } else { // if (ReflectionManager.MINOR_VERSION > 17) { // If we're newer.. we're using obfuscated methods again ;(
-            sendPacket = Reflex.getMethod(conn.getClass(), "a", packetClass);
-        }
-        Reflex.invokeMethod(sendPacket, conn, packet);
+        Method sendMethod = Reflex.getMethod(conn.getClass(), "sendPacket", packetClass);
+        Reflex.invokeMethod(sendMethod, conn, packet);
     }
 
     @Override
@@ -160,7 +144,7 @@ public class Reflection_1_17 implements ReflectionUtil {
             Object craftPlayer = getCraftPlayer(p);
             Object entity      = getEntity(craftPlayer);
 
-            Class<?>    packetClass = getClazz("net.minecraft.network.protocol.game.PacketPlayOutAnimation");
+            Class<?>    packetClass = getNMSClass("PacketPlayOutAnimation");
             Constructor ctor        = Reflex.getConstructor(packetClass, entity.getClass(), int.class);
             Object      packet      = Reflex.invokeConstructor(ctor, entity, id);
 
@@ -179,30 +163,27 @@ public class Reflection_1_17 implements ReflectionUtil {
             if (bWorld == null) return;
 
             try {
-                Class<?> worldClass    = getClazz("net.minecraft.world.level.World");
+                Class<?> worldClass    = getNMSClass("World");
                 Class<?> craftWorld    = getCraftClass("CraftWorld");
-                Class<?> blockClass    = getClazz("net.minecraft.world.level.block.Block");
-                Class<?> blockPosClass = getClazz("net.minecraft.core.BlockPosition");
+                Class<?> blockClass    = getNMSClass("Block");
+                Class<?> blockPosClass = getNMSClass("BlockPosition");
 
-                Object cWorld    = craftWorld.cast(bWorld);
-                Method getHandle = Reflex.getMethod(cWorld.getClass(), "getHandle");
+                Object nmsWorld = worldClass.cast(bWorld);
+                Method getHandle = ReflectionManager.MINOR_VERSION >= 8
+                        ? Reflex.getMethod(nmsWorld.getClass(), "getWorld")
+                        : Reflex.getMethod(nmsWorld.getClass(), "getHandle");
 
-                Object world = worldClass.cast(Reflex.invokeMethod(getHandle, cWorld));
-                Method playBlockAction = Reflex.getMethod(worldClass,
-                        ReflectionManager.MINOR_VERSION == 17 ? "playBlockAction" : "a", //Curse you obfuscation
-                        blockPosClass, blockClass, int.class, int.class);
+                Object world           = craftWorld.cast(Reflex.invokeMethod(getHandle, nmsWorld));
+                Method playBlockAction = Reflex.getMethod(craftWorld, "playBlockAction", blockPosClass, blockClass, int.class, int.class);
 
                 Constructor ctor     = Reflex.getConstructor(blockPosClass, double.class, double.class, double.class);
                 Object      position = Reflex.invokeConstructor(ctor, lo.getX(), lo.getY(), lo.getZ());
 
-                Method getType = Reflex.getMethod(world.getClass(),
-                        ReflectionManager.MINOR_VERSION == 17 ? "getType" : "a_",
-                        blockPosClass);
-                Class<?> blockData = getClazz("net.minecraft.world.level.block.state.IBlockData");
+                Method   getType   = Reflex.getMethod(world.getClass(), "getType", blockPosClass);
+                Class<?> blockData = getNMSClass("IBlockData");
                 Object   data      = blockData.cast(Reflex.invokeMethod(getType, world, position));
 
-                Method getBlock = Reflex.getMethod(blockData,
-                        ReflectionManager.MINOR_VERSION == 17 ? "getBlock" : "b");
+                Method getBlock = Reflex.getMethod(blockData, "getBlock");
 
                 //TileEntityChest tileChest = (TileEntityChest) world.getTileEntity(position);
                 Reflex.invokeMethod(playBlockAction, world, position, getBlock.invoke(data), 1, open ? 1 : 0);
@@ -229,7 +210,7 @@ public class Reflection_1_17 implements ReflectionUtil {
             Method add = Reflex.getMethod(AbstractList.class, "add", Object.class);
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
-            Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
+            Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
             Method a = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
@@ -251,7 +232,7 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object nbtTagCompoundRoot;
             try {
-                Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
+                Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
                 Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
                 nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
@@ -260,8 +241,8 @@ public class Reflection_1_17 implements ReflectionUtil {
                 return null;
             }
 
-            Class<?> nmsItemClass = getClazz("net.minecraft.world.item.ItemStack");
-            Class<?> compoundClass = getClazz("net.minecraft.nbt.NBTTagCompound");
+            Class<?> nmsItemClass = getNMSClass("ItemStack");
+            Class<?> compoundClass = getNMSClass("NBTTagCompound");
             Method a = Reflex.getMethod(nmsItemClass, "a", compoundClass);
 
             Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
@@ -285,29 +266,9 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object nmsPlayer = player != null ? getEntity(getCraftPlayer(player)) : null;
 
-            if (ReflectionManager.MINOR_VERSION == 19) {
-                Class<?> randSourceClass = getClazz("net.minecraft.util.RandomSource");
-                Method isDamaged = Reflex.getMethod(
-                        nmsStack.getClass(),
-                        "a",
-                        int.class,
-                        randSourceClass,
-                        getClazz("net.minecraft.server.level.EntityPlayer")
-                );
+            Method isDamaged = Reflex.getMethod(nmsStack.getClass(), "a", int.class, Random.class, getNMSClass("EntityPlayer"));
 
-                Object randSource = Reflex.invokeMethod(Reflex.getMethod(randSourceClass, "c"), null);
-                Reflex.invokeMethod(isDamaged, nmsStack, amount, randSource, nmsPlayer);
-            } else {
-                Method isDamaged = Reflex.getMethod(
-                        nmsStack.getClass(),
-                        ReflectionManager.MINOR_VERSION == 17 ? "isDamaged" : "a",
-                        int.class,
-                        Random.class,
-                        getClazz("net.minecraft.server.level.EntityPlayer")
-                );
-
-                Reflex.invokeMethod(isDamaged, nmsStack, amount, Rnd.rnd, nmsPlayer);
-            }
+            Reflex.invokeMethod(isDamaged, nmsStack, amount, Rnd.rnd, nmsPlayer);
 
             return toBukkitCopy(nmsStack);
         } catch (Exception e) {
@@ -327,16 +288,15 @@ public class Reflection_1_17 implements ReflectionUtil {
 
 
             Class<Enum> enumItemSlotClass = (Class<Enum>) (
-                    getClazz("net.minecraft.world.entity.EnumItemSlot")
-            );
-            Class<?> itemArmorClass = getClazz("net.minecraft.world.item.ItemArmor");
-            Class<?> itemToolClass = getClazz("net.minecraft.world.item.ItemTool");
-            Class<?> itemSwordClass = getClazz("net.minecraft.world.item.ItemSword");
-            Class<?> itemTridentClass = getClazz("net.minecraft.world.item.ItemTrident");
+                    getNMSClass("EnumItemSlot"));
+            Class<?> itemArmorClass = getNMSClass("ItemArmor");
+            Class<?> itemToolClass = getNMSClass("ItemTool");
+            Class<?> itemSwordClass = getNMSClass("ItemSword");
+            Class<?> itemTridentClass = getNMSClass("ItemTrident");
 
             Enum mainhand = (Enum) Reflex.invokeMethod(
                     Reflex.getMethod(enumItemSlotClass,
-                            ReflectionManager.MINOR_VERSION <= 17 ? "fromName" : "a",
+                            "fromName",
                             String.class),
                     null, "mainhand");
 
@@ -374,56 +334,73 @@ public class Reflection_1_17 implements ReflectionUtil {
 
     @Override
     public double getAttributeValue(@NotNull ItemStack item, @NotNull Object attribute) {
+        double value = 0;
         try {
-            Class<?>                 attributeModifierClass = getClazz("net.minecraft.world.entity.ai.attributes.AttributeModifier");
-            Class<?>                 attributeBaseClass     = getClazz("net.minecraft.world.entity.ai.attributes.AttributeBase");
-            Multimap<Object, Object> attMap                 = getAttributes(item);
-            if (attMap == null || attMap.isEmpty()) return 0D;
+            Class<?> attributeModifierClass = getNMSClass("AttributeModifier");
+            if (attribute.getClass().getSuperclass().getSimpleName().equals("IAttribute")) {
+                Class<?>                 iAttributeClass = getNMSClass("IAttribute");
+                Multimap<Object, Object> attMap          = getAttributes(item);
+                if (attMap == null) return 0D;
+                Object atkDmg  = iAttributeClass.cast(attribute);
+                Method getName = Reflex.getMethod(iAttributeClass, "getName");
 
-            Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
-            if (att == null || att.isEmpty()) return 0D;
-            Object mod = attributeModifierClass.cast(att.stream().findFirst().get());
+                //Collection<AttributeModifier>
+                Collection<Object> att = attMap.get(Reflex.invokeMethod(getName, atkDmg));
+                Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
+                        ? 0
+                        : att.stream().findFirst().get());
 
-            Method getAmount = Reflex.getMethod(attributeModifierClass,
-                    ReflectionManager.MINOR_VERSION == 17 ? "getAmount" : "d");
-            double value = (double) Reflex.invokeMethod(getAmount, mod);
-            if (attribute.equals(getGenericAttribute("f"))) { // Damage
+                Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
+                value = (double) Reflex.invokeMethod(getAmount, mod);
+            } else if (getNMSClass("AttributeBase").isInstance(attribute)) {
+                Class<?>                 attributeBaseClass = getNMSClass("AttributeBase");
+                Multimap<Object, Object> attMap             = getAttributes(item);
+                if (attMap == null) return 0D;
+
+                Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
+                Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
+                        ? 0
+                        : att.stream().findFirst().get());
+
+                Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
+                value = (double) Reflex.invokeMethod(getAmount, mod);
+            }
+            if (attribute.equals(getGenericAttribute("ATTACK_DAMAGE"))) {
                 value += 1;
-            } else if (attribute.equals(getGenericAttribute("h"))) { // Attack Speed
+            } else if (attribute.equals(getGenericAttribute("ATTACK_SPEED"))) {
                 value += 4;
             }
-            return value;
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return 0;
+        return value;
     }
 
     @Override
     public double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("f")); // generic.attack_damage
+        return getAttributeValue(itemStack, getGenericAttribute("ATTACK_DAMAGE"));
     }
 
     @Override
     public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("h")); // generic.attack_speed
+        return getAttributeValue(itemStack, getGenericAttribute("ATTACK_SPEED"));
     }
 
     @Override
     public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("i")); // generic.armor
+        return getAttributeValue(itemStack, getGenericAttribute("ARMOR"));
     }
 
     @Override
     public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("j")); // generic.armor_toughness
+        return getAttributeValue(itemStack, getGenericAttribute("ARMOR_TOUGHNESS"));
     }
 
     @Override
     public Object getGenericAttribute(String field) {
         try {
-            Class<?> attributes = getClazz("net.minecraft.world.entity.ai.attributes.GenericAttributes");
+            Class<?> attributes = getNMSClass("GenericAttributes");
             Object   value      = Reflex.getField(attributes, field).get(null);
 
             //AttributeBase or IAttribute
@@ -444,9 +421,9 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> swordClass = getClazz("net.minecraft.world.item.ItemSword");
-            Class<?> axeClass = getClazz("net.minecraft.world.item.ItemAxe");
-            Class<?> tridentClass = getClazz("net.minecraft.world.item.ItemTrident");
+            Class<?> swordClass = getNMSClass("ItemSword");
+            Class<?> axeClass = getNMSClass("ItemAxe");
+            Class<?> tridentClass = getNMSClass("ItemTrident");
 
             return swordClass.isInstance(item) || axeClass.isInstance(item) || tridentClass.isInstance(item);
         } catch (Exception e) {
@@ -464,7 +441,7 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> toolClass = getClazz("net.minecraft.world.item.ItemTool");
+            Class<?> toolClass = getNMSClass("ItemTool");
 
             return toolClass.isInstance(item);
         } catch (Exception e) {
@@ -473,6 +450,7 @@ public class Reflection_1_17 implements ReflectionUtil {
         return false;
     }
 
+    @Override
     public boolean isArmor(@NotNull ItemStack itemStack) {
         try {
             Object nmsItem = getNMSCopy(itemStack);
@@ -481,20 +459,21 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> armorClass = getClazz("net.minecraft.world.item.ItemArmor");
+            Class<?> toolClass = getNMSClass("ItemArmor");
 
-            return armorClass.isInstance(item);
+            return toolClass.isInstance(item);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
+    @Override
     public String fixColors(@NotNull String str) {
         try {
             str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
 
-            Class<?> baseComponentClass = getClazz("net.minecraft.network.chat.IChatBaseComponent");
+            Class<?> baseComponentClass = getNMSClass("IChatBaseComponent");
             Class<?> chatMessageClass = getCraftClass("util.CraftChatMessage");
 
             Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
@@ -510,26 +489,29 @@ public class Reflection_1_17 implements ReflectionUtil {
         return str;
     }
 
+    @Override
     public float getAttackCooldown(Player p) {
         try {
-            Class<?> entityPlayerClass = getClazz("net.minecraft.server.level.EntityPlayer");
-            Class    entityHumanClass  = getClazz("net.minecraft.world.entity.player.EntityHuman");
+            Class<?> entityPlayerClass = getNMSClass("EntityPlayer");
+            Class    entityHumanClass  = getNMSClass("EntityHuman");
             Object   craftPlayer       = getCraftPlayer(p);
             Method   getHandle         = Reflex.getMethod(craftPlayer.getClass(), "getHandle");
 
             Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
 
-            Method getAttackCooldown;
-            if (ReflectionManager.MINOR_VERSION == 17) {
-                getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
-            } else {
-                getAttackCooldown = Reflex.getMethod(entityHumanClass,
-                        Version.V1_19_R2.isCurrent() ? "x" : "v", float.class);
-            }
-            if (getAttackCooldown == null)
-                throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");
+            if (ReflectionManager.MINOR_VERSION < 16) {
+                Method s = Reflex.getMethod(entityHumanClass, "s", float.class);
+                if (s == null)
+                    throw new NullPointerException("Could not find a \"s\" method using Reflection.");
 
-            return (float) Reflex.invokeMethod(getAttackCooldown, entityHumanClass.cast(ep), 0f);
+                return (float) Reflex.invokeMethod(s, entityHumanClass.cast(ep), 0f);
+            } else {
+                Method getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
+                if (getAttackCooldown == null)
+                    throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");
+
+                return (float) Reflex.invokeMethod(getAttackCooldown, entityHumanClass.cast(ep), 0f);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -537,19 +519,19 @@ public class Reflection_1_17 implements ReflectionUtil {
         return 0;
     }
 
+    @Override
     public void changeSkull(Block b, String hash) {
         try {
-            Class<?> tileSkullClass  = getClazz("net.minecraft.world.level.block.entity.TileEntitySkull");
+            Class<?> tileSkullClass  = getNMSClass("TileEntitySkull");
             Class<?> craftWorldClass = getCraftClass("CraftWorld");
 //            Class<?> worldServerClass = getNMSClass("WorldServer");
-            Class<?> blockAccessClass = getClazz("net.minecraft.world.level.IBlockAccess");
-            Class<?> blockPosClass    = getClazz("net.minecraft.core.BlockPosition");
+            Class<?> blockAccessClass = getNMSClass("IBlockAccess");
+            Class<?> blockPosClass    = getNMSClass("BlockPosition");
 
             Constructor ctor = Reflex.getConstructor(blockPosClass, int.class, int.class, int.class);
 
-            Method getHandle = Reflex.getMethod(craftWorldClass, "getHandle");
-            Method getTileEntity = Reflex.getMethod(blockAccessClass,
-                    ReflectionManager.MINOR_VERSION == 17 ? "getTileEntity" : "c_", blockPosClass);
+            Method getHandle     = Reflex.getMethod(craftWorldClass, "getHandle");
+            Method getTileEntity = Reflex.getMethod(blockAccessClass, "getTileEntity", blockPosClass);
 
             Object bPos = Reflex.invokeConstructor(ctor, b.getX(), b.getY(), b.getZ());
 
@@ -557,8 +539,7 @@ public class Reflection_1_17 implements ReflectionUtil {
             Object skullTile   = tileSkullClass.cast(Reflex.invokeMethod(getTileEntity, worldServer, bPos));
 
 
-            Method setGameProfile = Reflex.getMethod(tileSkullClass,
-                    ReflectionManager.MINOR_VERSION == 17 ? "setGameProfile" : "a", GameProfile.class);
+            Method setGameProfile = Reflex.getMethod(tileSkullClass, "setGameProfile", GameProfile.class);
 
             Reflex.invokeMethod(setGameProfile, skullTile, getNonPlayerProfile(hash));
             b.getState().update(true);

@@ -25,20 +25,20 @@ public class CommandManager<P extends NexPlugin<P>> implements Loadable {
         this.commands = new HashSet<>();
 
         // Create main plugin command and attach help sub-command as a default executor.
-        this.mainCommand = new MainCommand<P>(this.plugin);
-        this.mainCommand.addDefaultCommand(new HelpCommand<P>(this.plugin));
+        this.mainCommand = new MainCommand<>(this.plugin);
+        this.mainCommand.addDefaultCommand(new HelpCommand<>(this.plugin));
 
         // Register child plugin sub-commands to the main plugin command.
         this.plugin.registerCmds(this.mainCommand);
 
         // Check for plugin settings to register default commands.
         if (this.plugin.hasEditor()) {
-            this.mainCommand.addSubCommand(new EditorCommand<P>(this.plugin));
+            this.mainCommand.addSubCommand(new EditorCommand<>(this.plugin));
         }
-        this.mainCommand.addSubCommand(new ReloadCommand<P>(this.plugin));
+        this.mainCommand.addSubCommand(new ReloadCommand<>(this.plugin));
 
         if (!this.plugin.isEngine()) {
-            this.mainCommand.addSubCommand(new AboutCommand<P>(this.plugin));
+            this.mainCommand.addSubCommand(new AboutCommand<>(this.plugin));
         }
 
         // Register main command as a bukkit command.

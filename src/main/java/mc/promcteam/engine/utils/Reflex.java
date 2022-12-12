@@ -1,5 +1,6 @@
 package mc.promcteam.engine.utils;
 
+import lombok.Setter;
 import mc.promcteam.engine.NexEngine;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
@@ -20,11 +21,10 @@ public class Reflex {
             !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit")
                     ? Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]
                     : "";
-    private static final NexEngine ENGINE;
 
-    static {
-        ENGINE = NexEngine.get();
-    }
+    @Setter
+    private static NexEngine engine;
+
 
     @Nullable
     public static Class<?> getClass(@NotNull String path, @NotNull String name) {
@@ -41,7 +41,7 @@ public class Reflex {
         try {
             return Class.forName(path);
         } catch (ClassNotFoundException e) {
-            ENGINE.error("[Reflex] Class not found: " + path);
+            engine.error("[Reflex] Class not found: " + path);
             e.printStackTrace();
             return null;
         }

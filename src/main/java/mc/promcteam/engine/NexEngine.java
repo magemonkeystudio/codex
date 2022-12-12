@@ -48,23 +48,23 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     private static       NexEngine                 instance;
     private final        Set<NexPlugin<?>>         plugins;
     @Getter
-    NMS           NMS;
+    NMS            NMS;
     @Getter
-    PluginManager pluginManager;
+    PluginManager  pluginManager;
     @Getter
     PacketManager  packetManager;
     @Getter
     ActionsManager actionsManager;
     @Getter
-    CraftManager craftManager;
+    CraftManager   craftManager;
     @Getter
-    VaultHK      vault;
+    VaultHK        vault;
     @Getter
-    CitizensHK   citizens;
+    CitizensHK     citizens;
     @Getter
-    WorldGuardHK worldGuard;
+    WorldGuardHK   worldGuard;
     @Getter
-    IMythicHook  mythicMobs;
+    IMythicHook    mythicMobs;
     private CoreConfig  cfg;
     private CoreLang    lang;
     @Getter
@@ -92,6 +92,7 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     private void setInstance() {
         instance = this;
         ItemUT.setEngine(this);
+        Reflex.setEngine(this);
     }
 
     @NotNull
@@ -149,7 +150,8 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
         EditorManager.setup();
 
         CommandLog.callback = msg -> VersionManager.initialize(msg);
-        getServer().dispatchCommand(new CommandLog(), "version");
+        if (!Version.TEST.isCurrent())
+            getServer().dispatchCommand(new CommandLog(), "version");
 
         getLogger().info("ProMCCore has been enabled!");
     }

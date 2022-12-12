@@ -27,7 +27,7 @@
 package mc.promcteam.engine.mccore.util;
 
 import mc.promcteam.engine.utils.Reflex;
-import mc.promcteam.engine.utils.reflection.ReflectionUtil;
+import mc.promcteam.engine.utils.reflection.ReflectionManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -91,14 +91,14 @@ public class Particle {
 
         // Otherwise get the instance for 1.7.2 and later
         if (packetClass == null) {
-            packetClass = ReflectionUtil.MINOR_VERSION >= 17
+            packetClass = ReflectionManager.MINOR_VERSION >= 17
                     ? Reflex.getClass("net.minecraft.network.protocol.game.PacketPlayOutWorldParticles")
                     : Reflex.getNMSClass("PacketPlayOutWorldParticles");
         }
     }
 
     /**
-     * Checks whether or not the reflection particles are supported for this server
+     * Checks whether the reflection particles are supported for this server
      *
      * @return true if supported, false otherwise
      */
@@ -367,7 +367,7 @@ public class Particle {
 
                     for (Player player : VersionManager.getOnlinePlayers()) {
                         if (player.getWorld() == loc.getWorld() && player.getLocation().distanceSquared(loc) < radius * radius) {
-                            ReflectionUtil.sendPacket(player, packet);
+                            ReflectionManager.getReflectionUtil().sendPacket(player, packet);
                         }
                     }
                 } catch (Exception ex) {
@@ -388,7 +388,7 @@ public class Particle {
             Reflex.setValue(packet, "i", count);
             for (Player player : VersionManager.getOnlinePlayers()) {
                 if (player.getWorld() == loc.getWorld() && player.getLocation().distanceSquared(loc) < radius * radius) {
-                    ReflectionUtil.sendPacket(player, packet);
+                    ReflectionManager.getReflectionUtil().sendPacket(player, packet);
                 }
             }
         }

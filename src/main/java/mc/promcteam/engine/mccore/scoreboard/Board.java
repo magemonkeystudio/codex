@@ -29,7 +29,7 @@ package mc.promcteam.engine.mccore.scoreboard;
 import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.mccore.util.VersionManager;
 import mc.promcteam.engine.utils.Reflex;
-import mc.promcteam.engine.utils.reflection.ReflectionUtil;
+import mc.promcteam.engine.utils.reflection.ReflectionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -88,9 +88,9 @@ public abstract class Board {
         Object     objective  = null;
         if (packetConstructor != null) {
             try {
-                if (ReflectionUtil.MINOR_VERSION >= 17) {
+                if (ReflectionManager.MINOR_VERSION >= 17) {
                     objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria,
-                            ReflectionUtil.MINOR_VERSION >= 19 || (chatCtor == null && chatMethod != null)
+                            ReflectionManager.MINOR_VERSION >= 19 || (chatCtor == null && chatMethod != null)
                                     ? Reflex.invokeMethod(chatMethod, null, title)
                                     : Reflex.invokeConstructor(chatCtor, title),
                             Reflex.getEnum(enumScoreboard, "HEARTS"));
@@ -120,27 +120,27 @@ public abstract class Board {
 
         try {
             String pkg = Reflex.getNMSPackage() + ".";
-            Class<?> criteria = ReflectionUtil.MINOR_VERSION >= 17
+            Class<?> criteria = ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
                     : Class.forName(pkg + "IScoreboardCriteria");
-            Class<?> objective = ReflectionUtil.MINOR_VERSION >= 17
+            Class<?> objective = ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.ScoreboardObjective")
                     : Class.forName(pkg + "ScoreboardObjective");
-            Class<?> baseComp = ReflectionUtil.MINOR_VERSION >= 17
+            Class<?> baseComp = ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.chat.IChatBaseComponent")
                     : Class.forName(pkg + "IChatBaseComponent");
-            if (ReflectionUtil.MINOR_VERSION >= 19)
+            if (ReflectionManager.MINOR_VERSION >= 19)
                 chatMethod = Reflex.getMethod(baseComp, "b", String.class);
             else {
                 Class<?> chatComp;
-                if (ReflectionUtil.MINOR_VERSION >= 17)
+                if (ReflectionManager.MINOR_VERSION >= 17)
                     chatComp = Class.forName("net.minecraft.network.chat.ChatComponentText");
                 else
                     chatComp = Class.forName(pkg + "ChatComponentText");
                 chatCtor = Reflex.getConstructor(chatComp, String.class);
             }
 
-            enumScoreboard = ReflectionUtil.MINOR_VERSION >= 17
+            enumScoreboard = ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.criteria.IScoreboardCriteria")
                     : Class.forName(pkg + "IScoreboardCriteria");
             Class<?> tempEnum = enumScoreboard;
@@ -148,40 +148,40 @@ public abstract class Board {
                     .filter(clazz -> clazz.getSimpleName().equals("EnumScoreboardHealthDisplay")).findFirst()
                     .orElseThrow(() -> new ClassNotFoundException("Could not find class '" + tempEnum.getPackage().getName() + "IScoreboardCriteria.EnumScoreboardHealthDisplay'"));
 
-            getScore = (ReflectionUtil.MINOR_VERSION >= 17
+            getScore = (ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.Scoreboard")
                     : Class.forName(pkg + "Scoreboard"))
-                    .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
+                    .getDeclaredMethod(ReflectionManager.MINOR_VERSION >= 18
                             ? "c"
                             : "getPlayerScoreForObjective", String.class, objective);
-            setScore = (ReflectionUtil.MINOR_VERSION >= 17
+            setScore = (ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.ScoreboardScore")
                     : Class.forName(pkg + "ScoreboardScore"))
-                    .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
+                    .getDeclaredMethod(ReflectionManager.MINOR_VERSION >= 18
                             ? "b"
                             : "setScore", int.class);
-            getPackets = (ReflectionUtil.MINOR_VERSION >= 17
+            getPackets = (ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.server.ScoreboardServer")
                     : Class.forName(pkg + "ScoreboardServer"))
-                    .getDeclaredMethod(ReflectionUtil.MINOR_VERSION >= 18
+                    .getDeclaredMethod(ReflectionManager.MINOR_VERSION >= 18
                             ? "d"
                             : "getScoreboardScorePacketsForObjective", objective);
-            sidebarCriteria = criteria.getDeclaredField(ReflectionUtil.MINOR_VERSION >= 17
+            sidebarCriteria = criteria.getDeclaredField(ReflectionManager.MINOR_VERSION >= 17
                     ? "b" : "TRIGGER").get(null);
 
             objConstructor = VersionManager.isVersionAtLeast(VersionManager.V1_13)
                     ? objective.getConstructor(
-                    Class.forName(ReflectionUtil.MINOR_VERSION >= 17
+                    Class.forName(ReflectionManager.MINOR_VERSION >= 17
                             ? "net.minecraft.world.scores.Scoreboard"
                             : pkg + "Scoreboard"
                     ), String.class, criteria, baseComp, enumScoreboard)
                     : objective.getConstructor(Class.forName(pkg + "Scoreboard"), String.class, criteria);
             scoreboardServer = scoreboard.getClass().getDeclaredMethod("getHandle").invoke(scoreboard);
-            displayConstructor = (ReflectionUtil.MINOR_VERSION >= 17
+            displayConstructor = (ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.protocol.game.PacketPlayOutScoreboardDisplayObjective")
                     : Class.forName(pkg + "PacketPlayOutScoreboardDisplayObjective"))
                     .getConstructor(int.class, objective);
-            packetConstructor = (ReflectionUtil.MINOR_VERSION >= 17
+            packetConstructor = (ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.network.protocol.game.PacketPlayOutScoreboardObjective")
                     : Class.forName(pkg + "PacketPlayOutScoreboardObjective"))
                     .getConstructor(objective, int.class);
@@ -241,7 +241,7 @@ public abstract class Board {
                 clearDisplay();
                 List<Object> packets = (List) getPackets.invoke(scoreboardServer, objective);
                 packets.add(1, displayConstructor.newInstance(1, objective));
-                ReflectionUtil.sendPackets(player, packets);
+                ReflectionManager.getReflectionUtil().sendPackets(player, packets);
                 return true;
             } catch (Exception ex) {
                 throw new IllegalStateException("Failed to create packets", ex);
@@ -274,7 +274,7 @@ public abstract class Board {
 
         if (scoreboard == null) {
             try {
-                ReflectionUtil.sendPacket(player, packetConstructor.newInstance(objective, 1));
+                ReflectionManager.getReflectionUtil().sendPacket(player, packetConstructor.newInstance(objective, 1));
             } catch (Exception ex) {
                 throw new IllegalStateException("Failed to send clear packet", ex);
             }

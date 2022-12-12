@@ -13,8 +13,6 @@ import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.Collection;
 
-import static mc.promcteam.engine.utils.reflection.ReflectionUtil.*;
-
 public class V1_12_R2 implements NMS {
 
     @Override
@@ -24,7 +22,7 @@ public class V1_12_R2 implements NMS {
 
             Object nbtTagCompoundRoot;
             try {
-                Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
+                Class<?> compressedClass = reflectionUtil.getNMSClass("NBTCompressedStreamTools");
                 Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
                 nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
@@ -33,13 +31,13 @@ public class V1_12_R2 implements NMS {
                 return null;
             }
 
-            Class<?> nmsItemClass = getNMSClass("ItemStack");
-            Object   nmsItem      = getNMSCopy(new ItemStack(Material.DIRT));
+            Class<?> nmsItemClass = reflectionUtil.getNMSClass("ItemStack");
+            Object   nmsItem      = reflectionUtil.getNMSCopy(new ItemStack(Material.DIRT));
 
-            Method a = Reflex.getMethod(nmsItemClass, "load", getNMSClass("NBTTagCompound"));
+            Method a = Reflex.getMethod(nmsItemClass, "load", reflectionUtil.getNMSClass("NBTTagCompound"));
             Reflex.invokeMethod(a, nmsItem, nbtTagCompoundRoot);
 
-            Method    asBukkitCopy = Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
+            Method    asBukkitCopy = Reflex.getMethod(reflectionUtil.getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
             ItemStack item         = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
 
             return item;
@@ -54,10 +52,10 @@ public class V1_12_R2 implements NMS {
     @NotNull
     public String getNbtString(@NotNull ItemStack item) {
         try {
-            Object nmsCopy        = getNMSCopy(item);
+            Object nmsCopy        = reflectionUtil.getNMSCopy(item);
             Method getOrCreateTag = Reflex.getMethod(nmsCopy.getClass(), "getTag");
             Object tag            = Reflex.invokeMethod(getOrCreateTag, nmsCopy);
-            if (tag == null) tag = Reflex.invokeConstructor(Reflex.getConstructor(getNMSClass("NBTTagCompound")));
+            if (tag == null) tag = Reflex.invokeConstructor(Reflex.getConstructor(reflectionUtil.getNMSClass("NBTTagCompound")));
             Method asString = Reflex.getMethod(tag.getClass(), "toString");
             return (String) Reflex.invokeMethod(asString, tag);
         } catch (Exception e) {
@@ -74,8 +72,8 @@ public class V1_12_R2 implements NMS {
         StringBuilder sb = new StringBuilder();
 
         try {
-            Class<?> baseComponentClass = getNMSClass("IChatBaseComponent");
-            Class<?> chatMessageClass   = getCraftClass("util.CraftChatMessage");
+            Class<?> baseComponentClass = reflectionUtil.getNMSClass("IChatBaseComponent");
+            Class<?> chatMessageClass   = reflectionUtil.getCraftClass("util.CraftChatMessage");
 
             Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
             Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromString", String.class, Boolean.class);
@@ -95,30 +93,30 @@ public class V1_12_R2 implements NMS {
 
     @Override
     public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("g"));
+        return getAttributeValue(itemStack, reflectionUtil.getGenericAttribute("g"));
     }
 
     @Override
     public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("h"));
+        return getAttributeValue(itemStack, reflectionUtil.getGenericAttribute("h"));
     }
 
     @Override
     public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("i"));
+        return getAttributeValue(itemStack, reflectionUtil.getGenericAttribute("i"));
     }
 
     @Override
     public boolean isWeapon(@NotNull ItemStack itemStack) {
         try {
-            Object nmsItem = getNMSCopy(itemStack);
+            Object nmsItem = reflectionUtil.getNMSCopy(itemStack);
 
             Method getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> swordClass = getNMSClass("ItemSword");
-            Class<?> axeClass   = getNMSClass("ItemAxe");
+            Class<?> swordClass = reflectionUtil.getNMSClass("ItemSword");
+            Class<?> axeClass   = reflectionUtil.getNMSClass("ItemAxe");
 
             return swordClass.isInstance(item) || axeClass.isInstance(item);
         } catch (Exception e) {
@@ -130,17 +128,17 @@ public class V1_12_R2 implements NMS {
     private Multimap<String, Object> getAttributes(@NotNull ItemStack itemStack) {
         try {
             Multimap<String, Object> attMap  = null;
-            Object                   nmsItem = getNMSCopy(itemStack);
+            Object                   nmsItem = reflectionUtil.getNMSCopy(itemStack);
             Method                   getItem = Reflex.getMethod(nmsItem.getClass(), "getItem");
             Object                   item    = Reflex.invokeMethod(getItem, nmsItem);
 
 
-            Class<Enum> enumItemSlotClass = (Class<Enum>) getNMSClass("EnumItemSlot");
-//            Class<?> attributeModClass = getNMSClass("AttributeModifier");
-            Class<?> itemArmorClass   = getNMSClass("ItemArmor");
-            Class<?> itemToolClass    = getNMSClass("ItemTool");
-            Class<?> itemSwordClass   = getNMSClass("ItemSword");
-            Class<?> itemTridentClass = getNMSClass("ItemTrident");
+            Class<Enum> enumItemSlotClass = (Class<Enum>) reflectionUtil.getNMSClass("EnumItemSlot");
+//            Class<?> attributeModClass = reflectionUtil.getNMSClass("AttributeModifier");
+            Class<?> itemArmorClass   = reflectionUtil.getNMSClass("ItemArmor");
+            Class<?> itemToolClass    = reflectionUtil.getNMSClass("ItemTool");
+            Class<?> itemSwordClass   = reflectionUtil.getNMSClass("ItemSword");
+            Class<?> itemTridentClass = reflectionUtil.getNMSClass("ItemTrident");
             Enum mainhand = (Enum) Reflex.invokeMethod(
                     Reflex.getMethod(enumItemSlotClass, "a", String.class),
                     null, "mainhand");
@@ -172,8 +170,8 @@ public class V1_12_R2 implements NMS {
 
     private double getAttributeValue(@NotNull ItemStack item, @NotNull Object attackDamage) {
         try {
-            Class<?>                 attributeModifierClass = getNMSClass("AttributeModifier");
-            Class<?>                 attributeBaseClass     = getNMSClass("AttributeBase");
+            Class<?>                 attributeModifierClass = reflectionUtil.getNMSClass("AttributeModifier");
+            Class<?>                 attributeBaseClass     = reflectionUtil.getNMSClass("AttributeBase");
             Multimap<String, Object> attMap                 = getAttributes(item);
             if (attMap == null) return 0D;
 
