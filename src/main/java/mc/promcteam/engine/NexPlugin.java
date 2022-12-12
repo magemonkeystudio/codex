@@ -1,5 +1,6 @@
 package mc.promcteam.engine;
 
+import lombok.NoArgsConstructor;
 import mc.promcteam.engine.commands.CommandManager;
 import mc.promcteam.engine.commands.api.IGeneralCommand;
 import mc.promcteam.engine.commands.list.MainCommand;
@@ -24,14 +25,19 @@ import mc.promcteam.engine.utils.craft.CraftManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
+@NoArgsConstructor
 public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin implements Loggable {
 
     public static final String TM = "NEX-Media";
@@ -45,21 +51,25 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
     protected ModuleManager<P>  moduleManager;
     protected EditorHandler<P>  editorHandler;
 
-    public final boolean isEngine() {
+    public boolean isEngine() {
         return this.isEngine;
     }
 
-    public final boolean isSpigot() {
+    public boolean isSpigot() {
         return isSpigot;
     }
 
     @NotNull
-    public static final NexEngine getEngine() {
+    public static NexEngine getEngine() {
         return NexEngine.get();
     }
 
+    public NexPlugin(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file) {
+        super(loader, description, dataFolder, file);
+    }
+
     @Override
-    public final void onEnable() {
+    public void onEnable() {
         long loadTook = System.currentTimeMillis();
         this.logger = this.getLogger();
         this.isEngine = this instanceof NexEngine;
@@ -87,7 +97,7 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
     }
 
     @Override
-    public final void onDisable() {
+    public void onDisable() {
         this.unloadManagers();
     }
 
@@ -95,7 +105,7 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
 
     public abstract void disable();
 
-    public final void reload() {
+    public void reload() {
         if (this.isEngine()) {
             this.setConfig();
             return;
@@ -119,31 +129,33 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
     public abstract CoreLang lang();
 
     @Override
-    public final void info(@NotNull String msg) {
+    public void info(@NotNull String msg) {
         this.logger.info(msg);
     }
 
     @Override
-    public final void warn(@NotNull String msg) {
+    public void warn(@NotNull String msg) {
         this.logger.warning(msg);
     }
 
     @Override
-    public final void error(@NotNull String msg) {
+    public void error(@NotNull String msg) {
         this.logger.severe(msg);
     }
 
     @Nullable
-    public final <T extends NHook<P>> T registerHook(@NotNull String pluginName, @NotNull Class<T> clazz) {
+    public <T extends NHook<P>> T registerHook(@NotNull String pluginName, @NotNull Class<T> clazz) {
         return this.getHooks().register(this, pluginName, clazz);
     }
 
-    private final void unregisterListeners() {
+    private void unregisterListeners() {
         // Force close custom GUIs
         // To prevent take items after unregister listeners
         for (Player p : this.getServer().getOnlinePlayers()) {
             if (p != null) {
-                InventoryHolder ih = p.getOpenInventory().getTopInventory().getHolder();
+                InventoryView inv = p.getOpenInventory();
+                if (inv == null || inv.getTopInventory() == null) continue;
+                InventoryHolder ih = inv.getTopInventory().getHolder();
                 if (ih instanceof NGUI) {
                     p.closeInventory();
                 }
@@ -153,12 +165,12 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
     }
 
     @SuppressWarnings("unchecked")
-    private final void loadManagers() {
+    private void loadManagers() {
         // Setup plugin Hooks.
         this.registerHooks();
 
         // Setup ConfigManager before any other managers.
-        this.configManager = new ConfigManager<P>((P) this);
+        this.configManager = new ConfigManager<>((P) this);
         this.configManager.setup();
         if (this.cfg().cmds == null || this.cfg().cmds.length == 0) {
             this.error("Could not register plugin commands!");
@@ -180,11 +192,11 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
         this.registerEditor();
 
         // Register plugin commands.
-        this.cmdManager = new CommandManager<P>((P) this);
+        this.cmdManager = new CommandManager<>((P) this);
         this.cmdManager.setup();
 
         // Register plugin modules.
-        this.moduleManager = new ModuleManager<P>((P) this);
+        this.moduleManager = new ModuleManager<>((P) this);
         this.moduleManager.setup();
 
         // Custom plugin loaders.
@@ -198,13 +210,13 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
         Parametized.clearCache();
     }
 
-    private final void unloadManagers() {
+    private void unloadManagers() {
         this.getServer().getScheduler().cancelTasks(this); // First stop all plugin tasks
 
-        if (this.moduleManager != null) this.moduleManager.shutdown();
+        if (this.getModuleManager() != null) this.getModuleManager().shutdown();
         this.disable();
-        if (this.cmdManager != null) this.cmdManager.shutdown();
-        if (this.editorHandler != null) this.editorHandler.shutdown();
+        if (this.getCommandManager() != null) this.getCommandManager().shutdown();
+        if (this.getEditorHandler() != null) this.getEditorHandler().shutdown();
 
         // Unregister all plugin traits and NPC listeners.
         CitizensHK citizensHook = this.getCitizens();
@@ -229,112 +241,112 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
     }
 
     @NotNull
-    public final String getAuthor() {
+    public String getAuthor() {
         List<String> list = this.getDescription().getAuthors();
         return list.isEmpty() ? TM : list.get(0);
     }
 
     @NotNull
-    public final String getNameRaw() {
+    public String getNameRaw() {
         return this.getName().toLowerCase().replace(" ", "").replace("-", "");
     }
 
     @NotNull
-    public final String getLabel() {
+    public String getLabel() {
         return this.getLabels()[0];
     }
 
     @NotNull
-    public final String[] getLabels() {
+    public String[] getLabels() {
         return this.cfg().cmds;
     }
 
     @NotNull
-    public final NMS getNMS() {
-        return getEngine().nms;
+    public NMS getNMS() {
+        return getEngine().getNMS();
     }
 
     @NotNull
-    public final MainCommand<P> getMainCommand() {
+    public MainCommand<P> getMainCommand() {
         return this.getCommandManager().getMainCommand();
     }
 
     @NotNull
-    public final ConfigManager<P> getConfigManager() {
+    public ConfigManager<P> getConfigManager() {
         return this.configManager;
     }
 
     @NotNull
-    public final CommandManager<P> getCommandManager() {
+    public CommandManager<P> getCommandManager() {
         return this.cmdManager;
     }
 
     @NotNull
-    public final CraftManager getCraftManager() {
-        return getEngine().craftManager;
+    public CraftManager getCraftManager() {
+        return getEngine().getCraftManager();
     }
 
     @NotNull
-    public final ModuleManager<P> getModuleManager() {
+    public ModuleManager<P> getModuleManager() {
         return this.moduleManager;
     }
 
     @NotNull
-    public final ActionsManager getActionsManager() {
-        return getEngine().actionsManager;
+    public ActionsManager getActionsManager() {
+        return getEngine().getActionsManager();
     }
 
     @NotNull
-    public final PacketManager getPacketManager() {
-        return getEngine().packetManager;
+    public PacketManager getPacketManager() {
+        return getEngine().getPacketManager();
     }
 
     @NotNull
-    public final PluginManager getPluginManager() {
-        return getEngine().pluginManager;
+    public PluginManager getPluginManager() {
+        return getEngine().getPluginManager();
     }
 
     @NotNull
-    public final HookManager getHooks() {
-        return getEngine().getHookManager();
+    public HookManager getHooks() {
+        return getEngine().getHooksManager();
     }
 
-    public final boolean isHooked(@NotNull Class<? extends NHook<?>> clazz) {
+    public boolean isHooked(@NotNull Class<? extends NHook<?>> clazz) {
         return this.getHooks().isHooked(this, clazz);
     }
 
-    public final boolean isHooked(@NotNull String plugin) {
+    public boolean isHooked(@NotNull String plugin) {
         return this.getHooks().isHooked(this, plugin);
     }
 
     @Nullable
-    public final <T extends NHook<?>> T getHook(@NotNull Class<T> clazz) {
+    public <T extends NHook<?>> T getHook(@NotNull Class<T> clazz) {
         return this.getHooks().getHook(this, clazz);
     }
 
     @Nullable
-    public final NHook<? extends NexPlugin<?>> getHook(@NotNull String name) {
+    public NHook<? extends NexPlugin<?>> getHook(@NotNull String name) {
         return this.getHooks().getHook(this, name);
     }
 
     @Nullable
-    public final VaultHK getVault() {
-        return getEngine().hookVault;
+    public VaultHK getVault() {
+        return getEngine().getVault();
     }
 
     @Nullable
-    public final CitizensHK getCitizens() {
-        return getEngine().hookCitizens;
+    public CitizensHK getCitizens() {
+        return getEngine().getCitizens();
     }
 
     @Nullable
-    public final WorldGuardHK getWorldGuard() {
-        return getEngine().hookWorldGuard;
+    public WorldGuardHK getWorldGuard() {
+        return getEngine().getWorldGuard();
     }
 
     @Nullable
-    public final IMythicHook getMythicMobs() {
-        return getEngine().hookMythicMobs;
+    public IMythicHook getMythicMobs() {
+        return getEngine().getMythicMobs();
     }
 
     public boolean hasEditor() {

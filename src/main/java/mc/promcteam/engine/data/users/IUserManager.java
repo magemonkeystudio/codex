@@ -185,9 +185,8 @@ public abstract class IUserManager<P extends NexDataPlugin<P, U>, U extends IAbs
         });
 
         this.plugin.info("Created new user data for: '" + uuid + "'");
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            this.plugin.getData().addUser(user2);
-        });
+        this.plugin.getServer().getScheduler()
+                .runTaskAsynchronously(plugin, () -> this.plugin.getData().addUser(user2));
         this.activeUsers.put(uuid, user2);
         this.toCreate.remove(user2.getUUID());
         return user2;

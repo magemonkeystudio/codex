@@ -2,6 +2,8 @@ package mc.promcteam.engine.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import lombok.Getter;
+import lombok.Setter;
 import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.config.ConfigManager;
 import mc.promcteam.engine.core.Version;
@@ -25,17 +27,19 @@ import java.util.stream.Collectors;
 
 public class ItemUT {
 
+    @Setter
+    @Getter
+    public static NexEngine engine;
+
     public static final  String                     LORE_FIX_PREFIX = "fogus_loren-";
     public static final  String                     NAME_FIX_PREFIX = "fogus_namel-";
     public static final  String                     TAG_SPLITTER    = "__x__";
-    private static final NexEngine                  ENGINE;
     private static final Map<String, NamespacedKey> LORE_KEYS_CACHE;
     private static final Map<String, NamespacedKey> LORE_KEYS_CACHE2;
     private static final Map<String, NamespacedKey> NAME_KEYS_CACHE;
     private static final Map<String, NamespacedKey> NAME_KEYS_CACHE2;
 
     static {
-        ENGINE = NexEngine.get();
         LORE_KEYS_CACHE = new HashMap<>();
         LORE_KEYS_CACHE2 = new HashMap<>();
         NAME_KEYS_CACHE = new HashMap<>();
@@ -161,7 +165,7 @@ public class ItemUT {
     @NotNull
     private static NamespacedKey getLoreKey(@NotNull String id2) {
         String id = id2.toLowerCase();
-        return LORE_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(ENGINE, LORE_FIX_PREFIX + id));
+        return LORE_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(engine, LORE_FIX_PREFIX + id));
     }
 
     @NotNull
@@ -173,7 +177,7 @@ public class ItemUT {
     @NotNull
     private static NamespacedKey getNameKey(@NotNull String id2) {
         String id = id2.toLowerCase();
-        return NAME_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(ENGINE, NAME_FIX_PREFIX + id));
+        return NAME_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(engine, NAME_FIX_PREFIX + id));
     }
 
     public static void addLoreTag(@NotNull ItemStack item, @NotNull String id, @NotNull String text) {
@@ -216,7 +220,7 @@ public class ItemUT {
         ItemMeta meta = item.getItemMeta();
         String name = meta != null && meta.hasDisplayName()
                 ? meta.getDisplayName()
-                : ENGINE.lang().getEnum(item.getType());
+                : getEngine().lang().getEnum(item.getType());
         return name;
     }
 
@@ -325,15 +329,15 @@ public class ItemUT {
     }
 
     public static boolean isWeapon(@NotNull ItemStack item) {
-        return ENGINE.getNMS().isWeapon(item);
+        return getEngine().getNMS().isWeapon(item);
     }
 
     public static boolean isTool(@NotNull ItemStack item) {
-        return ENGINE.getNMS().isTool(item);
+        return getEngine().getNMS().isTool(item);
     }
 
     public static boolean isArmor(@NotNull ItemStack item) {
-        return ENGINE.getNMS().isArmor(item);
+        return getEngine().getNMS().isArmor(item);
     }
 
     public static boolean isBow(@NotNull ItemStack item) {
@@ -371,13 +375,13 @@ public class ItemUT {
 
     @NotNull
     public static String toJson(@NotNull ItemStack item) {
-        return ENGINE.getNMS().toJSON(item);
+        return getEngine().getNMS().toJSON(item);
     }
 
     @Nullable
     public static String toBase64(@NotNull ItemStack item) {
         try {
-            return ENGINE.getNMS().toBase64(item);
+            return getEngine().getNMS().toBase64(item);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -395,7 +399,7 @@ public class ItemUT {
                     try {
                         return toBase64(item);
                     } catch (Exception e) {
-                        NexEngine.get().getLogger().warning("Could not convert to b64.");
+                        getEngine().getLogger().warning("Could not convert to b64.");
                         e.printStackTrace();
                     }
                     return null;
@@ -407,7 +411,7 @@ public class ItemUT {
 
     @Nullable
     public static ItemStack fromBase64(@NotNull String data) {
-        return ENGINE.getNMS().fromBase64(data);
+        return getEngine().getNMS().fromBase64(data);
     }
 
     @NotNull

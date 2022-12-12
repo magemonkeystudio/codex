@@ -52,16 +52,14 @@ public abstract class IDataHandler<P extends NexPlugin<P>, U extends IAbstractUs
 
         this.open();
         this.create();
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> {
-            this.purge();
-        });
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(this.plugin, () -> this.purge());
     }
 
     public final void shutdown() {
         this.close();
     }
 
-    private final void open() {
+    private void open() {
         try {
             if (this.dataType == StorageType.MYSQL) {
                 this.con = DriverManager.getConnection(this.url, this.user, this.password);
@@ -74,7 +72,7 @@ public abstract class IDataHandler<P extends NexPlugin<P>, U extends IAbstractUs
         }
     }
 
-    private final void create() {
+    private void create() {
         LinkedHashMap<String, String> map = new LinkedHashMap<>();
         map.put(COL_USER_UUID, DataTypes.CHAR.build(this.dataType, 36));
         map.put(COL_USER_NAME, DataTypes.STRING.build(this.dataType, 24));
@@ -88,7 +86,7 @@ public abstract class IDataHandler<P extends NexPlugin<P>, U extends IAbstractUs
         this.onTableCreate();
     }
 
-    private final void close() {
+    private void close() {
         try {
             if (con != null) con.close();
         } catch (SQLException se) {

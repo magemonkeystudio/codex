@@ -95,6 +95,7 @@ public abstract class ILangTemplate {
 
             // Fill message fields from extended class with parent message field values.
             if (!field.getDeclaringClass().equals(this.getClass())) {
+                if (this.parent == null) continue;
                 ILangMsg superField = (ILangMsg) Reflex.getFieldValue(this.parent, field.getName());
                 if (superField != null) {
                     jmsg.setMsg(superField.getMsg());

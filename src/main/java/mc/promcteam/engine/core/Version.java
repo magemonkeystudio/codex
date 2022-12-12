@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 public enum Version {
 
     // !!! KEEP THE VERSIONS LIST IN A ORDER FROM LOWER TO HIGHER !!!
+    TEST,
     V1_13_R2,
     V1_14_R1,
     V1_15_R1,
@@ -23,8 +24,10 @@ public enum Version {
     static {
         String[] split      = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
         String   versionRaw = split[split.length - 1];
-
-        CURRENT = CollectionsUT.getEnum(versionRaw, Version.class);
+        if (versionRaw.equals("mockbukkit"))
+            CURRENT = Version.TEST;
+        else
+            CURRENT = CollectionsUT.getEnum(versionRaw, Version.class);
     }
 
     public boolean isLower(@NotNull Version version) {

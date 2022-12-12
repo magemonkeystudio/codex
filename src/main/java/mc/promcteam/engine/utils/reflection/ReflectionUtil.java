@@ -26,7 +26,9 @@ import java.util.UUID;
 
 public class ReflectionUtil {
 
-    public static final String VERSION       = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
+    public static final String VERSION       = Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit")
+            ? "testing_19"
+            : Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     public static final int    MINOR_VERSION = Integer.parseInt(VERSION.split("_")[1]);
 
     protected static Object newNBTTagCompound() {
