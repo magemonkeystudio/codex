@@ -107,7 +107,7 @@ public class Reflection_1_17 implements ReflectionUtil {
         try {
             Object conn = getConnection(p);
             Object manager = Reflex.getFieldValue(conn,
-                    Version.CURRENT == Version.V1_19_R1 ? "b" : "a");
+                    Version.CURRENT == Version.V1_19_R2 ? "b" : "a");
             String  field   = Version.CURRENT.isHigher(Version.V1_18_R1) ? "m" : "k";
             Channel channel = (Channel) Reflex.getFieldValue(manager, field);
 
@@ -524,7 +524,7 @@ public class Reflection_1_17 implements ReflectionUtil {
                 getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
             } else {
                 getAttackCooldown = Reflex.getMethod(entityHumanClass,
-                        Version.V1_19_R2.isCurrent() ? "x" : "v", float.class);
+                        Version.V1_19_R2.isCurrent() ? "w" : "v", float.class);
             }
             if (getAttackCooldown == null)
                 throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");

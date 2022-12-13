@@ -21,6 +21,7 @@ public class ReflectionManager {
             case V1_19_R1:
             case V1_19_R2:
                 reflection = new Reflection_1_17();
+                break;
             default:
                 reflection = new DefaultReflectionUtil();
         }
