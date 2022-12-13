@@ -11,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
+import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.AbstractList;
@@ -107,7 +109,7 @@ public class Reflection_1_17 implements ReflectionUtil {
         try {
             Object conn = getConnection(p);
             Object manager = Reflex.getFieldValue(conn,
-                    Version.CURRENT == Version.V1_19_R2 ? "b" : "a");
+                    ReflectionManager.MINOR_VERSION >= 19 ? "b" : "a");
             String  field   = Version.CURRENT.isHigher(Version.V1_18_R1) ? "m" : "k";
             Channel channel = (Channel) Reflex.getFieldValue(manager, field);
 
@@ -539,29 +541,18 @@ public class Reflection_1_17 implements ReflectionUtil {
 
     public void changeSkull(Block b, String hash) {
         try {
-            Class<?> tileSkullClass  = getClazz("net.minecraft.world.level.block.entity.TileEntitySkull");
-            Class<?> craftWorldClass = getCraftClass("CraftWorld");
-//            Class<?> worldServerClass = getNMSClass("WorldServer");
-            Class<?> blockAccessClass = getClazz("net.minecraft.world.level.IBlockAccess");
-            Class<?> blockPosClass    = getClazz("net.minecraft.core.BlockPosition");
+            if (!(b.getState() instanceof Skull)) return;
 
-            Constructor ctor = Reflex.getConstructor(blockPosClass, int.class, int.class, int.class);
-
-            Method getHandle = Reflex.getMethod(craftWorldClass, "getHandle");
-            Method getTileEntity = Reflex.getMethod(blockAccessClass,
-                    ReflectionManager.MINOR_VERSION == 17 ? "getTileEntity" : "c_", blockPosClass);
-
-            Object bPos = Reflex.invokeConstructor(ctor, b.getX(), b.getY(), b.getZ());
-
-            Object worldServer = Reflex.invokeMethod(getHandle, craftWorldClass.cast(b.getWorld()));
-            Object skullTile   = tileSkullClass.cast(Reflex.invokeMethod(getTileEntity, worldServer, bPos));
-
-
-            Method setGameProfile = Reflex.getMethod(tileSkullClass,
-                    ReflectionManager.MINOR_VERSION == 17 ? "setGameProfile" : "a", GameProfile.class);
-
-            Reflex.invokeMethod(setGameProfile, skullTile, getNonPlayerProfile(hash));
-            b.getState().update(true);
+            Skull       skull   = (Skull) b.getState();
+            GameProfile profile = getNonPlayerProfile(hash);
+            try {
+                Field profileField = skull.getClass().getDeclaredField("profile");
+                profileField.setAccessible(true);
+                profileField.set(skull, profile);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            skull.update();
         } catch (Exception e) {
             NexEngine.get().getLogger().warning("Could not update skull");
             e.printStackTrace();

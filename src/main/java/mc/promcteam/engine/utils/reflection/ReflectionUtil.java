@@ -158,6 +158,7 @@ public interface ReflectionUtil {
     default GameProfile getNonPlayerProfile(String hash) {
         GameProfile profile = new GameProfile(UUID.randomUUID(), null);
         profile.getProperties().put("textures", new Property("textures", hash));
+
         return profile;
     }
 
@@ -168,16 +169,16 @@ public interface ReflectionUtil {
             Method handle = Reflex.getCraftClass("entity.CraftEntity").getDeclaredMethod("getHandle");
             Field  killer;
             Field  damageTime;
-            if (ReflectionManager.MINOR_VERSION == 17)
+            if (ReflectionManager.MINOR_VERSION == 17 || ReflectionManager.MINOR_VERSION >= 19)
                 killer = living.getDeclaredField("bc");
-            else if (ReflectionManager.MINOR_VERSION >= 18)
+            else if (ReflectionManager.MINOR_VERSION == 18)
                 killer = living.getDeclaredField("bd");
             else
                 killer = living.getDeclaredField("killer");
 
-            if (ReflectionManager.MINOR_VERSION == 17)
+            if (ReflectionManager.MINOR_VERSION == 17 || ReflectionManager.MINOR_VERSION >= 19)
                 damageTime = living.getDeclaredField("bd");
-            else if (ReflectionManager.MINOR_VERSION >= 18)
+            else if (ReflectionManager.MINOR_VERSION == 18)
                 damageTime = living.getDeclaredField("be");
             else
                 damageTime = living.getDeclaredField("lastDamageByPlayerTime");
