@@ -211,7 +211,7 @@ public class DefaultReflectionUtil implements ReflectionUtil {
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
             Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-            Method a = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
+            Method   a               = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 
@@ -233,7 +233,7 @@ public class DefaultReflectionUtil implements ReflectionUtil {
             Object nbtTagCompoundRoot;
             try {
                 Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-                Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
+                Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
                 nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
             } catch (ClassNotFoundException e) {
@@ -241,9 +241,9 @@ public class DefaultReflectionUtil implements ReflectionUtil {
                 return null;
             }
 
-            Class<?> nmsItemClass = getNMSClass("ItemStack");
+            Class<?> nmsItemClass  = getNMSClass("ItemStack");
             Class<?> compoundClass = getNMSClass("NBTTagCompound");
-            Method a = Reflex.getMethod(nmsItemClass, "a", compoundClass);
+            Method   a             = Reflex.getMethod(nmsItemClass, "a", compoundClass);
 
             Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
 
@@ -289,9 +289,9 @@ public class DefaultReflectionUtil implements ReflectionUtil {
 
             Class<Enum> enumItemSlotClass = (Class<Enum>) (
                     getNMSClass("EnumItemSlot"));
-            Class<?> itemArmorClass = getNMSClass("ItemArmor");
-            Class<?> itemToolClass = getNMSClass("ItemTool");
-            Class<?> itemSwordClass = getNMSClass("ItemSword");
+            Class<?> itemArmorClass   = getNMSClass("ItemArmor");
+            Class<?> itemToolClass    = getNMSClass("ItemTool");
+            Class<?> itemSwordClass   = getNMSClass("ItemSword");
             Class<?> itemTridentClass = getNMSClass("ItemTrident");
 
             Enum mainhand = (Enum) Reflex.invokeMethod(
@@ -357,13 +357,15 @@ public class DefaultReflectionUtil implements ReflectionUtil {
                 Multimap<Object, Object> attMap             = getAttributes(item);
                 if (attMap == null) return 0D;
 
-                Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
-                Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
-                        ? 0
-                        : att.stream().findFirst().get());
+                Collection<Object> att  = attMap.get(attributeBaseClass.cast(attribute));
+                Object mod = att != null && !att.isEmpty()
+                        ? attributeModifierClass.cast(att.stream().findFirst().get())
+                        : null;
 
-                Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
-                value = (double) Reflex.invokeMethod(getAmount, mod);
+                if (mod != null) {
+                    Method getAmount = Reflex.getMethod(attributeModifierClass, "getAmount");
+                    value = (double) Reflex.invokeMethod(getAmount, mod);
+                } else value = 0;
             }
             if (attribute.equals(getGenericAttribute("ATTACK_DAMAGE"))) {
                 value += 1;
@@ -421,8 +423,8 @@ public class DefaultReflectionUtil implements ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> swordClass = getNMSClass("ItemSword");
-            Class<?> axeClass = getNMSClass("ItemAxe");
+            Class<?> swordClass   = getNMSClass("ItemSword");
+            Class<?> axeClass     = getNMSClass("ItemAxe");
             Class<?> tridentClass = getNMSClass("ItemTrident");
 
             return swordClass.isInstance(item) || axeClass.isInstance(item) || tridentClass.isInstance(item);
@@ -474,7 +476,7 @@ public class DefaultReflectionUtil implements ReflectionUtil {
             str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
 
             Class<?> baseComponentClass = getNMSClass("IChatBaseComponent");
-            Class<?> chatMessageClass = getCraftClass("util.CraftChatMessage");
+            Class<?> chatMessageClass   = getCraftClass("util.CraftChatMessage");
 
             Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
             Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromStringOrNull", String.class);
