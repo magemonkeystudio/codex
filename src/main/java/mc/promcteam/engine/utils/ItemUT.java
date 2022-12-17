@@ -241,7 +241,7 @@ public class ItemUT {
 
         GameProfile profile = new GameProfile(uuid, null);
         profile.getProperties().put("textures", new Property("textures", value));
-        Reflex.setFieldValue(meta, "profile", profile);
+        Reflex.invokeMethod(Reflex.getMethod(meta, "setProfile", GameProfile.class), meta, profile);
 
         item.setItemMeta(meta);
     }

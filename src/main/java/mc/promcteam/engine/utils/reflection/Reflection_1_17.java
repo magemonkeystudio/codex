@@ -19,7 +19,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
 import java.util.AbstractList;
@@ -50,6 +49,7 @@ public class Reflection_1_17 implements ReflectionUtil {
 
         return null;
     }
+
     @Override
     public ItemStack toBukkitCopy(Object nmsItem) {
         try {
@@ -232,7 +232,7 @@ public class Reflection_1_17 implements ReflectionUtil {
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
             Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-            Method a = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
+            Method   a               = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 
@@ -254,7 +254,7 @@ public class Reflection_1_17 implements ReflectionUtil {
             Object nbtTagCompoundRoot;
             try {
                 Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-                Method a = Reflex.getMethod(compressedClass, "a", DataInput.class);
+                Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
 
                 nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
             } catch (ClassNotFoundException e) {
@@ -262,9 +262,9 @@ public class Reflection_1_17 implements ReflectionUtil {
                 return null;
             }
 
-            Class<?> nmsItemClass = getClazz("net.minecraft.world.item.ItemStack");
+            Class<?> nmsItemClass  = getClazz("net.minecraft.world.item.ItemStack");
             Class<?> compoundClass = getClazz("net.minecraft.nbt.NBTTagCompound");
-            Method a = Reflex.getMethod(nmsItemClass, "a", compoundClass);
+            Method   a             = Reflex.getMethod(nmsItemClass, "a", compoundClass);
 
             Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
 
@@ -331,9 +331,9 @@ public class Reflection_1_17 implements ReflectionUtil {
             Class<Enum> enumItemSlotClass = (Class<Enum>) (
                     getClazz("net.minecraft.world.entity.EnumItemSlot")
             );
-            Class<?> itemArmorClass = getClazz("net.minecraft.world.item.ItemArmor");
-            Class<?> itemToolClass = getClazz("net.minecraft.world.item.ItemTool");
-            Class<?> itemSwordClass = getClazz("net.minecraft.world.item.ItemSword");
+            Class<?> itemArmorClass   = getClazz("net.minecraft.world.item.ItemArmor");
+            Class<?> itemToolClass    = getClazz("net.minecraft.world.item.ItemTool");
+            Class<?> itemSwordClass   = getClazz("net.minecraft.world.item.ItemSword");
             Class<?> itemTridentClass = getClazz("net.minecraft.world.item.ItemTrident");
 
             Enum mainhand = (Enum) Reflex.invokeMethod(
@@ -446,8 +446,8 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object item = Reflex.invokeMethod(getItem, nmsItem);
 
-            Class<?> swordClass = getClazz("net.minecraft.world.item.ItemSword");
-            Class<?> axeClass = getClazz("net.minecraft.world.item.ItemAxe");
+            Class<?> swordClass   = getClazz("net.minecraft.world.item.ItemSword");
+            Class<?> axeClass     = getClazz("net.minecraft.world.item.ItemAxe");
             Class<?> tridentClass = getClazz("net.minecraft.world.item.ItemTrident");
 
             return swordClass.isInstance(item) || axeClass.isInstance(item) || tridentClass.isInstance(item);
@@ -497,7 +497,7 @@ public class Reflection_1_17 implements ReflectionUtil {
             str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
 
             Class<?> baseComponentClass = getClazz("net.minecraft.network.chat.IChatBaseComponent");
-            Class<?> chatMessageClass = getCraftClass("util.CraftChatMessage");
+            Class<?> chatMessageClass   = getCraftClass("util.CraftChatMessage");
 
             Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
             Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromStringOrNull", String.class);
@@ -545,13 +545,7 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Skull       skull   = (Skull) b.getState();
             GameProfile profile = getNonPlayerProfile(hash);
-            try {
-                Field profileField = skull.getClass().getDeclaredField("profile");
-                profileField.setAccessible(true);
-                profileField.set(skull, profile);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            Reflex.setFieldValue(skull, "profile", profile);
             skull.update();
         } catch (Exception e) {
             NexEngine.get().getLogger().warning("Could not update skull");

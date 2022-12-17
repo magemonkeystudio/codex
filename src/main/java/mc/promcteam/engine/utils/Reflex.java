@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Reflex {
 
-    public static final  String    VERSION =
+    public static final String VERSION =
             !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit")
                     ? Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]
                     : "";
@@ -160,7 +160,12 @@ public class Reflex {
      */
     public static Method getMethod(Object o, String methodName, Class<?>... params) {
         try {
-            Method method = o.getClass().getMethod(methodName, params);
+            Method method;
+            try {
+                method = o.getClass().getMethod(methodName, params);
+            } catch (NoSuchMethodException | SecurityException e) {
+                method = o.getClass().getDeclaredMethod(methodName, params);
+            }
             if (!method.isAccessible()) method.setAccessible(true);
             return method;
         } catch (Exception ex) { /* Do nothing */ }
