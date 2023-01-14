@@ -169,10 +169,8 @@ public interface ReflectionUtil {
             Method handle = Reflex.getCraftClass("entity.CraftEntity").getDeclaredMethod("getHandle");
             Field  killer;
             Field  damageTime;
-            if (ReflectionManager.MINOR_VERSION == 17 || ReflectionManager.MINOR_VERSION >= 19)
+            if (ReflectionManager.MINOR_VERSION >= 17)
                 killer = living.getDeclaredField("bc");
-            else if (ReflectionManager.MINOR_VERSION == 18)
-                killer = living.getDeclaredField("bd");
             else
                 killer = living.getDeclaredField("killer");
 
