@@ -174,10 +174,8 @@ public interface ReflectionUtil {
             else
                 killer = living.getDeclaredField("killer");
 
-            if (ReflectionManager.MINOR_VERSION == 17 || ReflectionManager.MINOR_VERSION >= 19)
+            if (ReflectionManager.MINOR_VERSION >= 17)
                 damageTime = living.getDeclaredField("bd");
-            else if (ReflectionManager.MINOR_VERSION == 18)
-                damageTime = living.getDeclaredField("be");
             else
                 damageTime = living.getDeclaredField("lastDamageByPlayerTime");
 
