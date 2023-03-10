@@ -40,7 +40,7 @@ public class AboutCommand<P extends NexPlugin<P>> extends ISubCommand<P> {
                 "&e" + plugin.getName() + " &6v" + plugin.getDescription().getVersion() + " &ecreated by &6" + plugin.getAuthor(),
                 "&eType &6/" + plugin.getLabel() + " help&e to list plugin commands.",
                 "&7",
-                "&2Powered by &a&l" + NexEngine.get().getName() + "&2, © 2019-2020 &a" + NexPlugin.TM
+                "&2Powered by &a&l" + NexEngine.get().getName() + "&2, © 2019-2023 &a" + NexPlugin.TM
         ));
 
         info.forEach(line -> sender.sendMessage(line));
