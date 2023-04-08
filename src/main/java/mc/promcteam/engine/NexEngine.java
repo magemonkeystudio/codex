@@ -27,6 +27,7 @@ import mc.promcteam.engine.utils.ItemUT;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.actions.ActionsManager;
 import mc.promcteam.engine.utils.craft.CraftManager;
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -128,8 +129,17 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
     private boolean setupNMS() {
         Version current = Version.CURRENT;
-        this.info("You are running MC version " + current);
-        if (current == null) return false;
+        String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+        String rawVersion  = split[split.length - 1];
+        this.info("You are running MC version " + current + " (RAW: " + rawVersion + ")");
+        if (current == null) {
+            this.error("===== ProMCCore Initialization Failure =====");
+            this.error(rawVersion + " is not currently supported. Is this a new version of Spigot?");
+            this.error("If this is a new version, please be patient and wait for a new build supporting the new version");
+            this.error("If this is a version older than 1.16.5, sorry. We don't support <1.16.5");
+            this.error("============================================");
+            return false;
+        }
         if (current == Version.TEST) current = Version.values()[Version.values().length - 1];
 
         String   pack  = NMS.class.getPackage().getName();

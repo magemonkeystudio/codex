@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>com.promcteam</groupId>
-        <version>1.19.3-SNAPSHOT</version>
+        <version>1.19.4-SNAPSHOT</version>
         <artifactId>promc-parent</artifactId>
     </parent>
 
