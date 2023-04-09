@@ -106,14 +106,26 @@ public class Reflection_1_17 implements ReflectionUtil {
 
     @Override
     public Channel getChannel(Player p) {
+        String managerFieldName = getNetworkManagerFieldName();
+        String channelFieldName = getChannelFieldName();
+        Object conn = null,
+                manager = null,
+                channel = null;
         try {
-            Object conn = getConnection(p);
-            Object manager = Reflex.getFieldValue(conn,
-                    ReflectionManager.MINOR_VERSION >= 19 ? "b" : "a");
-            String  field   = Version.CURRENT.isHigher(Version.V1_18_R1) ? "m" : "k";
-            Channel channel = (Channel) Reflex.getFieldValue(manager, field);
+            conn = getConnection(p);
+            manager = Reflex.getFieldValue(conn, managerFieldName);
+            channel = Reflex.getFieldValue(manager, channelFieldName);
 
-            return channel;
+            return (Channel) channel;
+        } catch (ClassCastException e) {
+            NexEngine.get().error("Could not setup Channel for player." +
+                    "\n\nConnection: " + conn.toString() +
+                    "\nUsing Manager Field Name: " + managerFieldName +
+                    "\nManager: " + manager.toString() +
+                    "\nChannel Field name: " + channelFieldName +
+                    "\nChannel: " + channel.toString() + "\n"
+            );
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,7 +141,12 @@ public class Reflection_1_17 implements ReflectionUtil {
             Method getHandle = Reflex.getMethod(craftPlayerClass, "getHandle");
             Object nmsPlayer = Reflex.invokeMethod(getHandle, getCraftPlayer(player));
 
-            Object con = Reflex.getFieldValue(nmsPlayer, "b"); //WHY must you obfuscate
+            String fieldName = "b";
+            Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
+            if (!con.getClass().getSimpleName().equals("PlayerConnection")) {
+                throw new ClassNotFoundException("Could not get connection from CraftPlayer using field " + fieldName +
+                        "\nNMS Player: " + nmsPlayer + "\n");
+            }
             return con;
         } catch (Exception e) {
             e.printStackTrace();
@@ -194,8 +211,8 @@ public class Reflection_1_17 implements ReflectionUtil {
                         ReflectionManager.MINOR_VERSION == 17 ? "playBlockAction" : "a", //Curse you obfuscation
                         blockPosClass, blockClass, int.class, int.class);
 
-                Constructor ctor     = Reflex.getConstructor(blockPosClass, double.class, double.class, double.class);
-                Object      position = Reflex.invokeConstructor(ctor, lo.getX(), lo.getY(), lo.getZ());
+                Constructor ctor     = Reflex.getConstructor(blockPosClass, int.class, int.class, int.class);
+                Object      position = Reflex.invokeConstructor(ctor, (int) lo.getX(), (int) lo.getY(), (int) lo.getZ());
 
                 Method getType = Reflex.getMethod(world.getClass(),
                         ReflectionManager.MINOR_VERSION == 17 ? "getType" : "a_",
@@ -344,29 +361,29 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             if (itemArmorClass.isInstance(item)) {
                 Object tool = itemArmorClass.cast(item);
-                Method b    = Reflex.getMethod(itemArmorClass, "b");
-                Object bObj = Reflex.invokeMethod(b, tool);
-                Method a    = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
+                Method getEquipmentSlot    = Reflex.getMethod(itemArmorClass, "b");
+                Object armorEquipmentSlot = Reflex.invokeMethod(getEquipmentSlot, tool);
+                Method getDefaultAttributeModifiers    = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
 
-                return (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, bObj);
+                return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers, tool, armorEquipmentSlot);
             }
 
             Object tool;
-            Method a;
+            Method getDefaultAttributeModifiers;
             if (itemToolClass.isInstance(item)) {
                 tool = itemToolClass.cast(item);
-                a = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
+                getDefaultAttributeModifiers = Reflex.getMethod(itemToolClass, "a", enumItemSlotClass);
             } else if (itemSwordClass.isInstance(item)) {
                 tool = itemSwordClass.cast(item);
-                a = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
+                getDefaultAttributeModifiers = Reflex.getMethod(itemSwordClass, "a", enumItemSlotClass);
             } else if (itemTridentClass.isInstance(item)) {
                 tool = itemTridentClass.cast(item);
-                a = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
+                getDefaultAttributeModifiers = Reflex.getMethod(itemTridentClass, "a", enumItemSlotClass);
             } else {
                 return null;
             }
 
-            return (Multimap<Object, Object>) Reflex.invokeMethod(a, tool, mainhand);
+            return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers, tool, mainhand);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -521,15 +538,11 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
 
-            Method getAttackCooldown;
-            if (ReflectionManager.MINOR_VERSION == 17) {
-                getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
-            } else {
-                getAttackCooldown = Reflex.getMethod(entityHumanClass,
-                        Version.V1_19_R2.isCurrent() ? "w" : "v", float.class);
+            Method getAttackCooldown = Reflex.getMethod(entityHumanClass, getAttackCooldownMethodName(), float.class);
+            if (getAttackCooldown == null) {
+                throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection. " +
+                        "Attempting " + getAttackCooldownMethodName() + "(float)");
             }
-            if (getAttackCooldown == null)
-                throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");
 
             return (float) Reflex.invokeMethod(getAttackCooldown, entityHumanClass.cast(ep), 0f);
         } catch (Exception e) {
