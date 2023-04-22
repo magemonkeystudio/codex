@@ -360,10 +360,14 @@ public class Reflection_1_17 implements ReflectionUtil {
                     null, "mainhand");
 
             if (itemArmorClass.isInstance(item)) {
-                Object tool = itemArmorClass.cast(item);
-                Method getEquipmentSlot    = Reflex.getMethod(itemArmorClass, "b");
+                Object tool               = itemArmorClass.cast(item);
+                Method getEquipmentSlot   = Reflex.getMethod(itemArmorClass, "b");
                 Object armorEquipmentSlot = Reflex.invokeMethod(getEquipmentSlot, tool);
-                Method getDefaultAttributeModifiers    = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
+                if (Version.V1_19_R3.isCurrent()) {
+                    // If it's 1.19.4, the 'b' method returns a different enum, so we have to get the slot out of that enum
+                    armorEquipmentSlot = Reflex.invokeMethod(Reflex.getMethod(armorEquipmentSlot.getClass(), "a"), armorEquipmentSlot);
+                }
+                Method getDefaultAttributeModifiers = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
 
                 return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers, tool, armorEquipmentSlot);
             }
