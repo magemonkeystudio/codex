@@ -144,7 +144,8 @@ public class YAMLParser {
     private static DataSection parse(String[] lines, int indent, char quote) {
         DataSection data = new DataSection();
         int         spaces;
-        while (i < lines.length && ((spaces = countSpaces(lines[i])) >= indent || lines[i].length() == 0 || lines[i].charAt(spaces) == '#')) {
+        while (i < lines.length && ((spaces = countSpaces(lines[i])) >= indent || lines[i].length() == 0
+                || lines[i].charAt(spaces) == '#')) {
             // When the entire line is just spaces, continue
             if (lines[i].trim().isEmpty()) {
                 i++;
@@ -164,6 +165,10 @@ public class YAMLParser {
             if (i == lines.length) return data;
 
             String key = lines[i].substring(indent, lines[i].indexOf(':'));
+            if ((key.charAt(0) == '\'' && key.charAt(key.length() - 1) == '\'')
+                    || (key.charAt(0) == '"' && key.charAt(key.length() - 1) == '"')) {
+                key = key.substring(1, key.length() - 1);
+            }
             data.setComments(key, comments);
             comments.clear();
 
