@@ -4,6 +4,7 @@ import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.core.Version;
 import net.md_5.bungee.api.ChatColor;
 import org.apache.commons.lang3.text.WordUtils;
+import org.bukkit.Color;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -100,28 +101,28 @@ public class StringUT {
     }
 
     @NotNull
-    public static List<String> replace(
-            @NotNull List<String> orig, @NotNull String placeholder, boolean keep, String... replacer) {
-        return StringUT.replace(orig, placeholder, keep, Arrays.asList(replacer));
+    public static List<String> replace(@NotNull List<String> orig, @NotNull String placeholder, List<String> replacer) {
+        if (replacer.isEmpty()) { replacer = List.of("[]"); }
+        orig = new ArrayList<>(orig);
+        for (int i = 0, loreSize = orig.size(); i < loreSize; i++) {
+            String line = orig.get(i);
+            int pos = line.indexOf(placeholder);
+            if (pos < 0) { continue; }
+            String format = StringUT.getColor(line.substring(0, pos));
+            orig.set(i, line.substring(0, pos)+replacer.get(0));
+            for (int j = 1, size = replacer.size(); j < size; j++) {
+                i++;
+                loreSize++;
+                orig.add(i, format+replacer.get(j));
+            }
+            orig.set(i, orig.get(i)+line.substring(pos+placeholder.length()));
+        }
+        return orig;
     }
 
     @NotNull
-    public static List<String> replace(
-            @NotNull List<String> orig, @NotNull String placeholder, boolean keep, List<String> replacer) {
-        List<String> replaced = new ArrayList<>();
-        for (String line : orig) {
-            if (line.contains(placeholder)) {
-                if (!keep) {
-                    replaced.addAll(replacer);
-                } else {
-                    replacer.forEach(lineRep -> replaced.add(line.replace(placeholder, lineRep)));
-                }
-                continue;
-            }
-            replaced.add(line);
-        }
-
-        return replaced;
+    public static List<String> replace(@NotNull List<String> orig, @NotNull String placeholder, String replacer) {
+        return replace(orig, placeholder, Collections.singletonList(replacer));
     }
 
     public static double getDouble(@NotNull String input, double def) {
@@ -301,5 +302,26 @@ public class StringUT {
             }
         }
         return builder.toString();
+    }
+
+    public static List<String> wrap(String value, int maxLength) {
+        List<String> splitValue = new ArrayList<>();
+        StringBuilder color = new StringBuilder();
+        while (ChatColor.stripColor(value).length() > maxLength) {
+            int i = value.lastIndexOf(' ', maxLength);
+            if (i < 0) { i = maxLength; }
+            String first = value.substring(0, i);
+            color.append(getColor(first));
+            splitValue.add(first);
+            value = color+value.substring(i);
+        }
+        splitValue.add(value);
+        return splitValue;
+    }
+
+    public static List<String> wrap(List<String> value, int maxLenght) {
+        List<String> splitValue = new ArrayList<>();
+        for (String aValue : value) {splitValue.addAll(wrap(aValue, maxLenght));}
+        return splitValue;
     }
 }

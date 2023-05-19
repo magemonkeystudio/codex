@@ -284,25 +284,18 @@ public class ItemUT {
         item.setItemMeta(meta);
     }
 
-    public static void replaceLore(
-            @NotNull ItemStack item, @NotNull String placeholder, @NotNull List<String> replacer) {
+    public static void replaceLore(@NotNull ItemStack item, @NotNull String placeholder, @NotNull List<String> replacer) {
         ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
-
+        if (meta == null) {return;}
         List<String> lore = meta.getLore();
-        if (lore == null) return;
+        if (lore == null) {return;}
 
-        List<String> lore2 = new ArrayList<>();
-        for (String line : lore) {
-            if (line.contains(placeholder)) {
-                lore2.addAll(replacer);
-                continue;
-            }
-            lore2.add(line);
-        }
-        meta.setLore(lore2);
-
+        meta.setLore(StringUT.replace(lore, placeholder, replacer));
         item.setItemMeta(meta);
+    }
+
+    public static void replaceLore(@NotNull ItemStack item, @NotNull String placeholder, @NotNull String replacer) {
+        replaceLore(item, placeholder, List.of(replacer));
     }
 
     public static void addItem(@NotNull Player player, @NotNull ItemStack... items) {
