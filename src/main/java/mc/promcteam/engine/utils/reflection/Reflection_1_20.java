@@ -60,7 +60,7 @@ public class Reflection_1_20 extends Reflection_1_17 {
                 Object tool               = itemArmorClass.cast(item);
                 Method getEquipmentSlot   = Reflex.getMethod(itemArmorClass, "b");
                 Object armorEquipmentSlot = Reflex.invokeMethod(getEquipmentSlot, tool);
-                if (Version.V1_19_R3.isCurrent()) {
+                if (!Version.CURRENT.isLower(Version.V1_19_R3)) {
                     // If it's 1.19.4, the 'b' method returns a different enum, so we have to get the slot out of that enum
                     armorEquipmentSlot = Reflex.invokeMethod(Reflex.getMethod(armorEquipmentSlot.getClass(), "a"), armorEquipmentSlot);
                 }
