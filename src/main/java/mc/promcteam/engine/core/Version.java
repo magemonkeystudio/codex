@@ -18,7 +18,10 @@ public enum Version {
     V1_18_R2,
     V1_19_R1,
     V1_19_R2,
-    V1_19_R3;
+    V1_19_R3,
+    V1_20_R1,
+    V1_20_R2,
+    ;
 
     public static final Version CURRENT;
 

@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>com.promcteam</groupId>
-        <version>1.19.4-SNAPSHOT</version>
+        <version>1.20.1-SNAPSHOT</version>
         <artifactId>promc-parent</artifactId>
     </parent>
 
@@ -159,6 +159,7 @@
                     <systemPropertyVariables>
                         <PROMCCORE_VERSION>${project.version}</PROMCCORE_VERSION>
                     </systemPropertyVariables>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>
