@@ -6,6 +6,8 @@ import com.mojang.authlib.properties.Property;
 import io.netty.channel.Channel;
 import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.core.Version;
+import mc.promcteam.engine.nms.V1_20_R1;
+import mc.promcteam.engine.nms.V1_20_R2;
 import mc.promcteam.engine.utils.Reflex;
 import mc.promcteam.engine.utils.constants.JNumbers;
 import org.bukkit.Bukkit;
@@ -189,9 +191,7 @@ public interface ReflectionUtil {
             case V1_16_R3 -> "networkManager";
             case V1_17_R1, V1_18_R1, V1_18_R2 -> "a";
             case V1_19_R1, V1_19_R2 -> "b";
-            case V1_19_R3 -> "h";
-
-            default -> "NO_OP";
+            default -> "h";
         };
     }
 
@@ -199,8 +199,7 @@ public interface ReflectionUtil {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "channel";
             case V1_17_R1, V1_18_R1 -> "k";
-            case V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3 -> "m";
-            default -> "NO_OP";
+            default -> "m";
         };
     }
 
@@ -210,7 +209,7 @@ public interface ReflectionUtil {
             case V1_18_R1, V1_18_R2, V1_19_R1 -> "v";
             case V1_19_R2 -> "w";
             case V1_19_R3 -> "z";
-            default -> "NO_OP";
+            default -> "A";
         };
     }
 
@@ -219,7 +218,7 @@ public interface ReflectionUtil {
             case V1_16_R3 -> "killer";
             case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2 -> "bc";
             case V1_19_R3 -> "aX";
-            default -> "NO_OP";
+            default -> "aZ";
         };
     }
 
@@ -228,7 +227,7 @@ public interface ReflectionUtil {
             case V1_16_R3 -> "lastDamageByPlayerTime";
             case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2 -> "bd";
             case V1_19_R3 -> "aY";
-            default -> "NO_OP";
+            default -> "ba";
         };
     }
 }

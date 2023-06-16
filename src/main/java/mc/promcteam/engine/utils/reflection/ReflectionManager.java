@@ -16,7 +16,7 @@ public class ReflectionManager {
 
         switch (Version.CURRENT) {
             case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3 -> reflection = new Reflection_1_17();
-            case V1_20_R1, V1_20_R2 -> new Reflection_1_20();
+            case V1_20_R1, V1_20_R2 -> reflection = new Reflection_1_20();
             default -> reflection = new DefaultReflectionUtil();
         }
 
