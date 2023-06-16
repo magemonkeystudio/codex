@@ -12,7 +12,7 @@
 
     <artifactId>promccore</artifactId>
     <name>ProMCCore</name>
-    <version>1.0.4-R0.12-SNAPSHOT</version>
+    <version>1.0.4-R0.13-SNAPSHOT</version>
 
     <repositories>
         <repository>
