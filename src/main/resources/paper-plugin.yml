@@ -1,0 +1,27 @@
+name: ${project.name}
+main: mc.promcteam.engine.NexEngine
+version: ${project.version}
+description: ProRPG Core plugin
+api-version: '1.19'
+load: STARTUP
+authors:
+  - Travja
+  - goflish
+has-open-classloader: true
+libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
+
+dependencies:
+  - name: Vault
+    required: false
+    bootstrap: true
+  - name: WorldGuard
+    required: false
+    bootstrap: true
+  - name: MythicMobs
+    required: false
+    bootstrap: true
+load-before:
+  - name: ProSkillAPI
+    boostrap: false
+  - name: ProRPGItems
+    boostrap: false
