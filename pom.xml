@@ -159,7 +159,6 @@
                     <systemPropertyVariables>
                         <PROMCCORE_VERSION>${project.version}</PROMCCORE_VERSION>
                     </systemPropertyVariables>
-                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>
