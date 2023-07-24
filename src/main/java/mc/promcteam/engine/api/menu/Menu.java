@@ -13,18 +13,22 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public abstract class Menu implements InventoryHolder { // TODO close if another menu of the same class opens
+public abstract class Menu implements InventoryHolder {
+    private static final Map<Player, Menu> ACTIVE_MENUS = new HashMap<>();
+
     protected final Player                 player;
     protected final String                 title;
     protected final int                    rows;
     protected       Inventory              inventory;
     protected final TreeMap<Integer, Slot> slots       = new TreeMap<>();
     private final   Set<Listener>          listeners   = new HashSet<>();
+    private final   Set<BukkitTask>        tasks       = new HashSet<>();
     private         int                    page        = 0;
     private         Runnable               onClose;
     private         boolean                opening     = false;
@@ -79,6 +83,10 @@ public abstract class Menu implements InventoryHolder { // TODO close if another
     public void open() {open(this.page);}
 
     public void open(int page) {
+        Menu oldMenu = ACTIVE_MENUS.get(this.player);
+        if (oldMenu != null) {oldMenu.onClose();}
+        ACTIVE_MENUS.put(this.player, this);
+
         setContents();
         int finalPage = page % getPages();
         inventory = Bukkit.createInventory(Menu.this, rows * 9, title
@@ -92,6 +100,7 @@ public abstract class Menu implements InventoryHolder { // TODO close if another
         player.openInventory(inventory);
         Menu.this.opening = false;
         Menu.this.page = finalPage;
+
     }
 
     private void setOnClose(Menu menu, int page) {
@@ -113,6 +122,10 @@ public abstract class Menu implements InventoryHolder { // TODO close if another
             return;
         }
         for (Listener listener : this.listeners) {HandlerList.unregisterAll(listener);}
+        this.listeners.clear();
+        for (BukkitTask task : this.tasks) {if (!task.isCancelled()) {task.cancel();}}
+        this.tasks.clear();
+        ACTIVE_MENUS.remove(this.player);
         if (this.onClose != null) {this.onClose.run();}
     }
 
@@ -160,6 +173,16 @@ public abstract class Menu implements InventoryHolder { // TODO close if another
     public void registerListener(Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, NexEngine.get());
         this.listeners.add(listener);
+    }
+
+    public void unregisterListener(Listener listener) {
+        if (this.listeners.remove(listener)) {HandlerList.unregisterAll(listener);}
+    }
+
+    public void registerTask(BukkitTask task) {this.tasks.add(task);}
+
+    public void unregisterTask(BukkitTask task) {
+        if (this.tasks.remove(task) && !task.isCancelled()) {task.cancel();}
     }
 
     public static class PreviousPageButton extends Slot {
