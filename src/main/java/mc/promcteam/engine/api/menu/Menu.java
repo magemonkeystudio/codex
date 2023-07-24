@@ -22,6 +22,9 @@ import java.util.*;
 public abstract class Menu implements InventoryHolder {
     private static final Map<Player, Menu> ACTIVE_MENUS = new HashMap<>();
 
+    @Nullable
+    public static Menu getOpenMenu(Player player) {return ACTIVE_MENUS.get(player);}
+
     protected final Player                 player;
     protected final String                 title;
     protected final int                    rows;
@@ -126,7 +129,7 @@ public abstract class Menu implements InventoryHolder {
         for (BukkitTask task : this.tasks) {if (!task.isCancelled()) {task.cancel();}}
         this.tasks.clear();
         ACTIVE_MENUS.remove(this.player);
-        if (this.onClose != null) {this.onClose.run();}
+        if (this.onClose != null && player.isOnline()) {this.onClose.run();}
     }
 
     public void fakeClose() {
