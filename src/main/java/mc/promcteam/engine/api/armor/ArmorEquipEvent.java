@@ -112,7 +112,7 @@ public class ArmorEquipEvent extends PlayerEvent implements Cancellable {
          */
         PICK_DROP,
         /**
-         * When you right click an armor piece in the hotbar without the inventory open to equip.
+         * When you right-click an armor piece in the hotbar without the inventory open to equip.
          */
         HOTBAR,
         /**
@@ -132,5 +132,17 @@ public class ArmorEquipEvent extends PlayerEvent implements Cancellable {
          * When you die causing all armor to unequip
          */
         DEATH,
+        /**
+         * When changing the held slot, hence changing the item equipped in the main hand
+         */
+        HELD_SLOT_CHANGE,
+        /**
+         * When using the dropping key (Q by default)
+         */
+        DROP,
+        /**
+         * When consuming a held item
+         */
+        CONSUME,
     }
 }
