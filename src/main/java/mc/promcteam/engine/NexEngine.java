@@ -11,6 +11,7 @@ import mc.promcteam.engine.hooks.HookManager;
 import mc.promcteam.engine.hooks.Hooks;
 import mc.promcteam.engine.hooks.external.*;
 import mc.promcteam.engine.hooks.external.citizens.CitizensHK;
+import mc.promcteam.engine.manager.api.menu.MenuManager;
 import mc.promcteam.engine.manager.editor.EditorManager;
 import mc.promcteam.engine.mccore.chat.ChatCommander;
 import mc.promcteam.engine.mccore.chat.ChatListener;
@@ -58,6 +59,8 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     ActionsManager actionsManager;
     @Getter
     CraftManager   craftManager;
+    @Getter
+    MenuManager    menuManager;
     @Getter
     VaultHK        vault;
     @Getter
@@ -123,6 +126,9 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
         this.craftManager = new CraftManager(this);
         this.craftManager.setup();
+
+        this.menuManager = new MenuManager(this);
+        this.menuManager.setup();
 
         return true;
     }

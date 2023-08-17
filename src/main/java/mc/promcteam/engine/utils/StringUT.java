@@ -3,8 +3,10 @@ package mc.promcteam.engine.utils;
 import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.core.Version;
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang3.text.WordUtils;
-import org.bukkit.Color;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -98,6 +100,11 @@ public class StringUT {
     @NotNull
     public static Set<String> color(@NotNull Set<String> list) {
         return new HashSet<>(StringUT.color(new ArrayList<>(list)));
+    }
+
+    @NotNull
+    public static List<String> replace(@NotNull String placeholder, List<String> replacer, String... orig) {
+        return replace(List.of(orig), placeholder, replacer);
     }
 
     @NotNull
@@ -323,5 +330,16 @@ public class StringUT {
         List<String> splitValue = new ArrayList<>();
         for (String aValue : value) {splitValue.addAll(wrap(aValue, maxLenght));}
         return splitValue;
+    }
+
+    public static BaseComponent parseJson(String rawJson) {
+        BaseComponent[] array = ComponentSerializer.parse(rawJson);
+        if (array.length == 1) {
+            return array[0];
+        } else {
+            BaseComponent component = new TextComponent();
+            for (BaseComponent baseComponent : array) {component.addExtra(baseComponent);}
+            return component;
+        }
     }
 }

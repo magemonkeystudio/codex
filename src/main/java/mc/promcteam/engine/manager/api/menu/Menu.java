@@ -1,7 +1,8 @@
-package mc.promcteam.engine.api.menu;
+package mc.promcteam.engine.manager.api.menu;
 
 import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.utils.ItemUT;
+import mc.promcteam.engine.utils.StringUT;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public abstract class Menu implements InventoryHolder {
     private static final Map<Player, Menu> ACTIVE_MENUS = new HashMap<>();
 
@@ -33,13 +35,13 @@ public abstract class Menu implements InventoryHolder {
     private final   Set<Listener>          listeners   = new HashSet<>();
     private final   Set<BukkitTask>        tasks       = new HashSet<>();
     private         int                    page        = 0;
-    private         Runnable               onClose;
-    private         boolean                opening     = false;
-    private         boolean                fakeClosing = false;
+    protected       Menu                   parentMenu;
+    protected       boolean                opening     = false;
+    protected       boolean                fakeClosing = false;
 
     public Menu(Player player, int rows, String title) {
         this.player = player;
-        this.title = title;
+        this.title = StringUT.color(title);
         this.rows = rows;
         this.inventory = Bukkit.createInventory(this, rows * 9, title);
     }
@@ -87,9 +89,12 @@ public abstract class Menu implements InventoryHolder {
 
     public void open(int page) {
         Menu oldMenu = ACTIVE_MENUS.get(this.player);
-        if (oldMenu != null) {oldMenu.onClose();}
+        if (oldMenu != null && oldMenu != this && !oldMenu.isOpening()) {
+            oldMenu.onClose();
+        }
         ACTIVE_MENUS.put(this.player, this);
 
+        slots.clear();
         setContents();
         int finalPage = page % getPages();
         inventory = Bukkit.createInventory(Menu.this, rows * 9, title
@@ -106,18 +111,29 @@ public abstract class Menu implements InventoryHolder {
 
     }
 
-    private void setOnClose(Menu menu, int page) {
-        this.onClose = () -> menu.open(page);
-    }
-
     public void openSubMenu(Menu menu) {
-        menu.setOnClose(this, page);
+        menu.parentMenu = this;
         this.opening = true;
         menu.open();
         this.opening = false;
     }
 
     public boolean isOpening() {return opening;}
+
+    public void close() {
+        close(1);
+    }
+
+    public void close(int layers) {
+        for (int i = 1; i <= layers; i++) {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    player.closeInventory();
+                }
+            }.runTaskLater(NexEngine.get(), i);
+        }
+    }
 
     public void onClose() {
         if (this.fakeClosing) {
@@ -129,7 +145,9 @@ public abstract class Menu implements InventoryHolder {
         for (BukkitTask task : this.tasks) {if (!task.isCancelled()) {task.cancel();}}
         this.tasks.clear();
         ACTIVE_MENUS.remove(this.player);
-        if (this.onClose != null && player.isOnline()) {this.onClose.run();}
+        if (this.parentMenu != null && this.player.isOnline()) {
+            this.parentMenu.open();
+        }
     }
 
     public void fakeClose() {

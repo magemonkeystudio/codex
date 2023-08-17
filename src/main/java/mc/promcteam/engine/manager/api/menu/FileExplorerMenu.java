@@ -1,4 +1,4 @@
-package mc.promcteam.engine.api.menu;
+package mc.promcteam.engine.manager.api.menu;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
