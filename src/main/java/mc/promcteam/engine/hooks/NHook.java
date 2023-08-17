@@ -4,6 +4,8 @@ import mc.promcteam.engine.NexPlugin;
 import mc.promcteam.engine.manager.IListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public abstract class NHook<P extends NexPlugin<P>> extends IListener<P> {
 
     protected HookState state;
@@ -36,5 +38,18 @@ public abstract class NHook<P extends NexPlugin<P>> extends IListener<P> {
     @NotNull
     public final HookState getState() {
         return this.state;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NHook<?> nHook = (NHook<?>) o;
+        return Objects.equals(pluginName, nHook.pluginName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pluginName);
     }
 }
