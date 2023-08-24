@@ -805,7 +805,7 @@ Material:
   PINK_BANNER: 粉红色旗帜
   PINK_BED: 粉红色床
   PINK_CARPET: 粉红色地毯
-  PI红NK_CONCRETE: 粉色混凝土
+  PINK_CONCRETE: 粉色混凝土
   PINK_CONCRETE_POWDER: 粉红色混凝土粉末
   PINK_DYE: 粉红色染料
   PINK_GLAZED_TERRACOTTA: 粉红色带釉陶瓦
@@ -1134,3 +1134,895 @@ Material:
   ZOMBIE_SPAWN_EGG: 僵尸刷怪蛋
   ZOMBIE_VILLAGER_SPAWN_EGG: 僵尸村民刷怪蛋
   ZOMBIE_WALL_HEAD: 墙上的僵尸头颅
+  COBBLED_DEEPSLATE: 深板岩圆石
+  POLISHED_DEEPSLATE: 磨制深板岩
+  CALCITE: 方解石
+  TUFF: 凝灰岩
+  DRIPSTONE_BLOCK: 滴水石块
+  ROOTED_DIRT: 缠根泥土
+  MUD: 泥巴
+  CRIMSON_NYLIUM: 绯红菌岩
+  WARPED_NYLIUM: 诡异菌岩
+  MANGROVE_PLANKS: 红树木板
+  BAMBOO_PLANKS: Bamboo Planks
+  CRIMSON_PLANKS: 绯红木板
+  WARPED_PLANKS: 诡异木板
+  BAMBOO_MOSAIC: Bamboo Mosaic
+  MANGROVE_PROPAGULE: 红树胎生苗
+  DEEPSLATE_COAL_ORE: 深层煤矿石
+  DEEPSLATE_IRON_ORE: 深层铁矿石
+  COPPER_ORE: 铜矿石
+  DEEPSLATE_COPPER_ORE: 深层铜矿石
+  DEEPSLATE_GOLD_ORE: 深层金矿石
+  DEEPSLATE_REDSTONE_ORE: 深层红石矿石
+  DEEPSLATE_EMERALD_ORE: 深层绿宝石矿石
+  DEEPSLATE_LAPIS_ORE: 深层青金石矿石
+  DEEPSLATE_DIAMOND_ORE: 深层钻石矿石
+  NETHER_GOLD_ORE: 下界金矿石
+  ANCIENT_DEBRIS: 远古残骸
+  RAW_IRON_BLOCK: 粗铁块
+  RAW_COPPER_BLOCK: 粗铜块
+  RAW_GOLD_BLOCK: 粗金块
+  AMETHYST_BLOCK: 紫水晶块
+  BUDDING_AMETHYST: 紫水晶母岩
+  COPPER_BLOCK: 铜块
+  NETHERITE_BLOCK: 下界合金块
+  EXPOSED_COPPER: 斑驳的铜块
+  WEATHERED_COPPER: 锈蚀的铜块
+  OXIDIZED_COPPER: 氧化的铜块
+  CUT_COPPER: 切制铜块
+  EXPOSED_CUT_COPPER: 斑驳的切制铜块
+  WEATHERED_CUT_COPPER: 锈蚀的切制铜块
+  OXIDIZED_CUT_COPPER: 氧化的切制铜块
+  CUT_COPPER_STAIRS: 切制铜楼梯
+  EXPOSED_CUT_COPPER_STAIRS: 斑驳的切制铜楼梯
+  WEATHERED_CUT_COPPER_STAIRS: 锈蚀的切制铜楼梯
+  OXIDIZED_CUT_COPPER_STAIRS: 氧化的切制铜楼梯
+  CUT_COPPER_SLAB: 切制铜台阶
+  EXPOSED_CUT_COPPER_SLAB: 斑驳的切制铜台阶
+  WEATHERED_CUT_COPPER_SLAB: 锈蚀的切制铜台阶
+  OXIDIZED_CUT_COPPER_SLAB: 氧化的切制铜台阶
+  WAXED_COPPER_BLOCK: 涂蜡铜块
+  WAXED_EXPOSED_COPPER: 斑驳的涂蜡铜块
+  WAXED_WEATHERED_COPPER: 锈蚀的涂蜡铜块
+  WAXED_OXIDIZED_COPPER: 氧化的涂蜡铜块
+  WAXED_CUT_COPPER: 涂蜡切制铜块
+  WAXED_EXPOSED_CUT_COPPER: 斑驳的涂蜡切制铜块
+  WAXED_WEATHERED_CUT_COPPER: 锈蚀的涂蜡切制铜块
+  WAXED_OXIDIZED_CUT_COPPER: 氧化的涂蜡切制铜块
+  WAXED_CUT_COPPER_STAIRS: 涂蜡切制铜楼梯
+  WAXED_EXPOSED_CUT_COPPER_STAIRS: 斑驳的涂蜡切制铜楼梯
+  WAXED_WEATHERED_CUT_COPPER_STAIRS: 锈蚀的涂蜡切制铜楼梯
+  WAXED_OXIDIZED_CUT_COPPER_STAIRS: 氧化的涂蜡切制铜楼梯
+  WAXED_CUT_COPPER_SLAB: 涂蜡切制铜台阶
+  WAXED_EXPOSED_CUT_COPPER_SLAB: 斑驳的涂蜡切制铜台阶
+  WAXED_WEATHERED_CUT_COPPER_SLAB: 锈蚀的涂蜡切制铜台阶
+  WAXED_OXIDIZED_CUT_COPPER_SLAB: 氧化的涂蜡切制铜台阶
+  MANGROVE_LOG: 红树原木
+  MANGROVE_ROOTS: 红树根
+  MUDDY_MANGROVE_ROOTS: 沾泥的红树根
+  CRIMSON_STEM: 绯红菌柄
+  WARPED_STEM: 诡异菌柄
+  BAMBOO_BLOCK: Bamboo Block
+  STRIPPED_MANGROVE_LOG: 去皮红树原木
+  STRIPPED_CRIMSON_STEM: 去皮绯红菌柄
+  STRIPPED_WARPED_STEM: 去皮诡异菌柄
+  STRIPPED_MANGROVE_WOOD: 去皮红树木
+  STRIPPED_CRIMSON_HYPHAE: 去皮绯红菌核
+  STRIPPED_WARPED_HYPHAE: 去皮诡异菌核
+  STRIPPED_BAMBOO_BLOCK: 去皮Bamboo Block
+  MANGROVE_WOOD: 红树木
+  CRIMSON_HYPHAE: 绯红菌核
+  WARPED_HYPHAE: 诡异菌核
+  MANGROVE_LEAVES: 红树树叶
+  AZALEA_LEAVES: 杜鹃树叶
+  FLOWERING_AZALEA_LEAVES: 盛开的杜鹃树叶
+  TINTED_GLASS: 遮光玻璃
+  AZALEA: 杜鹃花丛
+  FLOWERING_AZALEA: 盛开的杜鹃花丛
+  SPORE_BLOSSOM: 孢子花
+  CRIMSON_FUNGUS: 绯红菌
+  WARPED_FUNGUS: 诡异菌
+  CRIMSON_ROOTS: 绯红菌索
+  WARPED_ROOTS: 诡异菌索
+  NETHER_SPROUTS: 下界苗
+  WEEPING_VINES: 垂泪藤
+  TWISTING_VINES: 缠怨藤
+  MOSS_CARPET: 苔藓地毯
+  MOSS_BLOCK: 苔藓块
+  HANGING_ROOTS: 垂根
+  BIG_DRIPLEAF: 大型垂滴叶
+  SMALL_DRIPLEAF: 小型垂滴叶
+  MANGROVE_SLAB: 红树木台阶
+  BAMBOO_SLAB: Bamboo台阶
+  BAMBOO_MOSAIC_SLAB: Bamboo Mosaic台阶
+  CRIMSON_SLAB: 绯红木台阶
+  WARPED_SLAB: 诡异木台阶
+  MUD_BRICK_SLAB: 泥砖台阶
+  CHISELED_BOOKSHELF: 錾制书架
+  MANGROVE_FENCE: 红树木栅栏
+  BAMBOO_FENCE: Bamboo木栅栏
+  CRIMSON_FENCE: 绯红木栅栏
+  WARPED_FENCE: 诡异木栅栏
+  SOUL_SOIL: 灵魂土
+  BASALT: 玄武岩
+  POLISHED_BASALT: 磨制玄武岩
+  SMOOTH_BASALT: 平滑玄武岩
+  SOUL_TORCH: 灵魂火把
+  DEEPSLATE: 深板岩
+  INFESTED_DEEPSLATE: 被虫蚀的深板岩
+  PACKED_MUD: 泥坯
+  MUD_BRICKS: 泥砖
+  DEEPSLATE_BRICKS: 深板岩砖
+  CRACKED_DEEPSLATE_BRICKS: 裂纹深板岩砖
+  DEEPSLATE_TILES: 深板岩瓦
+  CRACKED_DEEPSLATE_TILES: 裂纹深板岩瓦
+  CHISELED_DEEPSLATE: 錾制深板岩
+  REINFORCED_DEEPSLATE: 强化深板岩
+  CHAIN: 锁链
+  GLOW_LICHEN: 发光地衣
+  MUD_BRICK_STAIRS: 泥砖楼梯
+  CRACKED_NETHER_BRICKS: 裂纹下界砖
+  CHISELED_NETHER_BRICKS: 雕纹下界砖
+  SCULK: 幽匿
+  SCULK_VEIN: 幽匿脉络
+  SCULK_CATALYST: 幽匿催发体
+  SCULK_SHRIEKER: 幽匿尖啸体
+  MANGROVE_STAIRS: 红树木楼梯
+  BAMBOO_STAIRS: Bamboo楼梯
+  BAMBOO_MOSAIC_STAIRS: Bamboo Mosaic楼梯
+  CRIMSON_STAIRS: 绯红木楼梯
+  WARPED_STAIRS: 诡异木楼梯
+  MUD_BRICK_WALL: 泥砖墙
+  BLACKSTONE_WALL: 黑石墙
+  POLISHED_BLACKSTONE_WALL: 磨制黑石墙
+  POLISHED_BLACKSTONE_BRICK_WALL: 磨制黑石砖墙
+  COBBLED_DEEPSLATE_WALL: 深板岩圆石墙
+  POLISHED_DEEPSLATE_WALL: 磨制深板岩墙
+  DEEPSLATE_BRICK_WALL: 深板岩砖墙
+  DEEPSLATE_TILE_WALL: 深板岩瓦墙
+  QUARTZ_BRICKS: 石英砖
+  LIGHT: 亮度方块
+  DIRT_PATH: 土径
+  WARPED_WART_BLOCK: 诡异疣块
+  COBBLED_DEEPSLATE_STAIRS: 深板岩圆石楼梯
+  POLISHED_DEEPSLATE_STAIRS: 磨制 深板岩楼梯
+  DEEPSLATE_BRICK_STAIRS: 深板岩 砖楼梯
+  DEEPSLATE_TILE_STAIRS: 深板岩瓦楼梯
+  COBBLED_DEEPSLATE_SLAB: 深板岩圆石台阶
+  POLISHED_DEEPSLATE_SLAB: 磨制 深板岩台阶
+  DEEPSLATE_BRICK_SLAB: 深板岩 砖台阶
+  DEEPSLATE_TILE_SLAB: 深板岩瓦台阶
+  TARGET: 标靶
+  LIGHTNING_ROD: 避雷针
+  SCULK_SENSOR: 幽匿感测体
+  POLISHED_BLACKSTONE_BUTTON: 磨制 黑石 按钮
+  MANGROVE_BUTTON: 红树木按钮
+  BAMBOO_BUTTON: Bamboo 按钮
+  CRIMSON_BUTTON: 绯红木按钮
+  WARPED_BUTTON: 诡异木按钮
+  POLISHED_BLACKSTONE_PRESSURE_PLATE: 磨制黑石压力板
+  MANGROVE_PRESSURE_PLATE: 红树木压力板
+  BAMBOO_PRESSURE_PLATE: Bamboo 压力板
+  CRIMSON_PRESSURE_PLATE: 绯红木压力板
+  WARPED_PRESSURE_PLATE: 诡异木压力板
+  MANGROVE_DOOR: 红树木门
+  BAMBOO_DOOR: Bamboo 木门
+  CRIMSON_DOOR: 绯红木门
+  WARPED_DOOR: 诡异木门
+  MANGROVE_TRAPDOOR: 红树木活板门
+  BAMBOO_TRAPDOOR: Bamboo 活板门
+  CRIMSON_TRAPDOOR: 绯红木活板门
+  WARPED_TRAPDOOR: 诡异木活板门
+  MANGROVE_FENCE_GATE: 红树木栅栏门
+  BAMBOO_FENCE_GATE: Bamboo木栅栏门
+  CRIMSON_FENCE_GATE: 绯红木栅栏门
+  WARPED_FENCE_GATE: 诡异木栅栏门
+  WARPED_FUNGUS_ON_A_STICK: 诡异菌钓竿
+  OAK_CHEST_BOAT: 橡木运输船
+  SPRUCE_CHEST_BOAT: 云杉木运输船
+  BIRCH_CHEST_BOAT: 白桦木运输船
+  JUNGLE_CHEST_BOAT: 丛林木运输船
+  ACACIA_CHEST_BOAT: 金合欢木运输船
+  DARK_OAK_CHEST_BOAT: 深色橡木运输船
+  MANGROVE_BOAT: 红树木船
+  MANGROVE_CHEST_BOAT: 红树木运输船
+  BAMBOO_RAFT: 竹筏
+  BAMBOO_CHEST_RAFT: 竹运输筏
+  AMETHYST_SHARD: 紫水晶碎片
+  RAW_IRON: 粗铁
+  RAW_COPPER: 粗铜
+  COPPER_INGOT: 铜锭
+  RAW_GOLDqe: 粗金
+  NETHERITE_INGOT: 下界合金锭
+  NETHERITE_SCRAP: 下界合金碎片
+  NETHERITE_SWORD: 下界合金剑
+  NETHERITE_SHOVEL: 下界合金铲
+  NETHERITE_PICKAXE: 下界合金镐
+  NETHERITE_AXE: 下界合金斧
+  NETHERITE_HOE: 下界合金锄
+  NETHERITE_HELMET: 下界合金头盔
+  NETHERITE_CHESTPLATE: 下界合金胸甲
+  NETHERITE_LEGGINGS: 下界合金护腿
+  NETHERITE_BOOTS: 下界合金靴子
+  MANGROVE_SIGN: 红树木告示牌
+  BAMBOO_SIGN: Bamboo 木告示牌
+  CRIMSON_SIGN: 绯红木告示牌
+  WARPED_SIGN: 诡异木告示牌
+  OAK_HANGING_SIGN: 橡木挂牌
+  SPRUCE_HANGING_SIGN: 云杉木挂牌
+  BIRCH_HANGING_SIGN: 白桦木挂牌
+  JUNGLE_HANGING_SIGN: 丛林木挂牌
+  ACACIA_HANGING_SIGN: 金合欢木挂牌
+  DARK_OAK_HANGING_SIGN: 深色橡木挂牌
+  MANGROVE_HANGING_SIGN: 红树木挂牌
+  BAMBOO_HANGING_SIGN: Bamboo 木挂牌
+  CRIMSON_HANGING_SIGN: 绯红木挂牌
+  WARPED_HANGING_SIGN: 诡异木挂牌
+  POWDER_SNOW_BUCKET: 细雪桶
+  AXOLOTL_BUCKET: 美西螈桶
+  TADPOLE_BUCKET: 蝌蚪桶
+  RECOVERY_COMPASS: 追溯指针
+  BUNDLE: 收纳袋
+  SPYGLASS: 望远镜
+  GLOW_INK_SAC: 发光墨囊
+  ALLAY_SPAWN_EGG: 悦灵刷怪蛋
+  AXOLOTL_SPAWN_EGG: 美西螈刷怪蛋
+  CAMEL_SPAWN_EGG: Camel刷怪蛋
+  ENDER_DRAGON_SPAWN_EGG: 末影龙刷怪蛋
+  FROG_SPAWN_EGG: 青蛙刷怪蛋
+  GLOW_SQUID_SPAWN_EGG: 发光鱿鱼刷怪蛋
+  GOAT_SPAWN_EGG: 山羊刷怪蛋
+  HOGLIN_SPAWN_EGG: 疣猪兽刷怪蛋
+  IRON_GOLEM_SPAWN_EGG: 铁傀儡刷怪蛋
+  PIGLIN_SPAWN_EGG: 猪灵刷怪蛋
+  PIGLIN_BRUTE_SPAWN_EGG: 猪灵蛮兵刷怪蛋
+  SNOW_GOLEM_SPAWN_EGG: 雪傀儡刷怪蛋
+  STRIDER_SPAWN_EGG: 炽足兽刷怪蛋
+  TADPOLE_SPAWN_EGG: 蝌蚪刷怪蛋
+  WARDEN_SPAWN_EGG: 监守者刷怪蛋
+  WITHER_SPAWN_EGG: 凋零刷怪蛋
+  ZOGLIN_SPAWN_EGG: 僵尸疣猪兽 刷怪蛋
+  ZOMBIFIED_PIGLIN_SPAWN_EGG: 僵尸猪灵 刷怪蛋
+  GLOW_ITEM_FRAME: 发光 Item Frame
+  PIGLIN_HEAD: 猪灵 Head
+  MUSIC_DISC_OTHERSIDE: 音乐唱片 Otherside
+  MUSIC_DISC_5: 音乐唱片 5
+  MUSIC_DISC_PIGSTEP: 音乐唱片 Pigstep
+  DISC_FRAGMENT_5: 唱片残片 5
+  PIGLIN_BANNER_PATTERN: 猪鼻旗帜图案
+  GOAT_HORN: 山羊角
+  SOUL_LANTERN: 灵魂灯笼
+  GLOW_BERRIES: 发光浆果
+  SOUL_CAMPFIRE: 灵魂营火
+  SHROOMLIGHT: 菌光体
+  LODESTONE: 磁石
+  CRYING_OBSIDIAN: 哭泣的黑曜石
+  BLACKSTONE: 黑石
+  BLACKSTONE_SLAB: 黑石台阶
+  BLACKSTONE_STAIRS: 黑石楼梯
+  GILDED_BLACKSTONE: 镶金黑石
+  POLISHED_BLACKSTONE: 磨制黑石
+  POLISHED_BLACKSTONE_SLAB: 磨制黑石台阶
+  POLISHED_BLACKSTONE_STAIRS: 磨制黑石楼梯
+  CHISELED_POLISHED_BLACKSTONE: 錾制磨制黑石
+  POLISHED_BLACKSTONE_BRICKS: 磨制黑石砖
+  POLISHED_BLACKSTONE_BRICK_SLAB: 磨制黑石砖台阶
+  POLISHED_BLACKSTONE_BRICK_STAIRS: 磨制黑石砖楼梯
+  CRACKED_POLISHED_BLACKSTONE_BRICKS: 裂纹磨制黑石砖
+  RESPAWN_ANCHOR: 重生锚
+  CANDLE: 蜡烛
+  WHITE_CANDLE: 白色蜡烛
+  ORANGE_CANDLE: 橙色蜡烛
+  MAGENTA_CANDLE: 品红色蜡烛
+  LIGHT_BLUE_CANDLE: 淡蓝色蜡烛
+  YELLOW_CANDLE: 黄色蜡烛
+  LIME_CANDLE: 黄绿色蜡烛
+  PINK_CANDLE: 粉色蜡烛
+  GRAY_CANDLE: 灰色蜡烛
+  LIGHT_GRAY_CANDLE: 淡灰色蜡烛
+  CYAN_CANDLE: 青色蜡烛
+  PURPLE_CANDLE: 紫色蜡烛
+  BLUE_CANDLE: 蓝色蜡烛
+  BROWN_CANDLE: 棕色蜡烛
+  GREEN_CANDLE: 绿色蜡烛
+  RED_CANDLE: 红色蜡烛
+  BLACK_CANDLE: 黑色蜡烛
+  SMALL_AMETHYST_BUD: 小型紫水晶芽
+  MEDIUM_AMETHYST_BUD: 中型紫水晶芽
+  LARGE_AMETHYST_BUD: 大型紫水晶芽
+  AMETHYST_CLUSTER: 紫水晶簇
+  POINTED_DRIPSTONE: 滴水石锥
+  OCHRE_FROGLIGHT: 赭黄蛙明灯
+  VERDANT_FROGLIGHT: 青翠蛙明灯
+  PEARLESCENT_FROGLIGHT: 珠光蛙明灯
+  FROGSPAWN: 青蛙卵
+  ECHO_SHARD: 回响碎片
+  SOUL_FIRE: 灵魂火
+  MANGROVE_WALL_SIGN: 红树 墙 木告示牌
+  BAMBOO_WALL_SIGN: Bamboo 墙 木告示牌
+  OAK_WALL_HANGING_SIGN: 橡墙 木挂牌
+  SPRUCE_WALL_HANGING_SIGN: 云杉 墙 木挂牌
+  BIRCH_WALL_HANGING_SIGN: 白桦墙 木挂牌
+  ACACIA_WALL_HANGING_SIGN: 金合欢 墙 木挂牌
+  JUNGLE_WALL_HANGING_SIGN: 丛林 墙 木挂牌
+  DARK_OAK_WALL_HANGING_SIGN: 深色 橡墙 木挂牌
+  MANGROVE_WALL_HANGING_SIGN: 红树 墙 木挂牌
+  CRIMSON_WALL_HANGING_SIGN: 绯红墙 木挂牌
+  WARPED_WALL_HANGING_SIGN: 诡异墙 木挂牌
+  BAMBOO_WALL_HANGING_SIGN: Bamboo 墙 木挂牌
+  SOUL_WALL_TORCH: 灵魂 墙 Torch
+  WATER_CAULDRON: 装有水的炼药锅
+  LAVA_CAULDRON: 装有熔岩的炼药锅
+  POWDER_SNOW_CAULDRON: 装有细雪的炼药锅
+  POTTED_MANGROVE_PROPAGULE: 红树胎生苗盆栽
+  PIGLIN_WALL_HEAD: 墙上的猪灵头颅
+  WEEPING_VINES_PLANT: Weeping Vines Plant
+  TWISTING_VINES_PLANT: Twisting Vines Plant
+  CRIMSON_WALL_SIGN: 墙上的绯红木告示牌
+  WARPED_WALL_SIGN: 墙上的诡异木告示牌
+  POTTED_CRIMSON_FUNGUS: 绯红菌盆栽
+  POTTED_WARPED_FUNGUS: 诡异菌盆栽
+  POTTED_CRIMSON_ROOTS: 绯红菌索盆栽
+  POTTED_WARPED_ROOTS: 诡异菌索盆栽
+  CANDLE_CAKE: 插上蜡烛的蛋糕
+  WHITE_CANDLE_CAKE: 插上白色蜡烛的蛋糕
+  ORANGE_CANDLE_CAKE: 插上橙色蜡烛的蛋糕
+  MAGENTA_CANDLE_CAKE: 插上品红色蜡烛的蛋糕
+  LIGHT_BLUE_CANDLE_CAKE: 插上淡蓝色蜡烛的蛋糕
+  YELLOW_CANDLE_CAKE: 插上黄色蜡烛的蛋糕
+  LIME_CANDLE_CAKE: 插上黄绿色蜡烛的蛋糕
+  PINK_CANDLE_CAKE: 插上粉色蜡烛的蛋糕
+  GRAY_CANDLE_CAKE: 插上灰色蜡烛的蛋糕
+  LIGHT_GRAY_CANDLE_CAKE: 插上淡灰色蜡烛的蛋糕
+  CYAN_CANDLE_CAKE: 插上青色蜡烛的蛋糕
+  PURPLE_CANDLE_CAKE: 插上紫色蜡烛的蛋糕
+  BLUE_CANDLE_CAKE: 插上蓝色蜡烛的蛋糕
+  BROWN_CANDLE_CAKE: 插上棕色蜡烛的蛋糕
+  GREEN_CANDLE_CAKE: 插上绿色蜡烛的蛋糕
+  RED_CANDLE_CAKE: 插上红色蜡烛的蛋糕
+  BLACK_CANDLE_CAKE: 插上黑色蜡烛的蛋糕
+  POWDER_SNOW: 细雪
+  CAVE_VINES: 洞穴藤蔓
+  CAVE_VINES_PLANT: 洞穴藤蔓植株
+  BIG_DRIPLEAF_STEM: 大型垂滴叶茎
+  POTTED_AZALEA_BUSH: 杜鹃花丛盆栽
+  POTTED_FLOWERING_AZALEA_BUSH: 盛开的杜鹃花丛盆栽
+  LEGACY_AIR: Legacy Air
+  LEGACY_STONE: Legacy Stone
+  LEGACY_GRASS: Legacy Grass
+  LEGACY_DIRT: Legacy Dirt
+  LEGACY_COBBLESTONE: Legacy Cobblestone
+  LEGACY_WOOD: Legacy木
+  LEGACY_SAPLING: Legacy Sapling
+  LEGACY_BEDROCK: Legacy Bedrock
+  LEGACY_WATER: Legacy Water
+  LEGACY_STATIONARY_WATER: Legacy Stationary Water
+  LEGACY_LAVA: Legacy Lava
+  LEGACY_STATIONARY_LAVA: Legacy Stationary Lava
+  LEGACY_SAND: Legacy Sand
+  LEGACY_GRAVEL: Legacy Gravel
+  LEGACY_GOLD_ORE: Legacy Gold Ore
+  LEGACY_IRON_ORE: Legacy Iron Ore
+  LEGACY_COAL_ORE: Legacy Coal Ore
+  LEGACY_LOG: Legacy原木
+  LEGACY_LEAVES: Legacy 树叶
+  LEGACY_SPONGE: Legacy Sponge
+  LEGACY_GLASS: Legacy Glass
+  LEGACY_LAPIS_ORE: Legacy Lapis Ore
+  LEGACY_LAPIS_BLOCK: Legacy Lapis Block
+  LEGACY_DISPENSER: Legacy Dispenser
+  LEGACY_SANDSTONE: Legacy Sandstone
+  LEGACY_NOTE_BLOCK: Legacy Note Block
+  LEGACY_BED_BLOCK: Legacy Bed Block
+  LEGACY_POWERED_RAIL: Legacy Powered Rail
+  LEGACY_DETECTOR_RAIL: Legacy Detector Rail
+  LEGACY_PISTON_STICKY_BASE: Legacy Piston Sticky Base
+  LEGACY_WEB: Legacy Web
+  LEGACY_LONG_GRASS: Legacy Long Grass
+  LEGACY_DEAD_BUSH: Legacy Dead Bush
+  LEGACY_PISTON_BASE: Legacy Piston Base
+  LEGACY_PISTON_EXTENSION: Legacy Piston Extension
+  LEGACY_WOOL: Legacy Wool
+  LEGACY_PISTON_MOVING_PIECE: Legacy Piston Moving Piece
+  LEGACY_YELLOW_FLOWER: Legacy Yellow Flower
+  LEGACY_RED_ROSE: Legacy Red Rose
+  LEGACY_BROWN_MUSHROOM: Legacy Brown Mushroom
+  LEGACY_RED_MUSHROOM: Legacy Red Mushroom
+  LEGACY_GOLD_BLOCK: Legacy Gold Block
+  LEGACY_IRON_BLOCK: Legacy Iron Block
+  LEGACY_DOUBLE_STEP: Legacy Double Step
+  LEGACY_STEP: Legacy Step
+  LEGACY_BRICK: Legacy 砖
+  LEGACY_TNT: Legacy Tnt
+  LEGACY_BOOKSHELF: Legacy Bookshelf
+  LEGACY_MOSSY_COBBLESTONE: Legacy Mossy Cobblestone
+  LEGACY_OBSIDIAN: Legacy Obsidian
+  LEGACY_TORCH: Legacy Torch
+  LEGACY_FIRE: Legacy Fire
+  LEGACY_MOB_SPAWNER: Legacy Mob Spawner
+  LEGACY_WOOD_STAIRS: Legacy木楼梯
+  LEGACY_CHEST: Legacy Chest
+  LEGACY_REDSTONE_WIRE: Legacy Redstone Wire
+  LEGACY_DIAMOND_ORE: Legacy Diamond Ore
+  LEGACY_DIAMOND_BLOCK: Legacy Diamond Block
+  LEGACY_WORKBENCH: Legacy Workbench
+  LEGACY_CROPS: Legacy Crops
+  LEGACY_SOIL: Legacy Soil
+  LEGACY_FURNACE: Legacy Furnace
+  LEGACY_BURNING_FURNACE: Legacy Burning Furnace
+  LEGACY_SIGN_POST: Legacy 木告示牌 Post
+  LEGACY_WOODEN_DOOR: Legacy木en 木门
+  LEGACY_LADDER: Legacy Ladder
+  LEGACY_RAILS: Legacy Rails
+  LEGACY_COBBLESTONE_STAIRS: Legacy Cobblestone楼梯
+  LEGACY_WALL_SIGN: Legacy 墙 木告示牌
+  LEGACY_LEVER: Legacy Lever
+  LEGACY_STONE_PLATE: Legacy Stone Plate
+  LEGACY_IRON_DOOR_BLOCK: Legacy Iron 木门 Block
+  LEGACY_WOOD_PLATE: Legacy木 Plate
+  LEGACY_REDSTONE_ORE: Legacy Redstone Ore
+  LEGACY_GLOWING_REDSTONE_ORE: Legacy 发光ing Redstone Ore
+  LEGACY_REDSTONE_TORCH_OFF: Legacy Redstone Torch Off
+  LEGACY_REDSTONE_TORCH_ON: Legacy Redstone Torch On
+  LEGACY_STONE_BUTTON: Legacy Stone 按钮
+  LEGACY_SNOW: Legacy Snow
+  LEGACY_ICE: Legacy Ice
+  LEGACY_SNOW_BLOCK: Legacy Snow Block
+  LEGACY_CACTUS: Legacy Cactus
+  LEGACY_CLAY: Legacy Clay
+  LEGACY_SUGAR_CANE_BLOCK: Legacy Sugar Cane Block
+  LEGACY_JUKEBOX: Legacy Jukebox
+  LEGACY_FENCE: Legacy木栅栏
+  LEGACY_PUMPKIN: Legacy Pumpkin
+  LEGACY_NETHERRACK: Legacy 下界rack
+  LEGACY_SOUL_SAND: Legacy 灵魂 Sand
+  LEGACY_GLOWSTONE: Legacy 发光stone
+  LEGACY_PORTAL: Legacy Portal
+  LEGACY_JACK_O_LANTERN: Legacy Jack O 灯笼
+  LEGACY_CAKE_BLOCK: Legacy Cake Block
+  LEGACY_DIODE_BLOCK_OFF: Legacy Diode Block Off
+  LEGACY_DIODE_BLOCK_ON: Legacy Diode Block On
+  LEGACY_STAINED_GLASS: Legacy Stained Glass
+  LEGACY_TRAP_DOOR: Legacy Trap 木门
+  LEGACY_MONSTER_EGGS: Legacy Monster Eggs
+  LEGACY_SMOOTH_BRICK: Legacy Smooth 砖
+  LEGACY_HUGE_MUSHROOM_1: Legacy Huge Mushroom 1
+  LEGACY_HUGE_MUSHROOM_2: Legacy Huge Mushroom 2
+  LEGACY_IRON_FENCE: Legacy Iron木栅栏
+  LEGACY_THIN_GLASS: Legacy Thin Glass
+  LEGACY_MELON_BLOCK: Legacy Melon Block
+  LEGACY_PUMPKIN_STEM: Legacy Pumpkin 菌柄
+  LEGACY_MELON_STEM: Legacy Melon 菌柄
+  LEGACY_VINE: Legacy Vine
+  LEGACY_FENCE_GATE: Legacy木栅栏 Gate
+  LEGACY_BRICK_STAIRS: Legacy 砖楼梯
+  LEGACY_SMOOTH_STAIRS: Legacy Smooth楼梯
+  LEGACY_MYCEL: Legacy Mycel
+  LEGACY_WATER_LILY: Legacy Water Lily
+  LEGACY_NETHER_BRICK: Legacy 下界 砖
+  LEGACY_NETHER_FENCE: Legacy 下界木栅栏
+  LEGACY_NETHER_BRICK_STAIRS: Legacy 下界 砖楼梯
+  LEGACY_NETHER_WARTS: Legacy 下界 Warts
+  LEGACY_ENCHANTMENT_TABLE: Legacy Enchantment Table
+  LEGACY_BREWING_STAND: Legacy Brewing Stand
+  LEGACY_CAULDRON: Legacy Cauldron
+  LEGACY_ENDER_PORTAL: Legacy Ender Portal
+  LEGACY_ENDER_PORTAL_FRAME: Legacy Ender Portal Frame
+  LEGACY_ENDER_STONE: Legacy Ender Stone
+  LEGACY_DRAGON_EGG: Legacy Dragon Egg
+  LEGACY_REDSTONE_LAMP_OFF: Legacy Redstone Lamp Off
+  LEGACY_REDSTONE_LAMP_ON: Legacy Redstone Lamp On
+  LEGACY_WOOD_DOUBLE_STEP: Legacy木 Double Step
+  LEGACY_WOOD_STEP: Legacy木 Step
+  LEGACY_COCOA: Legacy Cocoa
+  LEGACY_SANDSTONE_STAIRS: Legacy Sandstone楼梯
+  LEGACY_EMERALD_ORE: Legacy Emerald Ore
+  LEGACY_ENDER_CHEST: Legacy Ender Chest
+  LEGACY_TRIPWIRE_HOOK: Legacy Tripwire Hook
+  LEGACY_TRIPWIRE: Legacy Tripwire
+  LEGACY_EMERALD_BLOCK: Legacy Emerald Block
+  LEGACY_SPRUCE_WOOD_STAIRS: Legacy 云杉木木楼梯
+  LEGACY_BIRCH_WOOD_STAIRS: Legacy Birch木楼梯
+  LEGACY_JUNGLE_WOOD_STAIRS: Legacy 丛林木楼梯
+  LEGACY_COMMAND: Legacy Command
+  LEGACY_BEACON: Legacy Beacon
+  LEGACY_COBBLE_WALL: Legacy Cobble 墙
+  LEGACY_FLOWER_POT: Legacy Flower Pot
+  LEGACY_CARROT: Legacy Carrot
+  LEGACY_POTATO: Legacy Potato
+  LEGACY_WOOD_BUTTON: Legacy木 按钮
+  LEGACY_SKULL: Legacy Skull
+  LEGACY_ANVIL: Legacy Anvil
+  LEGACY_TRAPPED_CHEST: Legacy Trapped Chest
+  LEGACY_GOLD_PLATE: Legacy Gold Plate
+  LEGACY_IRON_PLATE: Legacy Iron Plate
+  LEGACY_REDSTONE_COMPARATOR_OFF: Legacy Redstone Comparator Off
+  LEGACY_REDSTONE_COMPARATOR_ON: Legacy Redstone Comparator On
+  LEGACY_DAYLIGHT_DETECTOR: Legacy Daylight Detector
+  LEGACY_REDSTONE_BLOCK: Legacy Redstone Block
+  LEGACY_QUARTZ_ORE: Legacy 石英 Ore
+  LEGACY_HOPPER: Legacy Hopper
+  LEGACY_QUARTZ_BLOCK: Legacy 石英 Block
+  LEGACY_QUARTZ_STAIRS: Legacy 石英楼梯
+  LEGACY_ACTIVATOR_RAIL: Legacy Activator Rail
+  LEGACY_DROPPER: Legacy Dropper
+  LEGACY_STAINED_CLAY: Legacy Stained Clay
+  LEGACY_STAINED_GLASS_PANE: Legacy Stained Glass Pane
+  LEGACY_LEAVES_2: Legacy 树叶 2
+  LEGACY_LOG_2: Legacy原木 2
+  LEGACY_ACACIA_STAIRS: Legacy 金合欢楼梯
+  LEGACY_DARK_OAK_STAIRS: Legacy 深色 Oak楼梯
+  LEGACY_SLIME_BLOCK: Legacy Slime Block
+  LEGACY_BARRIER: Legacy Barrier
+  LEGACY_IRON_TRAPDOOR: Legacy Iron 活板门
+  LEGACY_PRISMARINE: Legacy Prismarine
+  LEGACY_SEA_LANTERN: Legacy Sea 灯笼
+  LEGACY_HAY_BLOCK: Legacy Hay Block
+  LEGACY_CARPET: Legacy Carpet
+  LEGACY_HARD_CLAY: Legacy Hard Clay
+  LEGACY_COAL_BLOCK: Legacy Coal Block
+  LEGACY_PACKED_ICE: Legacy Packed Ice
+  LEGACY_DOUBLE_PLANT: Legacy Double Plant
+  LEGACY_STANDING_BANNER: Legacy Standing Banner
+  LEGACY_WALL_BANNER: Legacy 墙 Banner
+  LEGACY_DAYLIGHT_DETECTOR_INVERTED: Legacy Daylight Detector Inverted
+  LEGACY_RED_SANDSTONE: Legacy Red Sandstone
+  LEGACY_RED_SANDSTONE_STAIRS: Legacy Red Sandstone楼梯
+  LEGACY_DOUBLE_STONE_SLAB2: Legacy Double Stone台阶2
+  LEGACY_STONE_SLAB2: Legacy Stone台阶2
+  LEGACY_SPRUCE_FENCE_GATE: Legacy 云杉木木栅栏 Gate
+  LEGACY_BIRCH_FENCE_GATE: Legacy Birch木栅栏 Gate
+  LEGACY_JUNGLE_FENCE_GATE: Legacy 丛林木栅栏 Gate
+  LEGACY_DARK_OAK_FENCE_GATE: Legacy 深色 Oak木栅栏 Gate
+  LEGACY_ACACIA_FENCE_GATE: Legacy 金合欢木栅栏 Gate
+  LEGACY_SPRUCE_FENCE: Legacy 云杉木木栅栏
+  LEGACY_BIRCH_FENCE: Legacy Birch木栅栏
+  LEGACY_JUNGLE_FENCE: Legacy 丛林木栅栏
+  LEGACY_DARK_OAK_FENCE: Legacy 深色 Oak木栅栏
+  LEGACY_ACACIA_FENCE: Legacy 金合欢木栅栏
+  LEGACY_SPRUCE_DOOR: Legacy 云杉木 木门
+  LEGACY_BIRCH_DOOR: Legacy 白桦木门
+  LEGACY_JUNGLE_DOOR: Legacy 丛林 木门
+  LEGACY_ACACIA_DOOR: Legacy 金合欢 木门
+  LEGACY_DARK_OAK_DOOR: Legacy 深色 橡木门
+  LEGACY_END_ROD: Legacy End Rod
+  LEGACY_CHORUS_PLANT: Legacy Chorus Plant
+  LEGACY_CHORUS_FLOWER: Legacy Chorus Flower
+  LEGACY_PURPUR_BLOCK: Legacy Purpur Block
+  LEGACY_PURPUR_PILLAR: Legacy Purpur Pillar
+  LEGACY_PURPUR_STAIRS: Legacy Purpur楼梯
+  LEGACY_PURPUR_DOUBLE_SLAB: Legacy Purpur Double台阶
+  LEGACY_PURPUR_SLAB: Legacy Purpur台阶
+  LEGACY_END_BRICKS: Legacy End 砖s
+  LEGACY_BEETROOT_BLOCK: Legacy Beetroot Block
+  LEGACY_GRASS_PATH: Legacy Grass Path
+  LEGACY_END_GATEWAY: Legacy End Gateway
+  LEGACY_COMMAND_REPEATING: Legacy Command Repeating
+  LEGACY_COMMAND_CHAIN: Legacy Command Chain
+  LEGACY_FROSTED_ICE: Legacy Frosted Ice
+  LEGACY_MAGMA: Legacy Magma
+  LEGACY_NETHER_WART_BLOCK: Legacy 下界 疣块
+  LEGACY_RED_NETHER_BRICK: Legacy Red 下界 砖
+  LEGACY_BONE_BLOCK: Legacy Bone Block
+  LEGACY_STRUCTURE_VOID: Legacy Structure Void
+  LEGACY_OBSERVER: Legacy Observer
+  LEGACY_WHITE_SHULKER_BOX: Legacy White Shulker Box
+  LEGACY_ORANGE_SHULKER_BOX: Legacy Orange Shulker Box
+  LEGACY_MAGENTA_SHULKER_BOX: Legacy Magenta Shulker Box
+  LEGACY_LIGHT_BLUE_SHULKER_BOX: Legacy Light Blue Shulker Box
+  LEGACY_YELLOW_SHULKER_BOX: Legacy Yellow Shulker Box
+  LEGACY_LIME_SHULKER_BOX: Legacy Lime Shulker Box
+  LEGACY_PINK_SHULKER_BOX: Legacy Pink Shulker Box
+  LEGACY_GRAY_SHULKER_BOX: Legacy Gray Shulker Box
+  LEGACY_SILVER_SHULKER_BOX: Legacy Silver Shulker Box
+  LEGACY_CYAN_SHULKER_BOX: Legacy Cyan Shulker Box
+  LEGACY_PURPLE_SHULKER_BOX: Legacy Purple Shulker Box
+  LEGACY_BLUE_SHULKER_BOX: Legacy Blue Shulker Box
+  LEGACY_BROWN_SHULKER_BOX: Legacy Brown Shulker Box
+  LEGACY_GREEN_SHULKER_BOX: Legacy Green Shulker Box
+  LEGACY_RED_SHULKER_BOX: Legacy Red Shulker Box
+  LEGACY_BLACK_SHULKER_BOX: Legacy Black Shulker Box
+  LEGACY_WHITE_GLAZED_TERRACOTTA: Legacy White Glazed Terracotta
+  LEGACY_ORANGE_GLAZED_TERRACOTTA: Legacy Orange Glazed Terracotta
+  LEGACY_MAGENTA_GLAZED_TERRACOTTA: Legacy Magenta Glazed Terracotta
+  LEGACY_LIGHT_BLUE_GLAZED_TERRACOTTA: Legacy Light Blue Glazed Terracotta
+  LEGACY_YELLOW_GLAZED_TERRACOTTA: Legacy Yellow Glazed Terracotta
+  LEGACY_LIME_GLAZED_TERRACOTTA: Legacy Lime Glazed Terracotta
+  LEGACY_PINK_GLAZED_TERRACOTTA: Legacy Pink Glazed Terracotta
+  LEGACY_GRAY_GLAZED_TERRACOTTA: Legacy Gray Glazed Terracotta
+  LEGACY_SILVER_GLAZED_TERRACOTTA: Legacy Silver Glazed Terracotta
+  LEGACY_CYAN_GLAZED_TERRACOTTA: Legacy Cyan Glazed Terracotta
+  LEGACY_PURPLE_GLAZED_TERRACOTTA: Legacy Purple Glazed Terracotta
+  LEGACY_BLUE_GLAZED_TERRACOTTA: Legacy Blue Glazed Terracotta
+  LEGACY_BROWN_GLAZED_TERRACOTTA: Legacy Brown Glazed Terracotta
+  LEGACY_GREEN_GLAZED_TERRACOTTA: Legacy Green Glazed Terracotta
+  LEGACY_RED_GLAZED_TERRACOTTA: Legacy Red Glazed Terracotta
+  LEGACY_BLACK_GLAZED_TERRACOTTA: Legacy Black Glazed Terracotta
+  LEGACY_CONCRETE: Legacy Concrete
+  LEGACY_CONCRETE_POWDER: Legacy Concrete Powder
+  LEGACY_STRUCTURE_BLOCK: Legacy Structure Block
+  LEGACY_IRON_SPADE: Legacy Iron Spade
+  LEGACY_IRON_PICKAXE: Legacy Iron Pickaxe
+  LEGACY_IRON_AXE: Legacy Iron Axe
+  LEGACY_FLINT_AND_STEEL: Legacy Flint And Steel
+  LEGACY_APPLE: Legacy Apple
+  LEGACY_BOW: Legacy Bow
+  LEGACY_ARROW: Legacy Arrow
+  LEGACY_COAL: Legacy Coal
+  LEGACY_DIAMOND: Legacy Diamond
+  LEGACY_IRON_INGOT: Legacy Iron Ingot
+  LEGACY_GOLD_INGOT: Legacy Gold Ingot
+  LEGACY_IRON_SWORD: Legacy Iron Sword
+  LEGACY_WOOD_SWORD: Legacy木 Sword
+  LEGACY_WOOD_SPADE: Legacy木 Spade
+  LEGACY_WOOD_PICKAXE: Legacy木 Pickaxe
+  LEGACY_WOOD_AXE: Legacy木 Axe
+  LEGACY_STONE_SWORD: Legacy Stone Sword
+  LEGACY_STONE_SPADE: Legacy Stone Spade
+  LEGACY_STONE_PICKAXE: Legacy Stone Pickaxe
+  LEGACY_STONE_AXE: Legacy Stone Axe
+  LEGACY_DIAMOND_SWORD: Legacy Diamond Sword
+  LEGACY_DIAMOND_SPADE: Legacy Diamond Spade
+  LEGACY_DIAMOND_PICKAXE: Legacy Diamond Pickaxe
+  LEGACY_DIAMOND_AXE: Legacy Diamond Axe
+  LEGACY_STICK: Legacy Stick
+  LEGACY_BOWL: Legacy Bowl
+  LEGACY_MUSHROOM_SOUP: Legacy Mushroom Soup
+  LEGACY_GOLD_SWORD: Legacy Gold Sword
+  LEGACY_GOLD_SPADE: Legacy Gold Spade
+  LEGACY_GOLD_PICKAXE: Legacy Gold Pickaxe
+  LEGACY_GOLD_AXE: Legacy Gold Axe
+  LEGACY_STRING: Legacy String
+  LEGACY_FEATHER: Legacy Feather
+  LEGACY_SULPHUR: Legacy Sulphur
+  LEGACY_WOOD_HOE: Legacy木 Hoe
+  LEGACY_STONE_HOE: Legacy Stone Hoe
+  LEGACY_IRON_HOE: Legacy Iron Hoe
+  LEGACY_DIAMOND_HOE: Legacy Diamond Hoe
+  LEGACY_GOLD_HOE: Legacy Gold Hoe
+  LEGACY_SEEDS: Legacy Seeds
+  LEGACY_WHEAT: Legacy Wheat
+  LEGACY_BREAD: Legacy Bread
+  LEGACY_LEATHER_HELMET: Legacy Leather Helmet
+  LEGACY_LEATHER_CHESTPLATE: Legacy Leather Chestplate
+  LEGACY_LEATHER_LEGGINGS: Legacy Leather Leggings
+  LEGACY_LEATHER_BOOTS: Legacy Leather Boots
+  LEGACY_CHAINMAIL_HELMET: Legacy Chainmail Helmet
+  LEGACY_CHAINMAIL_CHESTPLATE: Legacy Chainmail Chestplate
+  LEGACY_CHAINMAIL_LEGGINGS: Legacy Chainmail Leggings
+  LEGACY_CHAINMAIL_BOOTS: Legacy Chainmail Boots
+  LEGACY_IRON_HELMET: Legacy Iron Helmet
+  LEGACY_IRON_CHESTPLATE: Legacy Iron Chestplate
+  LEGACY_IRON_LEGGINGS: Legacy Iron Leggings
+  LEGACY_IRON_BOOTS: Legacy Iron Boots
+  LEGACY_DIAMOND_HELMET: Legacy Diamond Helmet
+  LEGACY_DIAMOND_CHESTPLATE: Legacy Diamond Chestplate
+  LEGACY_DIAMOND_LEGGINGS: Legacy Diamond Leggings
+  LEGACY_DIAMOND_BOOTS: Legacy Diamond Boots
+  LEGACY_GOLD_HELMET: Legacy Gold Helmet
+  LEGACY_GOLD_CHESTPLATE: Legacy Gold Chestplate
+  LEGACY_GOLD_LEGGINGS: Legacy Gold Leggings
+  LEGACY_GOLD_BOOTS: Legacy Gold Boots
+  LEGACY_FLINT: Legacy Flint
+  LEGACY_PORK: Legacy Pork
+  LEGACY_GRILLED_PORK: Legacy Grilled Pork
+  LEGACY_PAINTING: Legacy Painting
+  LEGACY_GOLDEN_APPLE: Legacy Golden Apple
+  LEGACY_SIGN: Legacy 木告示牌
+  LEGACY_WOOD_DOOR: Legacy木 木门
+  LEGACY_BUCKET: Legacy 桶
+  LEGACY_WATER_BUCKET: Legacy Water 桶
+  LEGACY_LAVA_BUCKET: Legacy Lava 桶
+  LEGACY_MINECART: Legacy Minecart
+  LEGACY_SADDLE: Legacy Saddle
+  LEGACY_IRON_DOOR: Legacy Iron 木门
+  LEGACY_REDSTONE: Legacy Redstone
+  LEGACY_SNOW_BALL: Legacy Snow Ball
+  LEGACY_BOAT: Legacy Boat
+  LEGACY_LEATHER: Legacy Leather
+  LEGACY_MILK_BUCKET: Legacy Milk 桶
+  LEGACY_CLAY_BRICK: Legacy Clay 砖
+  LEGACY_CLAY_BALL: Legacy Clay Ball
+  LEGACY_SUGAR_CANE: Legacy Sugar Cane
+  LEGACY_PAPER: Legacy Paper
+  LEGACY_BOOK: Legacy Book
+  LEGACY_SLIME_BALL: Legacy Slime Ball
+  LEGACY_STORAGE_MINECART: Legacy Storage Minecart
+  LEGACY_POWERED_MINECART: Legacy Powered Minecart
+  LEGACY_EGG: Legacy Egg
+  LEGACY_COMPASS: Legacy Compass
+  LEGACY_FISHING_ROD: Legacy Fishing Rod
+  LEGACY_WATCH: Legacy Watch
+  LEGACY_GLOWSTONE_DUST: Legacy 发光stone Dust
+  LEGACY_RAW_FISH: Legacy 粗 Fish
+  LEGACY_COOKED_FISH: Legacy Cooked Fish
+  LEGACY_INK_SACK: Legacy 墨囊k
+  LEGACY_BONE: Legacy Bone
+  LEGACY_SUGAR: Legacy Sugar
+  LEGACY_CAKE: Legacy Cake
+  LEGACY_BED: Legacy Bed
+  LEGACY_DIODE: Legacy Diode
+  LEGACY_COOKIE: Legacy Cookie
+  LEGACY_MAP: Legacy Map
+  LEGACY_SHEARS: Legacy Shears
+  LEGACY_MELON: Legacy Melon
+  LEGACY_PUMPKIN_SEEDS: Legacy Pumpkin Seeds
+  LEGACY_MELON_SEEDS: Legacy Melon Seeds
+  LEGACY_RAW_BEEF: Legacy 粗 Beef
+  LEGACY_COOKED_BEEF: Legacy Cooked Beef
+  LEGACY_RAW_CHICKEN: Legacy 粗 Chicken
+  LEGACY_COOKED_CHICKEN: Legacy Cooked Chicken
+  LEGACY_ROTTEN_FLESH: Legacy Rotten Flesh
+  LEGACY_ENDER_PEARL: Legacy Ender Pearl
+  LEGACY_BLAZE_ROD: Legacy Blaze Rod
+  LEGACY_GHAST_TEAR: Legacy Ghast Tear
+  LEGACY_GOLD_NUGGET: Legacy Gold Nugget
+  LEGACY_NETHER_STALK: Legacy 下界 Stalk
+  LEGACY_POTION: Legacy Potion
+  LEGACY_GLASS_BOTTLE: Legacy Glass Bottle
+  LEGACY_SPIDER_EYE: Legacy Spider Eye
+  LEGACY_FERMENTED_SPIDER_EYE: Legacy Fermented Spider Eye
+  LEGACY_BLAZE_POWDER: Legacy Blaze Powder
+  LEGACY_MAGMA_CREAM: Legacy Magma Cream
+  LEGACY_BREWING_STAND_ITEM: Legacy Brewing Stand Item
+  LEGACY_CAULDRON_ITEM: Legacy Cauldron Item
+  LEGACY_EYE_OF_ENDER: Legacy Eye Of Ender
+  LEGACY_SPECKLED_MELON: Legacy Speckled Melon
+  LEGACY_MONSTER_EGG: Legacy Monster Egg
+  LEGACY_EXP_BOTTLE: Legacy Exp Bottle
+  LEGACY_FIREBALL: Legacy Fireball
+  LEGACY_BOOK_AND_QUILL: Legacy Book And Quill
+  LEGACY_WRITTEN_BOOK: Legacy Written Book
+  LEGACY_EMERALD: Legacy Emerald
+  LEGACY_ITEM_FRAME: Legacy Item Frame
+  LEGACY_FLOWER_POT_ITEM: Legacy Flower Pot Item
+  LEGACY_CARROT_ITEM: Legacy Carrot Item
+  LEGACY_POTATO_ITEM: Legacy Potato Item
+  LEGACY_BAKED_POTATO: Legacy Baked Potato
+  LEGACY_POISONOUS_POTATO: Legacy Poisonous Potato
+  LEGACY_EMPTY_MAP: Legacy Empty Map
+  LEGACY_GOLDEN_CARROT: Legacy Golden Carrot
+  LEGACY_SKULL_ITEM: Legacy Skull Item
+  LEGACY_CARROT_STICK: Legacy Carrot Stick
+  LEGACY_NETHER_STAR: Legacy 下界 Star
+  LEGACY_PUMPKIN_PIE: Legacy Pumpkin Pie
+  LEGACY_FIREWORK: Legacy Firework
+  LEGACY_FIREWORK_CHARGE: Legacy Firework Charge
+  LEGACY_ENCHANTED_BOOK: Legacy Enchanted Book
+  LEGACY_REDSTONE_COMPARATOR: Legacy Redstone Comparator
+  LEGACY_NETHER_BRICK_ITEM: Legacy 下界 砖 Item
+  LEGACY_QUARTZ: Legacy 石英
+  LEGACY_EXPLOSIVE_MINECART: Legacy Explosive Minecart
+  LEGACY_HOPPER_MINECART: Legacy Hopper Minecart
+  LEGACY_PRISMARINE_SHARD: Legacy Prismarine 碎片
+  LEGACY_PRISMARINE_CRYSTALS: Legacy Prismarine Crystals
+  LEGACY_RABBIT: Legacy Rabbit
+  LEGACY_COOKED_RABBIT: Legacy Cooked Rabbit
+  LEGACY_RABBIT_STEW: Legacy Rabbit Stew
+  LEGACY_RABBIT_FOOT: Legacy Rabbit Foot
+  LEGACY_RABBIT_HIDE: Legacy Rabbit Hide
+  LEGACY_ARMOR_STAND: Legacy Armor Stand
+  LEGACY_IRON_BARDING: Legacy Iron Barding
+  LEGACY_GOLD_BARDING: Legacy Gold Barding
+  LEGACY_DIAMOND_BARDING: Legacy Diamond Barding
+  LEGACY_LEASH: Legacy Leash
+  LEGACY_NAME_TAG: Legacy Name Tag
+  LEGACY_COMMAND_MINECART: Legacy Command Minecart
+  LEGACY_MUTTON: Legacy Mutton
+  LEGACY_COOKED_MUTTON: Legacy Cooked Mutton
+  LEGACY_BANNER: Legacy Banner
+  LEGACY_END_CRYSTAL: Legacy End Crystal
+  LEGACY_SPRUCE_DOOR_ITEM: Legacy 云杉木 木门 Item
+  LEGACY_BIRCH_DOOR_ITEM: Legacy 白桦木门 Item
+  LEGACY_JUNGLE_DOOR_ITEM: Legacy 丛林 木门 Item
+  LEGACY_ACACIA_DOOR_ITEM: Legacy 金合欢 木门 Item
+  LEGACY_DARK_OAK_DOOR_ITEM: Legacy 深色 橡木门 Item
+  LEGACY_CHORUS_FRUIT: Legacy Chorus Fruit
+  LEGACY_CHORUS_FRUIT_POPPED: Legacy Chorus Fruit Popped
+  LEGACY_BEETROOT: Legacy Beetroot
+  LEGACY_BEETROOT_SEEDS: Legacy Beetroot Seeds
+  LEGACY_BEETROOT_SOUP: Legacy Beetroot Soup
+  LEGACY_DRAGONS_BREATH: Legacy Dragons Breath
+  LEGACY_SPLASH_POTION: Legacy Splash Potion
+  LEGACY_SPECTRAL_ARROW: Legacy Spectral Arrow
+  LEGACY_TIPPED_ARROW: Legacy Tipped Arrow
+  LEGACY_LINGERING_POTION: Legacy Lingering Potion
+  LEGACY_SHIELD: Legacy Shield
+  LEGACY_ELYTRA: Legacy Elytra
+  LEGACY_BOAT_SPRUCE: Legacy Boat 云杉木
+  LEGACY_BOAT_BIRCH: Legacy Boat Birch
+  LEGACY_BOAT_JUNGLE: Legacy Boat 丛林
+  LEGACY_BOAT_ACACIA: Legacy Boat 金合欢
+  LEGACY_BOAT_DARK_OAK: Legacy Boat 深色 Oak
+  LEGACY_TOTEM: Legacy Totem
+  LEGACY_SHULKER_SHELL: Legacy Shulker Shell
+  LEGACY_IRON_NUGGET: Legacy Iron Nugget
+  LEGACY_KNOWLEDGE_BOOK: Legacy Knowledge Book
+  LEGACY_GOLD_RECORD: Legacy Gold Record
+  LEGACY_GREEN_RECORD: Legacy Green Record
+  LEGACY_RECORD_3: Legacy Record 3
+  LEGACY_RECORD_4: Legacy Record 4
+  LEGACY_RECORD_5: Legacy Record 5
+  LEGACY_RECORD_6: Legacy Record 6
+  LEGACY_RECORD_7: Legacy Record 7
+  LEGACY_RECORD_8: Legacy Record 8
+  LEGACY_RECORD_9: Legacy Record 9
+  LEGACY_RECORD_10: Legacy Record 10
+  LEGACY_RECORD_11: Legacy Record 11
+  LEGACY_RECORD_12: Legacy Record 12
+  RAW_GOLD: 粗 Gold
+PotionEffectType:
+  SPEED: 速度
+  SLOW: 缓慢
+  FAST_DIGGING: 急迫
+  SLOW_DIGGING: 挖掘疲劳
+  INCREASE_DAMAGE: 力量
+  HEAL: 瞬间治疗
+  HARM: 瞬间伤害
+  JUMP: 跳跃提升
+  CONFUSION: 反胃
+  REGENERATION: 生命回复
+  DAMAGE_RESISTANCE: 抗性提升
+  FIRE_RESISTANCE: 火焰保护
+  WATER_BREATHING: 水下呼吸
+  INVISIBILITY: 隐身
+  BLINDNESS: 失明
+  NIGHT_VISION: 夜视
+  HUNGER: 饥饿
+  WEAKNESS: 虚弱
+  POISON: 中毒
+  WITHER: 凋零
+  HEALTH_BOOST: 生命提升
+  ABSORPTION: 伤害吸收
+  SATURATION: 饱和
+  GLOWING: 发光
+  LEVITATION: 漂浮
+  LUCK: 幸运
+  UNLUCK: 霉运
+  SLOW_FALLING: 缓降
+  CONDUIT_POWER: 潮涌能量
+  DOLPHINS_GRACE: 海豚的恩惠
+  BAD_OMEN: 不祥之兆
+  HERO_OF_THE_VILLAGE: 村庄英雄
+  DARKNESS: 黑暗
+Enchantment:
+  fire_protection: 火焰保护
+  sharpness: 锋利
+  flame: 火矢
+  soul_speed: 灵魂疾行
+  aqua_affinity: 水下速掘
+  punch: 冲击
+  loyalty: 忠诚
+  depth_strider: 深海探索者
+  vanishing_curse: 消失诅咒
+  unbreaking: 耐久
+  knockback: 击退
+  luck_of_the_sea: 海之眷顾
+  binding_curse: 绑定诅咒
+  fortune: 时运
+  protection: 保护
+  efficiency: 效率
+  mending: 经验修补
+  frost_walker: 冰霜行者
+  lure: 饵钓
+  looting: 抢夺
+  piercing: 穿透
+  blast_protection: 爆炸保护
+  smite: 亡灵杀手
+  multishot: 多重射击
+  swift_sneak: 迅捷潜行
+  fire_aspect: 火焰附加
+  channeling: 引雷
+  sweeping: 横扫之刃
+  thorns: 荆棘
+  bane_of_arthropods: 节肢杀手
+  respiration: 水下呼吸
+  riptide: 激流
+  silk_touch: 精准采集
+  quick_charge: 快速装填
+  projectile_protection: 弹射物保护
+  impaling: 穿刺
+  feather_falling: 摔落保护
+  power: 力量
+  infinity: 无限
