@@ -26,6 +26,8 @@
  */
 package mc.promcteam.engine.mccore.config.parse;
 
+import org.bukkit.configuration.file.YamlConfiguration;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -35,6 +37,9 @@ import java.util.*;
  * Represents a section of a config
  */
 public class DataSection {
+
+    private YAMLParser yamlParser = new YAMLParser();
+
     // Comments attached to each node
     private final HashMap<String, List<String>> comments = new HashMap<>();
 
@@ -665,7 +670,7 @@ public class DataSection {
      * @param path path to the file
      */
     public void dump(String path) {
-        YAMLParser.save(this, path);
+        yamlParser.save(this, path);
     }
 
     /**
@@ -674,7 +679,7 @@ public class DataSection {
      * @param file file to dump to
      */
     public void dump(File file) {
-        YAMLParser.save(this, file);
+        yamlParser.save(this, file);
     }
 
     /**
@@ -684,7 +689,7 @@ public class DataSection {
      * @throws IOException
      */
     public void dump(BufferedWriter write) throws IOException {
-        YAMLParser.save(this, write);
+        yamlParser.save(this, write);
     }
 
     /**
@@ -705,7 +710,7 @@ public class DataSection {
      */
     public String toString(char quote) {
         StringBuilder builder = new StringBuilder();
-        YAMLParser.dump(this, builder, 0, quote);
+        yamlParser.dump(this, builder, 0, quote);
         return builder.toString();
     }
 }

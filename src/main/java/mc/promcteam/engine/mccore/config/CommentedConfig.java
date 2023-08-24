@@ -39,6 +39,7 @@ import java.util.logging.Level;
  */
 public class CommentedConfig {
 
+    private final YAMLParser yamlParser = new YAMLParser();
     private final String     fileName;
     private final JavaPlugin plugin;
 
@@ -96,7 +97,7 @@ public class CommentedConfig {
      * Reloads the config data
      */
     public void reload() {
-        data = YAMLParser.parseFile(configFile);
+        data = yamlParser.parseFile(configFile);
     }
 
     /**
@@ -136,7 +137,7 @@ public class CommentedConfig {
      */
     public void saveDefaultConfig() {
         if (!configFile.exists()) {
-            if (defaults == null) defaults = YAMLParser.parseResource(plugin, fileName);
+            if (defaults == null) defaults = yamlParser.parseResource(plugin, fileName);
             defaults.dump(configFile);
         }
     }
@@ -151,7 +152,7 @@ public class CommentedConfig {
      * from settings configs.</p>
      */
     public void checkDefaults() {
-        if (defaults == null) defaults = YAMLParser.parseResource(plugin, fileName);
+        if (defaults == null) defaults = yamlParser.parseResource(plugin, fileName);
         if (data == null) {
             this.reload();
         }
@@ -164,7 +165,7 @@ public class CommentedConfig {
      * <p>This is primarily used for settings configs </p>
      */
     public void trim() {
-        if (defaults == null) defaults = YAMLParser.parseResource(plugin, fileName);
+        if (defaults == null) defaults = yamlParser.parseResource(plugin, fileName);
         if (data == null) {
             this.reload();
         }

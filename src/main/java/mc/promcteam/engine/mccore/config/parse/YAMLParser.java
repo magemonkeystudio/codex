@@ -33,14 +33,15 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 /**
  * Custom parser for YAML that preserves comments with
  * the key they precede
  */
 public class YAMLParser {
-    private static final ArrayList<String> comments = new ArrayList<>();
-    private static       int               i        = 0;
+    private List<String> comments = new ArrayList<>();
+    private int i = 0;
 
     /**
      * Reads and then parses data from an embedded plugin resource. If
@@ -51,7 +52,7 @@ public class YAMLParser {
      * @param path   path to the resource (not including the beginning slash)
      * @return loaded data
      */
-    public static DataSection parseResource(Plugin plugin, String path) {
+    public DataSection parseResource(Plugin plugin, String path) {
         try (InputStream read = plugin.getClass().getResourceAsStream("/" + path)) {
             StringBuilder builder = new StringBuilder();
             byte[]        data    = new byte[1024];
@@ -77,7 +78,7 @@ public class YAMLParser {
      * @param path path to the file load from
      * @return loaded data
      */
-    public static DataSection parseFile(String path) {
+    public DataSection parseFile(String path) {
         return parseFile(new File(path));
     }
 
@@ -89,7 +90,7 @@ public class YAMLParser {
      * @param file the file load from
      * @return loaded data
      */
-    public static DataSection parseFile(File file) {
+    public DataSection parseFile(File file) {
         try {
             if (file.exists()) {
                 FileInputStream read = new FileInputStream(file);
@@ -112,7 +113,7 @@ public class YAMLParser {
      * @param text text to parse
      * @return parsed data
      */
-    public static DataSection parseText(String text) {
+    public DataSection parseText(String text) {
         return parseText(text, '\'');
     }
 
@@ -124,9 +125,8 @@ public class YAMLParser {
      * @param quote character strings are wrapped in
      * @return parsed data
      */
-    public static DataSection parseText(String text, char quote) {
+    public DataSection parseText(String text, char quote) {
         if (text == null) return new DataSection();
-        comments.clear();
         text = text.replaceAll("\r\n", "\n").replaceAll("\n *\n", "\n").replaceAll(" +\n", "\n");
         String[] lines = text.split("\n");
         i = 0;
@@ -141,7 +141,7 @@ public class YAMLParser {
      * @param quote  character strings are wrapped in
      * @return parsed data
      */
-    private static DataSection parse(String[] lines, int indent, char quote) {
+    private DataSection parse(String[] lines, int indent, char quote) {
         DataSection data = new DataSection();
         int         spaces;
         while (i < lines.length && ((spaces = countSpaces(lines[i])) >= indent || lines[i].length() == 0
@@ -238,10 +238,11 @@ public class YAMLParser {
      * @param line line to count the leading spaces for
      * @return the number of leading spaces
      */
-    private static int countSpaces(String line) {
-        int c = 0;
-        while (line.length() > c && line.charAt(c) == ' ') c++;
-        return c;
+    private int countSpaces(String line) {
+        return IntStream.range(0, line.length())
+                .filter(i -> line.charAt(i) != ' ')
+                .findFirst()
+                .orElse(0);
     }
 
     /**
@@ -249,7 +250,7 @@ public class YAMLParser {
      *
      * @param path path to the file
      */
-    public static void save(DataSection data, String path) {
+    public void save(DataSection data, String path) {
         save(data, new File(path));
     }
 
@@ -258,7 +259,7 @@ public class YAMLParser {
      *
      * @param file file to dump to
      */
-    public static void save(DataSection data, File file) {
+    public void save(DataSection data, File file) {
         if (!file.exists()) {
             file.getParentFile().mkdirs();
             try {
@@ -282,7 +283,7 @@ public class YAMLParser {
      * @param write stream to dump to
      * @throws IOException
      */
-    public static void save(DataSection data, BufferedWriter write) throws IOException {
+    public void save(DataSection data, BufferedWriter write) throws IOException {
         StringBuilder sb = new StringBuilder();
         dump(data, sb, 0, '\'');
         write.write(sb.toString());
@@ -296,7 +297,7 @@ public class YAMLParser {
      * @param indent  starting indent
      * @param quote   character to use for containing strings
      */
-    public static void dump(DataSection data, StringBuilder builder, int indent, char quote) {
+    public void dump(DataSection data, StringBuilder builder, int indent, char quote) {
         // Create spacing to use
         String spacing = "";
         for (int i = 0; i < indent; i++) {
@@ -367,7 +368,7 @@ public class YAMLParser {
         }
     }
 
-    private static void writeValue(StringBuilder builder, Object value, char quote) {
+    private void writeValue(StringBuilder builder, Object value, char quote) {
         if (value instanceof Number) {
             builder.append(value);
         } else if (value.toString().contains("" + quote)) {
