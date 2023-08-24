@@ -146,15 +146,17 @@ public class YAMLParser {
         int         spaces;
         while (i < lines.length && ((spaces = countSpaces(lines[i])) >= indent || lines[i].length() == 0
                 || lines[i].charAt(spaces) == '#')) {
+            String entry = lines[i];
+
             // When the entire line is just spaces, continue
-            if (lines[i].trim().isEmpty()) {
+            if (entry.trim().isEmpty()) {
                 i++;
                 continue;
             }
 
             // Comments
-            if (lines[i].charAt(spaces) == '#') {
-                comments.add(lines[i].substring(spaces + 1));
+            if (entry.charAt(spaces) == '#') {
+                comments.add(entry.substring(spaces + 1));
                 i++;
                 continue;
             }
@@ -164,7 +166,7 @@ public class YAMLParser {
             }
             if (i == lines.length) return data;
 
-            String key = lines[i].substring(indent, lines[i].indexOf(':'));
+            String key = entry.substring(indent, entry.indexOf(':'));
             if ((key.charAt(0) == '\'' && key.charAt(key.length() - 1) == '\'')
                     || (key.charAt(0) == '"' && key.charAt(key.length() - 1) == '"')) {
                 key = key.substring(1, key.length() - 1);
@@ -173,7 +175,7 @@ public class YAMLParser {
             comments.clear();
 
             // New empty section
-            if (lines[i].indexOf(": {}") == lines[i].length() - 4 && lines[i].length() >= 4) {
+            if (entry.indexOf(": {}") == entry.length() - 4 && entry.length() >= 4) {
                 data.createSection(key);
             }
 
@@ -202,6 +204,22 @@ public class YAMLParser {
                 i--;
             }
 
+            // List, with one-line syntax
+            else if (entry.startsWith(key + ": [") && entry.endsWith("]")) {
+                String value = entry.substring(entry.indexOf('[') + 1, entry.lastIndexOf(']'));
+                String[] parts = value.split(", *");
+                List<String> list = new ArrayList<>();
+
+                for (String part : parts) {
+                    if(part.startsWith("'") || part.startsWith("\"")) {
+                        list.add(part.substring(1, part.length() - 1));
+                    } else {
+                        list.add(part);
+                    }
+                }
+                data.set(key, list);
+            }
+
             // New section with content
             else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
                 i++;
@@ -212,13 +230,13 @@ public class YAMLParser {
             }
 
             // New empty section
-            else if (lines[i].indexOf(':') == lines[i].length() - 1) {
+            else if (entry.indexOf(':') == entry.length() - 1) {
                 data.set(key, new DataSection());
             }
 
             // Regular value
             else {
-                String str = lines[i].substring(lines[i].indexOf(':') + 2);
+                String str = entry.substring(entry.indexOf(':') + 2);
                 Object value;
                 if (str.charAt(0) == quote) value = str.substring(1, str.length() - 1);
                 else if (str.charAt(0) == '\'') value = str.substring(1, str.length() - 1);
