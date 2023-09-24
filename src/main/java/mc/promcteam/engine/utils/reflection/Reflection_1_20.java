@@ -1,6 +1,7 @@
 package mc.promcteam.engine.utils.reflection;
 
 import com.google.common.collect.Multimap;
+import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.core.Version;
 import mc.promcteam.engine.utils.Reflex;
 import org.bukkit.entity.Player;
@@ -21,7 +22,8 @@ public class Reflection_1_20 extends Reflection_1_17 {
 
             String fieldName = "c";
             Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
-            if (!con.getClass().getSimpleName().equals("PlayerConnection")) {
+            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass().getSimpleName().equals("GeneratedInterceptor")) {
+                NexEngine.get().getLogger().warning("Expected PlayerConnection, got " + con.getClass().getSimpleName() + " instead!");
                 throw new ClassNotFoundException("Could not get connection from CraftPlayer using field " + fieldName +
                         "\nNMS Player: " + nmsPlayer + "\n");
             }

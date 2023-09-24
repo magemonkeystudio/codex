@@ -143,7 +143,7 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             String fieldName = "b";
             Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
-            if (!con.getClass().getSimpleName().equals("PlayerConnection")) {
+            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass().getSimpleName().equals("GeneratedInterceptor")) {
                 throw new ClassNotFoundException("Could not get connection from CraftPlayer using field " + fieldName +
                         "\nNMS Player: " + nmsPlayer + "\n");
             }
