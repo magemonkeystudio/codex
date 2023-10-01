@@ -109,20 +109,24 @@ public class StringUT {
 
     @NotNull
     public static List<String> replace(@NotNull List<String> orig, @NotNull String placeholder, List<String> replacer) {
-        if (replacer.isEmpty()) { replacer = List.of("[]"); }
+        if (replacer.isEmpty()) {
+            replacer = List.of("[]");
+        }
         orig = new ArrayList<>(orig);
         for (int i = 0, loreSize = orig.size(); i < loreSize; i++) {
             String line = orig.get(i);
-            int pos = line.indexOf(placeholder);
-            if (pos < 0) { continue; }
+            int    pos  = line.indexOf(placeholder);
+            if (pos < 0) {
+                continue;
+            }
             String format = StringUT.getColor(line.substring(0, pos));
-            orig.set(i, line.substring(0, pos)+replacer.get(0));
+            orig.set(i, line.substring(0, pos) + replacer.get(0));
             for (int j = 1, size = replacer.size(); j < size; j++) {
                 i++;
                 loreSize++;
-                orig.add(i, format+replacer.get(j));
+                orig.add(i, format + replacer.get(j));
             }
-            orig.set(i, orig.get(i)+line.substring(pos+placeholder.length()));
+            orig.set(i, orig.get(i) + line.substring(pos + placeholder.length()));
         }
         return orig;
     }
@@ -312,15 +316,17 @@ public class StringUT {
     }
 
     public static List<String> wrap(String value, int maxLength) {
-        List<String> splitValue = new ArrayList<>();
-        StringBuilder color = new StringBuilder();
+        List<String>  splitValue = new ArrayList<>();
+        StringBuilder color      = new StringBuilder();
         while (ChatColor.stripColor(value).length() > maxLength) {
             int i = value.lastIndexOf(' ', maxLength);
-            if (i < 0) { i = maxLength; }
+            if (i < 0) {
+                i = maxLength;
+            }
             String first = value.substring(0, i);
             color.append(getColor(first));
             splitValue.add(first);
-            value = color+value.substring(i);
+            value = color + value.substring(i);
         }
         splitValue.add(value);
         return splitValue;
@@ -328,7 +334,9 @@ public class StringUT {
 
     public static List<String> wrap(List<String> value, int maxLenght) {
         List<String> splitValue = new ArrayList<>();
-        for (String aValue : value) {splitValue.addAll(wrap(aValue, maxLenght));}
+        for (String aValue : value) {
+            splitValue.addAll(wrap(aValue, maxLenght));
+        }
         return splitValue;
     }
 
@@ -338,7 +346,9 @@ public class StringUT {
             return array[0];
         } else {
             BaseComponent component = new TextComponent();
-            for (BaseComponent baseComponent : array) {component.addExtra(baseComponent);}
+            for (BaseComponent baseComponent : array) {
+                component.addExtra(baseComponent);
+            }
             return component;
         }
     }

@@ -52,8 +52,6 @@ public class StatBoard extends Board {
      */
     public void addStats(StatHolder holder) {
         holders.add(holder);
-        for (String stat : holder.getNames())
-            stats.add(stat);
         update();
     }
 
@@ -74,7 +72,7 @@ public class StatBoard extends Board {
         for (StatHolder holder : holders) {
             int index = 0;
             for (Integer value : holder.getValues())
-                set(stats.get(index++), value);
+                set(holder.getNames().get(index++), value);
         }
         showPlayer();
     }

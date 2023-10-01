@@ -56,6 +56,7 @@ public abstract class Board {
     private static  Object      scoreboardServer;
     private static  Object      sidebarCriteria;
     private static  Class<?>    enumScoreboard;
+    private static  Class<?>    enumDisplaySlot;
     private static  Constructor chatCtor;
     private static  Method      chatMethod;
     protected final String      plugin;
@@ -97,7 +98,9 @@ public abstract class Board {
                 } else
                     objective = objConstructor.newInstance(scoreboardServer, title, sidebarCriteria);
             } catch (Exception ex) {
-                NexEngine.get().getLogger().warning("Failed to create objective for scoreboard - resorting to slow method");
+                NexEngine.get()
+                        .getLogger()
+                        .warning("Failed to create objective for scoreboard - resorting to slow method");
             }
         }
         if (objective == null) {
@@ -146,7 +149,9 @@ public abstract class Board {
             Class<?> tempEnum = enumScoreboard;
             enumScoreboard = Arrays.stream(enumScoreboard.getDeclaredClasses())
                     .filter(clazz -> clazz.getSimpleName().equals("EnumScoreboardHealthDisplay")).findFirst()
-                    .orElseThrow(() -> new ClassNotFoundException("Could not find class '" + tempEnum.getPackage().getName() + "IScoreboardCriteria.EnumScoreboardHealthDisplay'"));
+                    .orElseThrow(() -> new ClassNotFoundException(
+                            "Could not find class '" + tempEnum.getPackage().getName()
+                                    + "IScoreboardCriteria.EnumScoreboardHealthDisplay'"));
 
             getScore = (ReflectionManager.MINOR_VERSION >= 17
                     ? Class.forName("net.minecraft.world.scores.Scoreboard")
@@ -224,6 +229,9 @@ public abstract class Board {
                 throw new IllegalStateException("Failed to set a score", ex);
             }
         } else {
+            ((Objective) objective).getScoreboard().getEntries()
+                    .stream().filter(str -> ((Objective) objective).getScore(str).getScore() == score)
+                    .forEach(((Objective) objective).getScoreboard()::resetScores);
             ((Objective) objective).getScore(label).setScore(score);
         }
     }
