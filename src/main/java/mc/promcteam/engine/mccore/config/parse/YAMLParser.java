@@ -41,7 +41,7 @@ import java.util.stream.IntStream;
  */
 public class YAMLParser {
     private List<String> comments = new ArrayList<>();
-    private int i = 0;
+    private int          i        = 0;
 
     /**
      * Reads and then parses data from an embedded plugin resource. If
@@ -198,6 +198,7 @@ public class YAMLParser {
                     else if (str.length() > 0 && str.charAt(0) == '\'')
                         while (str.length() > 0 && str.charAt(0) == '\'') str = str.substring(1, str.length() - 1);
 
+                    str = str.replace("\\'", "'").replace("\\\"", "\"");
                     stringList.add(str);
                 }
                 data.set(key, stringList);
@@ -206,16 +207,16 @@ public class YAMLParser {
 
             // List, with one-line syntax
             else if (entry.startsWith(key + ": [") && entry.endsWith("]")) {
-                String value = entry.substring(entry.indexOf('[') + 1, entry.lastIndexOf(']'));
-                String[] parts = value.split(", *");
-                List<String> list = new ArrayList<>();
+                String       value = entry.substring(entry.indexOf('[') + 1, entry.lastIndexOf(']'));
+                String[]     parts = value.split(", *");
+                List<String> list  = new ArrayList<>();
 
                 for (String part : parts) {
-                    if(part.startsWith("'") || part.startsWith("\"")) {
-                        list.add(part.substring(1, part.length() - 1));
-                    } else {
-                        list.add(part);
+                    if (part.startsWith("'") || part.startsWith("\"")) {
+                        part = part.substring(1, part.length() - 1);
                     }
+                    part = part.replace("\\'", "'").replace("\\\"", "\"");
+                    list.add(part);
                 }
                 data.set(key, list);
             }
@@ -242,6 +243,7 @@ public class YAMLParser {
                 else if (str.charAt(0) == '\'') value = str.substring(1, str.length() - 1);
                 else if (str.charAt(0) == '"') value = str.substring(1, str.length() - 1);
                 else value = str;
+                value = value.toString().replace("\\'", "'").replace("\\\"", "\"");
                 data.set(key, value);
             }
 
