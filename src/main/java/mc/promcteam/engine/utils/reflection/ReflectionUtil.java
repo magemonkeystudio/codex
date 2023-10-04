@@ -159,7 +159,8 @@ public interface ReflectionUtil {
     void changeSkull(Block b, String hash);
 
     default GameProfile getNonPlayerProfile(String hash) {
-        GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+        UUID uid = UUID.randomUUID();
+        GameProfile profile = new GameProfile(uid, uid.toString().substring(0, 8));
         profile.getProperties().put("textures", new Property("textures", hash));
 
         return profile;
