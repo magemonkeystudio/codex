@@ -1,5 +1,5 @@
-[![Build](https://github.com/promcteam/promccore/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/com/promcteam/promccore/1.1.0-R0.3-SNAPSHOT)
-[![Build](https://github.com/promcteam/promccore/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/promcteam/promccore/1.1.0-R0.3-SNAPSHOT)
+[![Build](https://github.com/promcteam/promccore/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/com/promcteam/promccore/1.1.0-R0.4-SNAPSHOT)
+[![Build](https://github.com/promcteam/promccore/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/com/promcteam/promccore/1.1.0-R0.4-SNAPSHOT)
 
 # ProMCCore
 
@@ -15,6 +15,6 @@ or snapshots through Sonatype.
 <dependency>
     <groupId>com.promcteam</groupId>
     <artifactId>promccore</artifactId>
-    <version>1.1.0-R0.3-SNAPSHOT</version>
+    <version>1.1.0-R0.4-SNAPSHOT</version>
 </dependency>
 ```
