@@ -59,7 +59,6 @@ public class BoardManager {
         if (scoreboard != null) return;
 
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        Board.init(scoreboard);
     }
 
     /**
