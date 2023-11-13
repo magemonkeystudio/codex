@@ -16,6 +16,8 @@ public class Slot {
 
     public ItemStack getItemStack() {return itemStack == null ? null : itemStack.clone();}
 
+    public void setItemStack(ItemStack itemStack) {this.itemStack = itemStack;}
+
     public void onLeftClick() {}
 
     public void onShiftLeftClick() {onLeftClick();}

@@ -22,12 +22,12 @@ public abstract class YAMLMenu<T> {
         YAML_MENUS.stream().filter(yamlMenu -> yamlMenu.plugin.equals(plugin)).forEach(YAMLMenu::reload);
     }
 
-    protected final Plugin                 plugin;
-    protected final String                 path;
-    protected       String                 title;
-    protected       int                    rows;
-    protected       Map<Integer, String>   slots;
-    protected       Map<String, ItemStack> items;
+    protected final Plugin                          plugin;
+    protected final String                          path;
+    protected       String                          title;
+    protected       int                             rows;
+    protected       NavigableMap<Integer, String>   slots;
+    protected       NavigableMap<String, ItemStack> items;
 
     public YAMLMenu(Plugin plugin, String path) {
         this.plugin = plugin;
@@ -42,8 +42,8 @@ public abstract class YAMLMenu<T> {
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         this.title = StringUT.color(config.getString("title", ""));
         this.rows = config.getInt("rows", 6);
-        this.slots = new HashMap<>();
-        this.items = new HashMap<>();
+        NavigableMap<Integer, String> slots = new TreeMap<>();
+        NavigableMap<String, ItemStack> items = new TreeMap<>();
         ConfigurationSection section = config.getConfigurationSection("slots");
         if (section == null) {return;}
         for (String key : section.getKeys(false)) {
@@ -52,7 +52,7 @@ public abstract class YAMLMenu<T> {
                 if (i < 0) {throw new IllegalArgumentException();}
                 String function = section.getString(key);
                 if (function == null) {continue;}
-                this.slots.put(i, function);
+                slots.put(i, function);
             } catch (NumberFormatException e) {
                 plugin.getLogger().warning("Invalid index \"" + key + "\" in " + this);
             }
@@ -87,8 +87,11 @@ public abstract class YAMLMenu<T> {
                 if (cmd != 0) {meta.setCustomModelData(cmd);}
                 itemStack.setItemMeta(meta);
             }
-            this.items.put(key, itemStack);
+            items.put(key, itemStack);
         }
+
+        this.slots = Collections.unmodifiableNavigableMap(slots);
+        this.items = Collections.unmodifiableNavigableMap(items);
     }
 
     protected abstract String getTitle(String yamlTitle, T parameter);
@@ -98,6 +101,10 @@ public abstract class YAMLMenu<T> {
     public int getRows() {return rows;}
 
     public boolean isEmpty() {return this.slots.isEmpty();}
+
+    public NavigableMap<Integer, String> getSlots() {return slots;}
+
+    public NavigableMap<String, ItemStack> getItems() {return items;}
 
     @NotNull
     public ItemStack getItem(String name) {return this.items.getOrDefault(name, new ItemStack(Material.AIR)).clone();}
