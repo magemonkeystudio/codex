@@ -40,9 +40,9 @@ public class ItemUT {
     private static final Map<String, NamespacedKey> NAME_KEYS_CACHE2;
 
     static {
-        LORE_KEYS_CACHE = new HashMap<>();
+        LORE_KEYS_CACHE  = new HashMap<>();
         LORE_KEYS_CACHE2 = new HashMap<>();
-        NAME_KEYS_CACHE = new HashMap<>();
+        NAME_KEYS_CACHE  = new HashMap<>();
         NAME_KEYS_CACHE2 = new HashMap<>();
     }
 
@@ -239,7 +239,7 @@ public class ItemUT {
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         if (meta == null) return;
 
-        GameProfile profile = new GameProfile(uuid, null);
+        GameProfile profile = new GameProfile(uuid, uuid.toString().substring(0, 16));
         profile.getProperties().put("textures", new Property("textures", value));
         Reflex.invokeMethod(Reflex.getMethod(meta, "setProfile", GameProfile.class), meta, profile);
 
@@ -286,9 +286,13 @@ public class ItemUT {
 
     public static void replaceLore(@NotNull ItemStack item, @NotNull String placeholder, @NotNull List<String> replacer) {
         ItemMeta meta = item.getItemMeta();
-        if (meta == null) {return;}
+        if (meta == null) {
+            return;
+        }
         List<String> lore = meta.getLore();
-        if (lore == null) {return;}
+        if (lore == null) {
+            return;
+        }
 
         meta.setLore(StringUT.replace(lore, placeholder, replacer));
         item.setItemMeta(meta);
