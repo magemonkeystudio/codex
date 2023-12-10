@@ -206,7 +206,7 @@ public class YAMLParser {
             }
 
             // List, with one-line syntax
-            else if (entry.startsWith(key + ": [") && entry.endsWith("]")) {
+            else if (entry.substring(indent).startsWith(key + ": [") && entry.endsWith("]")) {
                 String       value = entry.substring(entry.indexOf('[') + 1, entry.lastIndexOf(']'));
                 String[]     parts = value.split(", *");
                 List<String> list  = new ArrayList<>();
@@ -244,6 +244,8 @@ public class YAMLParser {
                 else if (str.charAt(0) == '"') value = str.substring(1, str.length() - 1);
                 else value = str;
                 value = value.toString().replace("\\'", "'").replace("\\\"", "\"");
+
+                if (value.equals("[]")) value = new ArrayList<>();
                 data.set(key, value);
             }
 
