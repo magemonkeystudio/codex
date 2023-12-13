@@ -34,13 +34,16 @@ import mc.promcteam.engine.mccore.util.TextFormatter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.StringUtil;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * <p>A command that is able to be modified via configuration</p>
@@ -95,6 +98,27 @@ public class ConfigurableCommand extends Command {
     private boolean             enabled;
     private int                 cooldown;
     private long                timer;
+
+    @Contract("null, _ -> null")
+    public static List<String> getTabCompletions(@Nullable Collection<String> options, @NotNull String[] args) {
+        if (options == null) return null;
+        String joined = String.join(" ", args);
+        return options.stream()
+                .filter(name -> StringUtil.startsWithIgnoreCase(name, joined))
+                .sorted(String.CASE_INSENSITIVE_ORDER)
+                .map(key -> key.substring(joined.lastIndexOf(' ')+1))
+                .collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unused")
+    @NotNull
+    public static List<String> getPlayerTabCompletions(@NotNull CommandSender sender, @NotNull String arg) {
+        Player senderPlayer = sender instanceof Player ? (Player) sender : null;
+        return getTabCompletions(sender.getServer().getOnlinePlayers().stream()
+                .filter(player -> senderPlayer == null || senderPlayer.canSee(player))
+                .map(Player::getName)
+                .collect(Collectors.toList()), new String[]{arg});
+    }
 
     /**************************************************************************
      Constructors
@@ -517,6 +541,24 @@ public class ConfigurableCommand extends Command {
         else displayHelp(sender, args);
 
         return true;
+    }
+
+    @Override
+    @NotNull
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+        if (this.function == null) {
+            if (args.length > 1 && hasSubCommand(args[0])) {
+                ConfigurableCommand subCommand = subCommands.get(args[0].toLowerCase());
+                return subCommand.tabComplete(sender, subCommand.name, CommandManager.trimArgs(args));
+            } else {
+                return getTabCompletions(this.subCommands.keySet(), args);
+            }
+        } else if (this.function instanceof TabCompleter) {
+            List<String> completions = ((TabCompleter) this.function).onTabComplete(sender, this, alias, args);
+            if (completions == null) return List.of();
+            return completions;
+        }
+        return List.of();
     }
 
     /**
