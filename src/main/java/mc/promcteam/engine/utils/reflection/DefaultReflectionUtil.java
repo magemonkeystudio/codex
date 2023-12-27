@@ -173,8 +173,13 @@ public class DefaultReflectionUtil implements ReflectionUtil {
                         ? Reflex.getMethod(nmsWorld.getClass(), "getWorld")
                         : Reflex.getMethod(nmsWorld.getClass(), "getHandle");
 
-                Object world           = craftWorld.cast(Reflex.invokeMethod(getHandle, nmsWorld));
-                Method playBlockAction = Reflex.getMethod(craftWorld, "playBlockAction", blockPosClass, blockClass, int.class, int.class);
+                Object world = craftWorld.cast(Reflex.invokeMethod(getHandle, nmsWorld));
+                Method playBlockAction = Reflex.getMethod(craftWorld,
+                        "playBlockAction",
+                        blockPosClass,
+                        blockClass,
+                        int.class,
+                        int.class);
 
                 Constructor ctor     = Reflex.getConstructor(blockPosClass, double.class, double.class, double.class);
                 Object      position = Reflex.invokeConstructor(ctor, lo.getX(), lo.getY(), lo.getZ());
@@ -211,7 +216,8 @@ public class DefaultReflectionUtil implements ReflectionUtil {
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
             Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-            Method   a               = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
+            Method a =
+                    Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 
@@ -230,16 +236,16 @@ public class DefaultReflectionUtil implements ReflectionUtil {
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
 
-            Object nbtTagCompoundRoot;
+            Object   nbtTagCompoundRoot;
+            Class<?> compressedClass;
             try {
-                Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-                Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
-
-                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
+                compressedClass = getNMSClass("NBTCompressedStreamTools");
             } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
+                compressedClass = Reflex.getClass("net.minecraft.nbt", "NBTCompressedStreamTools");
             }
+            Method nbtA = Reflex.getMethod(compressedClass, "a", DataInput.class);
+
+            nbtTagCompoundRoot = Reflex.invokeMethod(nbtA, null, new DataInputStream(inputStream));
 
             Class<?> nmsItemClass  = getNMSClass("ItemStack");
             Class<?> compoundClass = getNMSClass("NBTTagCompound");
@@ -247,7 +253,8 @@ public class DefaultReflectionUtil implements ReflectionUtil {
 
             Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
 
-            Method asBukkitCopy = Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
+            Method asBukkitCopy =
+                    Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
 
             ItemStack item = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
 
@@ -266,7 +273,8 @@ public class DefaultReflectionUtil implements ReflectionUtil {
 
             Object nmsPlayer = player != null ? getEntity(getCraftPlayer(player)) : null;
 
-            Method isDamaged = Reflex.getMethod(nmsStack.getClass(), "a", int.class, Random.class, getNMSClass("EntityPlayer"));
+            Method isDamaged =
+                    Reflex.getMethod(nmsStack.getClass(), "a", int.class, Random.class, getNMSClass("EntityPlayer"));
 
             Reflex.invokeMethod(isDamaged, nmsStack, amount, Rnd.rnd, nmsPlayer);
 
@@ -357,7 +365,7 @@ public class DefaultReflectionUtil implements ReflectionUtil {
                 Multimap<Object, Object> attMap             = getAttributes(item);
                 if (attMap == null) return 0D;
 
-                Collection<Object> att  = attMap.get(attributeBaseClass.cast(attribute));
+                Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
                 Object mod = att != null && !att.isEmpty()
                         ? attributeModifierClass.cast(att.stream().findFirst().get())
                         : null;
@@ -475,14 +483,20 @@ public class DefaultReflectionUtil implements ReflectionUtil {
         try {
             str = str.replace("\n", "%n%"); // CraftChatMessage wipes all lines out.
 
-            Class<?> baseComponentClass = getNMSClass("IChatBaseComponent");
-            Class<?> chatMessageClass   = getCraftClass("util.CraftChatMessage");
+            Class<?> baseComponentClass;
+            try {
+                baseComponentClass = getNMSClass("IChatBaseComponent");
+            } catch (ClassNotFoundException e) {
+                baseComponentClass = Reflex.getClass("net.minecraft.network.chat", "IChatBaseComponent");
+            }
+            Class<?> chatMessageClass = getCraftClass("util.CraftChatMessage");
 
             Method fromComponent    = Reflex.getMethod(chatMessageClass, "fromComponent", baseComponentClass);
             Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromStringOrNull", String.class);
 
             Object baseComponent = Reflex.invokeMethod(fromStringOrNull, null, str);
-            String singleColor   = (String) Reflex.invokeMethod(fromComponent, null, baseComponentClass.cast(baseComponent));
+            String singleColor =
+                    (String) Reflex.invokeMethod(fromComponent, null, baseComponentClass.cast(baseComponent));
             return singleColor.replace("%n%", "\n");
         } catch (Exception e) {
             e.printStackTrace();

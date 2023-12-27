@@ -53,8 +53,9 @@ public class Reflection_1_17 implements ReflectionUtil {
     @Override
     public ItemStack toBukkitCopy(Object nmsItem) {
         try {
-            Class<?> craftItem    = getCraftClass("inventory.CraftItemStack");
-            Method   asBukkitCopy = Reflex.getMethod(craftItem, "asBukkitCopy", getClazz("net.minecraft.world.item.ItemStack"));
+            Class<?> craftItem = getCraftClass("inventory.CraftItemStack");
+            Method asBukkitCopy =
+                    Reflex.getMethod(craftItem, "asBukkitCopy", getClazz("net.minecraft.world.item.ItemStack"));
             if (asBukkitCopy == null) return null;
 
             return (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
@@ -143,7 +144,9 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             String fieldName = "b";
             Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
-            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass().getSimpleName().equals("GeneratedInterceptor")) {
+            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass()
+                    .getSimpleName()
+                    .equals("GeneratedInterceptor")) {
                 throw new ClassNotFoundException("Could not get connection from CraftPlayer using field " + fieldName +
                         "\nNMS Player: " + nmsPlayer + "\n");
             }
@@ -211,8 +214,9 @@ public class Reflection_1_17 implements ReflectionUtil {
                         ReflectionManager.MINOR_VERSION == 17 ? "playBlockAction" : "a", //Curse you obfuscation
                         blockPosClass, blockClass, int.class, int.class);
 
-                Constructor ctor     = Reflex.getConstructor(blockPosClass, int.class, int.class, int.class);
-                Object      position = Reflex.invokeConstructor(ctor, (int) lo.getX(), (int) lo.getY(), (int) lo.getZ());
+                Constructor ctor = Reflex.getConstructor(blockPosClass, int.class, int.class, int.class);
+                Object position =
+                        Reflex.invokeConstructor(ctor, (int) lo.getX(), (int) lo.getY(), (int) lo.getZ());
 
                 Method getType = Reflex.getMethod(world.getClass(),
                         ReflectionManager.MINOR_VERSION == 17 ? "getType" : "a_",
@@ -249,7 +253,8 @@ public class Reflection_1_17 implements ReflectionUtil {
             Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
 
             Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-            Method   a               = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
+            Method a =
+                    Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 
@@ -285,7 +290,8 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
 
-            Method asBukkitCopy = Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
+            Method asBukkitCopy =
+                    Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
 
             ItemStack item = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
 
@@ -365,11 +371,14 @@ public class Reflection_1_17 implements ReflectionUtil {
                 Object armorEquipmentSlot = Reflex.invokeMethod(getEquipmentSlot, tool);
                 if (Version.V1_19_R3.isCurrent()) {
                     // If it's 1.19.4, the 'b' method returns a different enum, so we have to get the slot out of that enum
-                    armorEquipmentSlot = Reflex.invokeMethod(Reflex.getMethod(armorEquipmentSlot.getClass(), "a"), armorEquipmentSlot);
+                    armorEquipmentSlot = Reflex.invokeMethod(Reflex.getMethod(armorEquipmentSlot.getClass(), "a"),
+                            armorEquipmentSlot);
                 }
                 Method getDefaultAttributeModifiers = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
 
-                return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers, tool, armorEquipmentSlot);
+                return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers,
+                        tool,
+                        armorEquipmentSlot);
             }
 
             Object tool;
@@ -398,9 +407,11 @@ public class Reflection_1_17 implements ReflectionUtil {
     @Override
     public double getAttributeValue(@NotNull ItemStack item, @NotNull Object attribute) {
         try {
-            Class<?>                 attributeModifierClass = getClazz("net.minecraft.world.entity.ai.attributes.AttributeModifier");
-            Class<?>                 attributeBaseClass     = getClazz("net.minecraft.world.entity.ai.attributes.AttributeBase");
-            Multimap<Object, Object> attMap                 = getAttributes(item);
+            Class<?> attributeModifierClass =
+                    getClazz("net.minecraft.world.entity.ai.attributes.AttributeModifier");
+            Class<?> attributeBaseClass =
+                    getClazz("net.minecraft.world.entity.ai.attributes.AttributeBase");
+            Multimap<Object, Object> attMap = getAttributes(item);
             if (attMap == null || attMap.isEmpty()) return 0D;
 
             Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));
@@ -408,7 +419,8 @@ public class Reflection_1_17 implements ReflectionUtil {
             Object mod = attributeModifierClass.cast(att.stream().findFirst().get());
 
             Method getAmount = Reflex.getMethod(attributeModifierClass,
-                    ReflectionManager.MINOR_VERSION == 17 ? "getAmount" : "d");
+                    ReflectionManager.MINOR_VERSION == 17 ? "getAmount" :
+                            (Version.CURRENT.isAtLeast(Version.V1_20_R3) ? "c" : "d"));
             double value = (double) Reflex.invokeMethod(getAmount, mod);
             if (attribute.equals(getGenericAttribute("f"))) { // Damage
                 value += 1;
@@ -524,7 +536,8 @@ public class Reflection_1_17 implements ReflectionUtil {
             Method fromStringOrNull = Reflex.getMethod(chatMessageClass, "fromStringOrNull", String.class);
 
             Object baseComponent = Reflex.invokeMethod(fromStringOrNull, null, str);
-            String singleColor   = (String) Reflex.invokeMethod(fromComponent, null, baseComponentClass.cast(baseComponent));
+            String singleColor =
+                    (String) Reflex.invokeMethod(fromComponent, null, baseComponentClass.cast(baseComponent));
             return singleColor.replace("%n%", "\n");
         } catch (Exception e) {
             e.printStackTrace();
