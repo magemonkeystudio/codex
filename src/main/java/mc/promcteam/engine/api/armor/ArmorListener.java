@@ -507,9 +507,14 @@ public class ArmorListener implements Listener {
         if (armorType != ArmorType.MAIN_HAND && armorType != ArmorType.OFFHAND) {
             return;
         }
-        switch (event.getHand()) {
-            case HAND -> armorType = ArmorType.MAIN_HAND;
-            case OFF_HAND -> armorType = ArmorType.OFFHAND;
+        try {
+            switch (event.getHand()) {
+                case HAND -> armorType = ArmorType.MAIN_HAND;
+                case OFF_HAND -> armorType = ArmorType.OFFHAND;
+            }
+        } catch (NoSuchMethodError e) {
+            boolean inMainHand = event.getPlayer().getInventory().getItemInMainHand().equals(item);
+            armorType = inMainHand ? ArmorType.MAIN_HAND : ArmorType.OFFHAND;
         }
         ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(event.getPlayer(), EquipMethod.CONSUME,
                 armorType, item, null);
