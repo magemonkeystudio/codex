@@ -22,6 +22,7 @@ import mc.promcteam.engine.nms.packets.PacketManager;
 import mc.promcteam.engine.utils.actions.ActionsManager;
 import mc.promcteam.engine.utils.actions.Parametized;
 import mc.promcteam.engine.utils.craft.CraftManager;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.InventoryHolder;
@@ -169,9 +170,16 @@ public abstract class NexPlugin<P extends NexPlugin<P>> extends JavaPlugin imple
         // Setup plugin Hooks.
         this.registerHooks();
 
-        // Setup ConfigManager before any other managers.
-        this.configManager = new ConfigManager<>((P) this);
-        this.configManager.setup();
+        try {
+            // Setup ConfigManager before any other managers.
+            this.configManager = new ConfigManager<>((P) this);
+            this.configManager.setup();
+        } catch (InvalidConfigurationException e) {
+            e.printStackTrace();
+            this.getPluginManager().disablePlugin(this);
+            return;
+        }
+
         if (this.cfg().cmds == null || this.cfg().cmds.length == 0) {
             this.error("Could not register plugin commands!");
             this.getPluginManager().disablePlugin(this);

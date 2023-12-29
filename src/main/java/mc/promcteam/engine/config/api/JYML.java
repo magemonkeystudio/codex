@@ -39,11 +39,11 @@ public class JYML extends YamlConfiguration {
     private final File    file;
     private       boolean isChanged = false;
 
-    public JYML(@NotNull String path, @NotNull String file) {
+    public JYML(@NotNull String path, @NotNull String file) throws InvalidConfigurationException {
         this(new File(path, file));
     }
 
-    public JYML(@NotNull File file) {
+    public JYML(@NotNull File file) throws InvalidConfigurationException {
         FileUT.create(file);
         this.file = file;
         this.reload();
@@ -72,23 +72,20 @@ public class JYML extends YamlConfiguration {
         return false;
     }
 
-    public boolean reload() {
+    public boolean reload() throws InvalidConfigurationException {
         try {
             this.load(this.file);
             this.isChanged = false;
             return true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InvalidConfigurationException e) {
             e.printStackTrace();
         }
         return false;
     }
 
     @NotNull
-    public static JYML loadOrExtract(@NotNull NexPlugin<?> plugin, @NotNull String filePath) {
+    public static JYML loadOrExtract(@NotNull NexPlugin<?> plugin, @NotNull String filePath) throws
+            InvalidConfigurationException {
         if (!plugin.getDataFolder().exists()) {
             FileUT.mkdir(plugin.getDataFolder());
         }
@@ -110,7 +107,7 @@ public class JYML extends YamlConfiguration {
     }
 
     @NotNull
-    public static List<JYML> loadAll(@NotNull String path, boolean deep) {
+    public static List<JYML> loadAll(@NotNull String path, boolean deep) throws InvalidConfigurationException {
         List<JYML> configs = new ArrayList<>();
         for (File file : FileUT.getFiles(path, deep)) {
             configs.add(new JYML(file));

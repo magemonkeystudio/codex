@@ -5,6 +5,7 @@ import mc.promcteam.engine.config.api.JYML;
 import mc.promcteam.engine.core.config.CoreConfig;
 import mc.promcteam.engine.manager.IListener;
 import mc.promcteam.engine.manager.api.Loggable;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +30,13 @@ public abstract class IModule<P extends NexPlugin<P>> extends IListener<P> imple
 
     public void load() {
         if (this.isLoaded()) return;
-        this.cfg = JYML.loadOrExtract(this.plugin, this.getPath() + "settings.yml");
+        try {
+            this.cfg = JYML.loadOrExtract(this.plugin, this.getPath() + "settings.yml");
+        } catch (InvalidConfigurationException e) {
+            this.error("Failed to load module " + this.getPath() + "/settings.yml: Configuration error");
+            this.error(e.getMessage());
+            this.isFailed = true;
+        }
 
         this.registerCommands();
         this.onPreSetup();
