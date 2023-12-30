@@ -28,7 +28,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -107,10 +106,15 @@ public class JYML extends YamlConfiguration {
     }
 
     @NotNull
-    public static List<JYML> loadAll(@NotNull String path, boolean deep) throws InvalidConfigurationException {
+    public static List<JYML> loadAll(@NotNull String path, boolean deep) {
         List<JYML> configs = new ArrayList<>();
         for (File file : FileUT.getFiles(path, deep)) {
-            configs.add(new JYML(file));
+            try {
+                configs.add(new JYML(file));
+            } catch (InvalidConfigurationException e) {
+                NexEngine.get().error("Could not load " + file.getAbsolutePath() + ": Configuration error");
+                e.printStackTrace();
+            }
         }
         return configs;
     }
