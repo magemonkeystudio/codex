@@ -21,7 +21,7 @@ public enum Version {
     V1_19_R3,
     V1_20_R1,
     V1_20_R2,
-    ;
+    V1_20_R3;
 
     public static final Version CURRENT;
 
@@ -40,6 +40,10 @@ public enum Version {
 
     public boolean isHigher(@NotNull Version version) {
         return this.ordinal() > version.ordinal();
+    }
+
+    public boolean isAtLeast(@NotNull Version version) {
+        return this.ordinal() >= version.ordinal();
     }
 
     public boolean isCurrent() {

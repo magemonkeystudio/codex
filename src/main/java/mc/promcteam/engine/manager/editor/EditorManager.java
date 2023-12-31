@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.Map;
-import java.util.WeakHashMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditorManager {
@@ -35,17 +32,52 @@ public class EditorManager {
     public static void setup() {
         ENGINE.getConfigManager().extract("editor");
 
-        if (EDITOR_ACTIONS_MAIN == null || !EDITOR_ACTIONS_MAIN.reload()) {
-            EDITOR_ACTIONS_MAIN = JYML.loadOrExtract(ENGINE, "/editor/actions_main.yml");
+        try {
+            if (EDITOR_ACTIONS_MAIN == null || !EDITOR_ACTIONS_MAIN.reload()) {
+                EDITOR_ACTIONS_MAIN = JYML.loadOrExtract(ENGINE, "/editor/actions_main.yml");
+            }
+        } catch (Exception e) {
+            ENGINE.error("Failed to load editor actions: " + e.getMessage());
+            ENGINE.error("Please, check your editor/actions_main.yml file");
+            ENGINE.error("Disabling editor...");
+            shutdown();
+            return;
         }
-        if (EDITOR_ACTIONS_SECTION == null || !EDITOR_ACTIONS_SECTION.reload()) {
-            EDITOR_ACTIONS_SECTION = JYML.loadOrExtract(ENGINE, "/editor/actions_section.yml");
+
+        try {
+            if (EDITOR_ACTIONS_SECTION == null || !EDITOR_ACTIONS_SECTION.reload()) {
+                EDITOR_ACTIONS_SECTION = JYML.loadOrExtract(ENGINE, "/editor/actions_section.yml");
+            }
+        } catch (Exception e) {
+            ENGINE.error("Failed to load editor actions: " + e.getMessage());
+            ENGINE.error("Please, check your editor/actions_section.yml file");
+            ENGINE.error("Disabling editor...");
+            shutdown();
+            return;
         }
-        if (EDITOR_ACTIONS_PARAMETIZED == null || !EDITOR_ACTIONS_PARAMETIZED.reload()) {
-            EDITOR_ACTIONS_PARAMETIZED = JYML.loadOrExtract(ENGINE, "/editor/actions_parametized.yml");
+
+        try {
+            if (EDITOR_ACTIONS_PARAMETIZED == null || !EDITOR_ACTIONS_PARAMETIZED.reload()) {
+                EDITOR_ACTIONS_PARAMETIZED = JYML.loadOrExtract(ENGINE, "/editor/actions_parametized.yml");
+            }
+        } catch (Exception e) {
+            ENGINE.error("Failed to load editor actions: " + e.getMessage());
+            ENGINE.error("Please, check your editor/actions_parametized.yml file");
+            ENGINE.error("Disabling editor...");
+            shutdown();
+            return;
         }
-        if (EDITOR_ACTIONS_PARAMS == null || !EDITOR_ACTIONS_PARAMS.reload()) {
-            EDITOR_ACTIONS_PARAMS = JYML.loadOrExtract(ENGINE, "/editor/actions_params.yml");
+
+        try {
+            if (EDITOR_ACTIONS_PARAMS == null || !EDITOR_ACTIONS_PARAMS.reload()) {
+                EDITOR_ACTIONS_PARAMS = JYML.loadOrExtract(ENGINE, "/editor/actions_params.yml");
+            }
+        } catch (Exception e) {
+            ENGINE.error("Failed to load editor actions: " + e.getMessage());
+            ENGINE.error("Please, check your editor/actions_params.yml file");
+            ENGINE.error("Disabling editor...");
+            shutdown();
+            return;
         }
 
         actionsHandler = new EditorActionsHandler(ENGINE);
@@ -65,14 +97,14 @@ public class EditorManager {
     public static void startEdit(@NotNull Player player, @Nullable Object o, Enum<?> type) {
         EDITOR_CACHE.put(player, new AbstractMap.SimpleEntry<>(type, o));
         ClickText text = new ClickText(ENGINE.lang().Core_Editor_Tips_Exit_Name.getMsg());
-        text.createFullPlaceholder().execCmd("/" + JStrings.EXIT).hint(ENGINE.lang().Core_Editor_Tips_Exit_Hint.getMsg());
+        text.createFullPlaceholder()
+                .execCmd("/" + JStrings.EXIT)
+                .hint(ENGINE.lang().Core_Editor_Tips_Exit_Hint.getMsg());
         text.send(player);
     }
 
     public static void sendClickableTips(@NotNull Player player, @NotNull Collection<String> items2) {
-        Collection<String> items = items2.stream().sorted((s1, s2) -> {
-            return s1.compareTo(s2);
-        }).collect(Collectors.toList());
+        Collection<String> items = items2.stream().sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
         StringBuilder builder = new StringBuilder();
         items.forEach(pz -> {

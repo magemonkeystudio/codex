@@ -2,6 +2,7 @@ package mc.promcteam.engine.manager;
 
 import mc.promcteam.engine.NexPlugin;
 import mc.promcteam.engine.config.api.JYML;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -13,7 +14,7 @@ public abstract class LoadableItem {
     protected final String       path;
     protected final JYML         cfg;
 
-    public LoadableItem(@NotNull NexPlugin<?> plugin, @NotNull String path) {
+    public LoadableItem(@NotNull NexPlugin<?> plugin, @NotNull String path) throws InvalidConfigurationException {
         this(plugin, new JYML(new File(path)));
     }
 

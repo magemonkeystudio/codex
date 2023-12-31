@@ -2,6 +2,7 @@ package mc.promcteam.engine.config;
 
 import mc.promcteam.engine.NexPlugin;
 import mc.promcteam.engine.config.api.JYML;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,17 +23,34 @@ public class ConfigManager<P extends NexPlugin<P>> {
         this.plugin = plugin;
     }
 
-    public void setup() {
+    public void setup() throws InvalidConfigurationException {
         this.extract("lang");
 
-        this.configMain = JYML.loadOrExtract(plugin, "config.yml");
-        this.configLang = JYML.loadOrExtract(plugin, "/lang/messages_" + configMain.getString("core.lang", "en").toLowerCase() + ".yml");
+        try {
+            this.configMain = JYML.loadOrExtract(plugin, "config.yml");
+        } catch (InvalidConfigurationException e) {
+            this.plugin.error("Configuration error in " + plugin.getName() + "/config.yml");
+            throw e;
+        }
+        try {
+            this.configLang = JYML.loadOrExtract(plugin,
+                    "/lang/messages_" + configMain.getString("core.lang", "en").toLowerCase() + ".yml");
+        } catch (InvalidConfigurationException e) {
+            this.plugin.error("Configuration error in " + plugin.getName() + "/lang/messages_" +
+                    configMain.getString("core.lang", "en").toLowerCase() + ".yml");
+            throw e;
+        }
 
         // Load plugin config.
         this.plugin.setConfig();
 
         if (this.plugin.isEngine()) {
-            configTemp = JYML.loadOrExtract(plugin, "temp.yml");
+            try {
+                configTemp = JYML.loadOrExtract(plugin, "temp.yml");
+            } catch (InvalidConfigurationException e) {
+                this.plugin.error("Configuration error in " + plugin.getName() + "/temp.yml");
+                throw e;
+            }
         }
     }
 
