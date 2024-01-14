@@ -11,6 +11,7 @@ import mc.promcteam.engine.hooks.HookManager;
 import mc.promcteam.engine.hooks.Hooks;
 import mc.promcteam.engine.hooks.external.*;
 import mc.promcteam.engine.hooks.external.citizens.CitizensHK;
+import mc.promcteam.engine.items.ProItemManager;
 import mc.promcteam.engine.manager.api.menu.MenuManager;
 import mc.promcteam.engine.manager.editor.EditorManager;
 import mc.promcteam.engine.mccore.chat.ChatCommander;
@@ -73,6 +74,8 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
     private CoreLang    lang;
     @Getter
     private HookManager hooksManager;
+    @Getter
+    private ProItemManager itemManager;
 
     private boolean chatEnabled;
     private String  commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
@@ -117,6 +120,9 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
 
         this.hooksManager = new HookManager(this);
         this.hooksManager.setup();
+
+        this.itemManager = new ProItemManager(this);
+        this.itemManager.init();
 
         this.packetManager = new PacketManager(this);
         this.packetManager.setup();
