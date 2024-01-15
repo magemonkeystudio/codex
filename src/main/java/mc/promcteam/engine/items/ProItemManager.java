@@ -9,11 +9,11 @@ import mc.promcteam.engine.items.providers.ItemsAdderProvider;
 import mc.promcteam.engine.items.providers.OraxenProvider;
 import mc.promcteam.engine.items.providers.VanillaProvider;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -21,13 +21,13 @@ public class ProItemManager {
     private final NexEngine plugin;
     private       Logger    log;
 
-    private Map<String, IProItemProvider> providers = new HashMap<>();
+    private Map<String, IProItemProvider> providers = new LinkedHashMap<>();
 
     public void init() {
         log = plugin.getLogger();
-        registerProvider("VANILLA", new VanillaProvider(plugin));
-        registerProvider("ORAXEN", new OraxenProvider());
-        registerProvider("ITEMSADDER", new ItemsAdderProvider());
+        registerProvider(VanillaProvider.NAMESPACE, new VanillaProvider(plugin));
+        registerProvider(OraxenProvider.NAMESPACE, new OraxenProvider());
+        registerProvider(ItemsAdderProvider.NAMESPACE, new ItemsAdderProvider());
     }
 
     public void registerProvider(String namespace, IProItemProvider provider) {
@@ -41,36 +41,37 @@ public class ProItemManager {
     }
 
     /**
-     * Get an item from the provider. The key is in the format "namespace_id", e.g. "ORAXEN_MY_ITEM".
+     * Get an item type from the provider. The key is in the format "namespace_id", e.g. "ORAXEN_MY_ITEM".
      *
      * @param key The key of the item.
-     * @return The item as retrieved from the provider
+     * @return The item type as retrieved from the provider
      * @throws MissingProviderException If the provider for the given namespace is not enabled/missing.
      * @throws MissingItemException     If the item with the given id does not exist.
      */
-    public ItemStack getItem(String key) throws MissingProviderException, MissingItemException {
+    public ItemType getItemType(String key) throws MissingProviderException, MissingItemException {
         // Namespace is the first of the key, e.g. "ORAXEN_MY_ITEM" -> "ORAXEN"
         // It's possible that the key includes no namespace, which means we have
         // a vanilla item.
         // We do need to split off the namespace, so we can isolate the item id.
-        String  namespace    = key.split("_")[0];
-        boolean hasNamespace = providers.containsKey(namespace);
-        String  id           = hasNamespace ? key.split("_")[1] : key;
-
-        return getItem(hasNamespace ? namespace : "VANILLA", id);
+        String[] split = key.split("_");
+        if (split.length > 1) {
+            String namespace = split[0];
+            if (providers.containsKey(namespace)) return getItemType(namespace, String.join("", Arrays.copyOfRange(split, 1, split.length)));
+        }
+        return getItemType("VANILLA", key);
     }
 
     /**
-     * Get an item from the provider.
+     * Get an item type from the provider.
      *
      * @param namespace The namespace of the provider.
      * @param id        The id of the item.
-     * @return The item as retrieved from the provider.
+     * @return The item type as retrieved from the provider.
      * @throws MissingProviderException If the provider for the given namespace is not enabled/missing.
      * @throws MissingItemException     If the item with the given id does not exist.
      */
-    public ItemStack getItem(String namespace, String id) throws MissingProviderException, MissingItemException {
-        IProItemProvider provider = providers.get(namespace);
+    public ItemType getItemType(String namespace, String id) throws MissingProviderException, MissingItemException {
+        IProItemProvider<?> provider = providers.get(namespace);
         if (provider == null) { // Make sure we do, indeed, have a provider for the given namespace.
             throw new MissingProviderException("No provider found for namespace " + namespace + "!");
         }
@@ -80,12 +81,41 @@ public class ProItemManager {
         // For our own custom plugins, if they're not enabled, we shouldn't have a provider anyway.
         provider.assertEnabled();
 
-        ItemStack item = provider.getItem(id);
+        ItemType item = provider.getItem(id);
         if (item == null) {
             throw new MissingItemException("No item found for key " + id + "!");
         }
 
         return item;
+    }
+
+    /**
+     * Get the ItemTypes associated to the provided ItemStack.
+     *
+     * @param itemStack The item to get the ItemTypes from
+     * @return a Set containing the ItemTypes the provided item corresponds to. May be empty.
+     */
+    @NotNull
+    public Set<ItemType> getItemTypes(@Nullable ItemStack itemStack)  {
+        Set<ItemType> set = new HashSet<>();
+        for (IProItemProvider<?> provider : this.providers.values()) {
+            ItemType itemType = provider.getItem(itemStack);
+            if (itemType != null) set.add(itemType);
+        }
+        return set;
+    }
+
+    /**
+     * Get the main ItemType associated to the provided ItemStack.
+     * Importance is ranked according to the {@link Enum#ordinal()} value of the provider's
+     * {@link IProItemProvider#getCategory()}, with higher values meaning more importance.
+     *
+     * @param itemStack The item to get the ItemType from
+     * @return the ItemType of more importance corresponding to the item, or null if none was found.
+     */
+    @Nullable
+    public ItemType getMainItemType(@Nullable ItemStack itemStack)  {
+        return this.getItemTypes(itemStack).stream().max(Comparator.comparing(ItemType::getCategory)).orElse(null);
     }
 
     public boolean isCustomItem(ItemStack item) {
