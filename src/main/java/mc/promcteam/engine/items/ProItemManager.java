@@ -13,7 +13,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 @RequiredArgsConstructor
@@ -53,12 +52,12 @@ public class ProItemManager {
         // It's possible that the key includes no namespace, which means we have
         // a vanilla item.
         // We do need to split off the namespace, so we can isolate the item id.
-        String[] split = key.split("_");
+        String[] split = key.split("_", 2);
         if (split.length > 1) {
             String namespace = split[0];
-            if (providers.containsKey(namespace)) return getItemType(namespace, String.join("", Arrays.copyOfRange(split, 1, split.length)));
+            if (providers.containsKey(namespace)) return getItemType(namespace, split[1]);
         }
-        return getItemType("VANILLA", key);
+        return getItemType(VanillaProvider.NAMESPACE, key);
     }
 
     /**
