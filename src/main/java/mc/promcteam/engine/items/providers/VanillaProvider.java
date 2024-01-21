@@ -7,8 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
-
 @RequiredArgsConstructor
 public class VanillaProvider implements IProItemProvider<VanillaProvider.VanillaItemType> {
     public static final String NAMESPACE = "VANILLA";
@@ -48,20 +46,16 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
 
     @Override
     public boolean isCustomItem(ItemStack item) {
-        // We'll assume that if the item does not belong to any other provider,
-        // it's a vanilla item.
-        Collection<IProItemProvider> providers = plugin.getItemManager().getProviders();
-        return providers.stream().noneMatch(provider -> provider.isCustomItem(item));
+        return item != null;
     }
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        final String updatedId = id.replaceAll("[ -]", "_");
-        // We'll assume that if the item does not belong to any other provider,
-        // it's a vanilla item.
-        Collection<IProItemProvider> providers = plugin.getItemManager().getProviders();
-        return providers.stream()
-                .noneMatch(provider -> provider.isCustomItemOfId(item, updatedId)) && updatedId.equalsIgnoreCase(item.getType().toString());
+        id = id.replaceAll("[ -]", "_");
+        String[] split = id.split("_", 2);
+        id = split.length == 2 && split[0].equalsIgnoreCase(NAMESPACE) ? split[1] : id;
+
+        return item.getType().name().equalsIgnoreCase(id);
     }
 
     public static class VanillaItemType extends ItemType {

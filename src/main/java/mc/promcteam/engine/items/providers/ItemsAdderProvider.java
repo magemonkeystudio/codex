@@ -41,6 +41,9 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
+        String[] split = id.split("_", 2);
+        id = split.length == 2 && split[0].equalsIgnoreCase(NAMESPACE) ? split[1] : id;
+
         if (!CustomStack.isInRegistry(id)) return false;
         String itemId = CustomStack.byItemStack(item).getNamespacedID();
         return itemId != null && itemId.equals(id);

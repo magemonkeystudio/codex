@@ -98,8 +98,10 @@ public class ProItemManager {
     public Set<ItemType> getItemTypes(@Nullable ItemStack itemStack)  {
         Set<ItemType> set = new HashSet<>();
         for (IProItemProvider<?> provider : this.providers.values()) {
-            ItemType itemType = provider.getItem(itemStack);
-            if (itemType != null) set.add(itemType);
+            try {
+                ItemType itemType = provider.getItem(itemStack);
+                if (itemType != null) set.add(itemType);
+            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
         }
         return set;
     }
@@ -118,11 +120,21 @@ public class ProItemManager {
     }
 
     public boolean isCustomItem(ItemStack item) {
-        return providers.values().stream().anyMatch(provider -> provider.isCustomItem(item));
+        return providers.values().stream().anyMatch(provider -> {
+            try {
+                return provider.isCustomItem(item);
+            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
+            return false;
+        });
     }
 
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        return providers.values().stream().anyMatch(provider -> provider.isCustomItemOfId(item, id));
+        return providers.values().stream().anyMatch(provider -> {
+            try {
+                return provider.isCustomItemOfId(item, id);
+            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
+            return false;
+        });
     }
 
     public Collection<IProItemProvider> getProviders() {

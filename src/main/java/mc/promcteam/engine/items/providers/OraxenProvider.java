@@ -40,6 +40,9 @@ public class OraxenProvider implements IProItemProvider<OraxenProvider.OraxenIte
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
+        String[] split = id.split("_", 2);
+        id = split.length == 2 && split[0].equalsIgnoreCase(NAMESPACE) ? split[1] : id;
+
         if (!OraxenItems.exists(id)) return false;
         String itemId = OraxenItems.getIdByItem(item);
         return itemId != null && itemId.equals(id);
