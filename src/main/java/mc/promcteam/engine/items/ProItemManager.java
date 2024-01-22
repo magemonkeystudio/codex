@@ -20,7 +20,7 @@ public class ProItemManager {
     private final NexEngine plugin;
     private       Logger    log;
 
-    private Map<String, IProItemProvider> providers = new LinkedHashMap<>();
+    private final Map<String, IProItemProvider<?>> providers = new LinkedHashMap<>();
 
     public void init() {
         log = plugin.getLogger();
@@ -29,7 +29,7 @@ public class ProItemManager {
         registerProvider(ItemsAdderProvider.NAMESPACE, new ItemsAdderProvider());
     }
 
-    public void registerProvider(String namespace, IProItemProvider provider) {
+    public void registerProvider(String namespace, IProItemProvider<?> provider) {
         namespace = namespace.toUpperCase(Locale.US);
         if (providers.get(namespace) != null) {
             throw new IllegalArgumentException("Provider with namespace " + namespace + " already exists!");
@@ -37,6 +37,10 @@ public class ProItemManager {
 
         providers.put(namespace, provider);
         log.info("[ItemManager] Successfully registered provider for " + namespace + " items");
+    }
+
+    public void unregisterProvider(IProItemProvider<?> provider) {
+        this.providers.entrySet().removeIf(entry -> entry.getValue() == provider);
     }
 
     /**
@@ -137,7 +141,7 @@ public class ProItemManager {
         });
     }
 
-    public Collection<IProItemProvider> getProviders() {
+    public Collection<IProItemProvider<?>> getProviders() {
         return providers.values();
     }
 }
