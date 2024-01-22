@@ -2,6 +2,7 @@ package mc.promcteam.engine.items.providers;
 
 import dev.lone.itemsadder.api.CustomStack;
 import mc.promcteam.engine.items.ItemType;
+import mc.promcteam.engine.items.ProItemManager;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,6 +22,8 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
     @Override
     @Nullable
     public ItemsAdderItemType getItem(String id) {
+        id = ProItemManager.stripPrefix(NAMESPACE, id);
+
         CustomStack customStack = CustomStack.getInstance(id);
         if (customStack == null) return null;
         return new ItemsAdderItemType(customStack);
@@ -41,8 +44,7 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        String[] split = id.split("_", 2);
-        id = split.length == 2 && split[0].equalsIgnoreCase(NAMESPACE) ? split[1] : id;
+        id = ProItemManager.stripPrefix(NAMESPACE, id);
 
         if (!CustomStack.isInRegistry(id)) return false;
         String itemId = CustomStack.byItemStack(item).getNamespacedID();

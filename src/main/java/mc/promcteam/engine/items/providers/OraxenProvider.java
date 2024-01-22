@@ -3,6 +3,7 @@ package mc.promcteam.engine.items.providers;
 import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.items.ItemBuilder;
 import mc.promcteam.engine.items.ItemType;
+import mc.promcteam.engine.items.ProItemManager;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,6 +23,8 @@ public class OraxenProvider implements IProItemProvider<OraxenProvider.OraxenIte
     @Override
     @Nullable
     public OraxenItemType getItem(String id) {
+        id = ProItemManager.stripPrefix(NAMESPACE, id);
+
         ItemBuilder itemBuilder = OraxenItems.getItemById(id);
         if (itemBuilder == null) return null;
         return new OraxenItemType(id, itemBuilder);
@@ -40,8 +43,7 @@ public class OraxenProvider implements IProItemProvider<OraxenProvider.OraxenIte
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        String[] split = id.split("_", 2);
-        id = split.length == 2 && split[0].equalsIgnoreCase(NAMESPACE) ? split[1] : id;
+        id = ProItemManager.stripPrefix(NAMESPACE, id);
 
         if (!OraxenItems.exists(id)) return false;
         String itemId = OraxenItems.getIdByItem(item);

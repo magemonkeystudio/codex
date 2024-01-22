@@ -1,17 +1,13 @@
 package mc.promcteam.engine.items.providers;
 
-import lombok.RequiredArgsConstructor;
-import mc.promcteam.engine.NexEngine;
 import mc.promcteam.engine.items.ItemType;
+import mc.promcteam.engine.items.ProItemManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-@RequiredArgsConstructor
 public class VanillaProvider implements IProItemProvider<VanillaProvider.VanillaItemType> {
     public static final String NAMESPACE = "VANILLA";
-
-    private final NexEngine plugin;
 
     @Override
     public void assertEnabled() {
@@ -31,7 +27,7 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
     @Override
     @Nullable
     public VanillaItemType getItem(String id) {
-        Material material = Material.matchMaterial(id.replaceAll("[ -]", "_"));
+        Material material = Material.matchMaterial(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
         if (material == null) return null;
 
         return new VanillaItemType(material);
@@ -51,11 +47,7 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        id = id.replaceAll("[ -]", "_");
-        String[] split = id.split("_", 2);
-        id = split.length == 2 && split[0].equalsIgnoreCase(NAMESPACE) ? split[1] : id;
-
-        return item.getType().name().equalsIgnoreCase(id);
+        return item.getType().name().equalsIgnoreCase(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
     }
 
     public static class VanillaItemType extends ItemType {
