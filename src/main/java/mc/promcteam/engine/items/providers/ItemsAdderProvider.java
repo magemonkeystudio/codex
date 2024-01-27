@@ -22,6 +22,8 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
     @Override
     @Nullable
     public ItemsAdderItemType getItem(String id) {
+        if (id == null || id.isBlank()) return null;
+
         id = ProItemManager.stripPrefix(NAMESPACE, id);
 
         CustomStack customStack = CustomStack.getInstance(id);

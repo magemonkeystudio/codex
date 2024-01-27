@@ -23,6 +23,8 @@ public class OraxenProvider implements IProItemProvider<OraxenProvider.OraxenIte
     @Override
     @Nullable
     public OraxenItemType getItem(String id) {
+        if (id == null || id.isBlank()) return null;
+
         id = ProItemManager.stripPrefix(NAMESPACE, id);
 
         ItemBuilder itemBuilder = OraxenItems.getItemById(id);
@@ -51,7 +53,7 @@ public class OraxenProvider implements IProItemProvider<OraxenProvider.OraxenIte
     }
 
     public static class OraxenItemType extends ItemType {
-        private final String id;
+        private final String      id;
         private final ItemBuilder itemBuilder;
 
         public OraxenItemType(String id, ItemBuilder itemBuilder) {

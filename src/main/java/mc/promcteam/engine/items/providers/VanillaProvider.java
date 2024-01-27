@@ -27,6 +27,8 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
     @Override
     @Nullable
     public VanillaItemType getItem(String id) {
+        if (id == null || id.isBlank()) return null;
+
         Material material = Material.matchMaterial(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
         if (material == null) return null;
 
@@ -47,7 +49,9 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        return item.getType().name().equalsIgnoreCase(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
+        return item.getType()
+                .name()
+                .equalsIgnoreCase(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
     }
 
     public static class VanillaItemType extends ItemType {
