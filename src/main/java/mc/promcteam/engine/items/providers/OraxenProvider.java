@@ -16,6 +16,11 @@ public class OraxenProvider implements IProItemProvider<OraxenProvider.OraxenIte
     }
 
     @Override
+    public String getNamespace() {
+        return NAMESPACE;
+    }
+
+    @Override
     public Category getCategory() {
         return Category.EXTERNAL;
     }

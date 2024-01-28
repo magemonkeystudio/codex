@@ -14,6 +14,8 @@ public interface IProItemProvider<T extends ItemType> {
     }
     String pluginName();
 
+    String getNamespace();
+
     Category getCategory();
 
     /**

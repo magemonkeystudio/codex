@@ -15,6 +15,11 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
     }
 
     @Override
+    public String getNamespace() {
+        return NAMESPACE;
+    }
+
+    @Override
     public Category getCategory() {
         return Category.EXTERNAL;
     }

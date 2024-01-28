@@ -20,6 +20,11 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
     }
 
     @Override
+    public String getNamespace() {
+        return NAMESPACE;
+    }
+
+    @Override
     public Category getCategory() {
         return Category.VANILLA;
     }
@@ -68,7 +73,7 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
 
         @Override
         public String getID() {
-            return this.material.name();
+            return this.material.name().toLowerCase();
         }
 
         @Override

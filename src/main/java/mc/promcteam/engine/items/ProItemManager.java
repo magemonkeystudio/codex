@@ -157,6 +157,9 @@ public class ProItemManager {
     public boolean isCustomItemOfId(ItemStack item, String id) {
         return providers.values().stream().anyMatch(provider -> {
             try {
+                if (!provider.getClass().equals(VanillaProvider.class) &&
+                        (id.length() < provider.getNamespace().length()+1 ||
+                        !id.substring(0, provider.getNamespace().length()+1).equalsIgnoreCase(provider.getNamespace()))) return false;
                 return provider.isCustomItemOfId(item, id);
             } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
             return false;
