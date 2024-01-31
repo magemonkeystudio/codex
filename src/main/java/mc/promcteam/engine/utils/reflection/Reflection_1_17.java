@@ -27,6 +27,15 @@ import java.util.Random;
 
 public class Reflection_1_17 implements ReflectionUtil {
 
+    private static final String DAMAGE_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+        ? "c" : "f";
+    private static final String SPEED_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+        ? "e" : "h";
+    private static final String ARMOR_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+        ? "a" : "i";
+    private static final String TOUGHNESS_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+        ? "b" : "j";
+
     @Override
     public Object newNBTTagCompound() {
         try {
@@ -422,9 +431,9 @@ public class Reflection_1_17 implements ReflectionUtil {
                     ReflectionManager.MINOR_VERSION == 17 ? "getAmount" :
                             (Version.CURRENT.isAtLeast(Version.V1_20_R3) ? "c" : "d"));
             double value = (double) Reflex.invokeMethod(getAmount, mod);
-            if (attribute.equals(getGenericAttribute("f"))) { // Damage
+            if (attribute.equals(getGenericAttribute(DAMAGE_ATTRIBUTE))) { // Damage
                 value += 1;
-            } else if (attribute.equals(getGenericAttribute("h"))) { // Attack Speed
+            } else if (attribute.equals(getGenericAttribute(SPEED_ATTRIBUTE))) { // Attack Speed
                 value += 4;
             }
             return value;
@@ -437,22 +446,22 @@ public class Reflection_1_17 implements ReflectionUtil {
 
     @Override
     public double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("f")); // generic.attack_damage
+        return getAttributeValue(itemStack, getGenericAttribute(DAMAGE_ATTRIBUTE)); // generic.attack_damage
     }
 
     @Override
     public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("h")); // generic.attack_speed
+        return getAttributeValue(itemStack, getGenericAttribute(SPEED_ATTRIBUTE)); // generic.attack_speed
     }
 
     @Override
     public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("i")); // generic.armor
+        return getAttributeValue(itemStack, getGenericAttribute(ARMOR_ATTRIBUTE)); // generic.armor
     }
 
     @Override
     public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, getGenericAttribute("j")); // generic.armor_toughness
+        return getAttributeValue(itemStack, getGenericAttribute(TOUGHNESS_ATTRIBUTE)); // generic.armor_toughness
     }
 
     @Override
