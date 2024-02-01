@@ -433,8 +433,6 @@ public class Reflection_1_17 implements ReflectionUtil {
             double value = (double) Reflex.invokeMethod(getAmount, mod);
             if (attribute.equals(getGenericAttribute(DAMAGE_ATTRIBUTE))) { // Damage
                 value += 1;
-            } else if (attribute.equals(getGenericAttribute(SPEED_ATTRIBUTE))) { // Attack Speed
-                value += 4;
             }
             return value;
         } catch (Exception e) {
