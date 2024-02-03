@@ -216,7 +216,7 @@ public class YAMLParser {
                         part = part.substring(1, part.length() - 1);
                     }
                     part = part.replace("\\'", "'").replace("\\\"", "\"");
-                    list.add(part);
+                    if (!part.isBlank()) list.add(part);
                 }
                 data.set(key, list);
             }
@@ -369,7 +369,7 @@ public class YAMLParser {
             else if (value instanceof List) {
                 List list = (List) value;
                 if (list.size() == 0) {
-                    builder.append(" []");
+                    builder.append("[]");
                     builder.append('\n');
                 } else {
                     builder.append('\n');
