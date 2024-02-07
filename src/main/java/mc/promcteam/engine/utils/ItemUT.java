@@ -34,24 +34,6 @@ public class ItemUT {
     public static final  String                     LORE_FIX_PREFIX = "fogus_loren-";
     public static final  String                     NAME_FIX_PREFIX = "fogus_namel-";
     public static final  String                     TAG_SPLITTER    = "__x__";
-    private static final Map<String, NamespacedKey> LORE_KEYS_CACHE;
-    private static final Map<String, NamespacedKey> LORE_KEYS_CACHE2;
-    private static final Map<String, NamespacedKey> NAME_KEYS_CACHE;
-    private static final Map<String, NamespacedKey> NAME_KEYS_CACHE2;
-
-    static {
-        LORE_KEYS_CACHE  = new HashMap<>();
-        LORE_KEYS_CACHE2 = new HashMap<>();
-        NAME_KEYS_CACHE  = new HashMap<>();
-        NAME_KEYS_CACHE2 = new HashMap<>();
-    }
-
-    public static void clear() {
-        LORE_KEYS_CACHE.clear();
-        LORE_KEYS_CACHE2.clear();
-        NAME_KEYS_CACHE.clear();
-        NAME_KEYS_CACHE2.clear();
-    }
 
     public static int addToLore(@NotNull List<String> lore, int pos, @NotNull String value) {
         if (pos >= lore.size() || pos < 0) {
@@ -163,21 +145,18 @@ public class ItemUT {
     }
 
     @NotNull
-    private static NamespacedKey getLoreKey(@NotNull String id2) {
-        String id = id2.toLowerCase();
-        return LORE_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(engine, LORE_FIX_PREFIX + id));
+    private static NamespacedKey getLoreKey(@NotNull String id) {
+        return new NamespacedKey(engine, LORE_FIX_PREFIX + id.toLowerCase());
     }
 
     @NotNull
-    private static NamespacedKey getLoreKey2(@NotNull String id2) {
-        String id = id2.toLowerCase();
-        return LORE_KEYS_CACHE2.computeIfAbsent(id, key -> NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
+    private static NamespacedKey getLoreKey2(@NotNull String id) {
+        return Objects.requireNonNull(NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id.toLowerCase()));
     }
 
     @NotNull
-    private static NamespacedKey getNameKey(@NotNull String id2) {
-        String id = id2.toLowerCase();
-        return NAME_KEYS_CACHE.computeIfAbsent(id, key -> new NamespacedKey(engine, NAME_FIX_PREFIX + id));
+    private static NamespacedKey getNameKey(@NotNull String id) {
+        return new NamespacedKey(engine, NAME_FIX_PREFIX + id.toLowerCase());
     }
 
     public static void addLoreTag(@NotNull ItemStack item, @NotNull String id, @NotNull String text) {
