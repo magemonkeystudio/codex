@@ -152,7 +152,6 @@ public class NexEngine extends NexPlugin<NexEngine> implements Listener {
             this.error("============================================");
             return false;
         }
-        if (current == Version.TEST) current = Version.values()[Version.values().length - 1];
 
         String   pack  = NMS.class.getPackage().getName();
         Class<?> clazz = Reflex.getClass(pack, current.name());
