@@ -29,4 +29,42 @@ class YAMLParserTest {
         assertEquals("two", data.getList("other-list").get(1));
         assertEquals("quoted-three", data.getList("third-list").get(2));
     }
+
+    @Test
+    void parseText_indentedListParses() {
+        String text = "other-list:\n  - one\n  - two\n  - three";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("one", data.getList("other-list").get(0));
+        assertEquals("two", data.getList("other-list").get(1));
+        assertEquals("three", data.getList("other-list").get(2));
+    }
+
+    @Test
+    void parseText_parsesNonPipedMultilineString() {
+        String text = "multiline: \"This is a\n  multiline\n  string\n  that spans\n  multiple lines.\"";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a multiline string that spans multiple lines.", data.getString("multiline"));
+    }
+
+    @Test
+    void parseText_parsesPipedMultilineString() {
+        String text = "multiline: |\n  This is a\n  multiline\n  string\n  that spans\n  multiple lines. ";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a\nmultiline\nstring\nthat spans\nmultiple lines. ", data.getString("multiline"));
+    }
+
+    @Test
+    void parseText_parsesFoldedMultilineString() {
+        String text = "multiline: >\n  This is a\n  multiline\n  string\n  that spans\n  multiple lines.";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a multiline string that spans multiple lines.", data.getString("multiline"));
+    }
 }

@@ -33,6 +33,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 import java.util.stream.IntStream;
 
 /**
@@ -40,8 +41,10 @@ import java.util.stream.IntStream;
  * the key they precede
  */
 public class YAMLParser {
-    private List<String> comments = new ArrayList<>();
-    private int          i        = 0;
+    private static final Pattern      LIST_PATTERN     = Pattern.compile(" *- .+");
+    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".*[|>'\"].*");
+    private              List<String> comments         = new ArrayList<>();
+    private              int          i                = 0;
 
     /**
      * Reads and then parses data from an embedded plugin resource. If
@@ -182,15 +185,14 @@ public class YAMLParser {
             // String list
             else if (i < lines.length - 1
                     && lines[i + 1].length() > indent + 1
-                    && lines[i + 1].charAt(indent) == '-'
-                    && lines[i + 1].charAt(indent + 1) == ' '
-                    && countSpaces(lines[i + 1]) == indent) {
+                    && LIST_PATTERN.matcher(lines[i + 1].substring(indent)).matches()
+                    && (countSpaces(lines[i + 1]) == indent || countSpaces(lines[i + 1]) == indent + 2)) {
+                int               listIndent = countSpaces(lines[i + 1]);
                 ArrayList<String> stringList = new ArrayList<>();
                 while (++i < lines.length
-                        && lines[i].length() > indent
-                        && lines[i].charAt(indent) == '-'
-                        && lines[i].charAt(indent + 1) == ' ') {
-                    String str = lines[i].substring(indent + 2);
+                        && lines[i].length() > listIndent
+                        && LIST_PATTERN.matcher(lines[i].substring(listIndent)).matches()) {
+                    String str = lines[i].substring(listIndent + 2);
                     if (str.length() > 0 && str.charAt(0) == quote)
                         while (str.length() > 0 && str.charAt(0) == quote) str = str.substring(1, str.length() - 1);
                     else if (str.length() > 0 && str.charAt(0) == '"')
@@ -221,8 +223,64 @@ public class YAMLParser {
                 data.set(key, list);
             }
 
-            // New section with content
+            // New section with content OR multiline string
             else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
+                if (MULTILINE_MARKER.matcher(entry).matches()) {
+                    StringBuilder multiLine = new StringBuilder();
+                    String        str       = entry.substring(entry.indexOf(':') + 2);
+                    boolean       piped     = false;
+                    boolean       folded    = false;
+
+                    if (str.length() > 0 && str.charAt(0) == '|') piped = true;
+                    else if (str.length() > 0 && str.charAt(0) == '>') folded = true;
+
+                    if (piped || folded) {
+                        while (++i < lines.length && countSpaces(lines[i]) > indent) {
+                            String line = lines[i].substring(indent + 2);
+                            if (line.isBlank()) {
+                                multiLine.append('\n');
+                                continue;
+                            }
+                            if (multiLine.length() > 0) multiLine.append(piped ? '\n' : ' ');
+                            multiLine.append(line);
+                        }
+                        data.set(key, multiLine.toString());
+                    } else {
+                        String quoteChar = "";
+                        if (str.length() > 0 && str.charAt(0) == quote) quoteChar = String.valueOf(quote);
+                        else if (str.length() > 0 && str.charAt(0) == '\'') quoteChar = "\'";
+                        else if (str.length() > 0 && str.charAt(0) == '"') quoteChar = "\"";
+
+                        if (quoteChar.isEmpty()) {
+                            data.set(key, str);
+                        } else {
+                            if (str.endsWith(quoteChar)) {
+                                multiLine.append(str.substring(1, str.length() - 1));
+                                data.set(key, multiLine.toString());
+                                continue;
+                            }
+                            multiLine.append(str.substring(1));
+                        }
+
+                        // Iterate over the lines until we find an ending quote
+                        while (++i < lines.length && countSpaces(lines[i]) > indent) {
+                            String line = lines[i];
+                            if (line.isBlank()) {
+                                multiLine.append('\n');
+                                continue;
+                            }
+
+                            if (line.endsWith(quoteChar)) {
+                                multiLine.append(" ").append(line.substring(indent + 2, line.length() - 1));
+                                data.set(key, multiLine.toString());
+                                break;
+                            }
+                            multiLine.append(" ").append(line.substring(indent + 2));
+                        }
+                    }
+                    continue;
+                }
+
                 i++;
                 int         newIndent = countSpaces(lines[i]);
                 DataSection node      = parse(lines, newIndent, quote);
