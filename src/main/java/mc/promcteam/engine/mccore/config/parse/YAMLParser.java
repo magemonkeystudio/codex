@@ -409,14 +409,14 @@ public class YAMLParser {
 
             // Empty section
             if (value == null) {
-                builder.append(" {}\n");
+                builder.append("{}\n");
             }
 
             // Section with content
             else if (value instanceof DataSection) {
                 DataSection child = (DataSection) value;
                 if (child.size() == 0) {
-                    builder.append(" {}\n");
+                    builder.append("{}\n");
                 } else {
                     builder.append('\n');
                     dump(child, builder, indent + 2, quote);
