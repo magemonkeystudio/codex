@@ -42,7 +42,7 @@ import java.util.stream.IntStream;
  */
 public class YAMLParser {
     private static final Pattern      LIST_PATTERN     = Pattern.compile(" *- .+");
-    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".*[|>'\"].*");
+    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: ?[|>'\"].*");
     private              List<String> comments         = new ArrayList<>();
     private              int          i                = 0;
 
@@ -170,8 +170,8 @@ public class YAMLParser {
             if (i == lines.length) return data;
 
             String key = entry.substring(indent, entry.indexOf(':'));
-            if ((key.charAt(0) == '\'' && key.charAt(key.length() - 1) == '\'')
-                    || (key.charAt(0) == '"' && key.charAt(key.length() - 1) == '"')) {
+            if ((key.charAt(0) == '\'' && key.charAt(key.length() - 1) == '\'') || (key.charAt(0) == '"'
+                    && key.charAt(key.length() - 1) == '"')) {
                 key = key.substring(1, key.length() - 1);
             }
             data.setComments(key, comments);
@@ -183,15 +183,13 @@ public class YAMLParser {
             }
 
             // String list
-            else if (i < lines.length - 1
-                    && lines[i + 1].length() > indent + 1
-                    && LIST_PATTERN.matcher(lines[i + 1].substring(indent)).matches()
-                    && (countSpaces(lines[i + 1]) == indent || countSpaces(lines[i + 1]) == indent + 2)) {
+            else if (i < lines.length - 1 && lines[i + 1].length() > indent + 1 && LIST_PATTERN.matcher(lines[i
+                    + 1].substring(indent)).matches() && (countSpaces(lines[i + 1]) == indent
+                    || countSpaces(lines[i + 1]) == indent + 2)) {
                 int               listIndent = countSpaces(lines[i + 1]);
                 ArrayList<String> stringList = new ArrayList<>();
-                while (++i < lines.length
-                        && lines[i].length() > listIndent
-                        && LIST_PATTERN.matcher(lines[i].substring(listIndent)).matches()) {
+                while (++i < lines.length && lines[i].length() > listIndent && LIST_PATTERN.matcher(lines[i].substring(
+                        listIndent)).matches()) {
                     String str = lines[i].substring(listIndent + 2);
                     if (str.length() > 0 && str.charAt(0) == quote)
                         while (str.length() > 0 && str.charAt(0) == quote) str = str.substring(1, str.length() - 1);
@@ -319,10 +317,7 @@ public class YAMLParser {
      * @return the number of leading spaces
      */
     private int countSpaces(String line) {
-        return IntStream.range(0, line.length())
-                .filter(i -> line.charAt(i) != ' ')
-                .findFirst()
-                .orElse(0);
+        return IntStream.range(0, line.length()).filter(i -> line.charAt(i) != ' ').findFirst().orElse(0);
     }
 
     /**
@@ -402,7 +397,20 @@ public class YAMLParser {
 
             // Write the key
             builder.append(spacing);
-            builder.append(key);
+            if (key.matches("^[a-zA-Z0-9_]+$")) {
+                builder.append(key);
+            } else {
+                if (key.contains(quote + "")) {
+                    String tempKey = key;
+                    String tempQuote = "\"";
+                    if (tempKey.contains(tempQuote)) {
+                        tempKey = tempKey.replace(tempQuote + "", "\\" + tempQuote);
+                    }
+                    builder.append(tempQuote).append(tempKey).append(tempQuote);
+                } else {
+                    builder.append(quote).append(key).append(quote);
+                }
+            }
             builder.append(": ");
 
             Object value = data.get(key);
