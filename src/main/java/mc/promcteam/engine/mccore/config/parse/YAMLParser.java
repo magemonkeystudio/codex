@@ -43,7 +43,7 @@ import java.util.stream.IntStream;
  */
 public class YAMLParser {
     private static final Pattern      LIST_PATTERN     = Pattern.compile(" *- .+");
-    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: ?[|>'\"].*");
+    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: [|>'\"]?.+");
     private              List<String> comments         = new ArrayList<>();
     private              int          i                = 0;
 
@@ -185,14 +185,19 @@ public class YAMLParser {
                 }
 
                 // String list
-                else if (i < lines.length - 1 && lines[i + 1].length() > indent + 1 && LIST_PATTERN.matcher(lines[i
-                        + 1].substring(indent)).matches() && (countSpaces(lines[i + 1]) == indent
+                else if (i < lines.length - 1 && lines[i + 1].length() > indent + 1
+                        && LIST_PATTERN.matcher(lines[i + 1].substring(indent)).matches()
+                        && (countSpaces(lines[i + 1]) == indent
                         || countSpaces(lines[i + 1]) == indent + 2)) {
                     int               listIndent = countSpaces(lines[i + 1]);
                     ArrayList<String> stringList = new ArrayList<>();
                     while (++i < lines.length && lines[i].length() > listIndent
-                            && LIST_PATTERN.matcher(lines[i].substring(
-                            listIndent)).matches()) {
+                            && LIST_PATTERN.matcher(lines[i].substring(listIndent)).matches()) {
+                        if (i + 1 < lines.length && countSpaces(lines[i + 1]) > listIndent) {
+                            stringList.add(buildMultiline(lines, listIndent, quote, lines[i]));
+                            continue;
+                        }
+
                         String str = lines[i].substring(listIndent + 2);
                         if (str.length() > 0 && str.charAt(0) == quote)
                             while (str.length() > 0 && str.charAt(0) == quote) str = str.substring(1, str.length() - 1);
@@ -226,59 +231,8 @@ public class YAMLParser {
 
                 // New section with content OR multiline string
                 else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
-                    if (MULTILINE_MARKER.matcher(entry).matches()) {
-                        StringBuilder multiLine = new StringBuilder();
-                        String        str       = entry.substring(entry.indexOf(':') + 2);
-                        boolean       piped     = false;
-                        boolean       folded    = false;
-
-                        if (str.length() > 0 && str.charAt(0) == '|') piped = true;
-                        else if (str.length() > 0 && str.charAt(0) == '>') folded = true;
-
-                        if (piped || folded) {
-                            while (++i < lines.length && countSpaces(lines[i]) > indent) {
-                                String line = lines[i].substring(indent + 2);
-                                if (line.isBlank()) {
-                                    multiLine.append('\n');
-                                    continue;
-                                }
-                                if (multiLine.length() > 0) multiLine.append(piped ? '\n' : ' ');
-                                multiLine.append(line);
-                            }
-                            data.set(key, multiLine.toString());
-                        } else {
-                            String quoteChar = "";
-                            if (str.length() > 0 && str.charAt(0) == quote) quoteChar = String.valueOf(quote);
-                            else if (str.length() > 0 && str.charAt(0) == '\'') quoteChar = "\'";
-                            else if (str.length() > 0 && str.charAt(0) == '"') quoteChar = "\"";
-
-                            if (quoteChar.isEmpty()) {
-                                data.set(key, str);
-                            } else {
-                                if (str.endsWith(quoteChar)) {
-                                    multiLine.append(str.substring(1, str.length() - 1));
-                                    data.set(key, multiLine.toString());
-                                    continue;
-                                }
-                                multiLine.append(str.substring(1));
-                            }
-
-                            // Iterate over the lines until we find an ending quote
-                            while (++i < lines.length && countSpaces(lines[i]) > indent) {
-                                String line = lines[i];
-                                if (line.isBlank()) {
-                                    multiLine.append('\n');
-                                    continue;
-                                }
-
-                                if (line.endsWith(quoteChar)) {
-                                    multiLine.append(" ").append(line.substring(indent + 2, line.length() - 1));
-                                    data.set(key, multiLine.toString());
-                                    break;
-                                }
-                                multiLine.append(" ").append(line.substring(indent + 2));
-                            }
-                        }
+                    if (MULTILINE_MARKER.matcher(entry).matches() || !lines[i + 1].contains(":")) {
+                        data.set(key, buildMultiline(lines, indent, quote, entry));
                         continue;
                     }
 
@@ -312,11 +266,77 @@ public class YAMLParser {
                         .getLogger()
                         .warning("There was a problem parsing the YAML file at line " + (i + 1) + " \"" + entry + "\": "
                                 + e.getMessage());
+                e.printStackTrace();
             }
 
             i++;
         }
         return data;
+    }
+
+    private String buildMultiline(String[] lines, int indent, char quote, String entry) {
+        StringBuilder multiLine = new StringBuilder();
+        String        str;
+        if (entry.contains(":")) str = entry.substring(entry.indexOf(':') + 2);
+        else if (entry.contains("-")) str = entry.substring(entry.indexOf('-') + 2);
+        else str = entry.substring(indent + 2);
+
+        boolean piped  = false;
+        boolean folded = false;
+
+        if (str.length() > 0 && str.charAt(0) == '|') piped = true;
+        else if (str.length() > 0 && str.charAt(0) == '>') folded = true;
+
+        if (piped || folded) {
+            while (++i < lines.length && countSpaces(lines[i]) > indent) {
+                String line = lines[i].substring(indent + 2);
+                if (line.isBlank()) {
+                    multiLine.append('\n');
+                    continue;
+                }
+                if (multiLine.length() > 0) multiLine.append(piped ? '\n' : ' ');
+                multiLine.append(line);
+
+                boolean inList = i + 1 < lines.length && countSpaces(lines[i + 1]) > indent;
+                if (!inList) break;
+            }
+            return multiLine.toString();
+        } else {
+            String quoteChar = "";
+            if (str.length() > 0 && str.charAt(0) == quote) quoteChar = String.valueOf(quote);
+            else if (str.length() > 0 && str.charAt(0) == '\'') quoteChar = "\'";
+            else if (str.length() > 0 && str.charAt(0) == '"') quoteChar = "\"";
+
+            if (quoteChar.isEmpty()) {
+                multiLine.append(str);
+            } else {
+                if (!quoteChar.isBlank() && str.endsWith(quoteChar)) {
+                    multiLine.append(str.substring(1, str.length() - 1));
+                    return multiLine.toString();
+                }
+                multiLine.append(str.substring(quoteChar.length()));
+            }
+
+            // Iterate over the lines until we find an ending quote
+            int spaces;
+            while (++i < lines.length && (spaces = countSpaces(lines[i])) > indent) {
+                String line = lines[i];
+                if (line.isBlank()) {
+                    multiLine.append('\n');
+                    continue;
+                }
+
+                if (!quoteChar.isBlank() && line.endsWith(quoteChar)) {
+                    multiLine.append(" ").append(line.substring(spaces, line.length() - 1));
+                    break;
+                }
+                multiLine.append(" ").append(line.substring(spaces));
+
+                boolean inList = i + 1 < lines.length && countSpaces(lines[i + 1]) > indent;
+                if (!inList) break;
+            }
+        }
+        return multiLine.toString();
     }
 
     /**

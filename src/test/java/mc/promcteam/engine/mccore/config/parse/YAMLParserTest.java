@@ -1,12 +1,31 @@
 package mc.promcteam.engine.mccore.config.parse;
 
+import mc.promcteam.engine.NexEngine;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
+import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.*;
 
 class YAMLParserTest {
-    private static YAMLParser yamlParser = new YAMLParser();
+    private static YAMLParser   yamlParser = new YAMLParser();
+    private static MockedStatic<NexEngine> engineMock;
+    private static NexEngine    engine;
+    private static Logger       logger;
+
+    @BeforeAll
+    static void setUp() {
+        engineMock = mockStatic(NexEngine.class);
+        engine = mock(NexEngine.class);
+        logger = Logger.getLogger("YAMLParser");
+        engineMock.when(NexEngine::get).thenReturn(engine);
+        when(engine.getLogger()).thenReturn(logger);
+    }
 
     @Test
     void parseText_normalText() {
@@ -45,7 +64,7 @@ class YAMLParserTest {
 
     @Test
     void parseText_parsesNonPipedMultilineString() {
-        String text = "multiline: \"This is a\n  multiline\n  string\n  that spans\n  multiple lines.\"";
+        String text = "multiline: \"This is a\n  multiline\n  string\n  that spans\n  multiple lines.\"\ndummy: data after";
 
         DataSection data = yamlParser.parseText(text);
 
@@ -63,7 +82,7 @@ class YAMLParserTest {
 
     @Test
     void parseText_parsesFoldedMultilineString() {
-        String text = "multiline: >\n  This is a\n  multiline\n  string\n  that spans\n  multiple lines.";
+        String text = "multiline: >\n  This is a\n  multiline\n  string\n  that spans\n  multiple lines.\ndummy: data after";
 
         DataSection data = yamlParser.parseText(text);
 
@@ -71,7 +90,16 @@ class YAMLParserTest {
     }
 
     @Test
-    void parsesText_parsesSectionIfKeyIsInQuotes() {
+    void parseText_parsesMultilineWithoutQuotes() {
+        String text = "multiline: This is a\n  multi: line\n  string\n  that spans\n  multiple lines.\ndummy: data after";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a multi: line string that spans multiple lines.", data.getString("multiline"));
+    }
+
+    @Test
+    void parseText_parsesSectionIfKeyIsInQuotes() {
         String text = "\"quoted-key\": \nkey: 'value'";
 
         DataSection data = yamlParser.parseText(text);
@@ -140,5 +168,45 @@ class YAMLParserTest {
                 + "'key]with]symbols': 'value'\n" + "'key{with{symbols': 'value'\n" + "'key}with}symbols': 'value'\n"
                 + "'key-1': 'value'\n" + "1key: 'value'\n" + "1key1: 'value'\n";
         assertEquals(expected, text);
+    }
+
+    @Test
+    void parseText_list_parsesWithMultilineEntry() {
+        String text = "list:\n  - This is a\n    multi: line\n    entry\n  - This is a single line entry\ndummy: data after";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a multi: line entry", data.getList("list").get(0));
+        assertEquals("This is a single line entry", data.getList("list").get(1));
+    }
+
+    @Test
+    void parseText_list_parsesWithQuotedMultilineEntry() {
+        String text = "list:\n  - 'This is a\n    multi: line\n    entry'\n  - This is a single line entry\ndummy: data after";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a multi: line entry", data.getList("list").get(0));
+        assertEquals("This is a single line entry", data.getList("list").get(1));
+    }
+
+    @Test
+    void parseText_list_parsesPipedMultilineEntry() {
+        String text = "list:\n  - |\n    This is a\n    multi: line\n    entry\n  - This is a single line entry\ndummy: data after";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a\nmulti: line\nentry", data.getList("list").get(0));
+        assertEquals("This is a single line entry", data.getList("list").get(1));
+    }
+
+    @Test
+    void parseText_list_parsesFoldedMultilineEntry() {
+        String text = "list:\n  - >\n    This is a\n    multi: line\n    entry\n  - This is a single line entry\ndummy: data after";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("This is a multi: line entry", data.getList("list").get(0));
+        assertEquals("This is a single line entry", data.getList("list").get(1));
     }
 }
