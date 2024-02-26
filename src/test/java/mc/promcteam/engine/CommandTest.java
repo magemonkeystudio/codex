@@ -8,8 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class CommandTest extends MockedTest {
-
-    private Logger     log = LoggerFactory.getLogger(CommandTest.class);
     private PlayerMock player;
 
     @BeforeEach

@@ -27,6 +27,7 @@
 package mc.promcteam.engine.mccore.config.parse;
 
 import mc.promcteam.engine.NexEngine;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -43,7 +44,7 @@ import java.util.stream.IntStream;
  */
 public class YAMLParser {
     private static final Pattern      LIST_PATTERN     = Pattern.compile(" *- .+");
-    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: [|>'\"]?.+");
+    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: ([|>]|['\"]?\\w+).*");
     private              List<String> comments         = new ArrayList<>();
     private              int          i                = 0;
 
@@ -231,7 +232,7 @@ public class YAMLParser {
 
                 // New section with content OR multiline string
                 else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
-                    if (MULTILINE_MARKER.matcher(entry).matches() || !lines[i + 1].contains(":")) {
+                    if (MULTILINE_MARKER.matcher(entry).matches() && StringUtils.isNotBlank(lines[i + 1])) {
                         data.set(key, buildMultiline(lines, indent, quote, entry));
                         continue;
                     }
