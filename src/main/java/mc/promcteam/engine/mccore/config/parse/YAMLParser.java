@@ -234,6 +234,7 @@ public class YAMLParser {
                 else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
                     if (MULTILINE_MARKER.matcher(entry).matches() && StringUtils.isNotBlank(lines[i + 1])) {
                         data.set(key, buildMultiline(lines, indent, quote, entry));
+                        i++;
                         continue;
                     }
 
@@ -289,8 +290,8 @@ public class YAMLParser {
         else if (str.length() > 0 && str.charAt(0) == '>') folded = true;
 
         if (piped || folded) {
-            while (++i < lines.length && countSpaces(lines[i]) > indent) {
-                String line = lines[i].substring(indent + 2);
+            while (i + 1 < lines.length && countSpaces(lines[i + 1]) > indent) {
+                String line = lines[++i].substring(indent + 2);
                 if (line.isBlank()) {
                     multiLine.append('\n');
                     continue;
@@ -320,8 +321,8 @@ public class YAMLParser {
 
             // Iterate over the lines until we find an ending quote
             int spaces;
-            while (++i < lines.length && (spaces = countSpaces(lines[i])) > indent) {
-                String line = lines[i];
+            while (i + 1 < lines.length && (spaces = countSpaces(lines[i + 1])) > indent) {
+                String line = lines[++i];
                 if (line.isBlank()) {
                     multiLine.append('\n');
                     continue;

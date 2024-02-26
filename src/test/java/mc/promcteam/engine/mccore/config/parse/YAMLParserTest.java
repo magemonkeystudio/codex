@@ -84,6 +84,7 @@ class YAMLParserTest {
         DataSection data = yamlParser.parseText(text);
 
         assertEquals("This is a multiline string that spans multiple lines.", data.getString("multiline"));
+        assertEquals("data after", data.getString("dummy"));
     }
 
     @Test
@@ -207,6 +208,7 @@ class YAMLParserTest {
 
         assertEquals("This is a multi: line entry", data.getList("list").get(0));
         assertEquals("This is a single line entry", data.getList("list").get(1));
+        assertEquals("data after", data.getString("dummy"));
     }
 
     @Test
@@ -218,6 +220,7 @@ class YAMLParserTest {
 
         assertEquals("This is a\nmulti: line\nentry", data.getList("list").get(0));
         assertEquals("This is a single line entry", data.getList("list").get(1));
+        assertEquals("data after", data.getString("dummy"));
     }
 
     @Test
@@ -229,6 +232,7 @@ class YAMLParserTest {
 
         assertEquals("This is a multi: line entry", data.getList("list").get(0));
         assertEquals("This is a single line entry", data.getList("list").get(1));
+        assertEquals("data after", data.getString("dummy"));
     }
 
     @Test
