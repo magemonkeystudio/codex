@@ -42,7 +42,7 @@ import java.util.stream.IntStream;
  * Custom parser for YAML that preserves comments with
  * the key they precede.
  *
- * Fixed up Feb 2024 by Travja for more actual YAML spec compliance
+ * Fixed up Feb 2024 by Travja for more actual YAML spec compliance.
  */
 public class YAMLParser {
     private static final Pattern      LIST_PATTERN     = Pattern.compile(" *- .+");
