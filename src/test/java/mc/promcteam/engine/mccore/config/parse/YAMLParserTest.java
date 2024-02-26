@@ -88,6 +88,17 @@ class YAMLParserTest {
     }
 
     @Test
+    void parseText_listContainsColon() {
+        String text = "list:\n  - \"one:\n    two: three\"\n  - four: five\ndummy: data after";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("one: two: three", data.getList("list").get(0));
+        assertEquals("four: five", data.getList("list").get(1));
+        assertEquals("data after", data.getString("dummy"));
+    }
+
+    @Test
     void parseText_parsesPipedMultilineString() {
         String text = "multiline: |\n  This is a\n  multiline\n  string\n  that spans\n  multiple lines. ";
 

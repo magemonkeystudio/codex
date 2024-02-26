@@ -268,7 +268,7 @@ public class YAMLParser {
                         .getLogger()
                         .warning("There was a problem parsing the YAML file at line " + (i + 1) + " \"" + entry + "\": "
                                 + e.getMessage());
-                e.printStackTrace();
+                throw e;
             }
 
             i++;
@@ -279,8 +279,8 @@ public class YAMLParser {
     private String buildMultiline(String[] lines, int indent, char quote, String entry) {
         StringBuilder multiLine = new StringBuilder();
         String        str;
-        if (entry.contains(":")) str = entry.substring(entry.indexOf(':') + 2);
-        else if (entry.contains("-")) str = entry.substring(entry.indexOf('-') + 2);
+        if (LIST_PATTERN.matcher(entry).matches()) str = entry.substring(entry.indexOf('-') + 2);
+        else if (entry.contains(":")) str = entry.substring(entry.indexOf(':') + 2);
         else str = entry.substring(indent + 2);
 
         boolean piped  = false;
