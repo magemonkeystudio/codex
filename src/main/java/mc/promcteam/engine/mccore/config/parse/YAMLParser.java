@@ -26,6 +26,7 @@
  */
 package mc.promcteam.engine.mccore.config.parse;
 
+import mc.promcteam.engine.NexEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -169,140 +170,148 @@ public class YAMLParser {
             }
             if (i == lines.length) return data;
 
-            String key = entry.substring(indent, entry.indexOf(':'));
-            if ((key.charAt(0) == '\'' && key.charAt(key.length() - 1) == '\'') || (key.charAt(0) == '"'
-                    && key.charAt(key.length() - 1) == '"')) {
-                key = key.substring(1, key.length() - 1);
-            }
-            data.setComments(key, comments);
-            comments.clear();
-
-            // New empty section
-            if (entry.indexOf(": {}") == entry.length() - 4 && entry.length() >= 4) {
-                data.createSection(key);
-            }
-
-            // String list
-            else if (i < lines.length - 1 && lines[i + 1].length() > indent + 1 && LIST_PATTERN.matcher(lines[i
-                    + 1].substring(indent)).matches() && (countSpaces(lines[i + 1]) == indent
-                    || countSpaces(lines[i + 1]) == indent + 2)) {
-                int               listIndent = countSpaces(lines[i + 1]);
-                ArrayList<String> stringList = new ArrayList<>();
-                while (++i < lines.length && lines[i].length() > listIndent && LIST_PATTERN.matcher(lines[i].substring(
-                        listIndent)).matches()) {
-                    String str = lines[i].substring(listIndent + 2);
-                    if (str.length() > 0 && str.charAt(0) == quote)
-                        while (str.length() > 0 && str.charAt(0) == quote) str = str.substring(1, str.length() - 1);
-                    else if (str.length() > 0 && str.charAt(0) == '"')
-                        while (str.length() > 0 && str.charAt(0) == '"') str = str.substring(1, str.length() - 1);
-                    else if (str.length() > 0 && str.charAt(0) == '\'')
-                        while (str.length() > 0 && str.charAt(0) == '\'') str = str.substring(1, str.length() - 1);
-
-                    str = str.replace("\\'", "'").replace("\\\"", "\"");
-                    stringList.add(str);
+            try {
+                String key = entry.substring(indent, entry.indexOf(':'));
+                if ((key.charAt(0) == '\'' && key.charAt(key.length() - 1) == '\'') || (key.charAt(0) == '"'
+                        && key.charAt(key.length() - 1) == '"')) {
+                    key = key.substring(1, key.length() - 1);
                 }
-                data.set(key, stringList);
-                i--;
-            }
+                data.setComments(key, comments);
+                comments.clear();
 
-            // List, with one-line syntax
-            else if (entry.substring(indent).startsWith(key + ": [") && entry.endsWith("]")) {
-                String       value = entry.substring(entry.indexOf('[') + 1, entry.lastIndexOf(']'));
-                String[]     parts = value.split(", *");
-                List<String> list  = new ArrayList<>();
+                // New empty section
+                if (entry.indexOf(": {}") == entry.length() - 4 && entry.length() >= 4) {
+                    data.createSection(key);
+                }
 
-                for (String part : parts) {
-                    if (part.startsWith("'") || part.startsWith("\"")) {
-                        part = part.substring(1, part.length() - 1);
+                // String list
+                else if (i < lines.length - 1 && lines[i + 1].length() > indent + 1 && LIST_PATTERN.matcher(lines[i
+                        + 1].substring(indent)).matches() && (countSpaces(lines[i + 1]) == indent
+                        || countSpaces(lines[i + 1]) == indent + 2)) {
+                    int               listIndent = countSpaces(lines[i + 1]);
+                    ArrayList<String> stringList = new ArrayList<>();
+                    while (++i < lines.length && lines[i].length() > listIndent
+                            && LIST_PATTERN.matcher(lines[i].substring(
+                            listIndent)).matches()) {
+                        String str = lines[i].substring(listIndent + 2);
+                        if (str.length() > 0 && str.charAt(0) == quote)
+                            while (str.length() > 0 && str.charAt(0) == quote) str = str.substring(1, str.length() - 1);
+                        else if (str.length() > 0 && str.charAt(0) == '"')
+                            while (str.length() > 0 && str.charAt(0) == '"') str = str.substring(1, str.length() - 1);
+                        else if (str.length() > 0 && str.charAt(0) == '\'')
+                            while (str.length() > 0 && str.charAt(0) == '\'') str = str.substring(1, str.length() - 1);
+
+                        str = str.replace("\\'", "'").replace("\\\"", "\"");
+                        stringList.add(str);
                     }
-                    part = part.replace("\\'", "'").replace("\\\"", "\"");
-                    if (!part.isBlank()) list.add(part);
+                    data.set(key, stringList);
+                    i--;
                 }
-                data.set(key, list);
-            }
 
-            // New section with content OR multiline string
-            else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
-                if (MULTILINE_MARKER.matcher(entry).matches()) {
-                    StringBuilder multiLine = new StringBuilder();
-                    String        str       = entry.substring(entry.indexOf(':') + 2);
-                    boolean       piped     = false;
-                    boolean       folded    = false;
+                // List, with one-line syntax
+                else if (entry.substring(indent).startsWith(key + ": [") && entry.endsWith("]")) {
+                    String       value = entry.substring(entry.indexOf('[') + 1, entry.lastIndexOf(']'));
+                    String[]     parts = value.split(", *");
+                    List<String> list  = new ArrayList<>();
 
-                    if (str.length() > 0 && str.charAt(0) == '|') piped = true;
-                    else if (str.length() > 0 && str.charAt(0) == '>') folded = true;
-
-                    if (piped || folded) {
-                        while (++i < lines.length && countSpaces(lines[i]) > indent) {
-                            String line = lines[i].substring(indent + 2);
-                            if (line.isBlank()) {
-                                multiLine.append('\n');
-                                continue;
-                            }
-                            if (multiLine.length() > 0) multiLine.append(piped ? '\n' : ' ');
-                            multiLine.append(line);
+                    for (String part : parts) {
+                        if (part.startsWith("'") || part.startsWith("\"")) {
+                            part = part.substring(1, part.length() - 1);
                         }
-                        data.set(key, multiLine.toString());
-                    } else {
-                        String quoteChar = "";
-                        if (str.length() > 0 && str.charAt(0) == quote) quoteChar = String.valueOf(quote);
-                        else if (str.length() > 0 && str.charAt(0) == '\'') quoteChar = "\'";
-                        else if (str.length() > 0 && str.charAt(0) == '"') quoteChar = "\"";
+                        part = part.replace("\\'", "'").replace("\\\"", "\"");
+                        if (!part.isBlank()) list.add(part);
+                    }
+                    data.set(key, list);
+                }
 
-                        if (quoteChar.isEmpty()) {
-                            data.set(key, str);
+                // New section with content OR multiline string
+                else if (i < lines.length - 1 && countSpaces(lines[i + 1]) > indent) {
+                    if (MULTILINE_MARKER.matcher(entry).matches()) {
+                        StringBuilder multiLine = new StringBuilder();
+                        String        str       = entry.substring(entry.indexOf(':') + 2);
+                        boolean       piped     = false;
+                        boolean       folded    = false;
+
+                        if (str.length() > 0 && str.charAt(0) == '|') piped = true;
+                        else if (str.length() > 0 && str.charAt(0) == '>') folded = true;
+
+                        if (piped || folded) {
+                            while (++i < lines.length && countSpaces(lines[i]) > indent) {
+                                String line = lines[i].substring(indent + 2);
+                                if (line.isBlank()) {
+                                    multiLine.append('\n');
+                                    continue;
+                                }
+                                if (multiLine.length() > 0) multiLine.append(piped ? '\n' : ' ');
+                                multiLine.append(line);
+                            }
+                            data.set(key, multiLine.toString());
                         } else {
-                            if (str.endsWith(quoteChar)) {
-                                multiLine.append(str.substring(1, str.length() - 1));
-                                data.set(key, multiLine.toString());
-                                continue;
-                            }
-                            multiLine.append(str.substring(1));
-                        }
+                            String quoteChar = "";
+                            if (str.length() > 0 && str.charAt(0) == quote) quoteChar = String.valueOf(quote);
+                            else if (str.length() > 0 && str.charAt(0) == '\'') quoteChar = "\'";
+                            else if (str.length() > 0 && str.charAt(0) == '"') quoteChar = "\"";
 
-                        // Iterate over the lines until we find an ending quote
-                        while (++i < lines.length && countSpaces(lines[i]) > indent) {
-                            String line = lines[i];
-                            if (line.isBlank()) {
-                                multiLine.append('\n');
-                                continue;
+                            if (quoteChar.isEmpty()) {
+                                data.set(key, str);
+                            } else {
+                                if (str.endsWith(quoteChar)) {
+                                    multiLine.append(str.substring(1, str.length() - 1));
+                                    data.set(key, multiLine.toString());
+                                    continue;
+                                }
+                                multiLine.append(str.substring(1));
                             }
 
-                            if (line.endsWith(quoteChar)) {
-                                multiLine.append(" ").append(line.substring(indent + 2, line.length() - 1));
-                                data.set(key, multiLine.toString());
-                                break;
+                            // Iterate over the lines until we find an ending quote
+                            while (++i < lines.length && countSpaces(lines[i]) > indent) {
+                                String line = lines[i];
+                                if (line.isBlank()) {
+                                    multiLine.append('\n');
+                                    continue;
+                                }
+
+                                if (line.endsWith(quoteChar)) {
+                                    multiLine.append(" ").append(line.substring(indent + 2, line.length() - 1));
+                                    data.set(key, multiLine.toString());
+                                    break;
+                                }
+                                multiLine.append(" ").append(line.substring(indent + 2));
                             }
-                            multiLine.append(" ").append(line.substring(indent + 2));
                         }
+                        continue;
                     }
+
+                    i++;
+                    int         newIndent = countSpaces(lines[i]);
+                    DataSection node      = parse(lines, newIndent, quote);
+                    data.set(key, node);
                     continue;
                 }
 
-                i++;
-                int         newIndent = countSpaces(lines[i]);
-                DataSection node      = parse(lines, newIndent, quote);
-                data.set(key, node);
-                continue;
-            }
+                // New empty section
+                else if (entry.indexOf(':') == entry.length() - 1) {
+                    data.set(key, new DataSection());
+                }
 
-            // New empty section
-            else if (entry.indexOf(':') == entry.length() - 1) {
-                data.set(key, new DataSection());
-            }
+                // Regular value
+                else {
+                    String str = entry.substring(entry.indexOf(':') + 2);
+                    Object value;
+                    if (str.charAt(0) == quote) value = str.substring(1, str.length() - 1);
+                    else if (str.charAt(0) == '\'') value = str.substring(1, str.length() - 1);
+                    else if (str.charAt(0) == '"') value = str.substring(1, str.length() - 1);
+                    else value = str;
+                    value = value.toString().replace("\\'", "'").replace("\\\"", "\"");
 
-            // Regular value
-            else {
-                String str = entry.substring(entry.indexOf(':') + 2);
-                Object value;
-                if (str.charAt(0) == quote) value = str.substring(1, str.length() - 1);
-                else if (str.charAt(0) == '\'') value = str.substring(1, str.length() - 1);
-                else if (str.charAt(0) == '"') value = str.substring(1, str.length() - 1);
-                else value = str;
-                value = value.toString().replace("\\'", "'").replace("\\\"", "\"");
-
-                if (value.equals("[]")) value = new ArrayList<>();
-                data.set(key, value);
+                    if (value.equals("[]")) value = new ArrayList<>();
+                    data.set(key, value);
+                }
+            } catch (Exception e) {
+                NexEngine.get()
+                        .getLogger()
+                        .warning("There was a problem parsing the YAML file at line " + (i + 1) + " \"" + entry + "\": "
+                                + e.getMessage());
             }
 
             i++;
@@ -401,7 +410,7 @@ public class YAMLParser {
                 builder.append(key);
             } else {
                 if (key.contains(quote + "")) {
-                    String tempKey = key;
+                    String tempKey   = key;
                     String tempQuote = "\"";
                     if (tempKey.contains(tempQuote)) {
                         tempKey = tempKey.replace(tempQuote + "", "\\" + tempQuote);
