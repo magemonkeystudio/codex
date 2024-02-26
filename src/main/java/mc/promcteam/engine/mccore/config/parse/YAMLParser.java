@@ -26,10 +26,10 @@
  */
 package mc.promcteam.engine.mccore.config.parse;
 
-import mc.promcteam.engine.NexEngine;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -44,7 +44,7 @@ import java.util.stream.IntStream;
  */
 public class YAMLParser {
     private static final Pattern      LIST_PATTERN     = Pattern.compile(" *- .+");
-    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: ([|>]|['\"]?\\w+).*");
+    private static final Pattern      MULTILINE_MARKER = Pattern.compile(".+: ([|>]|['\"]?.+).*");
     private              List<String> comments         = new ArrayList<>();
     private              int          i                = 0;
 
@@ -264,11 +264,12 @@ public class YAMLParser {
                     data.set(key, value);
                 }
             } catch (Exception e) {
-                NexEngine.get()
-                        .getLogger()
-                        .warning("There was a problem parsing the YAML file at line " + (i + 1) + " \"" + entry + "\": "
-                                + e.getMessage());
-                throw e;
+                if (e instanceof YAMLException)
+                    throw (YAMLException) e; // Let it bubble up
+
+                throw new YAMLException(
+                        "There was a problem parsing the YAML file at line " + (i + 1) + " \"" + entry + "\": "
+                                + e.getMessage(), e);
             }
 
             i++;

@@ -99,6 +99,16 @@ class YAMLParserTest {
     }
 
     @Test
+    void parseText_russian() {
+        String text = "message: \"&4[&fБоевой чат&4] &4&lЯрость утихла, гнев ослаб, вы больше не в силах\n"
+                    + "  сопротивляться смерти.\"";
+
+        DataSection data = yamlParser.parseText(text);
+
+        assertEquals("&4[&fБоевой чат&4] &4&lЯрость утихла, гнев ослаб, вы больше не в силах сопротивляться смерти.", data.getString("message"));
+    }
+
+    @Test
     void parseText_parsesPipedMultilineString() {
         String text = "multiline: |\n  This is a\n  multiline\n  string\n  that spans\n  multiple lines. ";
 
