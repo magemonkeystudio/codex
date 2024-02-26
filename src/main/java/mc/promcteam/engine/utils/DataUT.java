@@ -1,5 +1,6 @@
 package mc.promcteam.engine.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
@@ -11,6 +12,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.charset.Charset;
@@ -188,6 +192,21 @@ public class DataUT {
         return meta != null && getBooleanData(meta, key);
     }
 
+    public static PersistentDataContainer itemPersistentDataContainer() {
+        try {
+            String packageName = Bukkit.getServer().getClass().getPackage().getName();
+            Class<?> craftItemMetaClass = Class.forName(packageName+".inventory.CraftMetaItem");
+            Field dataTypeRegistryField = craftItemMetaClass.getDeclaredField("DATA_TYPE_REGISTRY");
+            dataTypeRegistryField.setAccessible(true);
+            Object dataTypeRegistry = dataTypeRegistryField.get(null);
+
+            Class<?> craftPersistentDataContainerClass = Class.forName(packageName+".persistence.CraftPersistentDataContainer");
+            Constructor<?> craftPersistentDataContainerConstructor = craftPersistentDataContainerClass.getDeclaredConstructor(dataTypeRegistry.getClass());
+            return (PersistentDataContainer) craftPersistentDataContainerConstructor.newInstance(dataTypeRegistry);
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public static class DoubleArray implements PersistentDataType<byte[], double[]> {
 
