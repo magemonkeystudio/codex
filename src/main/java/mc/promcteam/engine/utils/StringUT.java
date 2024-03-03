@@ -24,6 +24,52 @@ public class StringUT {
     }
 
     @NotNull
+    public static String colorSensitiveStrip(@NotNull String str) {
+        int length = str.length();
+        StringBuilder result = new StringBuilder();
+
+        int i = 0;
+        for (; i < length; i++) {
+            char a = str.charAt(i);
+            if (a == '§') {
+                result.append(a);
+                i++;
+                if (i < length) {
+                    char b = str.charAt(i);
+                    if (ChatColor.getByChar(b) == null) {
+                        break;
+                    } else {
+                        result.append(b);
+                    }
+                }
+            } else if (a != ' ') {
+                break;
+            }
+        }
+
+        int leadingLength = result.length();
+
+        int j = length-1;
+        for (; j > i; j--) {
+            char a = str.charAt(j);
+            if (a == ' ') continue;
+            result.insert(leadingLength, a);
+            j--;
+            if (j > i) {
+                char b = str.charAt(j);
+                if (b == '§' && ChatColor.getByChar(a) != null) {
+                    result.insert(leadingLength, b);
+                } else {
+                    break;
+                }
+            }
+        }
+
+        result.insert(leadingLength, str.substring(i, j+1));
+        return result.toString();
+    }
+
+    @NotNull
     public static String noSpace(@NotNull String str) {
         return str.trim().replaceAll("\\s+", "");
     }
