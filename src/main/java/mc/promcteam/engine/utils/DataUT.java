@@ -27,6 +27,7 @@ public class DataUT {
     public static final PersistentDataType<byte[], double[]> DOUBLE_ARRAY = new DoubleArray();
     public static final PersistentDataType<byte[], String[]> STRING_ARRAY = new StringArray(StandardCharsets.UTF_8);
     public static final PersistentDataType<byte[], UUID>     UUID         = new UUIDDataType();
+    public static final PersistentDataType<Byte, Boolean>    BOOLEAN      = new BooleanDataType();
 
     @Nullable
     public static <Z> Z getData(
@@ -210,6 +211,8 @@ public class DataUT {
 
     public static class DoubleArray implements PersistentDataType<byte[], double[]> {
 
+        private DoubleArray() {}
+
         @Override
         @NotNull
         public Class<byte[]> getPrimitiveType() {
@@ -246,7 +249,7 @@ public class DataUT {
 
         private final Charset charset;
 
-        public StringArray(Charset charset) {
+        private StringArray(Charset charset) {
             this.charset = charset;
         }
 
@@ -303,6 +306,8 @@ public class DataUT {
 
     public static class UUIDDataType implements PersistentDataType<byte[], UUID> {
 
+        private UUIDDataType() {}
+
         @NotNull
         @Override
         public Class<byte[]> getPrimitiveType() {
@@ -329,6 +334,31 @@ public class DataUT {
             long       firstLong  = bb.getLong();
             long       secondLong = bb.getLong();
             return new UUID(firstLong, secondLong);
+        }
+    }
+
+    public static class BooleanDataType implements PersistentDataType<Byte, Boolean> {
+
+        private BooleanDataType() {}
+
+        @NotNull
+        public Class<Byte> getPrimitiveType() {
+            return Byte.class;
+        }
+
+        @NotNull
+        public Class<Boolean> getComplexType() {
+            return Boolean.class;
+        }
+
+        @NotNull
+        public Byte toPrimitive(@NotNull Boolean complex, @NotNull PersistentDataAdapterContext context) {
+            return (byte)(complex ? 1 : 0);
+        }
+
+        @NotNull
+        public Boolean fromPrimitive(@NotNull Byte primitive, @NotNull PersistentDataAdapterContext context) {
+            return primitive != 0;
         }
     }
 }
