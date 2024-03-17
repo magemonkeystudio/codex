@@ -82,8 +82,8 @@ public class ConfigurableCommand extends Command {
     private static final String MESSAGES_KEY    = "messages";
     private static final String COOLDOWN_KEY    = "cooldown";
 
-    private HashMap<String, ConfigurableCommand> subCommands = new HashMap<String, ConfigurableCommand>();
-    private HashMap<String, String>              messages    = new HashMap<String, String>();
+    private Map<String, ConfigurableCommand> subCommands = new HashMap<>();
+    private Map<String, String>              messages    = new HashMap<>();
 
     private JavaPlugin          plugin;
     private ConfigurableCommand parent;
@@ -106,7 +106,7 @@ public class ConfigurableCommand extends Command {
         return options.stream()
                 .filter(name -> StringUtil.startsWithIgnoreCase(name, joined))
                 .sorted(String.CASE_INSENSITIVE_ORDER)
-                .map(key -> key.substring(joined.lastIndexOf(' ')+1))
+                .map(key -> key.substring(joined.lastIndexOf(' ') + 1))
                 .collect(Collectors.toList());
     }
 
@@ -193,7 +193,11 @@ public class ConfigurableCommand extends Command {
      * @param function    command executor
      * @param description default description
      */
-    public ConfigurableCommand(JavaPlugin plugin, String key, SenderType senderType, IFunction function, String description) {
+    public ConfigurableCommand(JavaPlugin plugin,
+                               String key,
+                               SenderType senderType,
+                               IFunction function,
+                               String description) {
         this(plugin, key, senderType, function, description, null, null);
     }
 
@@ -214,7 +218,12 @@ public class ConfigurableCommand extends Command {
      * @param description default description
      * @param args        default arguments
      */
-    public ConfigurableCommand(JavaPlugin plugin, String key, SenderType senderType, IFunction function, String description, String args) {
+    public ConfigurableCommand(JavaPlugin plugin,
+                               String key,
+                               SenderType senderType,
+                               IFunction function,
+                               String description,
+                               String args) {
         this(plugin, key, senderType, function, description, args, null);
     }
 
@@ -233,7 +242,13 @@ public class ConfigurableCommand extends Command {
      * @param args        default arguments
      * @param permission  default required permission
      */
-    public ConfigurableCommand(JavaPlugin plugin, String key, SenderType senderType, IFunction function, String description, String args, String permission) {
+    public ConfigurableCommand(JavaPlugin plugin,
+                               String key,
+                               SenderType senderType,
+                               IFunction function,
+                               String description,
+                               String args,
+                               String permission) {
         super(key, description == null ? "" : description, "", new ArrayList<String>());
         this.plugin = plugin;
         this.senderType = senderType;
@@ -463,7 +478,8 @@ public class ConfigurableCommand extends Command {
      */
     public void addSubCommand(ConfigurableCommand command) {
         if (function != null)
-            throw new IllegalStateException("A sub command cannot be added to \"/" + toString() + "\", it's already attached to a function");
+            throw new IllegalStateException(
+                    "A sub command cannot be added to \"/" + toString() + "\", it's already attached to a function");
         if (command.registered)
             throw new IllegalArgumentException("A registered command cannot be added to another command");
 
@@ -515,7 +531,7 @@ public class ConfigurableCommand extends Command {
         }
 
         // Check for a cooldown
-        if (cooldown > 0 && System.currentTimeMillis() - timer < cooldown * 1000) {
+        if (cooldown > 0 && System.currentTimeMillis() - timer < cooldown * 1000L) {
             String message = TextFormatter.colorString(NexEngine.getPlugin(NexEngine.class).getCommandMessage());
             int    time    = cooldown - (int) (System.currentTimeMillis() - timer + 999) / 1000;
             message = message.replace("{time}", "" + time);
@@ -545,7 +561,8 @@ public class ConfigurableCommand extends Command {
 
     @Override
     @NotNull
-    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws IllegalArgumentException {
+    public List<String> tabComplete(@NotNull CommandSender sender, @NotNull String alias, @NotNull String[] args) throws
+            IllegalArgumentException {
         if (this.function == null) {
             if (args.length > 1 && hasSubCommand(args[0])) {
                 ConfigurableCommand subCommand = subCommands.get(args[0].toLowerCase());
@@ -699,18 +716,22 @@ public class ConfigurableCommand extends Command {
         // Restrict the name to not have spaces
         if (this.name.contains(" ")) {
             String noSpaces = this.name.replace(" ", "");
-            plugin.getLogger().warning("Invalid command name \"" + this.name + "\", using \"" + noSpaces + "\" instead");
+            plugin.getLogger()
+                    .warning("Invalid command name \"" + this.name + "\", using \"" + noSpaces + "\" instead");
             this.name = noSpaces;
         }
 
         // Get the sender type
         try {
-            this.senderType = config.has(SENDER_KEY) ? SenderType.valueOf(config.getString(SENDER_KEY).toUpperCase().replace(" ", "_")) : senderType;
+            this.senderType = config.has(SENDER_KEY) ? SenderType.valueOf(config.getString(SENDER_KEY)
+                    .toUpperCase()
+                    .replace(" ", "_")) : senderType;
         }
 
         // Invalid sender type
         catch (Exception ex) {
-            plugin.getLogger().warning("Invalid sender type for command \"/" + toString() + "\", using the default instead");
+            plugin.getLogger()
+                    .warning("Invalid sender type for command \"/" + toString() + "\", using the default instead");
         }
 
         // Update the config with any new data
