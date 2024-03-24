@@ -10,9 +10,9 @@
         <artifactId>promc-parent</artifactId>
     </parent>
 
-    <artifactId>promccore</artifactId>
-    <name>ProMCCore</name>
-    <version>1.2.2-R0.3-SNAPSHOT</version>
+    <artifactId>codex</artifactId>
+    <name>Codex</name>
+    <version>1.0.0-R0.1-SNAPSHOT</version>
 
     <repositories>
         <repository>
@@ -191,7 +191,7 @@
                 <version>3.0.0-M7</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <PROMCCORE_VERSION>${project.version}</PROMCCORE_VERSION>
+                        <CODEX_VERSION>${project.version}</CODEX_VERSION>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>

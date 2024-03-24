@@ -1,9 +1,10 @@
 name: ${project.name}
-main: mc.promcteam.engine.NexEngine
+main: com.promcteam.codex.CodexEngine
 version: ${project.version}
-description: ProRPG Core plugin
+description: Core plugin for the ProMCTeam suite
 authors: [ Travja, goflish ]
 softdepend: [ Vault, WorldGuard, MythicMobs ]
-api-version: 1.14
+api-version: 1.16
 load: STARTUP
 libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
+provides: [ ProMCCore ]

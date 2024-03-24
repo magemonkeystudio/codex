@@ -1,6 +1,6 @@
-core:
+codex:
   lang: en
-  command-aliases: 'nexengine'
+  command-aliases: core,nexengine
 
 locale:
   world-names:

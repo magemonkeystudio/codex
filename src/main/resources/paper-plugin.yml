@@ -1,14 +1,16 @@
 name: ${project.name}
-main: mc.promcteam.engine.NexEngine
+main: com.promcteam.codex.CodexEngine
 version: ${project.version}
-description: ProRPG Core plugin
-api-version: '1.19'
+description: Core plugin for the ProMCTeam suite
+api-version: '1.16'
 load: STARTUP
 authors:
   - Travja
   - goflish
 has-open-classloader: true
 libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
+provides:
+  - ProMCCore
 
 dependencies:
   - name: Vault
@@ -21,7 +23,7 @@ dependencies:
     required: false
     bootstrap: true
 load-before:
-  - name: ProSkillAPI
+  - name: Fabled
     boostrap: false
-  - name: ProRPGItems
+  - name: Divinity
     boostrap: false
