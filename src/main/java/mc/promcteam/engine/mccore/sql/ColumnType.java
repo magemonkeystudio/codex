@@ -56,9 +56,14 @@ public enum ColumnType {
     STRING_255("VARCHAR(255)"),
 
     /**
-     * <p>A string that can be up to 65535 characters long</p>
+     * <p>A string that can be up to 64KB or 65,535 characters long</p>
      */
     TEXT("TEXT"),
+
+    /**
+     * Text that can store up to 16MB or 16,777,215 characters
+     */
+    MEDIUM_TEXT("MEDIUMTEXT"),
 
     /**
      * A standard integer
