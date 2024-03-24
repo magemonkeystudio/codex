@@ -31,6 +31,10 @@
             <artifactId>spigot-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
         </dependency>
@@ -91,12 +95,9 @@
             </exclusions>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -209,7 +210,7 @@
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
 

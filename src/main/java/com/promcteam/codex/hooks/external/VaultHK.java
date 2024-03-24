@@ -1,5 +1,6 @@
 package com.promcteam.codex.hooks.external;
 
+import com.google.common.base.Preconditions;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.hooks.HookState;
 import com.promcteam.codex.hooks.NHook;
@@ -21,7 +22,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class VaultHK extends NHook<CodexEngine> {
-
     private Economy    economy;
     private Permission permission;
     private Chat       chat;
@@ -71,7 +71,7 @@ public class VaultHK extends NHook<CodexEngine> {
         this.unregisterListeners();
     }
 
-    // Some plugins loads too late, so we need to listen to them to be able to hook into.
+    // Some plugins load too late, so we need to listen to them to be able to hook into.
     @EventHandler(priority = EventPriority.NORMAL)
     public void onEconomyFix(ServiceRegisterEvent e) {
         Object provider = e.getProvider().getProvider();
@@ -153,27 +153,33 @@ public class VaultHK extends NHook<CodexEngine> {
         return this.hasChat() ? this.chat.getPlayerSuffix(p) : "";
     }
 
-    public double getBalance(@NotNull Player p) {
-        return this.economy.getBalance(p);
-    }
-
-    public void give(@NotNull Player p, double amount) {
-        this.economy.depositPlayer(p, amount);
-    }
-
-    public void take(@NotNull Player p, double amount) {
-        this.economy.withdrawPlayer(p, Math.min(Math.abs(amount), this.getBalance(p)));
-    }
-
     public double getBalance(@NotNull OfflinePlayer p) {
         return this.economy.getBalance(p);
     }
 
-    public void give(@NotNull OfflinePlayer p, double amount) {
-        this.economy.depositPlayer(p, amount);
+    public boolean give(@NotNull OfflinePlayer p, double amount) {
+        return this.economy.depositPlayer(p, amount).transactionSuccess();
     }
 
-    public void take(@NotNull OfflinePlayer p, double amount) {
-        this.economy.withdrawPlayer(p, Math.min(Math.abs(amount), this.getBalance(p)));
+    public boolean take(@NotNull OfflinePlayer p, double amount) {
+        return this.economy.withdrawPlayer(p, Math.min(Math.abs(amount), this.getBalance(p))).transactionSuccess();
+    }
+
+    public boolean canPay(@NotNull OfflinePlayer p, double amount) {
+        Preconditions.checkArgument(hasEconomy(), "No economy plugin found");
+        return this.economy.has(p, amount);
+    }
+
+    public void reset(final OfflinePlayer player) {
+        this.economy.depositPlayer(player, getBalance(player));
+        try {
+            this.economy.createPlayerAccount(player);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String format(double input) {
+        return this.economy.format(input);
     }
 }

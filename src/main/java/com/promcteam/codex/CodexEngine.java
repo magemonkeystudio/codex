@@ -28,8 +28,11 @@ import com.promcteam.codex.utils.ItemUT;
 import com.promcteam.codex.utils.Reflex;
 import com.promcteam.codex.utils.actions.ActionsManager;
 import com.promcteam.codex.utils.craft.CraftManager;
+import com.promcteam.risecore.legacy.util.item.ItemBuilder;
+import com.promcteam.risecore.util.BlockLocation;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -108,6 +111,9 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     }
 
     final boolean loadCore() {
+        ConfigurationSerialization.registerClass(BlockLocation.class, "Enigma_BlockLocation");
+        ConfigurationSerialization.registerClass(ItemBuilder.class);
+
         this.pluginManager = this.getServer().getPluginManager();
 
         if (!this.setupNMS()) {
