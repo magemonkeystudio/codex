@@ -6,8 +6,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class EnginePacketEvent extends ICancellableEvent {
 
-    private Player reciever;
-    private Object packet;
+    private final Player reciever;
+    private       Object packet;
 
     public EnginePacketEvent(@NotNull Player reciever, @NotNull Object packet) {
         super(true);

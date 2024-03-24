@@ -120,7 +120,10 @@ public abstract class IAbstractCommand<P extends CodexPlugin<P>> {
         return getNumD(sender, input, def, false);
     }
 
-    protected final double getNumD(@NotNull CommandSender sender, @NotNull String input, double def, boolean allowNega) {
+    protected final double getNumD(@NotNull CommandSender sender,
+                                   @NotNull String input,
+                                   double def,
+                                   boolean allowNega) {
         try {
             double amount = Double.parseDouble(input);
             if (amount < 0.0 && !allowNega) {

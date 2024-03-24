@@ -174,7 +174,9 @@ public class ActionManipulator {
         }
     }
 
-    public static boolean processConditions(@NotNull CodexPlugin<?> plugin, @NotNull Entity exec, @NotNull List<String> condis) {
+    public static boolean processConditions(@NotNull CodexPlugin<?> plugin,
+                                            @NotNull Entity exec,
+                                            @NotNull List<String> condis) {
         return processConditions(plugin, exec, condis, Collections.emptyMap());
     }
 

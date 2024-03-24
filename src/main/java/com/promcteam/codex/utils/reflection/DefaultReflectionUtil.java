@@ -2,10 +2,10 @@ package com.promcteam.codex.utils.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import io.netty.channel.Channel;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.utils.Reflex;
 import com.promcteam.codex.utils.random.Rnd;
+import io.netty.channel.Channel;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;

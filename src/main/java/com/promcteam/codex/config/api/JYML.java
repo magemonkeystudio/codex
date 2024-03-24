@@ -351,7 +351,8 @@ public class JYML extends YamlConfiguration {
             ClickType clickType = CollectionsUT.getEnum(sType, ClickType.class);
             if (clickType == null) continue;
 
-            ActionManipulator actions = new ActionManipulator(CodexEngine.get(), this, path + "custom-actions." + sType);
+            ActionManipulator actions =
+                    new ActionManipulator(CodexEngine.get(), this, path + "custom-actions." + sType);
             customClicks.put(clickType, actions);
         }
 

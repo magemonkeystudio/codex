@@ -13,7 +13,10 @@ public class ICraftRecipe extends IAbstractRecipe {
     private String[]    shape;
     private ItemStack[] ings;
 
-    public ICraftRecipe(@NotNull CodexPlugin<?> plugin, @NotNull String id, @NotNull ItemStack result, boolean isShape) {
+    public ICraftRecipe(@NotNull CodexPlugin<?> plugin,
+                        @NotNull String id,
+                        @NotNull ItemStack result,
+                        boolean isShape) {
         super(plugin, id, result);
         this.isShape = isShape;
         this.shape = new String[]{"ABC", "DEF", "GHI"};

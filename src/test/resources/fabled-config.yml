@@ -5,7 +5,7 @@
 # https://www.spigotmc.org/resources/proskillapi-create-custom-races-classes-skills-spells-with-an-easy-online-editor.91913/ #
 # and look at the default configuration section                                                                              #
 # -------------------------------------------------------------------------------------------------------------------------- #
-Accounts: 
+Accounts:
 
   # The main class group used for GUI displays
   'main-class-group': 'class'
@@ -24,13 +24,13 @@ Accounts:
   # The max number of accounts users can have with certain permissions
   # must be in the format '<permission>:<accounts>'
   # Note that you can use 'fabled.max_accounts.<accounts> instead'
-  'perm-accounts': 
-  - 'fabled.account.admin:10'
+  'perm-accounts':
+    - 'fabled.account.admin:10'
 
 # While targeting settings aren't necessary most of the time,
 # they can help make running ally checks much faster if
 # you are able to use them.
-Targeting: 
+Targeting:
 
   # Whether all monsters are enemies.
   # If you are using pets that include zombies/spiders/etc,
@@ -67,7 +67,7 @@ Targeting:
   # Whether for skills to affect armor stands
   'affect-armor-stands': 'false'
 
-Saving: 
+Saving:
 
   # Whether to auto save data periodically
   'auto-save': 'false'
@@ -79,7 +79,7 @@ Saving:
   'sql-database': 'false'
 
   # Details for connecting to the database
-  'sql-details': 
+  'sql-details':
     host: 'localhost'
     port: '54321'
     database: 'plugins'
@@ -91,7 +91,7 @@ Saving:
     # players wouldn't be coming from another server.
     delay: '0'
 
-Classes: 
+Classes:
 
   # Whether to use Fabled's health system
   'modify-health': 'true'
@@ -117,7 +117,7 @@ Classes:
   # will be played. For level-specific effects, use the level condition.
   'level-up-skill': 'lvlup'
 
-Mana: 
+Mana:
 
   # Whether to use Fabled's mana system
   enabled: 'true'
@@ -125,7 +125,7 @@ Mana:
   # How frequently mana is gained in seconds
   freq: '1'
 
-Skills: 
+Skills:
 
   # Whether players are allowed to downgrade skills
   'allow-downgrade': 'true'
@@ -146,28 +146,28 @@ Skills:
 
   # Blocks to ignore when using the Block mechanic in dynamic skills
   # End values in an * to do all materials containing the value
-  'block-filter': 
-  - 'chest'
-  - 'ender chest'
-  - 'trapped chest'
-  - 'redstone*'
-  - 'oak sign'
-  - 'spruce sign'
-  - 'birch sign'
-  - 'jungle sign'
-  - 'acacia sign'
-  - 'dark oak sign'
-  - 'crimson sign'
-  - 'warped sign'
-  - 'spruce wall sign'
-  - 'birch wall sign'
-  - 'jungle wall sign'
-  - 'acacia wall sign'
-  - 'dark oak wall sign'
-  - 'crimson wall sign'
-  - 'warped wall sign'
+  'block-filter':
+    - 'chest'
+    - 'ender chest'
+    - 'trapped chest'
+    - 'redstone*'
+    - 'oak sign'
+    - 'spruce sign'
+    - 'birch sign'
+    - 'jungle sign'
+    - 'acacia sign'
+    - 'dark oak sign'
+    - 'crimson sign'
+    - 'warped sign'
+    - 'spruce wall sign'
+    - 'birch wall sign'
+    - 'jungle wall sign'
+    - 'acacia wall sign'
+    - 'dark oak wall sign'
+    - 'crimson wall sign'
+    - 'warped wall sign'
 
-Items: 
+Items:
 
   # Whether to check for class, level, and attribute
   # requirements in an item's lore
@@ -211,14 +211,14 @@ Items:
   # 38 = chestplate
   # 39 = helmet
   # 40 = off hand
-  slots: 
-  - '36'
-  - '37'
-  - '38'
-  - '39'
-  - '40'
+  slots:
+    - '36'
+    - '37'
+    - '38'
+    - '39'
+    - '40'
 
-GUI: 
+GUI:
 
   # Whether to lock the health bar to 10 hearts
   # This does not affect total health, only the display
@@ -281,9 +281,9 @@ GUI:
   #   exp_lost
   #   status
   #   combo
-  'title-messages': 
-  - 'level_up'
-  - 'exp_lost'
+  'title-messages':
+    - 'level_up'
+    - 'exp_lost'
 
   # Whether to add a prefix to players with their class name
   'show-class-name': 'true'
@@ -301,7 +301,7 @@ GUI:
   # Text to show for bound materials
   'show-bind-text': 'Bound to {material}'
 
-PVP: 
+PVP:
 
   #The minimum level the player must be to be able to PVP with other players. -1 disables this option.
   'min-level': '-1'
@@ -309,7 +309,7 @@ PVP:
   #The maximum level difference two players must have to be able to PVP. -1 disables this option.
   'level-range': '-1'
 
-Casting: 
+Casting:
 
   # Whether the main casting option is enabled
   enabled: 'true'
@@ -365,55 +365,55 @@ Casting:
   # The item to use in the cast slot.
   # When not using bars, this only shows up when no skills
   # are available for use.
-  item: 
+  item:
     type: 'BOOK'
     data: '0'
     durability: '0'
     name: '&dSkills'
-    lore: 
-    - ''
-    - '&6Left Click&2 - First skill set'
-    - '&6Right Click&2 - Second skill set'
-    - '&6Q&2 - Organize skills'
+    lore:
+      - ''
+      - '&6Left Click&2 - First skill set'
+      - '&6Right Click&2 - Second skill set'
+      - '&6Q&2 - Organize skills'
 
   # The item used in the bar GUI to describe the hover bar
-  'hover-item': 
+  'hover-item':
     type: 'BOOKSHELF'
     data: '0'
     durability: '0'
     name: '&6Hover Bar'
-    lore: 
-    - ''
-    - 'Skills in this row will'
-    - 'be usable via left clicking'
-    - 'the cast item and will let'
-    - 'you see where they will hit'
-    - 'before casting them.'
+    lore:
+      - ''
+      - 'Skills in this row will'
+      - 'be usable via left clicking'
+      - 'the cast item and will let'
+      - 'you see where they will hit'
+      - 'before casting them.'
 
   # The item used in the bar GUI to describe the instant bar
-  'instant-item': 
+  'instant-item':
     type: 'BOOKSHELF'
     data: '0'
     durability: '0'
     name: '&6Instant Bar'
-    lore: 
-    - ''
-    - 'Skills in this row will'
-    - 'be usable via right clicking'
-    - 'the cast item and will be'
-    - 'cast immediately when switching'
-    - 'to their slot.'
+    lore:
+      - ''
+      - 'Skills in this row will'
+      - 'be usable via right clicking'
+      - 'the cast item and will be'
+      - 'cast immediately when switching'
+      - 'to their slot.'
 
   # The format for skills displayed while on a text casting mode (action-bar, title, subtitle or chat)
-  'message-mode-format': 
+  'message-mode-format':
     skill: '&6[%number%] &a%skill%'
     separator: '&7 - '
-Interaction: 
+Interaction:
   # Whether right-clicking an entity should be considered a right click
   # This is useful for skills that require a right click to activate
   'interact-is-right-click': 'false'
 
-'Click Combos': 
+'Click Combos':
 
   # Whether to use click combinations
   enabled: 'false'
@@ -461,7 +461,7 @@ Interaction:
   # Inactivity time in seconds before clicks for a combo are reset
   'click-time': '1.0'
 
-'Skill Bar': 
+'Skill Bar':
 
   # Whether to use skill bars
   enabled: 'false'
@@ -470,7 +470,7 @@ Interaction:
   'show-cooldown': 'true'
 
   # The item to use as a placeholder in the skill bar
-  'empty-icon': 
+  'empty-icon':
     material: 'PUMPKIN_SEEDS'
     durability: '0'
     data: '0'
@@ -478,36 +478,36 @@ Interaction:
 
   # The default layout for skill bars
   # Players can customize unlocked slots
-  layout: 
-    1: 
+  layout:
+    1:
       skill: 'true'
       locked: 'false'
-    2: 
+    2:
       skill: 'true'
       locked: 'false'
-    3: 
+    3:
       skill: 'true'
       locked: 'false'
-    4: 
+    4:
       skill: 'true'
       locked: 'false'
-    5: 
+    5:
       skill: 'true'
       locked: 'false'
-    6: 
+    6:
       skill: 'false'
       locked: 'false'
-    7: 
+    7:
       skill: 'false'
       locked: 'false'
-    8: 
+    8:
       skill: 'false'
       locked: 'false'
-    9: 
+    9:
       skill: 'false'
       locked: 'false'
 
-Experience: 
+Experience:
 
   # Whether to use vanilla exp drops for class exp
   # Note: any dropped exp will not count towards class exp,
@@ -540,8 +540,8 @@ Experience:
   'lose-level-message': 'true'
 
   # Worlds where experience is not lost on death
-  'lose-exp-blacklist': 
-  - 'pvpWorld'
+  'lose-exp-blacklist':
+    - 'pvpWorld'
 
   # If false use formula
   # If true use levels.yml
@@ -549,7 +549,7 @@ Experience:
 
   # The formula used for calculating required experience
   # The formula is: x*lvl*lvl + y*lvl + z
-  formula: 
+  formula:
     x: '1'
     y: '8'
     z: '16'
@@ -564,7 +564,7 @@ Experience:
 
   # The experience yields from each mob type
   # When exp orbs are enabled, these values are ignored
-  yields: 
+  yields:
     blaze: '10'
     cavespider: '5'
     creeper: '3'
@@ -596,7 +596,7 @@ Experience:
 
 # How much logging to do when loading Fabled
 # When testing setting up skills/classes, increase this to 1-5
-Logging: 
+Logging:
 
   # Logs for loading attributes
   'attribute-load': '0'
@@ -613,7 +613,7 @@ Logging:
   # Logs for mana updates
   mana: '0'
 
-Worlds: 
+Worlds:
 
   # Whether to enable the world restriction
   enable: 'false'
@@ -624,17 +624,17 @@ Worlds:
   'use-as-enabling': 'true'
 
   # The worlds to include in the enable/disable list
-  worlds: 
-  - 'world'
+  worlds:
+    - 'world'
 
 # Customize the scoreboard here
-scoreboard: 
+scoreboard:
   enabled: 'true'
   title: '&6&l%fabled_default_currentclassname%'
-  format: 
-  - '&2Health &c%fabled_default_scurrenthealth%'
-  - '&2%fabled_default_currentmananame% &b%fabled_default_scurrentmana%'
-  - '&2Level &a%fabled_default_currentlevel%'
-  - '&2Exp &a%fabled_default_scurrentexp%'
-  - '&2AP &a%fabled_default_attributepoints%'
-  - '&2SP &a%fabled_default_skillpoints%'
+  format:
+    - '&2Health &c%fabled_default_scurrenthealth%'
+    - '&2%fabled_default_currentmananame% &b%fabled_default_scurrentmana%'
+    - '&2Level &a%fabled_default_currentlevel%'
+    - '&2Exp &a%fabled_default_scurrentexp%'
+    - '&2AP &a%fabled_default_attributepoints%'
+    - '&2SP &a%fabled_default_skillpoints%'

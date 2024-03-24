@@ -14,7 +14,10 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemBreakEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -154,7 +157,9 @@ public class ArmorListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public final void inventoryClick(final InventoryClickEvent e) {
-        if (e.getAction() == InventoryAction.NOTHING) {return;}
+        if (e.getAction() == InventoryAction.NOTHING) {
+            return;
+        }
         InventoryView view = e.getView();
         if (!(view.getBottomInventory() instanceof PlayerInventory)) {
             return;
@@ -163,9 +168,9 @@ public class ArmorListener implements Listener {
         if (!(playerInventory.getHolder() instanceof Player)) {
             return;
         }
-        Player player = (Player) playerInventory.getHolder();
-        int slot = e.getSlot();
-        int heldSlot = playerInventory.getHeldItemSlot();
+        Player  player        = (Player) playerInventory.getHolder();
+        int     slot          = e.getSlot();
+        int     heldSlot      = playerInventory.getHeldItemSlot();
         boolean clickedPlayer = e.getClickedInventory() == playerInventory;
         switch (e.getClick()) {
             case SHIFT_LEFT, SHIFT_RIGHT: {
@@ -177,8 +182,12 @@ public class ArmorListener implements Listener {
                         }
                         boolean equipping = slot != armorType.getSlot();
                         if (equipping == isAirOrNull(playerInventory.getItem(armorType.getSlot()))) {
-                            ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(player, EquipMethod.SHIFT_CLICK, armorType,
-                                    equipping ? null : e.getCurrentItem(), equipping ? e.getCurrentItem() : null);
+                            ArmorEquipEvent armorEquipEvent =
+                                    new ArmorEquipEvent(player,
+                                            EquipMethod.SHIFT_CLICK,
+                                            armorType,
+                                            equipping ? null : e.getCurrentItem(),
+                                            equipping ? e.getCurrentItem() : null);
                             if (isChange(armorEquipEvent)) {
                                 Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                                 if (armorEquipEvent.isCancelled()) {
@@ -216,12 +225,17 @@ public class ArmorListener implements Listener {
                                 destinationSlots.addAll(getDestinationSlots(currentItem, playerInventory, 35, 9));
                             }
                         }
-                        boolean unequipped = currentItem.getAmount() <= 0 && clickedPlayer && (slot == 40 || slot == heldSlot);
+                        boolean unequipped =
+                                currentItem.getAmount() <= 0 && clickedPlayer && (slot == 40 || slot == heldSlot);
                         boolean equipped   = destinationSlots.contains(40) || destinationSlots.contains(heldSlot);
 
                         if (unequipped != equipped) {
-                            ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(player, EquipMethod.SHIFT_CLICK, armorType,
-                                    unequipped ? e.getCurrentItem() : null, unequipped ? null : e.getCurrentItem());
+                            ArmorEquipEvent armorEquipEvent =
+                                    new ArmorEquipEvent(player,
+                                            EquipMethod.SHIFT_CLICK,
+                                            armorType,
+                                            unequipped ? e.getCurrentItem() : null,
+                                            unequipped ? null : e.getCurrentItem());
                             if (isChange(armorEquipEvent)) {
                                 Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                                 if (armorEquipEvent.isCancelled()) {
@@ -413,31 +427,35 @@ public class ArmorListener implements Listener {
 
     private List<Integer> getDestinationSlots(ItemStack item, Inventory inventory, int first, int last) {
         List<Integer> destinationSlots = new ArrayList<>();
-        int maxAmount = item.getMaxStackSize();
-        boolean inverted = first > last;
-        for (int i = inverted ? last : first; (item.getAmount() > 0) && (inverted ? i >= last : i <= last); i += inverted ? -1 : 1) {
-            int currentAmount;
+        int           maxAmount        = item.getMaxStackSize();
+        boolean       inverted         = first > last;
+        for (int i = inverted ? last : first;
+             (item.getAmount() > 0) && (inverted ? i >= last : i <= last);
+             i += inverted ? -1 : 1) {
+            int       currentAmount;
             ItemStack itemStack = inventory.getItem(i);
-            if (!isAirOrNull(itemStack) && !itemStack.isSimilar(item)) {continue;}
+            if (!isAirOrNull(itemStack) && !itemStack.isSimilar(item)) {
+                continue;
+            }
             currentAmount = itemStack == null ? 0 : itemStack.getAmount();
             if (currentAmount == 0) {
                 destinationSlots.add(i);
             }
-            item.setAmount(Math.max(0, item.getAmount()+currentAmount-maxAmount));
+            item.setAmount(Math.max(0, item.getAmount() + currentAmount - maxAmount));
         }
         return destinationSlots;
     }
 
     private List<Integer> getDestinationSlots(ItemStack item, Inventory inventory) {
-        return getDestinationSlots(item, inventory, 0, inventory.getSize()-1);
+        return getDestinationSlots(item, inventory, 0, inventory.getSize() - 1);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public final void onHeldSlotChange(final PlayerItemHeldEvent e) {
         PlayerInventory inventory = e.getPlayer().getInventory();
-        ItemStack oldItem = inventory.getItem(e.getPreviousSlot());
-        ItemStack newItem = inventory.getItem(e.getNewSlot());
-        ArmorType armorType   = ArmorType.matchType(newItem);
+        ItemStack       oldItem   = inventory.getItem(e.getPreviousSlot());
+        ItemStack       newItem   = inventory.getItem(e.getNewSlot());
+        ArmorType       armorType = ArmorType.matchType(newItem);
         if (armorType != ArmorType.MAIN_HAND && armorType != ArmorType.OFFHAND) {
             armorType = ArmorType.matchType(oldItem);
             if (armorType != ArmorType.MAIN_HAND && armorType != ArmorType.OFFHAND) {
@@ -456,14 +474,17 @@ public class ArmorListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void playerInteractEvent(PlayerInteractEvent e) { // Fixme doesn't work on air
-        if (e.useItemInHand().equals(Result.DENY)) {return;}
+        if (e.useItemInHand().equals(Result.DENY)) {
+            return;
+        }
         if (e.getAction() != Action.RIGHT_CLICK_AIR && e.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
-        Player player = e.getPlayer();
+        Player          player    = e.getPlayer();
         PlayerInventory inventory = player.getInventory();
         if (!e.useInteractedBlock().equals(Result.DENY)) {
-            if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK && !player.isSneaking()) {// Having both of these checks is useless, might as well do it though.
+            if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK
+                    && !player.isSneaking()) {// Having both of these checks is useless, might as well do it though.
                 // Some blocks have actions when you right-click them which stops the client from equipping the
                 // armor in hand.
                 Material mat = e.getClickedBlock().getType();
@@ -537,11 +558,12 @@ public class ArmorListener implements Listener {
             Inventory inventory = view.getInventory(rawSlot);
             if (inventory instanceof PlayerInventory) {
                 PlayerInventory playerInventory = (PlayerInventory) inventory;
-                int heldSlot = playerInventory.getHeldItemSlot();
-                int slot = view.convertSlot(rawSlot);
+                int             heldSlot        = playerInventory.getHeldItemSlot();
+                int             slot            = view.convertSlot(rawSlot);
                 if (armorType.matchesSlot(slot, heldSlot)) {
-                    ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) playerInventory.getHolder(), EquipMethod.DRAG,
-                            armorType, view.getItem(rawSlot), event.getNewItems().get(rawSlot));
+                    ArmorEquipEvent armorEquipEvent =
+                            new ArmorEquipEvent((Player) playerInventory.getHolder(), EquipMethod.DRAG,
+                                    armorType, view.getItem(rawSlot), event.getNewItems().get(rawSlot));
                     if (isChange(armorEquipEvent)) {
                         Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                         if (armorEquipEvent.isCancelled()) {
@@ -564,7 +586,8 @@ public class ArmorListener implements Listener {
         if (type != null) {
             if (event.getTargetEntity() instanceof Player) {
                 Player          p               = (Player) event.getTargetEntity();
-                ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(p, EquipMethod.DISPENSER, type, null, event.getItem());
+                ArmorEquipEvent armorEquipEvent =
+                        new ArmorEquipEvent(p, EquipMethod.DISPENSER, type, null, event.getItem());
                 if (isChange(armorEquipEvent)) {
                     Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                     if (armorEquipEvent.isCancelled()) {

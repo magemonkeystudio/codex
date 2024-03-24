@@ -83,7 +83,9 @@ public class SQLDatabase {
      */
     public SQLDatabase(Plugin plugin, ConfigurationSection config) {
         this.plugin = plugin;
-        this.connectionURL = "jdbc:mysql://" + config.getString("host") + ":" + config.getString("port") + "/" + config.getString("database");
+        this.connectionURL =
+                "jdbc:mysql://" + config.getString("host") + ":" + config.getString("port") + "/" + config.getString(
+                        "database");
         this.user = config.getString("username");
         this.password = config.getString("password");
     }

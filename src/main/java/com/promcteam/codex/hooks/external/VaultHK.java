@@ -42,7 +42,8 @@ public class VaultHK extends NHook<CodexEngine> {
     }
 
     private void setPermission() {
-        RegisteredServiceProvider<Permission> pp = plugin.getServer().getServicesManager().getRegistration(Permission.class);
+        RegisteredServiceProvider<Permission> pp =
+                plugin.getServer().getServicesManager().getRegistration(Permission.class);
         if (pp == null) return;
 
         this.permission = pp.getProvider();
@@ -87,7 +88,6 @@ public class VaultHK extends NHook<CodexEngine> {
 
         if (!this.hasChat() && provider instanceof Chat) {
             this.setChat();
-            return;
         }
     }
 

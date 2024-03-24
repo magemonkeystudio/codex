@@ -81,7 +81,10 @@ public abstract class IDataHandler<P extends CodexPlugin<P>, U extends IAbstract
             map.merge(col, type, (oldV, newV) -> newV);
         });
         this.createTable(this.TABLE_USERS, map);
-        this.addColumn(TABLE_USERS, COL_USER_LAST_ONLINE, DataTypes.LONG.build(this.dataType), String.valueOf(System.currentTimeMillis()));
+        this.addColumn(TABLE_USERS,
+                COL_USER_LAST_ONLINE,
+                DataTypes.LONG.build(this.dataType),
+                String.valueOf(System.currentTimeMillis()));
 
         this.onTableCreate();
     }
@@ -184,12 +187,11 @@ public abstract class IDataHandler<P extends CodexPlugin<P>, U extends IAbstract
             @NotNull String def) {
         if (this.hasColumn(table, column)) return;
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("ALTER TABLE ").append(table).append(" ");
-        sql.append("ADD ").append(column).append(" ").append(type).append(" ");
-        sql.append("DEFAULT '").append(def).append("'");
+        String sql = "ALTER TABLE " + table + " "
+                + "ADD " + column + " " + type + " "
+                + "DEFAULT '" + def + "'";
 
-        this.execute(sql.toString());
+        this.execute(sql);
     }
 
     protected void removeColumn(
@@ -197,11 +199,10 @@ public abstract class IDataHandler<P extends CodexPlugin<P>, U extends IAbstract
             @NotNull String column) {
         if (!this.hasColumn(table, column)) return;
 
-        StringBuilder sql = new StringBuilder();
-        sql.append("ALTER TABLE ").append(table).append(" ");
-        sql.append("DROP COLUMN ").append(column);
+        String sql = "ALTER TABLE " + table + " "
+                + "DROP COLUMN " + column;
 
-        this.execute(sql.toString());
+        this.execute(sql);
     }
 
     public final boolean hasColumn(@NotNull String table, @NotNull String columnName) {

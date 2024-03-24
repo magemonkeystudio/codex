@@ -165,7 +165,8 @@ public class LanguageConfig extends Config {
             String string      = match.group(1);
             if (player) {
                 sb.replace(match.start() + sb.length() - size, match.end(),
-                        (TextSizer.measureString(string) > playerSize - 2 ? string : TextSizer.expand(string, playerSize, front)));
+                        (TextSizer.measureString(string) > playerSize - 2 ? string
+                                : TextSizer.expand(string, playerSize, front)));
             } else {
                 sb.replace(match.start() + sb.length() - size, match.end(),
                         (string.length() > consoleSize ? string : TextSizer.expandConsole(string, consoleSize, front)));

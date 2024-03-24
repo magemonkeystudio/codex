@@ -62,7 +62,9 @@ public class Hooks {
         return opt.isPresent() ? opt.get().getValue() : -1L;
     }
 
-    public static int getGroupValueInt(@NotNull Player player, @NotNull Map<String, Integer> map, boolean isNegaBetter) {
+    public static int getGroupValueInt(@NotNull Player player,
+                                       @NotNull Map<String, Integer> map,
+                                       boolean isNegaBetter) {
         Set<String> groups = Hooks.getPermissionGroups(player);
         //System.out.println("[0] groups of '" + player.getName() + "': " + groups);
         //System.out.println("[1] map to compare: " + map);
@@ -83,7 +85,9 @@ public class Hooks {
         return opt.isPresent() ? opt.get().getValue() : -1;
     }
 
-    public static double getGroupValueDouble(@NotNull Player player, @NotNull Map<String, Double> map, boolean isNegaBetter) {
+    public static double getGroupValueDouble(@NotNull Player player,
+                                             @NotNull Map<String, Double> map,
+                                             boolean isNegaBetter) {
         Set<String> groups = Hooks.getPermissionGroups(player);
         //System.out.println("[0] groups of '" + player.getName() + "': " + groups);
         //System.out.println("[1] map to compare: " + map);

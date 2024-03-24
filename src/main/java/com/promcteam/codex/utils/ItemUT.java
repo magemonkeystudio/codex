@@ -2,12 +2,12 @@ package com.promcteam.codex.utils;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import lombok.Getter;
-import lombok.Setter;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.config.ConfigManager;
 import com.promcteam.codex.core.Version;
 import com.promcteam.codex.hooks.Hooks;
+import lombok.Getter;
+import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -31,9 +31,9 @@ public class ItemUT {
     @Getter
     public static CodexEngine engine;
 
-    public static final  String                     LORE_FIX_PREFIX = "fogus_loren-";
-    public static final  String                     NAME_FIX_PREFIX = "fogus_namel-";
-    public static final  String                     TAG_SPLITTER    = "__x__";
+    public static final String LORE_FIX_PREFIX = "fogus_loren-";
+    public static final String NAME_FIX_PREFIX = "fogus_namel-";
+    public static final String TAG_SPLITTER    = "__x__";
 
     public static int addToLore(@NotNull List<String> lore, int pos, @NotNull String value) {
         if (pos >= lore.size() || pos < 0) {
@@ -237,7 +237,8 @@ public class ItemUT {
 
         Collection<Property> properties = profile.getProperties().get("textures");
         Optional<Property> opt = properties.stream()
-                .filter(prop -> prop.getName().equalsIgnoreCase("textures") || prop.getSignature().equalsIgnoreCase("textures"))
+                .filter(prop -> prop.getName().equalsIgnoreCase("textures") || prop.getSignature()
+                        .equalsIgnoreCase("textures"))
                 .findFirst();
 
         return opt.isPresent() ? opt.get().getValue() : null;
@@ -263,7 +264,9 @@ public class ItemUT {
         item.setItemMeta(meta);
     }
 
-    public static void replaceLore(@NotNull ItemStack item, @NotNull String placeholder, @NotNull List<String> replacer) {
+    public static void replaceLore(@NotNull ItemStack item,
+                                   @NotNull String placeholder,
+                                   @NotNull List<String> replacer) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {
             return;

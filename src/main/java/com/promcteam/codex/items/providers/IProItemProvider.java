@@ -12,6 +12,7 @@ public interface IProItemProvider<T extends ItemType> {
             throw new MissingProviderException(pluginName() + " is not enabled!");
         }
     }
+
     String pluginName();
 
     String getNamespace();
@@ -46,8 +47,9 @@ public interface IProItemProvider<T extends ItemType> {
 
     /**
      * Check if the given item is from this provider and has the given id.
+     *
      * @param item The item to check.
-     * @param id The id to check.
+     * @param id   The id to check.
      * @return Whether the item is from this provider and has the given id.
      */
     boolean isCustomItemOfId(ItemStack item, String id);

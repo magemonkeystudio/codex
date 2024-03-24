@@ -1,6 +1,5 @@
 package com.promcteam.codex.items;
 
-import lombok.RequiredArgsConstructor;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.items.exception.MissingItemException;
 import com.promcteam.codex.items.exception.MissingProviderException;
@@ -8,6 +7,7 @@ import com.promcteam.codex.items.providers.IProItemProvider;
 import com.promcteam.codex.items.providers.ItemsAdderProvider;
 import com.promcteam.codex.items.providers.OraxenProvider;
 import com.promcteam.codex.items.providers.VanillaProvider;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -22,10 +22,11 @@ public class ProItemManager {
 
     private final Map<String, IProItemProvider<?>> providers = new LinkedHashMap<>();
 
-    /** Removes the given prefix from the provided id, if applicable.
+    /**
+     * Removes the given prefix from the provided id, if applicable.
      *
      * @param prefix the provider prefix to remove
-     * @param id the item id, prefixed or not
+     * @param id     the item id, prefixed or not
      * @return the stripped id
      */
     public static String stripPrefix(String prefix, String id) {
@@ -33,14 +34,18 @@ public class ProItemManager {
         return split.length == 2 && split[0].equalsIgnoreCase(prefix) ? split[1] : id;
     }
 
-    /** Removes any prefixes corresponding to the currently registered Item Providers, if there is any.
+    /**
+     * Removes any prefixes corresponding to the currently registered Item Providers, if there is any.
      *
      * @param id the item id, prefixed or not
      * @return the stripped id
      */
     public static String stripPrefix(String id) {
         String[] split = id.split("_", 2);
-        return split.length == 2 && CodexEngine.getEngine().getItemManager().providers.keySet().stream().anyMatch(s -> s.equalsIgnoreCase(split[0])) ?
+        return split.length == 2 && CodexEngine.getEngine()
+                .getItemManager().providers.keySet()
+                .stream()
+                .anyMatch(s -> s.equalsIgnoreCase(split[0])) ?
                 split[1] : id;
     }
 
@@ -121,13 +126,14 @@ public class ProItemManager {
      * @return a Set containing the ItemTypes the provided item corresponds to. May be empty.
      */
     @NotNull
-    public Set<ItemType> getItemTypes(@Nullable ItemStack itemStack)  {
+    public Set<ItemType> getItemTypes(@Nullable ItemStack itemStack) {
         Set<ItemType> set = new HashSet<>();
         for (IProItemProvider<?> provider : this.providers.values()) {
             try {
                 ItemType itemType = provider.getItem(itemStack);
                 if (itemType != null) set.add(itemType);
-            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
+            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {
+            }
         }
         return set;
     }
@@ -141,7 +147,7 @@ public class ProItemManager {
      * @return the ItemType of more importance corresponding to the item, or null if none was found.
      */
     @Nullable
-    public ItemType getMainItemType(@Nullable ItemStack itemStack)  {
+    public ItemType getMainItemType(@Nullable ItemStack itemStack) {
         return this.getItemTypes(itemStack).stream().max(Comparator.comparing(ItemType::getCategory)).orElse(null);
     }
 
@@ -149,7 +155,8 @@ public class ProItemManager {
         return providers.values().stream().anyMatch(provider -> {
             try {
                 return provider.isCustomItem(item);
-            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
+            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {
+            }
             return false;
         });
     }
@@ -158,10 +165,12 @@ public class ProItemManager {
         return providers.values().stream().anyMatch(provider -> {
             try {
                 if (!provider.getClass().equals(VanillaProvider.class) &&
-                        (id.length() < provider.getNamespace().length()+1 ||
-                        !id.substring(0, provider.getNamespace().length()+1).equalsIgnoreCase(provider.getNamespace()))) return false;
+                        (id.length() < provider.getNamespace().length() + 1 ||
+                                !id.substring(0, provider.getNamespace().length() + 1)
+                                        .equalsIgnoreCase(provider.getNamespace()))) return false;
                 return provider.isCustomItemOfId(item, id);
-            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {}
+            } catch (NoClassDefFoundError | NoSuchMethodError ignored) {
+            }
             return false;
         });
     }

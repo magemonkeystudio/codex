@@ -86,7 +86,11 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
 
                         // Remove already added.
                         params.removeIf(param -> {
-                            return abuilder.getParametized(category).get(pId).values().stream().anyMatch(map -> map.containsKey(param.getKey().toLowerCase()));
+                            return abuilder.getParametized(category)
+                                    .get(pId)
+                                    .values()
+                                    .stream()
+                                    .anyMatch(map -> map.containsKey(param.getKey().toLowerCase()));
                         });
 
                         params.forEach(param -> {
@@ -96,7 +100,8 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
 
                         ClickText clickText = new ClickText(builder.toString());
                         params.forEach(param -> {
-                            ClickWord word = clickText.createPlaceholder("%" + param.getKey() + "%", "&a" + param.getKey());
+                            ClickWord word =
+                                    clickText.createPlaceholder("%" + param.getKey() + "%", "&a" + param.getKey());
                             word.hint(plugin.lang().Core_Editor_Actions_Param_Hint.asList());
                             word.suggCmd(param.getKey() + " ");
                         });

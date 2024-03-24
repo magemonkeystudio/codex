@@ -13,7 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public abstract class IGeneralCommand<P extends CodexPlugin<P>> extends IAbstractCommand<P> implements CommandExecutor, TabExecutor {
+public abstract class IGeneralCommand<P extends CodexPlugin<P>> extends IAbstractCommand<P> implements CommandExecutor,
+        TabExecutor {
 
     private final Map<String, ISubCommand<P>> subCommands;
     private       ISubCommand<P>              defaultCommand;

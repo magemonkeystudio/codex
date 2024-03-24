@@ -36,7 +36,9 @@ public class HookManager extends IManager<CodexEngine> {
     }
 
     @Nullable
-    public <T extends NHook<?>> T register(@NotNull CodexPlugin<?> holder, @NotNull String pluginName, @NotNull Class<T> clazz) {
+    public <T extends NHook<?>> T register(@NotNull CodexPlugin<?> holder,
+                                           @NotNull String pluginName,
+                                           @NotNull Class<T> clazz) {
         if (!Hooks.hasPlugin(pluginName)) return null;
 
         T hook;

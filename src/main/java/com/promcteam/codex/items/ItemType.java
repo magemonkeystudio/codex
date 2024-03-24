@@ -14,7 +14,7 @@ public abstract class ItemType {
 
     public final String getNamespacedID() {
         if (this instanceof VanillaProvider.VanillaItemType) return getID();
-        return getNamespace()+'_'+ getID();
+        return getNamespace() + '_' + getID();
     }
 
     public abstract IProItemProvider.Category getCategory();

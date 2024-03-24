@@ -101,13 +101,15 @@ public class ActionsManager extends IManager<CodexEngine> {
 
     public void registerExecutor(@NotNull IActionExecutor executor) {
         if (this.actionExecutors.put(executor.getKey(), executor) != null) {
-            plugin.info("[Actions Engine] Replaced registered action executor '" + executor.getKey() + "' with a new one.");
+            plugin.info(
+                    "[Actions Engine] Replaced registered action executor '" + executor.getKey() + "' with a new one.");
         }
     }
 
     public void registerCondition(@NotNull IConditionValidator conditionValidator) {
         if (this.conditionValidators.put(conditionValidator.getKey(), conditionValidator) != null) {
-            plugin.info("[Actions Engine] Replaced registered condition validator '" + conditionValidator.getKey() + "' with a new one.");
+            plugin.info("[Actions Engine] Replaced registered condition validator '" + conditionValidator.getKey()
+                    + "' with a new one.");
         }
     }
 
@@ -119,7 +121,8 @@ public class ActionsManager extends IManager<CodexEngine> {
 
     public void registerTargetSelector(@NotNull ITargetSelector selector) {
         if (this.targetSelectors.put(selector.getKey(), selector) != null) {
-            plugin.info("[Actions Engine] Replaced registered target selector '" + selector.getKey() + "' with a new one.");
+            plugin.info(
+                    "[Actions Engine] Replaced registered target selector '" + selector.getKey() + "' with a new one.");
         }
     }
 

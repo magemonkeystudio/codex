@@ -38,20 +38,28 @@ public abstract class YAMLMenu<T> {
 
     public void reload() {
         File file = new File(this.plugin.getDataFolder(), this.path);
-        if (!file.exists()) {plugin.saveResource(this.path, false);}
+        if (!file.exists()) {
+            plugin.saveResource(this.path, false);
+        }
         YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
         this.title = StringUT.color(config.getString("title", ""));
         this.rows = config.getInt("rows", 6);
-        NavigableMap<Integer, String> slots = new TreeMap<>();
-        NavigableMap<String, ItemStack> items = new TreeMap<>();
-        ConfigurationSection section = config.getConfigurationSection("slots");
-        if (section == null) {return;}
+        NavigableMap<Integer, String>   slots   = new TreeMap<>();
+        NavigableMap<String, ItemStack> items   = new TreeMap<>();
+        ConfigurationSection            section = config.getConfigurationSection("slots");
+        if (section == null) {
+            return;
+        }
         for (String key : section.getKeys(false)) {
             try {
                 int i = Integer.parseInt(key);
-                if (i < 0) {throw new IllegalArgumentException();}
+                if (i < 0) {
+                    throw new IllegalArgumentException();
+                }
                 String function = section.getString(key);
-                if (function == null) {continue;}
+                if (function == null) {
+                    continue;
+                }
                 slots.put(i, function);
             } catch (NumberFormatException e) {
                 plugin.getLogger().warning("Invalid index \"" + key + "\" in " + this);
@@ -59,7 +67,9 @@ public abstract class YAMLMenu<T> {
         }
 
         section = config.getConfigurationSection("items");
-        if (section == null) {return;}
+        if (section == null) {
+            return;
+        }
         for (String key : section.getKeys(false)) {
             ConfigurationSection yamlItem = section.getConfigurationSection(key);
             if (yamlItem == null) {
@@ -76,15 +86,23 @@ public abstract class YAMLMenu<T> {
             }
             ItemStack itemStack    = new ItemStack(material, yamlItem.getInt("amount", 1));
             String    skullTexture = yamlItem.getString("skull-texture", null);
-            if (skullTexture != null) {ItemUT.addSkullTexture(itemStack, skullTexture);}
+            if (skullTexture != null) {
+                ItemUT.addSkullTexture(itemStack, skullTexture);
+            }
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
                 String displayName = yamlItem.getString("display-name");
-                if (displayName != null) {meta.setDisplayName(StringUT.color(displayName));}
+                if (displayName != null) {
+                    meta.setDisplayName(StringUT.color(displayName));
+                }
                 List<String> lore = StringUT.color(yamlItem.getStringList("lore"));
-                if (lore.size() > 0) {meta.setLore(lore);}
+                if (lore.size() > 0) {
+                    meta.setLore(lore);
+                }
                 int cmd = yamlItem.getInt("custom-model-data", 0);
-                if (cmd != 0) {meta.setCustomModelData(cmd);}
+                if (cmd != 0) {
+                    meta.setCustomModelData(cmd);
+                }
                 itemStack.setItemMeta(meta);
             }
             items.put(key, itemStack);
@@ -117,7 +135,9 @@ public abstract class YAMLMenu<T> {
         Player player = menu.getPlayer();
         for (Map.Entry<Integer, String> entry : this.slots.entrySet()) {
             Slot slot = this.getSlot(entry.getValue(), parameter, player);
-            if (slot != null) {menu.setSlot(entry.getKey(), slot);}
+            if (slot != null) {
+                menu.setSlot(entry.getKey(), slot);
+            }
         }
         ItemStack emptySlot = this.getItem("empty");
         for (int i = 0, size = menu.slots.lastKey() / (this.getRows() * 9) + 1; i < size; i++) {

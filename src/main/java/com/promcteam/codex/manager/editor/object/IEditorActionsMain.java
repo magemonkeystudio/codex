@@ -195,7 +195,8 @@ public class IEditorActionsMain<P extends CodexPlugin<P>> extends NGUI<P> {
             List<String> lore = new ArrayList<>(objLore);
             lore.replaceAll(line -> line
                     .replace("%targets-amount%", String.valueOf(builder.getParametized(ActionCategory.TARGETS).size()))
-                    .replace("%conditions-amount%", String.valueOf(builder.getParametized(ActionCategory.CONDITIONS).size()))
+                    .replace("%conditions-amount%",
+                            String.valueOf(builder.getParametized(ActionCategory.CONDITIONS).size()))
                     .replace("%actions-amount%", String.valueOf(builder.getParametized(ActionCategory.ACTIONS).size()))
             );
 
@@ -297,8 +298,10 @@ public class IEditorActionsMain<P extends CodexPlugin<P>> extends NGUI<P> {
                 if (pz == null) return;
 
                 Map<Integer, Map<Parametized, Map<String, String>>> global      = this.getParametized(type);
-                Map<Parametized, Map<String, String>>               mapSelector = global.computeIfAbsent(global.size(), map -> new HashMap<>());
-                Map<String, String>                                 mapParams   = mapSelector.computeIfAbsent(pz, map -> new HashMap<>());
+                Map<Parametized, Map<String, String>>               mapSelector =
+                        global.computeIfAbsent(global.size(), map -> new HashMap<>());
+                Map<String, String>                                 mapParams   =
+                        mapSelector.computeIfAbsent(pz, map -> new HashMap<>());
 
                 //String paramsRaw = line.replace(selectorKey, "").trim();
                 pz.getParams().forEach(param -> {
@@ -330,7 +333,10 @@ public class IEditorActionsMain<P extends CodexPlugin<P>> extends NGUI<P> {
             return this.addParametized(executor, ActionCategory.ACTIONS);
         }
 
-        public void addActionParam(int key, @NotNull IActionExecutor exec, @NotNull String param, @NotNull String value) {
+        public void addActionParam(int key,
+                                   @NotNull IActionExecutor exec,
+                                   @NotNull String param,
+                                   @NotNull String value) {
             this.addParametizedParam(key, ActionCategory.ACTIONS, exec, param, value);
         }
 
@@ -338,7 +344,10 @@ public class IEditorActionsMain<P extends CodexPlugin<P>> extends NGUI<P> {
             return this.addParametized(validator, ActionCategory.CONDITIONS);
         }
 
-        public void addConditionParam(int key, @NotNull IConditionValidator cd, @NotNull String param, @NotNull String value) {
+        public void addConditionParam(int key,
+                                      @NotNull IConditionValidator cd,
+                                      @NotNull String param,
+                                      @NotNull String value) {
             this.addParametizedParam(key, ActionCategory.CONDITIONS, cd, param, value);
         }
 

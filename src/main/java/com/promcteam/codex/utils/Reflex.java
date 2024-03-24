@@ -1,7 +1,7 @@
 package com.promcteam.codex.utils;
 
-import lombok.Setter;
 import com.promcteam.codex.CodexEngine;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

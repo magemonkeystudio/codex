@@ -46,7 +46,8 @@ import java.util.Map;
  */
 public abstract class CommandHandler implements CommandExecutor {
 
-    protected static final String BREAK = ChatColor.STRIKETHROUGH + "" + ChatColor.DARK_GRAY + "-----------------------------------------------------";
+    protected static final String BREAK = ChatColor.STRIKETHROUGH + "" + ChatColor.DARK_GRAY
+            + "-----------------------------------------------------";
 
     /**
      * Table of registered sub-commands
@@ -210,7 +211,9 @@ public abstract class CommandHandler implements CommandExecutor {
             page = maxPage;
 
         sender.sendMessage(BREAK);
-        sender.sendMessage(ChatColor.DARK_GREEN + title + " - Command Usage" + (maxPage > 1 ? " (Page " + page + "/" + maxPage + ")" : ""));
+        sender.sendMessage(
+                ChatColor.DARK_GREEN + title + " - Command Usage" + (maxPage > 1 ? " (Page " + page + "/" + maxPage
+                        + ")" : ""));
 
         // Get the maximum length
         int maxSize = 0;

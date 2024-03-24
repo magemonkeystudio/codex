@@ -1,10 +1,10 @@
 package com.promcteam.codex.nms.packets;
 
-import io.netty.channel.*;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.manager.IManager;
 import com.promcteam.codex.nms.packets.events.EnginePlayerPacketEvent;
 import com.promcteam.codex.nms.packets.events.EngineServerPacketEvent;
+import io.netty.channel.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

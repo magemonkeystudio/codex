@@ -37,11 +37,12 @@ public class MenuManager extends IManager<CodexEngine> {
             return;
         }
 
-        InventoryView view           = event.getView();
-        Inventory     otherInventory = view.getTopInventory() == inventory
+        InventoryView view = event.getView();
+        Inventory otherInventory = view.getTopInventory() == inventory
                 ? view.getBottomInventory()
                 : view.getTopInventory();
-        if (otherInventory.getHolder() instanceof Menu && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+        if (otherInventory.getHolder() instanceof Menu
+                && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             event.setCancelled(true);
             return;
         }
@@ -98,6 +99,8 @@ public class MenuManager extends IManager<CodexEngine> {
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
         Menu openMenu = Menu.getOpenMenu(event.getPlayer());
-        if (openMenu != null) {openMenu.onClose();}
+        if (openMenu != null) {
+            openMenu.onClose();
+        }
     }
 }

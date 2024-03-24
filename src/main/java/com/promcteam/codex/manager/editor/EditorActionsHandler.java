@@ -37,7 +37,8 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
             IEditorActionsMain<?> editor    = (IEditorActionsMain<?>) editObject;
             if (editor.getActionBuilders().containsKey(sectionId)) return false;
 
-            ActionSection                    section = new ActionSection(new ArrayList<>(), new ArrayList<>(), "null", new ArrayList<>());
+            ActionSection                    section =
+                    new ActionSection(new ArrayList<>(), new ArrayList<>(), "null", new ArrayList<>());
             IEditorActionsMain.ActionBuilder builder = new IEditorActionsMain.ActionBuilder(section, sectionId);
 
             editor.getActionBuilders().put(sectionId, builder);
@@ -58,7 +59,9 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
             }
 
             // Check for valid Builder.
-            IEditorActionsMain.ActionBuilder builder = editor.getSectionEditor().getEditorMain().getActionBuilder(editor.getSectionEditor().getSectionId());
+            IEditorActionsMain.ActionBuilder builder = editor.getSectionEditor()
+                    .getEditorMain()
+                    .getActionBuilder(editor.getSectionEditor().getSectionId());
             if (builder == null) {
                 EditorManager.errorCustom(p, plugin.lang().Error_Internal.getMsg());
                 return false;
@@ -78,7 +81,8 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
 
         IEditorActionsParams<?>          paramEditor   = (IEditorActionsParams<?>) editObject;
         IEditorActionsSection<?>         sectionEditor = paramEditor.getSctionEditor();
-        IEditorActionsMain.ActionBuilder builder       = sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
+        IEditorActionsMain.ActionBuilder builder       =
+                sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
         if (builder == null) {
             EditorManager.errorCustom(p, plugin.lang().Error_Internal.getMsg());
             return false;
@@ -87,7 +91,11 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
         int pId = paramEditor.getpId();
 
         if (type == EditorType.OBJECT_ACTIONS_PARAM_VALUE) {
-            builder.addParametizedParam(pId, paramEditor.getCategory(), paramEditor.getParametized(), paramEditor.getClickedParam(), msg);
+            builder.addParametizedParam(pId,
+                    paramEditor.getCategory(),
+                    paramEditor.getParametized(),
+                    paramEditor.getClickedParam(),
+                    msg);
         } else if (type == EditorType.OBJECT_ACTIONS_PARAM_ADD) {
             String[] split = msg.split(" ");
             String   param = split[0];
@@ -99,7 +107,11 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
                 return false;
             }
 
-            builder.addParametizedParam(pId, paramEditor.getCategory(), paramEditor.getParametized(), param2.getFlag(), value);
+            builder.addParametizedParam(pId,
+                    paramEditor.getCategory(),
+                    paramEditor.getParametized(),
+                    param2.getFlag(),
+                    value);
         }
 
 

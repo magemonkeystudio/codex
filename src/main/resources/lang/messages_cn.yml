@@ -5,8 +5,8 @@ Core:
     Help:
       Format: '&6&e/%label% %cmd% %usage% &7- %description%'
       List:
-      - '&8&m━━━━━━━━━━━━&8&l[ &e&l%plugin% &7- &6&l帮助 &8&l]&8&m━━━━━━━━━━━━'
-      - '%cmds%'
+        - '&8&m━━━━━━━━━━━━&8&l[ &e&l%plugin% &7- &6&l帮助 &8&l]&8&m━━━━━━━━━━━━'
+        - '%cmds%'
       Desc: 显示帮助页面.
     Editor:
       Desc: 打开GUI编辑器.
@@ -22,12 +22,12 @@ Core:
       Silent: 已关闭加入游戏时显示的统计信息.
   Statistics:
     Info:
-    - '&6&m                     &6&l[ &e&lFCore 统计信息 &4Beta &6&l]&6&m                     &6'
-    - '&e你已经在 &6config.yml &e启用了 &6''统计信息'' &e模块.'
-    - '&e这意味着FCore会将相关插件的统计信息发送到我们的网站上.'
-    - '&7'
-    - '&3▸ &b你正在和 &a%count% &b个服务器一起使用 &a%child-plugin%&b!&7'
-    - '&7        %button_disable%       %button_silent%'
+      - '&6&m                     &6&l[ &e&lFCore 统计信息 &4Beta &6&l]&6&m                     &6'
+      - '&e你已经在 &6config.yml &e启用了 &6''统计信息'' &e模块.'
+      - '&e这意味着FCore会将相关插件的统计信息发送到我们的网站上.'
+      - '&7'
+      - '&3▸ &b你正在和 &a%count% &b个服务器一起使用 &a%child-plugin%&b!&7'
+      - '&7        %button_disable%       %button_silent%'
     Button:
       Disable:
         Text: '&c&l[停止统计信息!]'

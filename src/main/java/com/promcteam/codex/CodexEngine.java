@@ -1,6 +1,5 @@
 package com.promcteam.codex;
 
-import lombok.Getter;
 import com.promcteam.codex.api.armor.ArmorListener;
 import com.promcteam.codex.commands.api.IGeneralCommand;
 import com.promcteam.codex.commands.list.Base64Command;
@@ -29,6 +28,7 @@ import com.promcteam.codex.utils.ItemUT;
 import com.promcteam.codex.utils.Reflex;
 import com.promcteam.codex.utils.actions.ActionsManager;
 import com.promcteam.codex.utils.craft.CraftManager;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -70,10 +70,10 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     WorldGuardHK   worldGuard;
     @Getter
     IMythicHook    mythicMobs;
-    private CoreConfig  cfg;
-    private CoreLang    lang;
+    private CoreConfig     cfg;
+    private CoreLang       lang;
     @Getter
-    private HookManager hooksManager;
+    private HookManager    hooksManager;
     @Getter
     private ProItemManager itemManager;
 
@@ -140,9 +140,9 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     }
 
     private boolean setupNMS() {
-        Version current = Version.CURRENT;
-        String[] split = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
-        String rawVersion  = split[split.length - 1];
+        Version  current    = Version.CURRENT;
+        String[] split      = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+        String   rawVersion = split[split.length - 1];
         this.info("You are running MC version " + current + " (RAW: " + rawVersion + ")");
         if (current == null) {
             this.error("===== Codex Initialization Failure =====");
@@ -208,7 +208,9 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         this.cfg = new CoreConfig(this);
         this.cfg.setup();
 
-        commandMessage = this.cfg.getJYML().getString("Settings.command-cooldown-message", "&4Please wait &6{time} seconds &4before using the command again.");
+        commandMessage = this.cfg.getJYML()
+                .getString("Settings.command-cooldown-message",
+                        "&4Please wait &6{time} seconds &4before using the command again.");
         chatEnabled = this.cfg.getJYML().getBoolean("Features.chat-enabled", true);
         scoreboardsEnabled = this.cfg.getJYML().getBoolean("Features.scoreboards-enabled", true);
 
@@ -290,7 +292,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             }
             if (this.citizens == null && name.equalsIgnoreCase(Hooks.CITIZENS)) {
                 this.citizens = this.registerHook(Hooks.CITIZENS, CitizensHK.class);
-                return;
             }
         } catch (Exception ex) {
         }

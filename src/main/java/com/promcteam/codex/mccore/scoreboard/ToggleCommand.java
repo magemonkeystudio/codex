@@ -49,7 +49,8 @@ public class ToggleCommand implements ICommand {
     public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
         PlayerBoards board = BoardManager.getPlayerBoards(sender.getName());
         board.toggle();
-        sender.sendMessage(ChatColor.DARK_GREEN + "Your scoreboard is now " + (board.isEnabled() ? "enabled" : "disabled"));
+        sender.sendMessage(
+                ChatColor.DARK_GREEN + "Your scoreboard is now " + (board.isEnabled() ? "enabled" : "disabled"));
     }
 
     /**

@@ -8,9 +8,9 @@ public enum HookState {
     ERROR("Error!"),
     ;
 
-    private String state;
+    private final String state;
 
-    private HookState(@NotNull String state) {
+    HookState(@NotNull String state) {
         this.state = state;
     }
 

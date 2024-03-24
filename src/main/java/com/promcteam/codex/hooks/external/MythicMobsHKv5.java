@@ -1,5 +1,8 @@
 package com.promcteam.codex.hooks.external;
 
+import com.promcteam.codex.CodexEngine;
+import com.promcteam.codex.hooks.HookState;
+import com.promcteam.codex.hooks.NHook;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.MythicMob;
@@ -9,9 +12,6 @@ import io.lumine.mythic.bukkit.utils.serialize.Position;
 import io.lumine.mythic.core.mobs.ActiveMob;
 import io.lumine.mythic.core.skills.SkillMetadataImpl;
 import io.lumine.mythic.core.skills.SkillTriggers;
-import com.promcteam.codex.CodexEngine;
-import com.promcteam.codex.hooks.HookState;
-import com.promcteam.codex.hooks.NHook;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

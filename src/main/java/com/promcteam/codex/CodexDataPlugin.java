@@ -1,9 +1,9 @@
 package com.promcteam.codex;
 
-import lombok.NoArgsConstructor;
 import com.promcteam.codex.data.IDataHandler;
 import com.promcteam.codex.data.users.IAbstractUser;
 import com.promcteam.codex.data.users.IUserManager;
+import lombok.NoArgsConstructor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;

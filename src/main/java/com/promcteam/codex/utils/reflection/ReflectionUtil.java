@@ -3,11 +3,11 @@ package com.promcteam.codex.utils.reflection;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import io.netty.channel.Channel;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.core.Version;
 import com.promcteam.codex.utils.Reflex;
 import com.promcteam.codex.utils.constants.JNumbers;
+import io.netty.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
@@ -52,7 +52,8 @@ public interface ReflectionUtil {
     }
 
     default Class<?> getCraftClass(String craftClassName) throws ClassNotFoundException {
-        String   version    = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+        String   version    =
+                Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
         String   name       = "org.bukkit.craftbukkit." + version + craftClassName;
         Class<?> craftClass = Class.forName(name);
         return craftClass;
@@ -157,7 +158,7 @@ public interface ReflectionUtil {
     void changeSkull(Block b, String hash);
 
     default GameProfile getNonPlayerProfile(String hash) {
-        UUID uid = UUID.randomUUID();
+        UUID        uid     = UUID.randomUUID();
         GameProfile profile = new GameProfile(uid, uid.toString().substring(0, 8));
         profile.getProperties().put("textures", new Property("textures", hash));
 
@@ -166,10 +167,11 @@ public interface ReflectionUtil {
 
     default void setKiller(LivingEntity entity, Player player) {
         try {
-            Class<?> living = ReflectionManager.MINOR_VERSION >= 17 ? Reflex.getClass("net.minecraft.world.entity.EntityLiving")
-                    : Reflex.getNMSClass("EntityLiving");
-            Method handle = Reflex.getCraftClass("entity.CraftEntity").getDeclaredMethod("getHandle");
-            Field  killer = living.getDeclaredField(getKillerField());
+            Class<?> living =
+                    ReflectionManager.MINOR_VERSION >= 17 ? Reflex.getClass("net.minecraft.world.entity.EntityLiving")
+                            : Reflex.getNMSClass("EntityLiving");
+            Method handle     = Reflex.getCraftClass("entity.CraftEntity").getDeclaredMethod("getHandle");
+            Field  killer     = living.getDeclaredField(getKillerField());
             Field  damageTime = living.getDeclaredField(getDamageTimeField());
 
             killer.setAccessible(true);

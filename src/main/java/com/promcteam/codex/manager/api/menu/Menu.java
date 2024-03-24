@@ -102,7 +102,9 @@ public abstract class Menu implements InventoryHolder {
                 .replace("%pages%", String.valueOf(getPages())));
         for (int i = 0, last = Menu.this.inventory.getSize(); i < last; i++) {
             Slot slot = slots.get(finalPage * Menu.this.inventory.getSize() + i);
-            if (slot != null) {inventory.setItem(i, slot.getItemStack());}
+            if (slot != null) {
+                inventory.setItem(i, slot.getItemStack());
+            }
         }
         Menu.this.opening = true;
         player.openInventory(inventory);
@@ -140,9 +142,15 @@ public abstract class Menu implements InventoryHolder {
             this.fakeClosing = false;
             return;
         }
-        for (Listener listener : this.listeners) {HandlerList.unregisterAll(listener);}
+        for (Listener listener : this.listeners) {
+            HandlerList.unregisterAll(listener);
+        }
         this.listeners.clear();
-        for (BukkitTask task : this.tasks) {if (!task.isCancelled()) {task.cancel();}}
+        for (BukkitTask task : this.tasks) {
+            if (!task.isCancelled()) {
+                task.cancel();
+            }
+        }
         this.tasks.clear();
         ACTIVE_MENUS.remove(this.player);
         if (this.parentMenu != null && this.player.isOnline()) {
@@ -157,7 +165,8 @@ public abstract class Menu implements InventoryHolder {
 
     protected Slot getPrevButton() {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
-        ItemUT.addSkullTexture(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0YTliNzBhMjVhMjdkODE4OWU2MGQyN2VhOGNjOTYzMmMzNmI0NjkyODE1NWRlNzc1NWYzNjZlZjA0Yzg3NyJ9fX0=");
+        ItemUT.addSkullTexture(itemStack,
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0YTliNzBhMjVhMjdkODE4OWU2MGQyN2VhOGNjOTYzMmMzNmI0NjkyODE1NWRlNzc1NWYzNjZlZjA0Yzg3NyJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.RESET + "Previous Page");
@@ -175,7 +184,8 @@ public abstract class Menu implements InventoryHolder {
 
     protected Slot getNextButton() {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
-        ItemUT.addSkullTexture(itemStack, "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTkxNTJjMmU5MWY0NzA0ODViZTIyMmRiNWQyYTg5NWNhZGM5MDMzMjZmNWM2NzFiZjhhNTU5MTQ5NjczYmU4MCJ9fX0=");
+        ItemUT.addSkullTexture(itemStack,
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTkxNTJjMmU5MWY0NzA0ODViZTIyMmRiNWQyYTg5NWNhZGM5MDMzMjZmNWM2NzFiZjhhNTU5MTQ5NjczYmU4MCJ9fX0=");
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.RESET + "Next Page");
@@ -197,13 +207,17 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public void unregisterListener(Listener listener) {
-        if (this.listeners.remove(listener)) {HandlerList.unregisterAll(listener);}
+        if (this.listeners.remove(listener)) {
+            HandlerList.unregisterAll(listener);
+        }
     }
 
     public void registerTask(BukkitTask task) {this.tasks.add(task);}
 
     public void unregisterTask(BukkitTask task) {
-        if (this.tasks.remove(task) && !task.isCancelled()) {task.cancel();}
+        if (this.tasks.remove(task) && !task.isCancelled()) {
+            task.cancel();
+        }
     }
 
     public static class PreviousPageButton extends Slot {

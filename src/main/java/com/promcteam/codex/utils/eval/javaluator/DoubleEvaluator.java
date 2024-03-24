@@ -197,15 +197,18 @@ public class DoubleEvaluator extends AbstractEvaluator<Double> {
     /**
      * The standard whole set of predefined operators
      */
-    private static final Operator[] OPERATORS       = new Operator[]{NEGATE, MINUS, PLUS, MULTIPLY, DIVIDE, EXPONENT, MODULO};
+    private static final Operator[] OPERATORS       =
+            new Operator[]{NEGATE, MINUS, PLUS, MULTIPLY, DIVIDE, EXPONENT, MODULO};
     /**
      * The excel like whole set of predefined operators
      */
-    private static final Operator[] OPERATORS_EXCEL = new Operator[]{NEGATE_HIGH, MINUS, PLUS, MULTIPLY, DIVIDE, EXPONENT, MODULO};
+    private static final Operator[] OPERATORS_EXCEL =
+            new Operator[]{NEGATE_HIGH, MINUS, PLUS, MULTIPLY, DIVIDE, EXPONENT, MODULO};
     /**
      * The whole set of predefined functions
      */
-    private static final Function[] FUNCTIONS       = new Function[]{SINE, COSINE, TANGENT, ASINE, ACOSINE, ATAN, SINEH, COSINEH, TANGENTH, MIN, MAX, SUM, AVERAGE, LN, LOG, ROUND, CEIL, FLOOR, ABS, RANDOM};
+    private static final Function[] FUNCTIONS       =
+            new Function[]{SINE, COSINE, TANGENT, ASINE, ACOSINE, ATAN, SINEH, COSINEH, TANGENTH, MIN, MAX, SUM, AVERAGE, LN, LOG, ROUND, CEIL, FLOOR, ABS, RANDOM};
     /**
      * The whole set of predefined constants
      */

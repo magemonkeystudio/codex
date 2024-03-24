@@ -323,7 +323,14 @@ public class Particle {
      * @param speed    particle speed
      * @param count    number of particles
      */
-    public static void play(String particle, Location loc, int radius, float dx, float dy, float dz, float speed, int count) {
+    public static void play(String particle,
+                            Location loc,
+                            int radius,
+                            float dx,
+                            float dy,
+                            float dz,
+                            float speed,
+                            int count) {
         play(particle, loc, radius, dx, dy, dz, speed, count, new int[0]);
     }
 
@@ -342,7 +349,15 @@ public class Particle {
      * @param count    number of particles
      * @param extra    extra data for 1.8+
      */
-    public static void play(String particle, Location loc, int radius, float dx, float dy, float dz, float speed, int count, int[] extra) {
+    public static void play(String particle,
+                            Location loc,
+                            int radius,
+                            float dx,
+                            float dy,
+                            float dz,
+                            float speed,
+                            int count,
+                            int[] extra) {
         if (!initialized) {
             initialize();
         }
@@ -362,11 +377,32 @@ public class Particle {
             }
             if (enumValue != null) {
                 try {
-                    Object packet = packetClass.getConstructor(particleEnum, Boolean.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Float.TYPE, Integer.TYPE, int[].class)
-                            .newInstance(enumValue, true, (float) loc.getX(), (float) loc.getY(), (float) loc.getZ(), dx, dy, dz, speed, count, extra);
+                    Object packet = packetClass.getConstructor(particleEnum,
+                                    Boolean.TYPE,
+                                    Float.TYPE,
+                                    Float.TYPE,
+                                    Float.TYPE,
+                                    Float.TYPE,
+                                    Float.TYPE,
+                                    Float.TYPE,
+                                    Float.TYPE,
+                                    Integer.TYPE,
+                                    int[].class)
+                            .newInstance(enumValue,
+                                    true,
+                                    (float) loc.getX(),
+                                    (float) loc.getY(),
+                                    (float) loc.getZ(),
+                                    dx,
+                                    dy,
+                                    dz,
+                                    speed,
+                                    count,
+                                    extra);
 
                     for (Player player : VersionManager.getOnlinePlayers()) {
-                        if (player.getWorld() == loc.getWorld() && player.getLocation().distanceSquared(loc) < radius * radius) {
+                        if (player.getWorld() == loc.getWorld()
+                                && player.getLocation().distanceSquared(loc) < radius * radius) {
                             ReflectionManager.getReflectionUtil().sendPacket(player, packet);
                         }
                     }
@@ -387,7 +423,8 @@ public class Particle {
             Reflex.setValue(packet, "h", speed);
             Reflex.setValue(packet, "i", count);
             for (Player player : VersionManager.getOnlinePlayers()) {
-                if (player.getWorld() == loc.getWorld() && player.getLocation().distanceSquared(loc) < radius * radius) {
+                if (player.getWorld() == loc.getWorld()
+                        && player.getLocation().distanceSquared(loc) < radius * radius) {
                     ReflectionManager.getReflectionUtil().sendPacket(player, packet);
                 }
             }

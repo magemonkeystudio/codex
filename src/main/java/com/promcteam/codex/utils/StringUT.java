@@ -25,7 +25,7 @@ public class StringUT {
 
     @NotNull
     public static String colorSensitiveStrip(@NotNull String str) {
-        int length = str.length();
+        int           length = str.length();
         StringBuilder result = new StringBuilder();
 
         int i = 0;
@@ -49,7 +49,7 @@ public class StringUT {
 
         int leadingLength = result.length();
 
-        int j = length-1;
+        int j = length - 1;
         for (; j > i; j--) {
             char a = str.charAt(j);
             if (a == ' ') continue;
@@ -65,7 +65,7 @@ public class StringUT {
             }
         }
 
-        result.insert(leadingLength, str.substring(i, j+1));
+        result.insert(leadingLength, str.substring(i, j + 1));
         return result.toString();
     }
 

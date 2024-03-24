@@ -22,8 +22,12 @@ public class Reflection_1_20 extends Reflection_1_17 {
 
             String fieldName = "c";
             Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
-            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass().getSimpleName().equals("GeneratedInterceptor")) {
-                CodexEngine.get().getLogger().warning("Expected PlayerConnection, got " + con.getClass().getSimpleName() + " instead!");
+            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass()
+                    .getSimpleName()
+                    .equals("GeneratedInterceptor")) {
+                CodexEngine.get()
+                        .getLogger()
+                        .warning("Expected PlayerConnection, got " + con.getClass().getSimpleName() + " instead!");
                 throw new ClassNotFoundException("Could not get connection from CraftPlayer using field " + fieldName +
                         "\nNMS Player: " + nmsPlayer + "\n");
             }
@@ -64,11 +68,14 @@ public class Reflection_1_20 extends Reflection_1_17 {
                 Object armorEquipmentSlot = Reflex.invokeMethod(getEquipmentSlot, tool);
                 if (!Version.CURRENT.isLower(Version.V1_19_R3)) {
                     // If it's 1.19.4, the 'b' method returns a different enum, so we have to get the slot out of that enum
-                    armorEquipmentSlot = Reflex.invokeMethod(Reflex.getMethod(armorEquipmentSlot.getClass(), "a"), armorEquipmentSlot);
+                    armorEquipmentSlot = Reflex.invokeMethod(Reflex.getMethod(armorEquipmentSlot.getClass(), "a"),
+                            armorEquipmentSlot);
                 }
                 Method getDefaultAttributeModifiers = Reflex.getMethod(itemArmorClass, "a", enumItemSlotClass);
 
-                return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers, tool, armorEquipmentSlot);
+                return (Multimap<Object, Object>) Reflex.invokeMethod(getDefaultAttributeModifiers,
+                        tool,
+                        armorEquipmentSlot);
             }
 
             Object tool;

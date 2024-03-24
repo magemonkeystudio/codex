@@ -1,7 +1,7 @@
 package com.promcteam.codex.mccore.config.parse;
 
-import lombok.extern.slf4j.Slf4j;
 import com.promcteam.codex.CodexEngine;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -101,11 +101,12 @@ class YAMLParserTest {
     @Test
     void parseText_russian() {
         String text = "message: \"&4[&fБоевой чат&4] &4&lЯрость утихла, гнев ослаб, вы больше не в силах\n"
-                    + "  сопротивляться смерти.\"";
+                + "  сопротивляться смерти.\"";
 
         DataSection data = yamlParser.parseText(text);
 
-        assertEquals("&4[&fБоевой чат&4] &4&lЯрость утихла, гнев ослаб, вы больше не в силах сопротивляться смерти.", data.getString("message"));
+        assertEquals("&4[&fБоевой чат&4] &4&lЯрость утихла, гнев ослаб, вы больше не в силах сопротивляться смерти.",
+                data.getString("message"));
     }
 
     @Test

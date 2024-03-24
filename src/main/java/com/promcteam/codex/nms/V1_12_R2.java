@@ -37,7 +37,9 @@ public class V1_12_R2 implements NMS {
             Method a = Reflex.getMethod(nmsItemClass, "load", reflectionUtil.getNMSClass("NBTTagCompound"));
             Reflex.invokeMethod(a, nmsItem, nbtTagCompoundRoot);
 
-            Method    asBukkitCopy = Reflex.getMethod(reflectionUtil.getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
+            Method    asBukkitCopy = Reflex.getMethod(reflectionUtil.getCraftClass("inventory.CraftItemStack"),
+                    "asBukkitCopy",
+                    nmsItemClass);
             ItemStack item         = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
 
             return item;
@@ -55,7 +57,8 @@ public class V1_12_R2 implements NMS {
             Object nmsCopy        = reflectionUtil.getNMSCopy(item);
             Method getOrCreateTag = Reflex.getMethod(nmsCopy.getClass(), "getTag");
             Object tag            = Reflex.invokeMethod(getOrCreateTag, nmsCopy);
-            if (tag == null) tag = Reflex.invokeConstructor(Reflex.getConstructor(reflectionUtil.getNMSClass("NBTTagCompound")));
+            if (tag == null)
+                tag = Reflex.invokeConstructor(Reflex.getConstructor(reflectionUtil.getNMSClass("NBTTagCompound")));
             Method asString = Reflex.getMethod(tag.getClass(), "toString");
             return (String) Reflex.invokeMethod(asString, tag);
         } catch (Exception e) {
@@ -178,7 +181,8 @@ public class V1_12_R2 implements NMS {
             Method getName = Reflex.getMethod(attributeBaseClass, "getName");
 
 
-            Collection<Object> att = attMap.get((String) Reflex.invokeMethod(getName, attributeBaseClass.cast(attackDamage)));
+            Collection<Object> att =
+                    attMap.get((String) Reflex.invokeMethod(getName, attributeBaseClass.cast(attackDamage)));
             Object mod = attributeModifierClass.cast((att == null || att.isEmpty())
                     ? 0
                     : att.stream().findFirst().get());

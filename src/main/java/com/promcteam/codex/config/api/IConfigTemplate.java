@@ -103,7 +103,8 @@ public abstract class IConfigTemplate {
 
     @NotNull
     public final String getModuleName(@NotNull IModule<?> module) {
-        this.cfg.addMissing("modules." + module.getId() + ".name", StringUT.capitalizeFully(module.getId().replace("_", " ")));
+        this.cfg.addMissing("modules." + module.getId() + ".name",
+                StringUT.capitalizeFully(module.getId().replace("_", " ")));
         this.cfg.saveChanges();
         return this.cfg.getString("modules." + module.getId() + ".name", module.getId());
     }

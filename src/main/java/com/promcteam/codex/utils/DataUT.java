@@ -195,16 +195,19 @@ public class DataUT {
 
     public static PersistentDataContainer itemPersistentDataContainer() {
         try {
-            String packageName = Bukkit.getServer().getClass().getPackage().getName();
-            Class<?> craftItemMetaClass = Class.forName(packageName+".inventory.CraftMetaItem");
-            Field dataTypeRegistryField = craftItemMetaClass.getDeclaredField("DATA_TYPE_REGISTRY");
+            String   packageName           = Bukkit.getServer().getClass().getPackage().getName();
+            Class<?> craftItemMetaClass    = Class.forName(packageName + ".inventory.CraftMetaItem");
+            Field    dataTypeRegistryField = craftItemMetaClass.getDeclaredField("DATA_TYPE_REGISTRY");
             dataTypeRegistryField.setAccessible(true);
             Object dataTypeRegistry = dataTypeRegistryField.get(null);
 
-            Class<?> craftPersistentDataContainerClass = Class.forName(packageName+".persistence.CraftPersistentDataContainer");
-            Constructor<?> craftPersistentDataContainerConstructor = craftPersistentDataContainerClass.getDeclaredConstructor(dataTypeRegistry.getClass());
+            Class<?>       craftPersistentDataContainerClass       =
+                    Class.forName(packageName + ".persistence.CraftPersistentDataContainer");
+            Constructor<?> craftPersistentDataContainerConstructor =
+                    craftPersistentDataContainerClass.getDeclaredConstructor(dataTypeRegistry.getClass());
             return (PersistentDataContainer) craftPersistentDataContainerConstructor.newInstance(dataTypeRegistry);
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException | InstantiationException | InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException | NoSuchMethodException |
+                 InstantiationException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }
@@ -353,7 +356,7 @@ public class DataUT {
 
         @NotNull
         public Byte toPrimitive(@NotNull Boolean complex, @NotNull PersistentDataAdapterContext context) {
-            return (byte)(complex ? 1 : 0);
+            return (byte) (complex ? 1 : 0);
         }
 
         @NotNull

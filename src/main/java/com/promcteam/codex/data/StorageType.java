@@ -8,9 +8,9 @@ public enum StorageType {
     SQLITE("SQLite"),
     ;
 
-    private String name;
+    private final String name;
 
-    private StorageType(@NotNull String name) {
+    StorageType(@NotNull String name) {
         this.name = name;
     }
 

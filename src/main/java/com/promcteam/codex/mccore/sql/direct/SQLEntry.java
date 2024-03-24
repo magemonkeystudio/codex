@@ -197,9 +197,12 @@ public class SQLEntry {
     public void set(String key, String value) {
         try {
             if (value != null) value = value.replace('\'', SQUOTE);
-            database.getStatement().execute("UPDATE " + table.getName() + " SET " + key + "='" + value + "' WHERE Name='" + name + "'");
+            database.getStatement()
+                    .execute(
+                            "UPDATE " + table.getName() + " SET " + key + "='" + value + "' WHERE Name='" + name + "'");
         } catch (Exception ex) {
-            database.getLogger().severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
+            database.getLogger()
+                    .severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
         }
     }
 
@@ -211,9 +214,11 @@ public class SQLEntry {
      */
     public void set(String key, int value) {
         try {
-            database.getStatement().execute("UPDATE " + table.getName() + " SET " + key + "=" + value + " WHERE Name='" + name + "'");
+            database.getStatement()
+                    .execute("UPDATE " + table.getName() + " SET " + key + "=" + value + " WHERE Name='" + name + "'");
         } catch (Exception ex) {
-            database.getLogger().severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
+            database.getLogger()
+                    .severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
         }
     }
 
@@ -225,9 +230,11 @@ public class SQLEntry {
      */
     public void set(String key, double value) {
         try {
-            database.getStatement().execute("UPDATE " + table.getName() + " SET " + key + "=" + value + " WHERE Name='" + name + "'");
+            database.getStatement()
+                    .execute("UPDATE " + table.getName() + " SET " + key + "=" + value + " WHERE Name='" + name + "'");
         } catch (Exception ex) {
-            database.getLogger().severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
+            database.getLogger()
+                    .severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
         }
     }
 
@@ -239,9 +246,11 @@ public class SQLEntry {
      */
     public void set(String key, float value) {
         try {
-            database.getStatement().execute("UPDATE " + table.getName() + " SET " + key + "=" + value + " WHERE Name='" + name + "'");
+            database.getStatement()
+                    .execute("UPDATE " + table.getName() + " SET " + key + "=" + value + " WHERE Name='" + name + "'");
         } catch (Exception ex) {
-            database.getLogger().severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
+            database.getLogger()
+                    .severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
         }
     }
 
@@ -253,9 +262,13 @@ public class SQLEntry {
      */
     public void set(String key, Date value) {
         try {
-            database.getStatement().execute("UPDATE " + table.getName() + " SET " + key + "='" + FORMAT.format(value) + "' WHERE Name='" + name + "'");
+            database.getStatement()
+                    .execute(
+                            "UPDATE " + table.getName() + " SET " + key + "='" + FORMAT.format(value) + "' WHERE Name='"
+                                    + name + "'");
         } catch (Exception ex) {
-            database.getLogger().severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
+            database.getLogger()
+                    .severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());
         }
     }
 

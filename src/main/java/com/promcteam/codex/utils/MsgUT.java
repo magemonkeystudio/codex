@@ -17,7 +17,8 @@ import java.util.regex.Pattern;
 
 public class MsgUT {
 
-    private static final Pattern  PATTERN_JSON_FULL      = Pattern.compile("(\\{json:)+(.)+?(\\})+(.*?)(\\{end-json\\})");
+    private static final Pattern  PATTERN_JSON_FULL      =
+            Pattern.compile("(\\{json:)+(.)+?(\\})+(.*?)(\\{end-json\\})");
     private static final Pattern  PATTERN_JSON_ARGUMENTS = Pattern.compile("(\\{json:)+(.)+?(\\})+(.*?)(\\})?");
     private static final String[] JSON_ARGUMENTS         = new String[]{"hint", "chat-type", "chat-suggest", "url"};
 
@@ -26,7 +27,12 @@ public class MsgUT {
     }
 
     @Deprecated
-    public static void sendTitles(@NotNull Player player, @NotNull String title, @NotNull String subtitle, int fadeIn, int stay, int fadeOut) {
+    public static void sendTitles(@NotNull Player player,
+                                  @NotNull String title,
+                                  @NotNull String subtitle,
+                                  int fadeIn,
+                                  int stay,
+                                  int fadeOut) {
         player.sendTitle(title, subtitle, fadeIn, stay, fadeOut);
     }
 

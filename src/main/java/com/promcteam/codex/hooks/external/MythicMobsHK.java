@@ -1,12 +1,12 @@
 package com.promcteam.codex.hooks.external;
 
+import com.promcteam.codex.CodexEngine;
+import com.promcteam.codex.hooks.HookState;
+import com.promcteam.codex.hooks.NHook;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.api.exceptions.InvalidMobTypeException;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import io.lumine.xikage.mythicmobs.mobs.MythicMob;
-import com.promcteam.codex.CodexEngine;
-import com.promcteam.codex.hooks.HookState;
-import com.promcteam.codex.hooks.NHook;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -53,7 +53,10 @@ public class MythicMobsHK extends NHook<CodexEngine> implements IMythicHook {
 
     @Override
     public boolean isDropTable(@NotNull String table) {
-        return mm.getDropManager().getDropTable(table) != null && MythicMobs.inst().getDropManager().getDropTable(table).isPresent();
+        return mm.getDropManager().getDropTable(table) != null && MythicMobs.inst()
+                .getDropManager()
+                .getDropTable(table)
+                .isPresent();
     }
 
     @Override

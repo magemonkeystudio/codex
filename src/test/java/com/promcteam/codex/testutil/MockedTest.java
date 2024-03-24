@@ -38,9 +38,9 @@ import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public abstract class MockedTest {
-    protected ServerMock       server;
-    protected CodexEngine      plugin;
-    protected List<PlayerMock> players = new ArrayList<>();
+    protected ServerMock                      server;
+    protected CodexEngine                     plugin;
+    protected List<PlayerMock>                players = new ArrayList<>();
     protected MockedStatic<Reflex>            reflex;
     protected MockedStatic<CommandRegister>   commandRegister;
     protected MockedStatic<ReflectionUtil>    mockedReflection;
@@ -65,7 +65,11 @@ public abstract class MockedTest {
                 .thenAnswer(ans -> {
                     Plugin          plugin  = ans.getArgument(0);
                     IGeneralCommand command = ans.getArgument(1);
-                    CommandRegister cmd     = new CommandRegister(command.labels(), command.description(), command.usage(), command, plugin);
+                    CommandRegister cmd     = new CommandRegister(command.labels(),
+                            command.description(),
+                            command.usage(),
+                            command,
+                            plugin);
                     cmd.setTabCompleter(command);
                     cmd.setPermission(command.getPermission());
 

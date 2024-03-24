@@ -112,7 +112,9 @@ public class TestChannel implements Channel {
             }
 
             @Override
-            public ChannelPipeline addFirst(EventExecutorGroup eventExecutorGroup, String s, ChannelHandler channelHandler) {
+            public ChannelPipeline addFirst(EventExecutorGroup eventExecutorGroup,
+                                            String s,
+                                            ChannelHandler channelHandler) {
                 return null;
             }
 
@@ -122,7 +124,9 @@ public class TestChannel implements Channel {
             }
 
             @Override
-            public ChannelPipeline addLast(EventExecutorGroup eventExecutorGroup, String s, ChannelHandler channelHandler) {
+            public ChannelPipeline addLast(EventExecutorGroup eventExecutorGroup,
+                                           String s,
+                                           ChannelHandler channelHandler) {
                 return null;
             }
 
@@ -132,7 +136,10 @@ public class TestChannel implements Channel {
             }
 
             @Override
-            public ChannelPipeline addBefore(EventExecutorGroup eventExecutorGroup, String s, String s1, ChannelHandler channelHandler) {
+            public ChannelPipeline addBefore(EventExecutorGroup eventExecutorGroup,
+                                             String s,
+                                             String s1,
+                                             ChannelHandler channelHandler) {
                 return null;
             }
 
@@ -142,7 +149,10 @@ public class TestChannel implements Channel {
             }
 
             @Override
-            public ChannelPipeline addAfter(EventExecutorGroup eventExecutorGroup, String s, String s1, ChannelHandler channelHandler) {
+            public ChannelPipeline addAfter(EventExecutorGroup eventExecutorGroup,
+                                            String s,
+                                            String s1,
+                                            ChannelHandler channelHandler) {
                 return null;
             }
 
@@ -357,7 +367,9 @@ public class TestChannel implements Channel {
             }
 
             @Override
-            public ChannelFuture connect(SocketAddress socketAddress, SocketAddress socketAddress1, ChannelPromise channelPromise) {
+            public ChannelFuture connect(SocketAddress socketAddress,
+                                         SocketAddress socketAddress1,
+                                         ChannelPromise channelPromise) {
                 return null;
             }
 
@@ -480,7 +492,9 @@ public class TestChannel implements Channel {
     }
 
     @Override
-    public ChannelFuture connect(SocketAddress socketAddress, SocketAddress socketAddress1, ChannelPromise channelPromise) {
+    public ChannelFuture connect(SocketAddress socketAddress,
+                                 SocketAddress socketAddress1,
+                                 ChannelPromise channelPromise) {
         return null;
     }
 

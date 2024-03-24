@@ -14,8 +14,8 @@ import java.util.Map;
 
 public abstract class ILangTemplate {
 
-    protected CodexPlugin<?> plugin;
-    protected JYML           config;
+    protected CodexPlugin<?>      plugin;
+    protected JYML                config;
     protected ILangTemplate       parent;
     protected Map<String, String> customPlaceholders;
 

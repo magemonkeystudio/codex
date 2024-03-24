@@ -104,8 +104,10 @@ public class MapFont {
                 BufferedImage buffer = new BufferedImage(32, 32, 2);
                 Graphics2D    g      = buffer.createGraphics();
                 g.setFont(font);
-                Rectangle2D bounds = font.createGlyphVector(g.getFontRenderContext(), c + "").getPixelBounds(g.getFontRenderContext(), 0, 0);
-                if (bounds.getWidth() <= 0 || bounds.getHeight() <= 0 || bounds.getWidth() > 32 || bounds.getHeight() > 32) {
+                Rectangle2D bounds = font.createGlyphVector(g.getFontRenderContext(), c + "")
+                        .getPixelBounds(g.getFontRenderContext(), 0, 0);
+                if (bounds.getWidth() <= 0 || bounds.getHeight() <= 0 || bounds.getWidth() > 32
+                        || bounds.getHeight() > 32) {
                     chars.put(c, new MapChar(new boolean[]{false}, 1, 1, 0));
                 } else {
                     g.drawString(c + "", 0, -(int) bounds.getY());
@@ -114,10 +116,12 @@ public class MapFont {
                     buffer.getData().getPixels(0, 0, (int) bounds.getWidth(), (int) bounds.getHeight(), pixels);
                     for (int j = 0; j < bounds.getHeight(); j++) {
                         for (int i = 0; i < bounds.getWidth(); i++) {
-                            data[(j * (int) bounds.getWidth()) + i] = pixels[(j * 4 * (int) bounds.getWidth()) + i * 4] > 0;
+                            data[(j * (int) bounds.getWidth()) + i] =
+                                    pixels[(j * 4 * (int) bounds.getWidth()) + i * 4] > 0;
                         }
                     }
-                    chars.put(c, new MapChar(data, (int) bounds.getWidth(), (int) bounds.getHeight(), (int) bounds.getY()));
+                    chars.put(c,
+                            new MapChar(data, (int) bounds.getWidth(), (int) bounds.getHeight(), (int) bounds.getY()));
                 }
             }
         }

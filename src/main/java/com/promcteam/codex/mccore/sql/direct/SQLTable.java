@@ -120,7 +120,9 @@ public class SQLTable {
             Statement statement = database.getStatement();
             statement.execute("ALTER TABLE " + this.name + " ADD " + name + " " + type.toString());
         } catch (Exception ex) {
-            database.getLogger().severe("Failed to add the column \"" + name + "\" to the table \"" + this.name + "\" - " + ex.getMessage());
+            database.getLogger()
+                    .severe("Failed to add the column \"" + name + "\" to the table \"" + this.name + "\" - "
+                            + ex.getMessage());
         }
     }
 

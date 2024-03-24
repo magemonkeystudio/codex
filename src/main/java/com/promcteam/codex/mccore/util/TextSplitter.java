@@ -82,7 +82,8 @@ public class TextSplitter {
                 if (pieces[i].length() + line.length() > maxLength - SPACE) {
 
                     // If it would hardly wrap, just wait for the next line
-                    if (line.length() > maxLength - MIN_WRAP || line.length() + pieces[i].length() < maxLength - SPACE - DASH + MIN_WRAP) {
+                    if (line.length() > maxLength - MIN_WRAP
+                            || line.length() + pieces[i].length() < maxLength - SPACE - DASH + MIN_WRAP) {
                         lines.add(line);
                         line = "";
                         i--;

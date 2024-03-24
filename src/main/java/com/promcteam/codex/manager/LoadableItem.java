@@ -9,10 +9,10 @@ import java.io.File;
 
 public abstract class LoadableItem {
 
-    public final CodexPlugin<?> plugin;
-    protected    String         id;
-    protected final String       path;
-    protected final JYML         cfg;
+    public final    CodexPlugin<?> plugin;
+    protected       String         id;
+    protected final String         path;
+    protected final JYML           cfg;
 
     public LoadableItem(@NotNull CodexPlugin<?> plugin, @NotNull String path) throws InvalidConfigurationException {
         this(plugin, new JYML(new File(path)));

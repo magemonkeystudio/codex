@@ -1,5 +1,8 @@
 package com.promcteam.codex.hooks.external;
 
+import com.promcteam.codex.CodexEngine;
+import com.promcteam.codex.hooks.HookState;
+import com.promcteam.codex.hooks.NHook;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
@@ -7,9 +10,6 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.promcteam.codex.CodexEngine;
-import com.promcteam.codex.hooks.HookState;
-import com.promcteam.codex.hooks.NHook;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;

@@ -69,7 +69,8 @@ public class CommandListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommand(PlayerCommandPreprocessEvent event) {
         if (CommandManager.isInvalidRegistration()) {
-            String[] args = event.getMessage().contains(" ") ? event.getMessage().split(" ") : new String[]{event.getMessage()};
+            String[] args =
+                    event.getMessage().contains(" ") ? event.getMessage().split(" ") : new String[]{event.getMessage()};
             if (args[0].startsWith("/")) args[0] = args[0].substring(1);
             ConfigurableCommand cmd = CommandManager.getCommand(args[0]);
             if (cmd != null) {
@@ -88,7 +89,8 @@ public class CommandListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCommand(ServerCommandEvent event) {
         if (CommandManager.isInvalidRegistration()) {
-            String[] args = event.getCommand().contains(" ") ? event.getCommand().split(" ") : new String[]{event.getCommand()};
+            String[] args =
+                    event.getCommand().contains(" ") ? event.getCommand().split(" ") : new String[]{event.getCommand()};
             if (args[0].startsWith("/")) args[0] = args[0].substring(1);
             ConfigurableCommand cmd = CommandManager.getCommand(args[0]);
             if (cmd != null) {

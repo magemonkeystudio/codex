@@ -2,11 +2,11 @@ package com.promcteam.codex.utils.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import io.netty.channel.Channel;
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.core.Version;
 import com.promcteam.codex.utils.Reflex;
 import com.promcteam.codex.utils.random.Rnd;
+import io.netty.channel.Channel;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -27,14 +27,14 @@ import java.util.Random;
 
 public class Reflection_1_17 implements ReflectionUtil {
 
-    private static final String DAMAGE_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-        ? "c" : "f";
-    private static final String SPEED_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-        ? "e" : "h";
-    private static final String ARMOR_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-        ? "a" : "i";
+    private static final String DAMAGE_ATTRIBUTE    = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+            ? "c" : "f";
+    private static final String SPEED_ATTRIBUTE     = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+            ? "e" : "h";
+    private static final String ARMOR_ATTRIBUTE     = Version.CURRENT.isAtLeast(Version.V1_20_R3)
+            ? "a" : "i";
     private static final String TOUGHNESS_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-        ? "b" : "j";
+            ? "b" : "j";
 
     @Override
     public Object newNBTTagCompound() {

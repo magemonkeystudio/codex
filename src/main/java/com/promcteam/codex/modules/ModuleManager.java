@@ -33,7 +33,8 @@ public class ModuleManager<P extends CodexPlugin<P>> implements Loadable {
         this.externalCache = new ArrayList<>();
 
         // Prepare external module instances from .jar files.
-        this.plugin.getConfigManager().extractFullPath(plugin.getDataFolder() + CoreConfig.MODULES_PATH_EXTERNAL, "jar");
+        this.plugin.getConfigManager()
+                .extractFullPath(plugin.getDataFolder() + CoreConfig.MODULES_PATH_EXTERNAL, "jar");
         FileUT.getFiles(plugin.getDataFolder() + CoreConfig.MODULES_PATH_EXTERNAL, false).forEach(file -> {
             IExternalModule<P> module = this.loadFromFile(file);
             if (module != null) this.externalCache.add(module);
@@ -134,7 +135,8 @@ public class ModuleManager<P extends CodexPlugin<P>> implements Loadable {
                 String   className = entry.getName().substring(0, entry.getName().length() - 6).replace('/', '.');
                 Class<?> clazz     = Class.forName(className, false, loader); // second was 'true'
                 if (IExternalModule.class.isAssignableFrom(clazz)) {
-                    Class<? extends IExternalModule<P>>       mainClass = (Class<? extends IExternalModule<P>>) clazz.asSubclass(IExternalModule.class);
+                    Class<? extends IExternalModule<P>>       mainClass =
+                            (Class<? extends IExternalModule<P>>) clazz.asSubclass(IExternalModule.class);
                     Constructor<? extends IExternalModule<P>> con       = mainClass.getConstructor(plugin.getClass());
                     IExternalModule<P>                        module    = con.newInstance(plugin);
                     if (module == null) continue;

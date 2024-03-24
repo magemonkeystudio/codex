@@ -1,8 +1,8 @@
 package com.promcteam.codex.items.providers;
 
-import dev.lone.itemsadder.api.CustomStack;
 import com.promcteam.codex.items.ItemType;
 import com.promcteam.codex.items.ProItemManager;
+import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 

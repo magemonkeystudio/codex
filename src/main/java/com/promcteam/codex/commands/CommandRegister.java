@@ -52,7 +52,8 @@ public class CommandRegister extends Command implements PluginIdentifiableComman
     }
 
     public static void register(@NotNull Plugin plugin, @NotNull IGeneralCommand<?> command) {
-        CommandRegister cmd = new CommandRegister(command.labels(), command.description(), command.usage(), command, plugin);
+        CommandRegister cmd =
+                new CommandRegister(command.labels(), command.description(), command.usage(), command, plugin);
         cmd.setTabCompleter(command);
         cmd.setPermission(command.getPermission());
 
@@ -63,7 +64,12 @@ public class CommandRegister extends Command implements PluginIdentifiableComman
         map.register(plugin.getDescription().getName(), cmd);
     }
 
-    public static void register(Plugin plugin, CommandExecutor cxecutor, TabCompleter tab, String[] aliases, String desc, String usage) {
+    public static void register(Plugin plugin,
+                                CommandExecutor cxecutor,
+                                TabCompleter tab,
+                                String[] aliases,
+                                String desc,
+                                String usage) {
         CommandRegister reg = new CommandRegister(aliases, desc, usage, cxecutor, plugin);
         reg.setTabCompleter(tab);
 
@@ -108,7 +114,8 @@ public class CommandRegister extends Command implements PluginIdentifiableComman
 
     @NotNull
     public static Set<String> getAliases(@NotNull String cmd) {
-        SimpleCommandMap map = (SimpleCommandMap) Reflex.getFieldValue(Bukkit.getServer().getPluginManager(), "commandMap");
+        SimpleCommandMap map =
+                (SimpleCommandMap) Reflex.getFieldValue(Bukkit.getServer().getPluginManager(), "commandMap");
         if (map == null) return Collections.emptySet();
 
         for (Command c2 : map.getCommands()) {

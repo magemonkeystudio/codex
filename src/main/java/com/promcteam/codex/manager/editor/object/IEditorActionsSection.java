@@ -22,7 +22,9 @@ public class IEditorActionsSection<P extends CodexPlugin<P>> extends NGUI<P> {
     private String                sectionId;
     private IEditorActionsMain<P> editorMain;
 
-    public IEditorActionsSection(@NotNull P plugin, @NotNull IEditorActionsMain<P> editorMain, @NotNull String sectionId) {
+    public IEditorActionsSection(@NotNull P plugin,
+                                 @NotNull IEditorActionsMain<P> editorMain,
+                                 @NotNull String sectionId) {
         super(plugin, EditorManager.EDITOR_ACTIONS_SECTION, "");
         this.parametizedEditors = new HashMap<>();
         this.editorMain = editorMain;
@@ -50,7 +52,8 @@ public class IEditorActionsSection<P extends CodexPlugin<P>> extends NGUI<P> {
             } else if (clazz.equals(ActionCategory.class)) {
                 ActionCategory type2 = (ActionCategory) type;
                 this.parametizedEditors
-                        .computeIfAbsent(type2, editor -> new IEditorActionsParametized<P>(plugin, IEditorActionsSection.this, type2))
+                        .computeIfAbsent(type2,
+                                editor -> new IEditorActionsParametized<P>(plugin, IEditorActionsSection.this, type2))
                         .open(p, 1);
             }
         };

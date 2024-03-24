@@ -25,7 +25,12 @@ public class FileExplorerMenu extends Menu {
         this.fileSlotFunction = fileSlotFunction;
     }
 
-    private FileExplorerMenu(Player player, String root, String path, int rows, String title, Function<File, Slot> fileSlotFunction) {
+    private FileExplorerMenu(Player player,
+                             String root,
+                             String path,
+                             int rows,
+                             String title,
+                             Function<File, Slot> fileSlotFunction) {
         super(player, rows, title);
         this.root = root;
         this.path = path + (path.endsWith(File.separator) || path.endsWith("/") ?
@@ -57,16 +62,22 @@ public class FileExplorerMenu extends Menu {
             if (i % this.inventory.getSize() == 53) {
                 this.setSlot(i, getNextButton());
                 i++;
-            } else if (i % 9 == 8) {i++;}
+            } else if (i % 9 == 8) {
+                i++;
+            }
             if (i % this.inventory.getSize() == 45) {
                 this.setSlot(i, getPrevButton());
                 i++;
-            } else if (i % 9 == 0) {i++;}
+            } else if (i % 9 == 0) {
+                i++;
+            }
             if (file.isDirectory()) {
                 this.setSlot(i, new DirectorySlot(file.getName()));
             } else {
                 Slot slot = this.fileSlotFunction.apply(file);
-                if (slot != null) {this.setSlot(i, slot);}
+                if (slot != null) {
+                    this.setSlot(i, slot);
+                }
             }
         }
         this.setSlot(this.getPages() * this.inventory.getSize() - 9, getPrevButton());

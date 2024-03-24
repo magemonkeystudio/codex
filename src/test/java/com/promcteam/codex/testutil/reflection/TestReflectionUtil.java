@@ -2,8 +2,8 @@ package com.promcteam.codex.testutil.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import io.netty.channel.Channel;
 import com.promcteam.codex.utils.reflection.ReflectionUtil;
+import io.netty.channel.Channel;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
@@ -184,7 +184,7 @@ public class TestReflectionUtil implements ReflectionUtil {
 
     @Override
     public GameProfile getNonPlayerProfile(String hash) {
-        UUID uid = UUID.randomUUID();
+        UUID        uid     = UUID.randomUUID();
         GameProfile profile = new GameProfile(uid, uid.toString());
         return profile;
     }

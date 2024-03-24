@@ -11,7 +11,7 @@ public abstract class IAbstractRecipe {
 
     protected final CodexPlugin<?> plugin;
     protected final String         id;
-    protected       ItemStack    result;
+    protected       ItemStack      result;
 
     protected final NamespacedKey key;
 

@@ -1,6 +1,5 @@
 package com.promcteam.codex;
 
-import lombok.NoArgsConstructor;
 import com.promcteam.codex.commands.CommandManager;
 import com.promcteam.codex.commands.api.IGeneralCommand;
 import com.promcteam.codex.commands.list.MainCommand;
@@ -22,6 +21,7 @@ import com.promcteam.codex.nms.packets.PacketManager;
 import com.promcteam.codex.utils.actions.ActionsManager;
 import com.promcteam.codex.utils.actions.Parametized;
 import com.promcteam.codex.utils.craft.CraftManager;
+import lombok.NoArgsConstructor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;

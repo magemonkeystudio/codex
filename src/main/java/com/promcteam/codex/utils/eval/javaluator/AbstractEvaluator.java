@@ -267,7 +267,9 @@ public abstract class AbstractEvaluator<T> {
                                 openBracketFound = true;
                                 break;
                             } else {
-                                throw evaluationContext.getError("Invalid parenthesis match " + sc.getBrackets().getOpen() + brackets.getClose(), token);
+                                throw evaluationContext.getError(
+                                        "Invalid parenthesis match " + sc.getBrackets().getOpen() + brackets.getClose(),
+                                        token);
                             }
                         } else {
                             output(values, sc, evaluationContext);
@@ -287,7 +289,8 @@ public abstract class AbstractEvaluator<T> {
                     break;
                 case FUNCTION_SEPARATOR:
                     if (previous == null) {
-                        throw evaluationContext.getError("expression can't start with a function argument separator", token);
+                        throw evaluationContext.getError("expression can't start with a function argument separator",
+                                token);
                     }
                     // Verify that there was an argument before this separator
                     if (previous.isOpenBracket() || previous.isFunctionArgumentSeparator()) {
@@ -316,7 +319,8 @@ public abstract class AbstractEvaluator<T> {
                         Token scopeToken  = stack.peek();
                         stack.push(openBracket);
                         if (!scopeToken.isFunction()) {
-                            throw evaluationContext.getError("Argument separator used outside of function scope", token);
+                            throw evaluationContext.getError("Argument separator used outside of function scope",
+                                    token);
                         }
                     }
                     break;
@@ -338,8 +342,10 @@ public abstract class AbstractEvaluator<T> {
                         // The differing operator priority decides pop / push
                         // If 2 operators have equal priority then associativity decides.
                         if (sc.isOperator()
-                                && ((token.getAssociativity().equals(Operator.Associativity.LEFT) && (token.getPrecedence() <= sc.getPrecedence())) ||
-                                (token.getPrecedence() < sc.getPrecedence()))) {
+                                && (
+                                (token.getAssociativity().equals(Operator.Associativity.LEFT) && (token.getPrecedence()
+                                        <= sc.getPrecedence())) ||
+                                        (token.getPrecedence() < sc.getPrecedence()))) {
                             // Pop o2 off the stack, onto the output queue;
                             output(values, stack.pop(), evaluationContext);
                         } else {

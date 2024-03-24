@@ -165,7 +165,13 @@ public class Rnd {
         FireworkEffect.Type type   = Rnd.get(FireworkEffect.Type.values());
         Color               c1     = Color.fromBGR(Rnd.nextInt(254), Rnd.nextInt(254), Rnd.nextInt(254));
         Color               c2     = Color.fromBGR(Rnd.nextInt(254), Rnd.nextInt(254), Rnd.nextInt(254));
-        FireworkEffect      effect = FireworkEffect.builder().flicker(Rnd.nextBoolean()).withColor(c1).withFade(c2).with(type).trail(Rnd.nextBoolean()).build();
+        FireworkEffect      effect = FireworkEffect.builder()
+                .flicker(Rnd.nextBoolean())
+                .withColor(c1)
+                .withFade(c2)
+                .with(type)
+                .trail(Rnd.nextBoolean())
+                .build();
         meta.addEffect(effect);
 
         int power = Rnd.get(5);

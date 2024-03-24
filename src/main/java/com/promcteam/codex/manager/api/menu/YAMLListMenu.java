@@ -33,7 +33,9 @@ public abstract class YAMLListMenu<T> extends YAMLMenu<T> {
                     break;
                 } else {
                     Slot slot = this.getSlot(value, parameter, player);
-                    if (slot != null) {menu.setSlot(index, slot);}
+                    if (slot != null) {
+                        menu.setSlot(index, slot);
+                    }
                     index++;
                 }
             }

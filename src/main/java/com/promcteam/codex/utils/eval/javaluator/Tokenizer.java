@@ -168,7 +168,8 @@ public class Tokenizer {
             return Token.buildFunction(functions.get(strToken));
         } else if (operators.containsKey(strToken)) {
             List<Operator> list = operators.get(strToken);
-            return (list.size() == 1) ? Token.buildOperator(list.get(0)) : Token.buildOperator(guessOperator(previous, list));
+            return (list.size() == 1) ? Token.buildOperator(list.get(0))
+                    : Token.buildOperator(guessOperator(previous, list));
         } else {
             final BracketPair brackets = getBracketPair(strToken);
             if (brackets != null) {

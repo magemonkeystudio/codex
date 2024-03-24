@@ -34,7 +34,9 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
     private static String       objName;
     private static List<String> objLore;
 
-    public IEditorActionsParametized(@NotNull P plugin, @NotNull IEditorActionsSection<P> section, @NotNull ActionCategory category) {
+    public IEditorActionsParametized(@NotNull P plugin,
+                                     @NotNull IEditorActionsSection<P> section,
+                                     @NotNull ActionCategory category) {
         super(plugin, EditorManager.EDITOR_ACTIONS_PARAMETIZED, "");
         this.sectionEditor = section;
         this.sectionType = category;
@@ -71,7 +73,9 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
                     EditorManager.startEdit(p, this, type2);
                     p.closeInventory();
 
-                    List<Parametized> pzs     = new ArrayList<>(CodexPlugin.getEngine().getActionsManager().getParametized(this.getSectionType()));
+                    List<Parametized> pzs     = new ArrayList<>(CodexPlugin.getEngine()
+                            .getActionsManager()
+                            .getParametized(this.getSectionType()));
                     StringBuilder     builder = new StringBuilder();
                     pzs.forEach(pz -> {
                         if (builder.length() > 0) builder.append("&7 | ");
@@ -81,7 +85,8 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
                     ClickText text = new ClickText(builder.toString());
                     pzs.forEach(pz -> {
                         ClickWord word = text.createPlaceholder("%" + pz.getKey() + "%", "&a" + pz.getKey());
-                        word.hint(plugin.lang().Core_Editor_Actions_Subject_Hint.replace("%description%", pz.getDescription()).asList());
+                        word.hint(plugin.lang().Core_Editor_Actions_Subject_Hint.replace("%description%",
+                                pz.getDescription()).asList());
                         word.execCmd(pz.getKey());
                     });
 
@@ -139,14 +144,16 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
 
     @Override
     protected void onCreate(@NotNull Player p, @NotNull Inventory inv, int page) {
-        IEditorActionsMain.ActionBuilder builder = sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
+        IEditorActionsMain.ActionBuilder builder =
+                sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
         if (builder == null) {
             plugin.warn("Invalid ActionBuilder for '" + sectionEditor.getSectionId() + "' section!");
             return;
         }
 
         int count = 0;
-        for (Entry<Integer, Map<Parametized, Map<String, String>>> eTarget : builder.getParametized(sectionType).entrySet()) {
+        for (Entry<Integer, Map<Parametized, Map<String, String>>> eTarget : builder.getParametized(sectionType)
+                .entrySet()) {
             int                                   pId       = eTarget.getKey();
             Map<Parametized, Map<String, String>> mapTarget = eTarget.getValue();
 
@@ -201,7 +208,8 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
 
                     // Create and open Params Editor GUI.
                     this.paramEditors
-                            .computeIfAbsent(pz.getKey().toLowerCase(), editor -> new IEditorActionsParams<>(plugin, sectionEditor, sectionType, pz, pId))
+                            .computeIfAbsent(pz.getKey().toLowerCase(),
+                                    editor -> new IEditorActionsParams<>(plugin, sectionEditor, sectionType, pz, pId))
                             .open(p2, 1);
                 });
 

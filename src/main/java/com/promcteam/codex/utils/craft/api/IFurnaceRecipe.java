@@ -16,7 +16,11 @@ public class IFurnaceRecipe extends IAbstractRecipe {
     private float     exp;
     private int       time;
 
-    public IFurnaceRecipe(@NotNull CodexPlugin<?> plugin, @NotNull String id, @NotNull ItemStack result, float exp, double time) {
+    public IFurnaceRecipe(@NotNull CodexPlugin<?> plugin,
+                          @NotNull String id,
+                          @NotNull ItemStack result,
+                          float exp,
+                          double time) {
         super(plugin, id, result);
         this.exp = exp;
         this.time = (int) Math.max(1, 20D * time);

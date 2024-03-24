@@ -13,7 +13,7 @@ public abstract class Parametized {
 
     protected final CodexPlugin<?> plugin;
     protected final Set<IParam>    params;
-    protected final String       key;
+    protected final String         key;
 
     protected static final String                    FLAG_NO_DELAY = "@NODELAY@";
     private static final   Map<String, IParamResult> RESULT_CACHE  = new HashMap<>();

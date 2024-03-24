@@ -95,7 +95,9 @@ public class CommandManager {
 
     // Settings for usage display formatting
     private static String
-            pageFormat    = ChatColor.DARK_GREEN + "(" + ChatColor.GOLD + "{page}" + ChatColor.DARK_GREEN + "/" + ChatColor.GOLD + "{max}" + ChatColor.DARK_GREEN + ")",
+            pageFormat    =
+            ChatColor.DARK_GREEN + "(" + ChatColor.GOLD + "{page}" + ChatColor.DARK_GREEN + "/" + ChatColor.GOLD
+                    + "{max}" + ChatColor.DARK_GREEN + ")",
             noDescription = "No description available",
             noCommands    = ChatColor.GRAY + "No commands available",
             nextPage      = "Next",
@@ -183,13 +185,15 @@ public class CommandManager {
                 map.register(command.getName(), command);
             } else {
                 Field field    = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
-                Field commands = Class.forName("be.seeseemelk.mockbukkit.plugin.PluginManagerMock").getDeclaredField("commands");
+                Field commands =
+                        Class.forName("be.seeseemelk.mockbukkit.plugin.PluginManagerMock").getDeclaredField("commands");
                 if (!field.canAccess(Bukkit.getServer())) field.setAccessible(true);
                 if (!commands.canAccess(Bukkit.getServer().getPluginManager())) commands.setAccessible(true);
                 CommandMap          map  = (CommandMap) field.get(Bukkit.getServer());
                 List<PluginCommand> cmds = (List<PluginCommand>) commands.get(Bukkit.getServer().getPluginManager());
 
-                Method        m   = Class.forName("org.bukkit.command.PluginCommandUtils").getMethod("createPluginCommand", String.class, Plugin.class);
+                Method        m   = Class.forName("org.bukkit.command.PluginCommandUtils")
+                        .getMethod("createPluginCommand", String.class, Plugin.class);
                 PluginCommand cmd = (PluginCommand) m.invoke(null, command.getName(), command.getPlugin());
 
                 cmds.add(cmd);
@@ -330,16 +334,20 @@ public class CommandManager {
     }
 
     private static void displaySpecificUsage(ConfigurableCommand c, CommandSender sender) {
-        String command = "/" + c.toString() + " " + c.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+        String command = "/" + c.toString() + " " + c.getArgs()
+                .replace("[", optionalArgs + "[")
+                .replace("<", requiredArgs + "<");
         for (String line : commandUsage) {
             if (line.contains("{description}")) {
                 if (sender instanceof Player) {
-                    List<String> dLines = TextSizer.split(c.getDescription(), 320 - TextSizer.measureString(line.replace("{description}", "")));
+                    List<String> dLines = TextSizer.split(c.getDescription(),
+                            320 - TextSizer.measureString(line.replace("{description}", "")));
                     for (String d : dLines) {
                         sender.sendMessage(line.replace("{description}", d));
                     }
                 } else {
-                    List<String> dLines = TextSplitter.getLines(c.getDescription(), 60 - ChatColor.stripColor(line.replace("{description}", "")).length());
+                    List<String> dLines = TextSplitter.getLines(c.getDescription(),
+                            60 - ChatColor.stripColor(line.replace("{description}", "")).length());
                     for (String d : dLines) {
                         sender.sendMessage(line.replace("{description}", d));
                     }
@@ -385,7 +393,8 @@ public class CommandManager {
             index++;
             if (index <= (page - 1) * entries || index > page * entries) continue;
             String args = c.getSubCommand(key).getArgs();
-            int    size = sender instanceof Player ? TextSizer.measureString(key + " " + args) : (key + " " + args).length();
+            int    size =
+                    sender instanceof Player ? TextSizer.measureString(key + " " + args) : (key + " " + args).length();
             if (size > maxSize) maxSize = size;
         }
         if (sender instanceof Player) maxSize += 4;
@@ -429,7 +438,8 @@ public class CommandManager {
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
                         ConfigurableCommand sub  = c.getSubCommand(key);
-                        String              args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+                        String              args =
+                                sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
                                         + TextSizer.expand(key + " " + args, maxSize, false)
@@ -454,7 +464,8 @@ public class CommandManager {
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
                         ConfigurableCommand sub  = c.getSubCommand(key);
-                        String              args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+                        String              args =
+                                sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
                                         + TextSizer.expand(key + " " + args, maxSize, false)
@@ -474,7 +485,8 @@ public class CommandManager {
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
                         ConfigurableCommand sub  = c.getSubCommand(key);
-                        String              args = sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
+                        String              args =
+                                sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
                                         + TextSizer.expandConsole(key + " " + args, maxSize, false)

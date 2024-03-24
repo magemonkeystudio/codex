@@ -60,7 +60,14 @@ public class EffectUT {
         world.spawnParticle(particle, loc, amount, x, y, z, speed);
     }
 
-    public static void drawLine(Location from, Location to, String pe, float offX, float offY, float offZ, float speed, int amount) {
+    public static void drawLine(Location from,
+                                Location to,
+                                String pe,
+                                float offX,
+                                float offY,
+                                float offZ,
+                                float speed,
+                                int amount) {
         Location origin = from.clone();
         Vector   target = new Location(to.getWorld(), to.getX(), to.getY(), to.getZ()).toVector();
         origin.setDirection(target.subtract(origin.toVector()));

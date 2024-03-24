@@ -195,7 +195,8 @@ public class Config {
         InputStream defConfigStream = plugin.getResource(fileName);
         if (defConfigStream != null) {
             YamlConfiguration defConfig = null;
-            defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8));
+            defConfig =
+                    YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream, StandardCharsets.UTF_8));
             fileConfiguration.setDefaults(defConfig);
         }
     }
