@@ -18,9 +18,10 @@ import com.promcteam.codex.manager.editor.EditorHandler;
 import com.promcteam.codex.modules.ModuleManager;
 import com.promcteam.codex.nms.NMS;
 import com.promcteam.codex.nms.packets.PacketManager;
-import com.promcteam.codex.utils.actions.ActionsManager;
-import com.promcteam.codex.utils.actions.Parametized;
-import com.promcteam.codex.utils.craft.CraftManager;
+import com.promcteam.codex.util.actions.ActionsManager;
+import com.promcteam.codex.util.actions.Parametized;
+import com.promcteam.codex.util.craft.CraftManager;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
@@ -40,15 +41,18 @@ import java.util.logging.Logger;
 
 @NoArgsConstructor
 public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin implements Loggable {
-
-    public static final String TM = "NEX-Media";
+    public static boolean IS_BUNGEE = false;
+    public static String  BUNGEE_ID = "server";
 
     private       Logger  logger;
     private       boolean isEngine;
     private final boolean isSpigot = true;
 
+    @Getter
     protected ConfigManager<P>  configManager;
-    protected CommandManager<P> cmdManager;
+    @Getter
+    protected CommandManager<P> commandManager;
+    @Getter
     protected ModuleManager<P>  moduleManager;
     protected EditorHandler<P>  editorHandler;
 
@@ -94,6 +98,10 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
             this.info("Powered by: " + engine.getName());
         }
         this.loadManagers();
+
+        if (this.isEngine()) {
+            ((CodexEngine) this).registerEvents();
+        }
         this.info("Plugin loaded in " + (System.currentTimeMillis() - loadTook) + " ms!");
     }
 
@@ -119,7 +127,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
 
     public abstract void registerHooks();
 
-    public abstract void registerCmds(@NotNull IGeneralCommand<P> mainCommand);
+    public abstract void registerCommands(@NotNull IGeneralCommand<P> mainCommand);
 
     public abstract void registerEditor();
 
@@ -200,8 +208,8 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         this.registerEditor();
 
         // Register plugin commands.
-        this.cmdManager = new CommandManager<>((P) this);
-        this.cmdManager.setup();
+        this.commandManager = new CommandManager<>((P) this);
+        this.commandManager.setup();
 
         // Register plugin modules.
         this.moduleManager = new ModuleManager<>((P) this);
@@ -251,7 +259,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
     @NotNull
     public String getAuthor() {
         List<String> list = this.getDescription().getAuthors();
-        return list.isEmpty() ? TM : list.get(0);
+        return list.isEmpty() ? "ProMCTeam" : list.get(0);
     }
 
     @NotNull
@@ -279,27 +287,10 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         return this.getCommandManager().getMainCommand();
     }
 
-    @NotNull
-    public ConfigManager<P> getConfigManager() {
-        return this.configManager;
-    }
-
-    @NotNull
-    public CommandManager<P> getCommandManager() {
-        return this.cmdManager;
-    }
-
-    @NotNull
     public CraftManager getCraftManager() {
         return getEngine().getCraftManager();
     }
 
-    @NotNull
-    public ModuleManager<P> getModuleManager() {
-        return this.moduleManager;
-    }
-
-    @NotNull
     public ActionsManager getActionsManager() {
         return getEngine().getActionsManager();
     }

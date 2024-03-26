@@ -31,11 +31,11 @@ package com.promcteam.codex.mccore.scoreboard;
  */
 public enum ScoreboardNodes {
 
-    CYCLE("core.board.cycle"),
-    LIST("core.board.list"),
-    STOP("core.board.stop"),
-    SHOW("core.board.show"),
-    TOGGLE("core.board.toggle");
+    CYCLE("general.board.cycle"),
+    LIST("general.board.list"),
+    STOP("general.board.stop"),
+    SHOW("general.board.show"),
+    TOGGLE("general.board.toggle");
 
     /**
      * Permission node

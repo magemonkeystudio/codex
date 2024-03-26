@@ -1,7 +1,7 @@
 package com.promcteam.codex.manager.api.gui;
 
 import com.promcteam.codex.manager.types.ClickType;
-import com.promcteam.codex.utils.actions.ActionManipulator;
+import com.promcteam.codex.util.actions.ActionManipulator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;

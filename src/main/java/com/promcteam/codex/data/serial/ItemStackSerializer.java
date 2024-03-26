@@ -2,7 +2,7 @@ package com.promcteam.codex.data.serial;
 
 import com.google.gson.*;
 import com.promcteam.codex.CodexEngine;
-import com.promcteam.codex.utils.ItemUT;
+import com.promcteam.codex.util.ItemUT;
 import org.bukkit.inventory.ItemStack;
 
 import java.lang.reflect.Type;

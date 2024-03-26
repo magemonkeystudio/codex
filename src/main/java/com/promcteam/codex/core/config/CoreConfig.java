@@ -2,14 +2,13 @@ package com.promcteam.codex.core.config;
 
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.config.api.IConfigTemplate;
-import com.promcteam.codex.utils.StringUT;
+import com.promcteam.codex.util.StringUT;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class CoreConfig extends IConfigTemplate {
-
     public static String MODULES_PATH_INTERNAL = "/modules/";
     public static String MODULES_PATH_EXTERNAL = "/modules/_external/";
 

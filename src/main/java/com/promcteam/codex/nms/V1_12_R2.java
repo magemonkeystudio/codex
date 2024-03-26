@@ -1,7 +1,7 @@
 package com.promcteam.codex.nms;
 
 import com.google.common.collect.Multimap;
-import com.promcteam.codex.utils.Reflex;
+import com.promcteam.codex.util.Reflex;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -37,10 +37,10 @@ public class V1_12_R2 implements NMS {
             Method a = Reflex.getMethod(nmsItemClass, "load", reflectionUtil.getNMSClass("NBTTagCompound"));
             Reflex.invokeMethod(a, nmsItem, nbtTagCompoundRoot);
 
-            Method    asBukkitCopy = Reflex.getMethod(reflectionUtil.getCraftClass("inventory.CraftItemStack"),
+            Method asBukkitCopy = Reflex.getMethod(reflectionUtil.getCraftClass("inventory.CraftItemStack"),
                     "asBukkitCopy",
                     nmsItemClass);
-            ItemStack item         = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
+            ItemStack item = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
 
             return item;
         } catch (Exception e) {

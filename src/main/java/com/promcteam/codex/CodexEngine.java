@@ -1,8 +1,12 @@
 package com.promcteam.codex;
 
 import com.promcteam.codex.api.armor.ArmorListener;
+import com.promcteam.codex.bungee.BungeeListener;
+import com.promcteam.codex.bungee.BungeeUtil;
+import com.promcteam.codex.commands.UnstuckCommand;
 import com.promcteam.codex.commands.api.IGeneralCommand;
 import com.promcteam.codex.commands.list.Base64Command;
+import com.promcteam.codex.config.legacy.LegacyConfigManager;
 import com.promcteam.codex.core.Version;
 import com.promcteam.codex.core.config.CoreConfig;
 import com.promcteam.codex.core.config.CoreLang;
@@ -10,7 +14,13 @@ import com.promcteam.codex.hooks.HookManager;
 import com.promcteam.codex.hooks.Hooks;
 import com.promcteam.codex.hooks.external.*;
 import com.promcteam.codex.hooks.external.citizens.CitizensHK;
-import com.promcteam.codex.items.ProItemManager;
+import com.promcteam.codex.items.CodexItemManager;
+import com.promcteam.codex.legacy.item.ItemBuilder;
+import com.promcteam.codex.legacy.placeholder.PlaceholderRegistry;
+import com.promcteam.codex.legacy.riseitem.DarkRiseItemImpl;
+import com.promcteam.codex.listeners.BoatListener;
+import com.promcteam.codex.listeners.InteractListener;
+import com.promcteam.codex.listeners.JoinListener;
 import com.promcteam.codex.manager.api.menu.MenuManager;
 import com.promcteam.codex.manager.editor.EditorManager;
 import com.promcteam.codex.mccore.chat.ChatCommander;
@@ -24,14 +34,15 @@ import com.promcteam.codex.mccore.scoreboard.UpdateTask;
 import com.promcteam.codex.mccore.util.VersionManager;
 import com.promcteam.codex.nms.NMS;
 import com.promcteam.codex.nms.packets.PacketManager;
-import com.promcteam.codex.utils.ItemUT;
-import com.promcteam.codex.utils.Reflex;
-import com.promcteam.codex.utils.actions.ActionsManager;
-import com.promcteam.codex.utils.craft.CraftManager;
-import com.promcteam.risecore.legacy.util.item.ItemBuilder;
-import com.promcteam.risecore.util.BlockLocation;
+import com.promcteam.codex.util.Debugger;
+import com.promcteam.codex.util.ItemUT;
+import com.promcteam.codex.util.Reflex;
+import com.promcteam.codex.util.actions.ActionsManager;
+import com.promcteam.codex.util.craft.CraftManager;
+import com.promcteam.codex.util.messages.MessageUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -54,39 +65,54 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private static       CodexEngine               instance;
     private final        Set<CodexPlugin<?>>       plugins;
     @Getter
-    NMS            NMS;
+    private              NMS                       NMS;
     @Getter
-    PluginManager  pluginManager;
+    private              PluginManager             pluginManager;
     @Getter
-    PacketManager  packetManager;
+    private              PacketManager             packetManager;
     @Getter
-    ActionsManager actionsManager;
+    private              ActionsManager            actionsManager;
     @Getter
-    CraftManager   craftManager;
+    private              CraftManager              craftManager;
     @Getter
-    MenuManager    menuManager;
+    private              MenuManager               menuManager;
     @Getter
-    VaultHK        vault;
+    private              VaultHK                   vault;
     @Getter
-    CitizensHK     citizens;
+    private              CitizensHK                citizens;
     @Getter
-    WorldGuardHK   worldGuard;
+    private              WorldGuardHK              worldGuard;
     @Getter
-    IMythicHook    mythicMobs;
-    private CoreConfig     cfg;
-    private CoreLang       lang;
+    private              IMythicHook               mythicMobs;
+    private              CoreConfig                cfg;
+    private              CoreLang                  lang;
     @Getter
-    private HookManager    hooksManager;
+    private              HookManager               hooksManager;
     @Getter
-    private ProItemManager itemManager;
+    private              CodexItemManager          itemManager;
 
+    /**
+     * -- GETTER --
+     * Checks whether Codex's chat management is enabled
+     *
+     * @return true if enabled, false otherwise
+     */
+    @Getter
     private boolean chatEnabled;
+    /**
+     * -- GETTER --
+     * Retrieves the message to be shown when a command is on cooldown
+     *
+     * @return command cooldown message
+     */
+    @Getter
     private String  commandMessage = "&4Please wait &6{time} seconds &4before using the command again.";
     @Getter
     private boolean scoreboardsEnabled;
 
-    private CycleTask  cTask;
-    private UpdateTask uTask;
+    private UnstuckCommand unstuck;
+    private CycleTask      cTask;
+    private UpdateTask     uTask;
 
     public CodexEngine() {
         setInstance();
@@ -101,6 +127,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
     private void setInstance() {
         instance = this;
+        this.pluginManager = this.getServer().getPluginManager();
         ItemUT.setEngine(this);
         Reflex.setEngine(this);
     }
@@ -111,23 +138,46 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     }
 
     final boolean loadCore() {
-        ConfigurationSerialization.registerClass(BlockLocation.class, "Enigma_BlockLocation");
-        ConfigurationSerialization.registerClass(ItemBuilder.class);
+        unstuck = new UnstuckCommand();
 
-        this.pluginManager = this.getServer().getPluginManager();
+        ConfigurationSerialization.registerClass(ItemBuilder.class);
+        ConfigurationSerialization.registerClass(DarkRiseItemImpl.class, "DarkRiseItemImpl");
+        ConfigurationSerialization.registerClass(DarkRiseItemImpl.DivineItemsMeta.class, "DarkRiseItemImpl_Divine");
+
+        // Register bungee messaging channel
+        getServer().getMessenger().registerOutgoingPluginChannel(this, BungeeUtil.CHANNEL);
+        getServer().getMessenger().registerIncomingPluginChannel(this, BungeeUtil.CHANNEL, new BungeeListener());
+
 
         if (!this.setupNMS()) {
             this.error("Could not setup NMS version. Plugin will be disabled.");
             return false;
         }
 
-        this.getPluginManager().registerEvents(this, this);
-        this.getPluginManager().registerEvents(new ArmorListener(), this);
+        MessageUtil.load(LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang",
+                "messages_en.yml"), getResource("lang/messages_en.yml")), this);
+        // Placeholder registration
+        PlaceholderRegistry.load();
 
+        setupManagers();
+
+        return true;
+    }
+
+    protected void registerEvents() {
+        getPluginManager().registerEvents(this, this);
+        getPluginManager().registerEvents(new ArmorListener(), this);
+        getPluginManager().registerEvents(unstuck, this);
+        getPluginManager().registerEvents(new BoatListener(), this);
+        getPluginManager().registerEvents(new InteractListener(cfg().getJYML()), this);
+        getPluginManager().registerEvents(new JoinListener(this, cfg().getJYML()), this);
+    }
+
+    private void setupManagers() {
         this.hooksManager = new HookManager(this);
         this.hooksManager.setup();
 
-        this.itemManager = new ProItemManager(this);
+        this.itemManager = new CodexItemManager(this);
         this.itemManager.init();
 
         this.packetManager = new PacketManager(this);
@@ -141,8 +191,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
         this.menuManager = new MenuManager(this);
         this.menuManager.setup();
-
-        return true;
     }
 
     private boolean setupNMS() {
@@ -167,6 +215,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             this.NMS = (NMS) clazz.getConstructor().newInstance();
             this.info("Loaded NMS version: " + current.name());
         } catch (Exception e) {
+            this.warn("Failed to set up NMS version: " + current.name() + ". " + e.getMessage());
             e.printStackTrace();
         }
         return this.NMS != null;
@@ -176,7 +225,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     public void enable() {
         EditorManager.setup();
 
-        CommandLog.callback = msg -> VersionManager.initialize(msg);
+        CommandLog.callback = VersionManager::initialize;
         if (!Version.TEST.isCurrent())
             getServer().dispatchCommand(new CommandLog(), "version");
 
@@ -220,6 +269,13 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         chatEnabled = this.cfg.getJYML().getBoolean("Features.chat-enabled", true);
         scoreboardsEnabled = this.cfg.getJYML().getBoolean("Features.scoreboards-enabled", true);
 
+        // Load config data
+        BUNGEE_ID = cfg().getJYML().getString("bungee_id", "server");
+        IS_BUNGEE = cfg().getJYML().getBoolean("bungee", false);
+
+        boolean debug = cfg().getJYML().getBoolean("debug", false);
+        Debugger.setDebug(debug);
+
         if (chatEnabled) {
             new ChatCommander(this);
             new ChatListener(this);
@@ -239,13 +295,16 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     public void registerHooks() {
         try {
             this.vault = this.registerHook(Hooks.VAULT, VaultHK.class);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 
     @Override
-    public void registerCmds(@NotNull IGeneralCommand<CodexEngine> mainCommand) {
+    public void registerCommands(@NotNull IGeneralCommand<CodexEngine> mainCommand) {
         mainCommand.addSubCommand(new Base64Command(this));
+
+        PluginCommand unstuckCommand = getCommand("stuck");
+        if (unstuckCommand != null) unstuckCommand.setExecutor(unstuck);
     }
 
     @Override
@@ -299,17 +358,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             if (this.citizens == null && name.equalsIgnoreCase(Hooks.CITIZENS)) {
                 this.citizens = this.registerHook(Hooks.CITIZENS, CitizensHK.class);
             }
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
-    }
-
-    /**
-     * Checks whether or not MCCore's chat management is enabled
-     *
-     * @return true if enabled, false otherwise
-     */
-    public boolean isChatEnabled() {
-        return chatEnabled;
     }
 
     /**
@@ -343,14 +393,5 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
      */
     public void registerConfig(Config config) {
         configs.put(config.getFile().toLowerCase() + config.getPlugin().getName(), config);
-    }
-
-    /**
-     * Retrieves the message to be shown when a command is on cooldown
-     *
-     * @return command cooldown message
-     */
-    public String getCommandMessage() {
-        return commandMessage;
     }
 }

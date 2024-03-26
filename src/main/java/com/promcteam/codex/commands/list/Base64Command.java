@@ -2,8 +2,8 @@ package com.promcteam.codex.commands.list;
 
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.commands.api.ISubCommand;
-import com.promcteam.codex.utils.ClickText;
-import com.promcteam.codex.utils.ItemUT;
+import com.promcteam.codex.util.ClickText;
+import com.promcteam.codex.util.ItemUT;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

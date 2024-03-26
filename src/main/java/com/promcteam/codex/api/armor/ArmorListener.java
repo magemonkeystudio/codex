@@ -227,7 +227,7 @@ public class ArmorListener implements Listener {
                         }
                         boolean unequipped =
                                 currentItem.getAmount() <= 0 && clickedPlayer && (slot == 40 || slot == heldSlot);
-                        boolean equipped   = destinationSlots.contains(40) || destinationSlots.contains(heldSlot);
+                        boolean equipped = destinationSlots.contains(40) || destinationSlots.contains(heldSlot);
 
                         if (unequipped != equipped) {
                             ArmorEquipEvent armorEquipEvent =
@@ -585,7 +585,7 @@ public class ArmorListener implements Listener {
         ArmorType type = ArmorType.matchType(event.getItem());
         if (type != null) {
             if (event.getTargetEntity() instanceof Player) {
-                Player          p               = (Player) event.getTargetEntity();
+                Player p = (Player) event.getTargetEntity();
                 ArmorEquipEvent armorEquipEvent =
                         new ArmorEquipEvent(p, EquipMethod.DISPENSER, type, null, event.getItem());
                 if (isChange(armorEquipEvent)) {

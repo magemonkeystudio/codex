@@ -4,7 +4,7 @@ import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.hooks.external.IMythicHook;
 import com.promcteam.codex.hooks.external.VaultHK;
 import com.promcteam.codex.hooks.external.WorldGuardHK;
-import com.promcteam.codex.utils.constants.JStrings;
+import com.promcteam.codex.util.constants.JStrings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Entity;

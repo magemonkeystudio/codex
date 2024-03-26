@@ -21,7 +21,7 @@ public class EditorCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
     @Override
     @NotNull
     public String description() {
-        return plugin.lang().Core_Command_Editor_Desc.getMsg();
+        return plugin.lang().Codex_Command_Editor_Desc.getMsg();
     }
 
     @Override

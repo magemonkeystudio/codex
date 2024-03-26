@@ -1,8 +1,8 @@
 package com.promcteam.codex.manager.api.menu;
 
 import com.promcteam.codex.CodexEngine;
-import com.promcteam.codex.utils.ItemUT;
-import com.promcteam.codex.utils.StringUT;
+import com.promcteam.codex.util.ItemUT;
+import com.promcteam.codex.util.StringUT;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

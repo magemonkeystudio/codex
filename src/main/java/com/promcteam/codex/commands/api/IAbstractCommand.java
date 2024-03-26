@@ -1,7 +1,7 @@
 package com.promcteam.codex.commands.api;
 
 import com.promcteam.codex.CodexPlugin;
-import com.promcteam.codex.utils.CollectionsUT;
+import com.promcteam.codex.util.CollectionsUT;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -87,7 +87,7 @@ public abstract class IAbstractCommand<P extends CodexPlugin<P>> {
             subLabel = this.labels()[0];
         } else return;
 
-        plugin.lang().Core_Command_Usage
+        plugin.lang().Codex_Command_Usage
                 .replace("%usage%", usage())
                 .replace("%cmd%", subLabel)
                 .replace("  ", " ")

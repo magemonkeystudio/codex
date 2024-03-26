@@ -26,7 +26,7 @@
  */
 package com.promcteam.codex.mccore.gui;
 
-import com.promcteam.codex.utils.Reflex;
+import com.promcteam.codex.util.Reflex;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
 

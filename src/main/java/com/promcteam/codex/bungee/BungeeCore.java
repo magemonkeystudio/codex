@@ -55,7 +55,7 @@ public class BungeeCore extends Plugin implements Listener {
                 String        target       = msgin.readUTF();
                 ProxiedPlayer targetPlayer = getProxy().getPlayer(target);
                 if (targetPlayer != null && targetPlayer.isConnected()) {
-                    targetPlayer.sendMessage(TextComponent.fromLegacy(msgin.readUTF()));
+                    targetPlayer.sendMessage(TextComponent.fromLegacyText(msgin.readUTF()));
                 }
             }
         } catch (IOException e) {

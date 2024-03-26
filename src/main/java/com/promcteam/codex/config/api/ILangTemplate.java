@@ -1,8 +1,8 @@
 package com.promcteam.codex.config.api;
 
 import com.promcteam.codex.CodexPlugin;
-import com.promcteam.codex.utils.Reflex;
-import com.promcteam.codex.utils.StringUT;
+import com.promcteam.codex.util.Reflex;
+import com.promcteam.codex.util.StringUT;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

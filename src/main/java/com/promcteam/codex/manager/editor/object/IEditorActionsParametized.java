@@ -5,11 +5,11 @@ import com.promcteam.codex.config.api.JYML;
 import com.promcteam.codex.manager.api.gui.*;
 import com.promcteam.codex.manager.editor.EditorManager;
 import com.promcteam.codex.manager.editor.EditorType;
-import com.promcteam.codex.utils.ClickText;
-import com.promcteam.codex.utils.ClickText.ClickWord;
-import com.promcteam.codex.utils.StringUT;
-import com.promcteam.codex.utils.actions.ActionCategory;
-import com.promcteam.codex.utils.actions.Parametized;
+import com.promcteam.codex.util.ClickText;
+import com.promcteam.codex.util.ClickText.ClickWord;
+import com.promcteam.codex.util.StringUT;
+import com.promcteam.codex.util.actions.ActionCategory;
+import com.promcteam.codex.util.actions.Parametized;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -69,14 +69,14 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
             } else if (clazz.equals(EditorType.class)) {
                 EditorType type2 = (EditorType) type;
                 if (type2 == EditorType.OBJECT_ACTIONS_PARAMETIZED_ADD) {
-                    EditorManager.tipCustom(p, plugin.lang().Core_Editor_Actions_Subject_Add.getMsg());
+                    EditorManager.tipCustom(p, plugin.lang().Codex_Editor_Actions_Subject_Add.getMsg());
                     EditorManager.startEdit(p, this, type2);
                     p.closeInventory();
 
-                    List<Parametized> pzs     = new ArrayList<>(CodexPlugin.getEngine()
+                    List<Parametized> pzs = new ArrayList<>(CodexPlugin.getEngine()
                             .getActionsManager()
                             .getParametized(this.getSectionType()));
-                    StringBuilder     builder = new StringBuilder();
+                    StringBuilder builder = new StringBuilder();
                     pzs.forEach(pz -> {
                         if (builder.length() > 0) builder.append("&7 | ");
                         builder.append("%" + pz.getKey() + "%");
@@ -85,7 +85,7 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
                     ClickText text = new ClickText(builder.toString());
                     pzs.forEach(pz -> {
                         ClickWord word = text.createPlaceholder("%" + pz.getKey() + "%", "&a" + pz.getKey());
-                        word.hint(plugin.lang().Core_Editor_Actions_Subject_Hint.replace("%description%",
+                        word.hint(plugin.lang().Codex_Editor_Actions_Subject_Hint.replace("%description%",
                                 pz.getDescription()).asList());
                         word.execCmd(pz.getKey());
                     });
@@ -171,7 +171,7 @@ public class IEditorActionsParametized<P extends CodexPlugin<P>> extends NGUI<P>
                 for (String line : objLore) {
                     if (line.contains("%param-name%")) {
                         if (pz.getParams().isEmpty()) {
-                            lore.add(plugin.lang().Core_Editor_Actions_Subject_NoParams.getMsg());
+                            lore.add(plugin.lang().Codex_Editor_Actions_Subject_NoParams.getMsg());
                             continue;
                         }
                         params.forEach((key, value) -> {

@@ -8,15 +8,15 @@ import com.promcteam.codex.manager.api.IActionEditable;
 import com.promcteam.codex.manager.api.gui.*;
 import com.promcteam.codex.manager.editor.EditorManager;
 import com.promcteam.codex.manager.editor.EditorType;
-import com.promcteam.codex.utils.StringUT;
-import com.promcteam.codex.utils.actions.ActionCategory;
-import com.promcteam.codex.utils.actions.ActionManipulator;
-import com.promcteam.codex.utils.actions.ActionSection;
-import com.promcteam.codex.utils.actions.Parametized;
-import com.promcteam.codex.utils.actions.actions.IActionExecutor;
-import com.promcteam.codex.utils.actions.conditions.IConditionValidator;
-import com.promcteam.codex.utils.actions.params.IParamValue;
-import com.promcteam.codex.utils.actions.targets.ITargetSelector;
+import com.promcteam.codex.util.StringUT;
+import com.promcteam.codex.util.actions.ActionCategory;
+import com.promcteam.codex.util.actions.ActionManipulator;
+import com.promcteam.codex.util.actions.ActionSection;
+import com.promcteam.codex.util.actions.Parametized;
+import com.promcteam.codex.util.actions.actions.IActionExecutor;
+import com.promcteam.codex.util.actions.conditions.IConditionValidator;
+import com.promcteam.codex.util.actions.params.IParamValue;
+import com.promcteam.codex.util.actions.targets.ITargetSelector;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -82,7 +82,7 @@ public class IEditorActionsMain<P extends CodexPlugin<P>> extends NGUI<P> {
                     EditorType type2 = (EditorType) type;
 
                     if (type2 == EditorType.OBJECT_ACTIONS_SECTION_ADD) {
-                        EditorManager.tipCustom(p, plugin.lang().Core_Editor_Actions_Section_Add.getMsg());
+                        EditorManager.tipCustom(p, plugin.lang().Codex_Editor_Actions_Section_Add.getMsg());
                         EditorManager.startEdit(p, IEditorActionsMain.this, type2);
                         p.closeInventory();
                     }
@@ -297,10 +297,10 @@ public class IEditorActionsMain<P extends CodexPlugin<P>> extends NGUI<P> {
                 Parametized pz = CodexEngine.get().getActionsManager().getParametized(type, selectorKey);
                 if (pz == null) return;
 
-                Map<Integer, Map<Parametized, Map<String, String>>> global      = this.getParametized(type);
-                Map<Parametized, Map<String, String>>               mapSelector =
+                Map<Integer, Map<Parametized, Map<String, String>>> global = this.getParametized(type);
+                Map<Parametized, Map<String, String>> mapSelector =
                         global.computeIfAbsent(global.size(), map -> new HashMap<>());
-                Map<String, String>                                 mapParams   =
+                Map<String, String> mapParams =
                         mapSelector.computeIfAbsent(pz, map -> new HashMap<>());
 
                 //String paramsRaw = line.replace(selectorKey, "").trim();

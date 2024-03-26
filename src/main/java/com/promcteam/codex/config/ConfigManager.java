@@ -34,10 +34,10 @@ public class ConfigManager<P extends CodexPlugin<P>> {
         }
         try {
             this.configLang = JYML.loadOrExtract(plugin,
-                    "/lang/messages_" + configMain.getString("core.lang", "en").toLowerCase() + ".yml");
+                    "/lang/messages_" + configMain.getString("general.lang", "en").toLowerCase() + ".yml");
         } catch (InvalidConfigurationException e) {
             this.plugin.error("Configuration error in " + plugin.getName() + "/lang/messages_" +
-                    configMain.getString("core.lang", "en").toLowerCase() + ".yml");
+                    configMain.getString("general.lang", "en").toLowerCase() + ".yml");
             throw e;
         }
 

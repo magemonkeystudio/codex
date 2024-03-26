@@ -184,7 +184,7 @@ public class CommandManager {
                 CommandMap map = (CommandMap) field.get(Bukkit.getPluginManager());
                 map.register(command.getName(), command);
             } else {
-                Field field    = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
+                Field field = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
                 Field commands =
                         Class.forName("be.seeseemelk.mockbukkit.plugin.PluginManagerMock").getDeclaredField("commands");
                 if (!field.canAccess(Bukkit.getServer())) field.setAccessible(true);
@@ -192,7 +192,7 @@ public class CommandManager {
                 CommandMap          map  = (CommandMap) field.get(Bukkit.getServer());
                 List<PluginCommand> cmds = (List<PluginCommand>) commands.get(Bukkit.getServer().getPluginManager());
 
-                Method        m   = Class.forName("org.bukkit.command.PluginCommandUtils")
+                Method m = Class.forName("org.bukkit.command.PluginCommandUtils")
                         .getMethod("createPluginCommand", String.class, Plugin.class);
                 PluginCommand cmd = (PluginCommand) m.invoke(null, command.getName(), command.getPlugin());
 
@@ -393,7 +393,7 @@ public class CommandManager {
             index++;
             if (index <= (page - 1) * entries || index > page * entries) continue;
             String args = c.getSubCommand(key).getArgs();
-            int    size =
+            int size =
                     sender instanceof Player ? TextSizer.measureString(key + " " + args) : (key + " " + args).length();
             if (size > maxSize) maxSize = size;
         }
@@ -437,8 +437,8 @@ public class CommandManager {
                         index++;
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
-                        ConfigurableCommand sub  = c.getSubCommand(key);
-                        String              args =
+                        ConfigurableCommand sub = c.getSubCommand(key);
+                        String args =
                                 sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
@@ -463,8 +463,8 @@ public class CommandManager {
                         index++;
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
-                        ConfigurableCommand sub  = c.getSubCommand(key);
-                        String              args =
+                        ConfigurableCommand sub = c.getSubCommand(key);
+                        String args =
                                 sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "
@@ -484,8 +484,8 @@ public class CommandManager {
                         index++;
                         if (index <= (page - 1) * entries || index > page * entries) continue;
 
-                        ConfigurableCommand sub  = c.getSubCommand(key);
-                        String              args =
+                        ConfigurableCommand sub = c.getSubCommand(key);
+                        String args =
                                 sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
                         sender.sendMessage(line.replace("{commands}",
                                 command + "/" + c.toString() + " "

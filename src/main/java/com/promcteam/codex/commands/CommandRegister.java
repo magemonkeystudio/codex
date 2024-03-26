@@ -2,7 +2,7 @@ package com.promcteam.codex.commands;
 
 import com.promcteam.codex.CodexPlugin;
 import com.promcteam.codex.commands.api.IGeneralCommand;
-import com.promcteam.codex.utils.Reflex;
+import com.promcteam.codex.util.Reflex;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.*;
@@ -13,9 +13,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 public class CommandRegister extends Command implements PluginIdentifiableCommand {
-
-    protected       Plugin          plugin;
     protected final CommandExecutor owner;
+    protected       Plugin          plugin;
     protected       TabCompleter    tab;
 
     public CommandRegister(String[] aliases, String desc, String usage, CommandExecutor owner, Plugin plugin2) {

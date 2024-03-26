@@ -1,6 +1,6 @@
 package com.promcteam.codex.core;
 
-import com.promcteam.codex.utils.CollectionsUT;
+import com.promcteam.codex.util.CollectionsUT;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 

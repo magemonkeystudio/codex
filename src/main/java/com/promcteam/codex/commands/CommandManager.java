@@ -10,11 +10,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class CommandManager<P extends CodexPlugin<P>> implements Loadable {
-
     @NotNull
-    private P                       plugin;
-    private Set<IGeneralCommand<P>> commands;
-    private MainCommand<P>          mainCommand;
+    private final P                       plugin;
+    private       Set<IGeneralCommand<P>> commands;
+    private       MainCommand<P>          mainCommand;
 
     public CommandManager(@NotNull P plugin) {
         this.plugin = plugin;
@@ -29,7 +28,7 @@ public class CommandManager<P extends CodexPlugin<P>> implements Loadable {
         this.mainCommand.addDefaultCommand(new HelpCommand<>(this.plugin));
 
         // Register child plugin sub-commands to the main plugin command.
-        this.plugin.registerCmds(this.mainCommand);
+        this.plugin.registerCommands(this.mainCommand);
 
         // Check for plugin settings to register default commands.
         if (this.plugin.hasEditor()) {

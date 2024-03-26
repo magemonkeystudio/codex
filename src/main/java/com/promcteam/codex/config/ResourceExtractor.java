@@ -1,6 +1,6 @@
 package com.promcteam.codex.config;
 
-import com.promcteam.codex.utils.FileUT;
+import com.promcteam.codex.util.FileUT;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
 

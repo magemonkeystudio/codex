@@ -20,7 +20,7 @@ public class ReloadCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
     @Override
     @NotNull
     public String description() {
-        return plugin.lang().Core_Command_Reload_Desc.getMsg();
+        return plugin.lang().Codex_Command_Reload_Desc.getMsg();
     }
 
     @Override
@@ -29,8 +29,8 @@ public class ReloadCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
     }
 
     @Override
-    public void perform(@NotNull CommandSender sender, String label, @NotNull String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         plugin.reload();
-        plugin.lang().Core_Command_Reload_Done.send(sender);
+        plugin.lang().Codex_Command_Reload_Done.send(sender);
     }
 }

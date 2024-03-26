@@ -23,14 +23,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.20</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-        </dependency>
-        <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
         </dependency>
@@ -77,11 +69,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -116,10 +103,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-reload4j</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>

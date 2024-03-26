@@ -1,7 +1,7 @@
 package com.promcteam.codex.mccore.config.parse;
 
 import com.promcteam.codex.CodexEngine;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
-@Slf4j
+@Log4j2
 class YAMLParserTest {
     private static YAMLParser                yamlParser = new YAMLParser();
     private static MockedStatic<CodexEngine> engineMock;
@@ -29,7 +29,7 @@ class YAMLParserTest {
         engine = mock(CodexEngine.class);
         logger = mock(Logger.class);
         doAnswer(invocation -> {
-            log.info(invocation.getArgument(0));
+            log.info((String) invocation.getArgument(0));
             return null;
         }).when(logger).info(anyString());
         engineMock.when(CodexEngine::get).thenReturn(engine);
@@ -43,7 +43,8 @@ class YAMLParserTest {
 
     @Test
     void parseText_normalText() {
-        String text = "test:\n    one: 'one-txt'\n    two: 'two-txt'\n    three: 'three-txt'\nother-item: 'other-txt'";
+        String text =
+                "test:\n    one: 'one-txt'\n    two: 'two-txt'\n    three: 'three-txt'\nother-item: 'other-txt'";
 
         DataSection data = yamlParser.parseText(text);
 

@@ -1,8 +1,8 @@
 package com.promcteam.codex.nms;
 
 import com.promcteam.codex.CodexEngine;
-import com.promcteam.codex.utils.reflection.ReflectionManager;
-import com.promcteam.codex.utils.reflection.ReflectionUtil;
+import com.promcteam.codex.util.reflection.ReflectionManager;
+import com.promcteam.codex.util.reflection.ReflectionUtil;
 import io.netty.channel.Channel;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

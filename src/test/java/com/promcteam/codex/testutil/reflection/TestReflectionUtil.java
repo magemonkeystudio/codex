@@ -2,7 +2,7 @@ package com.promcteam.codex.testutil.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import com.promcteam.codex.utils.reflection.ReflectionUtil;
+import com.promcteam.codex.util.reflection.ReflectionUtil;
 import io.netty.channel.Channel;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

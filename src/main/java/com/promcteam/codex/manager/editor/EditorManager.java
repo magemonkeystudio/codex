@@ -2,10 +2,10 @@ package com.promcteam.codex.manager.editor;
 
 import com.promcteam.codex.CodexEngine;
 import com.promcteam.codex.config.api.JYML;
-import com.promcteam.codex.utils.ClickText;
-import com.promcteam.codex.utils.ClickText.ClickWord;
-import com.promcteam.codex.utils.CollectionsUT;
-import com.promcteam.codex.utils.constants.JStrings;
+import com.promcteam.codex.util.ClickText;
+import com.promcteam.codex.util.ClickText.ClickWord;
+import com.promcteam.codex.util.CollectionsUT;
+import com.promcteam.codex.util.constants.JStrings;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +14,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditorManager {
-
     private static final CodexEngine ENGINE;
 
     private static final Map<Player, Map.Entry<Enum<?>, Object>> EDITOR_CACHE = new WeakHashMap<>();
@@ -96,10 +95,10 @@ public class EditorManager {
 
     public static void startEdit(@NotNull Player player, @Nullable Object o, Enum<?> type) {
         EDITOR_CACHE.put(player, new AbstractMap.SimpleEntry<>(type, o));
-        ClickText text = new ClickText(ENGINE.lang().Core_Editor_Tips_Exit_Name.getMsg());
+        ClickText text = new ClickText(ENGINE.lang().Codex_Editor_Tips_Exit_Name.getMsg());
         text.createFullPlaceholder()
                 .execCmd("/" + JStrings.EXIT)
-                .hint(ENGINE.lang().Core_Editor_Tips_Exit_Hint.getMsg());
+                .hint(ENGINE.lang().Codex_Editor_Tips_Exit_Hint.getMsg());
         text.send(player);
     }
 
@@ -115,16 +114,16 @@ public class EditorManager {
         ClickText text = new ClickText(builder.toString());
         items.forEach(pz -> {
             ClickWord word = text.createPlaceholder("%" + pz + "%", "&a" + pz);
-            word.hint(ENGINE.lang().Core_Editor_Tips_Hint.getMsg());
+            word.hint(ENGINE.lang().Codex_Editor_Tips_Hint.getMsg());
             word.execCmd(pz);
         });
 
-        ENGINE.lang().Core_Editor_Tips_Header.send(player);
+        ENGINE.lang().Codex_Editor_Tips_Header.send(player);
         text.send(player);
     }
 
     public static void sendCommandTips(@NotNull Player player) {
-        ENGINE.lang().Core_Editor_Tips_Commands.send(player);
+        ENGINE.lang().Codex_Editor_Tips_Commands.send(player);
     }
 
     public static boolean isEdit(@NotNull Player player) {
@@ -136,7 +135,7 @@ public class EditorManager {
     }
 
     public static void endEdit(@NotNull Player player, boolean msg) {
-        if (msg) EditorManager.tip(player, ENGINE.lang().Core_Editor_Display_Done_Title.getMsg(), "", 40);
+        if (msg) EditorManager.tip(player, ENGINE.lang().Codex_Editor_Display_Done_Title.getMsg(), "", 40);
         EDITOR_CACHE.remove(player);
     }
 
@@ -148,31 +147,31 @@ public class EditorManager {
     public static void tip(@NotNull Player player, @NotNull String title, @NotNull String sub, int stay) {
         if (stay == 999) stay = 100000;
 
-        ENGINE.lang().Core_Editor_Display_Edit_Format
+        ENGINE.lang().Codex_Editor_Display_Edit_Format
                 .replace("%title%", title)
                 .replace("%message%", sub)
                 .send(player);
     }
 
     public static void tipCustom(@NotNull Player player, @NotNull String sub) {
-        EditorManager.tip(player, ENGINE.lang().Core_Editor_Display_Edit_Title.getMsg(), sub, 999);
+        EditorManager.tip(player, ENGINE.lang().Codex_Editor_Display_Edit_Title.getMsg(), sub, 999);
     }
 
     public static void errorNumber(@NotNull Player player, boolean mustDecimal) {
-        String title = ENGINE.lang().Core_Editor_Display_Error_Number_Invalid.getMsg();
-        String sub   = ENGINE.lang().Core_Editor_Display_Error_Number_MustInteger.getMsg();
-        if (mustDecimal) sub = ENGINE.lang().Core_Editor_Display_Error_Number_MustDecimal.getMsg();
+        String title = ENGINE.lang().Codex_Editor_Display_Error_Number_Invalid.getMsg();
+        String sub   = ENGINE.lang().Codex_Editor_Display_Error_Number_MustInteger.getMsg();
+        if (mustDecimal) sub = ENGINE.lang().Codex_Editor_Display_Error_Number_MustDecimal.getMsg();
 
         EditorManager.tip(player, title, sub, 999);
     }
 
     public static void errorCustom(@NotNull Player player, @NotNull String sub) {
-        EditorManager.tip(player, ENGINE.lang().Core_Editor_Display_Error_Title.getMsg(), sub, 999);
+        EditorManager.tip(player, ENGINE.lang().Codex_Editor_Display_Error_Title.getMsg(), sub, 999);
     }
 
     public static void errorEnum(@NotNull Player player, @NotNull Class<?> clazz) {
-        String title = ENGINE.lang().Core_Editor_Display_Error_Type_Title.getMsg();
-        String sub   = ENGINE.lang().Core_Editor_Display_Error_Type_Values.getMsg();
+        String title = ENGINE.lang().Codex_Editor_Display_Error_Type_Title.getMsg();
+        String sub   = ENGINE.lang().Codex_Editor_Display_Error_Type_Values.getMsg();
         EditorManager.tip(player, title, sub, 999);
         EditorManager.sendClickableTips(player, CollectionsUT.getEnumsList(clazz));
     }

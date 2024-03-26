@@ -2,7 +2,7 @@ package com.promcteam.codex.commands.list;
 
 import com.promcteam.codex.CodexPlugin;
 import com.promcteam.codex.commands.api.ISubCommand;
-import com.promcteam.codex.utils.StringUT;
+import com.promcteam.codex.util.StringUT;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
 
@@ -21,7 +21,7 @@ public class HelpCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
     @Override
     @NotNull
     public String description() {
-        return plugin.lang().Core_Command_Help_Desc.getMsg();
+        return plugin.lang().Codex_Command_Help_Desc.getMsg();
     }
 
     @Override
@@ -32,12 +32,12 @@ public class HelpCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
     @Override
     protected void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         if (args.length <= 1) {
-            for (String s : plugin.lang().Core_Command_Help_List.asList()) {
+            for (String s : plugin.lang().Codex_Command_Help_List.asList()) {
                 if (s.equalsIgnoreCase("%cmds%")) {
                     for (ISubCommand<?> cmd : this.parent.getSubCommands()) {
                         if (!cmd.hasPerm(sender)) continue;
 
-                        String f = plugin.lang().Core_Command_Help_Format
+                        String f = plugin.lang().Codex_Command_Help_Format
                                 .replace("%description%", cmd.description())
                                 .replace("%usage%", cmd.usage())
                                 .replace("%cmd%", cmd.labels()[0])

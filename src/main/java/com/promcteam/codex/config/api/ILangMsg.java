@@ -1,8 +1,8 @@
 package com.promcteam.codex.config.api;
 
-import com.promcteam.codex.utils.CollectionsUT;
-import com.promcteam.codex.utils.MsgUT;
-import com.promcteam.codex.utils.StringUT;
+import com.promcteam.codex.util.CollectionsUT;
+import com.promcteam.codex.util.MsgUT;
+import com.promcteam.codex.util.StringUT;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -138,19 +138,19 @@ public class ILangMsg {
 
     @SuppressWarnings("unchecked")
     @NotNull
-    public ILangMsg replace(@NotNull String var, @NotNull Object replacer) {
+    public ILangMsg replace(@NotNull String var, @NotNull Object r) {
         if (this.isEmpty()) return this;
-        if (replacer instanceof List) return this.replace(var, (List<Object>) replacer);
+        if (r instanceof List) return this.replace(var, (List<Object>) r);
 
-        return this.replace(str -> str.replace(var, String.valueOf(replacer)));
+        return this.replace(str -> str.replace(var, String.valueOf(r)));
     }
 
     @NotNull
-    public ILangMsg replace(@NotNull String var, @NotNull List<Object> replacer) {
+    public ILangMsg replace(@NotNull String var, @NotNull List<Object> r) {
         if (this.isEmpty()) return this;
 
         StringBuilder builder = new StringBuilder();
-        replacer.forEach(rep -> {
+        r.forEach(rep -> {
             if (builder.length() > 0) builder.append("\\n");
             builder.append(rep.toString());
         });
@@ -159,11 +159,11 @@ public class ILangMsg {
     }
 
     @NotNull
-    public ILangMsg replace(@NotNull UnaryOperator<String> replacer) {
+    public ILangMsg replace(@NotNull UnaryOperator<String> r) {
         if (this.isEmpty()) return this;
 
         ILangMsg msgCopy = new ILangMsg(this);
-        msgCopy.msgColor = StringUT.color(replacer.apply(msgCopy.getMsg()));
+        msgCopy.msgColor = StringUT.color(r.apply(msgCopy.getMsg()));
         return msgCopy;
     }
 

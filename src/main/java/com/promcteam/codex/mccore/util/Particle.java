@@ -26,21 +26,21 @@
  */
 package com.promcteam.codex.mccore.util;
 
-import com.promcteam.codex.utils.Reflex;
-import com.promcteam.codex.utils.reflection.ReflectionManager;
+import com.promcteam.codex.util.Reflex;
+import com.promcteam.codex.util.reflection.ReflectionManager;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>A utility class for playing particle effects using reflection to
  * allow for particles not normally supported by Bukkit.</p>
  */
 public class Particle {
-
-    public static final HashMap<String, String> CONVERSION  = new HashMap<String, String>() {{
+    public static final Map<String, String> CONVERSION  = new HashMap<String, String>() {{
         put("angryVillager", "VILLAGER_ANGRY");
         put("bubble", "WATER_BUBBLE");
         put("blockcrack_", "BLOCK_CRACK");
@@ -78,9 +78,9 @@ public class Particle {
         put("townaura", "TOWN_AURA");
         put("witchMagic", "SPELL_WITCH");
     }};
-    private static      Class<?>                packetClass;
-    private static      Class<?>                particleEnum;
-    private static      boolean                 initialized = false;
+    private static      Class<?>            packetClass;
+    private static      Class<?>            particleEnum;
+    private static      boolean             initialized = false;
 
     private static void initialize() {
         initialized = true;
@@ -103,9 +103,8 @@ public class Particle {
      * @return true if supported, false otherwise
      */
     public static boolean isSupported() {
-        if (!initialized) {
-            initialize();
-        }
+        if (!initialized) initialize();
+
         return packetClass != null;
     }
 

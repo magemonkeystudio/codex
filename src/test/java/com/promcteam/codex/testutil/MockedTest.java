@@ -12,11 +12,11 @@ import com.promcteam.codex.mccore.commands.CommandManager;
 import com.promcteam.codex.mccore.scoreboard.Board;
 import com.promcteam.codex.nms.NMS;
 import com.promcteam.codex.testutil.reflection.TestReflectionUtil;
-import com.promcteam.codex.utils.Reflex;
-import com.promcteam.codex.utils.actions.ActionsManager;
-import com.promcteam.codex.utils.reflection.ReflectionManager;
-import com.promcteam.codex.utils.reflection.ReflectionUtil;
-import com.promcteam.codex.utils.reflection.Reflection_1_17;
+import com.promcteam.codex.util.Reflex;
+import com.promcteam.codex.util.actions.ActionsManager;
+import com.promcteam.codex.util.reflection.ReflectionManager;
+import com.promcteam.codex.util.reflection.ReflectionUtil;
+import com.promcteam.codex.util.reflection.Reflection_1_17;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -65,7 +65,7 @@ public abstract class MockedTest {
                 .thenAnswer(ans -> {
                     Plugin          plugin  = ans.getArgument(0);
                     IGeneralCommand command = ans.getArgument(1);
-                    CommandRegister cmd     = new CommandRegister(command.labels(),
+                    CommandRegister cmd = new CommandRegister(command.labels(),
                             command.description(),
                             command.usage(),
                             command,
@@ -117,19 +117,6 @@ public abstract class MockedTest {
         when(nms.fixColors(anyString()))
                 .thenAnswer(args -> args.getArgument(0));
         when(nms.toBase64(any())).thenReturn("");
-
-//        engine = mock(CodexEngine.class);
-//        codexEngine = mockStatic(CodexEngine.class);
-//        codexEngine.when(() -> CodexEngine.get()).thenReturn(engine);
-//        when(engine.getHooksManager()).thenReturn(hookManager);
-//        when(engine.getActionsManager()).thenReturn(actionsManager);
-//        when(engine.getNMS()).thenReturn(nms);
-//        when(engine.lang()).thenReturn(coreLang);
-//        when(engine.getLogger()).thenReturn(Logger.getLogger("Codex"));
-//        doReturn(server.getPluginManager())
-//                .when(engine).getPluginManager();
-//
-//        ItemUT.setEngine(engine);
 
         plugin = MockBukkit.load(CodexEngine.class);
     }

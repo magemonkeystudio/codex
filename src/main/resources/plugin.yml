@@ -8,3 +8,13 @@ api-version: 1.16
 load: STARTUP
 libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
 provides: [ ProMCCore ]
+commands:
+  stuck:
+    description: Find yourself in a pickle? Use /<command> to get out.
+    usage: /<command>
+    permission: codex.stuck
+
+permissions:
+  codex.stuck:
+    description: Allows the player to use the /stuck command.
+    default: true

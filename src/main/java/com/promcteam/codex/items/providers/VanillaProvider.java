@@ -1,12 +1,12 @@
 package com.promcteam.codex.items.providers;
 
+import com.promcteam.codex.items.CodexItemManager;
 import com.promcteam.codex.items.ItemType;
-import com.promcteam.codex.items.ProItemManager;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class VanillaProvider implements IProItemProvider<VanillaProvider.VanillaItemType> {
+public class VanillaProvider implements ICodexItemProvider<VanillaProvider.VanillaItemType> {
     public static final String NAMESPACE = "VANILLA";
 
     @Override
@@ -34,7 +34,7 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
     public VanillaItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
-        Material material = Material.matchMaterial(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
+        Material material = Material.matchMaterial(CodexItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
         if (material == null) return null;
 
         return new VanillaItemType(material);
@@ -56,7 +56,7 @@ public class VanillaProvider implements IProItemProvider<VanillaProvider.Vanilla
     public boolean isCustomItemOfId(ItemStack item, String id) {
         return item.getType()
                 .name()
-                .equalsIgnoreCase(ProItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
+                .equalsIgnoreCase(CodexItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
     }
 
     public static class VanillaItemType extends ItemType {

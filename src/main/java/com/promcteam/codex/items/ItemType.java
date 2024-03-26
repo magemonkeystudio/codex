@@ -1,6 +1,6 @@
 package com.promcteam.codex.items;
 
-import com.promcteam.codex.items.providers.IProItemProvider;
+import com.promcteam.codex.items.providers.ICodexItemProvider;
 import com.promcteam.codex.items.providers.VanillaProvider;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,7 +17,7 @@ public abstract class ItemType {
         return getNamespace() + '_' + getID();
     }
 
-    public abstract IProItemProvider.Category getCategory();
+    public abstract ICodexItemProvider.Category getCategory();
 
     public abstract ItemStack create();
 

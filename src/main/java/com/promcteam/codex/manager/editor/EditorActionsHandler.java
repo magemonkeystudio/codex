@@ -5,11 +5,11 @@ import com.promcteam.codex.manager.editor.object.IEditorActionsMain;
 import com.promcteam.codex.manager.editor.object.IEditorActionsParametized;
 import com.promcteam.codex.manager.editor.object.IEditorActionsParams;
 import com.promcteam.codex.manager.editor.object.IEditorActionsSection;
-import com.promcteam.codex.utils.StringUT;
-import com.promcteam.codex.utils.actions.ActionCategory;
-import com.promcteam.codex.utils.actions.ActionSection;
-import com.promcteam.codex.utils.actions.Parametized;
-import com.promcteam.codex.utils.actions.params.IParam;
+import com.promcteam.codex.util.StringUT;
+import com.promcteam.codex.util.actions.ActionCategory;
+import com.promcteam.codex.util.actions.ActionSection;
+import com.promcteam.codex.util.actions.Parametized;
+import com.promcteam.codex.util.actions.params.IParam;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -37,7 +37,7 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
             IEditorActionsMain<?> editor    = (IEditorActionsMain<?>) editObject;
             if (editor.getActionBuilders().containsKey(sectionId)) return false;
 
-            ActionSection                    section =
+            ActionSection section =
                     new ActionSection(new ArrayList<>(), new ArrayList<>(), "null", new ArrayList<>());
             IEditorActionsMain.ActionBuilder builder = new IEditorActionsMain.ActionBuilder(section, sectionId);
 
@@ -54,7 +54,7 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
             ActionCategory               category = editor.getSectionType();
             Parametized                  pz       = plugin.getActionsManager().getParametized(category, pzId);
             if (pz == null) {
-                EditorManager.errorCustom(p, plugin.lang().Core_Editor_Actions_Subject_Invalid.getMsg());
+                EditorManager.errorCustom(p, plugin.lang().Codex_Editor_Actions_Subject_Invalid.getMsg());
                 return false;
             }
 
@@ -79,9 +79,9 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
     private boolean onTypeParam(@NotNull Player p, @NotNull Object editObject,
                                 @NotNull EditorType type, @NotNull String msg) {
 
-        IEditorActionsParams<?>          paramEditor   = (IEditorActionsParams<?>) editObject;
-        IEditorActionsSection<?>         sectionEditor = paramEditor.getSctionEditor();
-        IEditorActionsMain.ActionBuilder builder       =
+        IEditorActionsParams<?>  paramEditor   = (IEditorActionsParams<?>) editObject;
+        IEditorActionsSection<?> sectionEditor = paramEditor.getSctionEditor();
+        IEditorActionsMain.ActionBuilder builder =
                 sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
         if (builder == null) {
             EditorManager.errorCustom(p, plugin.lang().Error_Internal.getMsg());
@@ -103,7 +103,7 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
 
             IParam param2 = plugin.getActionsManager().getParam(param);
             if (param2 == null) {
-                EditorManager.errorCustom(p, plugin.lang().Core_Editor_Actions_Param_Invalid.getMsg());
+                EditorManager.errorCustom(p, plugin.lang().Codex_Editor_Actions_Param_Invalid.getMsg());
                 return false;
             }
 

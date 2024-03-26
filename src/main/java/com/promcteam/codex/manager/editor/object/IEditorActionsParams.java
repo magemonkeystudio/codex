@@ -6,12 +6,12 @@ import com.promcteam.codex.manager.api.gui.*;
 import com.promcteam.codex.manager.editor.EditorManager;
 import com.promcteam.codex.manager.editor.EditorType;
 import com.promcteam.codex.manager.editor.object.IEditorActionsMain.ActionBuilder;
-import com.promcteam.codex.utils.ClickText;
-import com.promcteam.codex.utils.ClickText.ClickWord;
-import com.promcteam.codex.utils.StringUT;
-import com.promcteam.codex.utils.actions.ActionCategory;
-import com.promcteam.codex.utils.actions.Parametized;
-import com.promcteam.codex.utils.actions.params.IParam;
+import com.promcteam.codex.util.ClickText;
+import com.promcteam.codex.util.ClickText.ClickWord;
+import com.promcteam.codex.util.StringUT;
+import com.promcteam.codex.util.actions.ActionCategory;
+import com.promcteam.codex.util.actions.Parametized;
+import com.promcteam.codex.util.actions.params.IParam;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -75,7 +75,7 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
                     EditorType type2 = (EditorType) type;
 
                     if (type2 == EditorType.OBJECT_ACTIONS_PARAM_ADD) {
-                        EditorManager.tipCustom(p, plugin.lang().Core_Editor_Actions_Param_Add.getMsg());
+                        EditorManager.tipCustom(p, plugin.lang().Codex_Editor_Actions_Param_Add.getMsg());
                         EditorManager.startEdit(p, IEditorActionsParams.this, type2);
                         p.closeInventory();
 
@@ -102,7 +102,7 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
                         params.forEach(param -> {
                             ClickWord word =
                                     clickText.createPlaceholder("%" + param.getKey() + "%", "&a" + param.getKey());
-                            word.hint(plugin.lang().Core_Editor_Actions_Param_Hint.asList());
+                            word.hint(plugin.lang().Codex_Editor_Actions_Param_Hint.asList());
                             word.suggCmd(param.getKey() + " ");
                         });
 
@@ -199,7 +199,7 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
 
                 this.clickedParam = en.getKey();
 
-                EditorManager.tipCustom(p2, plugin.lang().Core_Editor_Actions_Param_Edit.getMsg());
+                EditorManager.tipCustom(p2, plugin.lang().Codex_Editor_Actions_Param_Edit.getMsg());
                 EditorManager.startEdit(p2, this, EditorType.OBJECT_ACTIONS_PARAM_VALUE);
                 p2.closeInventory();
 

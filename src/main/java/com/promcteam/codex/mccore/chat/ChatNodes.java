@@ -31,10 +31,10 @@ package com.promcteam.codex.mccore.chat;
  */
 enum ChatNodes {
 
-    LIST("core.chat.list"),
-    NAME("core.chat.name"),
-    PREFIX("core.chat.prefix"),
-    RESET("core.chat.reset"),
+    LIST("general.chat.list"),
+    NAME("general.chat.name"),
+    PREFIX("general.chat.prefix"),
+    RESET("general.chat.reset"),
     ;
 
     /**

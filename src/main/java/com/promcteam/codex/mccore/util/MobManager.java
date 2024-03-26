@@ -26,7 +26,7 @@
  */
 package com.promcteam.codex.mccore.util;
 
-import com.promcteam.codex.utils.Reflex;
+import com.promcteam.codex.util.Reflex;
 import org.bukkit.entity.*;
 
 import java.util.Hashtable;

@@ -2,7 +2,7 @@ package com.promcteam.codex.manager.api;
 
 import com.promcteam.codex.CodexPlugin;
 import com.promcteam.codex.manager.editor.object.IEditorActionsMain;
-import com.promcteam.codex.utils.actions.api.IActioned;
+import com.promcteam.codex.util.actions.api.IActioned;
 import org.jetbrains.annotations.NotNull;
 
 public interface IActionEditable extends IActioned, Editable {

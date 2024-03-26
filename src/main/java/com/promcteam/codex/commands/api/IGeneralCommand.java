@@ -1,7 +1,7 @@
 package com.promcteam.codex.commands.api;
 
 import com.promcteam.codex.CodexPlugin;
-import com.promcteam.codex.utils.StringUT;
+import com.promcteam.codex.util.StringUT;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

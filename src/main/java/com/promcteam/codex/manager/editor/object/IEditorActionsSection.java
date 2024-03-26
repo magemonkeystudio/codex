@@ -7,7 +7,7 @@ import com.promcteam.codex.manager.api.gui.GuiClick;
 import com.promcteam.codex.manager.api.gui.GuiItem;
 import com.promcteam.codex.manager.api.gui.NGUI;
 import com.promcteam.codex.manager.editor.EditorManager;
-import com.promcteam.codex.utils.actions.ActionCategory;
+import com.promcteam.codex.util.actions.ActionCategory;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;

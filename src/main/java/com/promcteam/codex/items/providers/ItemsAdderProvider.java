@@ -1,12 +1,12 @@
 package com.promcteam.codex.items.providers;
 
+import com.promcteam.codex.items.CodexItemManager;
 import com.promcteam.codex.items.ItemType;
-import com.promcteam.codex.items.ProItemManager;
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.ItemsAdderItemType> {
+public class ItemsAdderProvider implements ICodexItemProvider<ItemsAdderProvider.ItemsAdderItemType> {
     public static final String NAMESPACE = "ITEMSADDER";
 
     @Override
@@ -29,7 +29,7 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
     public ItemsAdderItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
-        id = ProItemManager.stripPrefix(NAMESPACE, id);
+        id = CodexItemManager.stripPrefix(NAMESPACE, id);
 
         CustomStack customStack = CustomStack.getInstance(id);
         if (customStack == null) return null;
@@ -51,7 +51,7 @@ public class ItemsAdderProvider implements IProItemProvider<ItemsAdderProvider.I
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        id = ProItemManager.stripPrefix(NAMESPACE, id);
+        id = CodexItemManager.stripPrefix(NAMESPACE, id);
 
         if (!CustomStack.isInRegistry(id)) return false;
         String itemId = CustomStack.byItemStack(item).getNamespacedID();

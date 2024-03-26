@@ -4,7 +4,7 @@ import com.promcteam.codex.CodexPlugin;
 import com.promcteam.codex.core.config.CoreConfig;
 import com.promcteam.codex.manager.api.Loadable;
 import com.promcteam.codex.modules.IExternalModule.LoadPriority;
-import com.promcteam.codex.utils.FileUT;
+import com.promcteam.codex.util.FileUT;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -135,10 +135,10 @@ public class ModuleManager<P extends CodexPlugin<P>> implements Loadable {
                 String   className = entry.getName().substring(0, entry.getName().length() - 6).replace('/', '.');
                 Class<?> clazz     = Class.forName(className, false, loader); // second was 'true'
                 if (IExternalModule.class.isAssignableFrom(clazz)) {
-                    Class<? extends IExternalModule<P>>       mainClass =
+                    Class<? extends IExternalModule<P>> mainClass =
                             (Class<? extends IExternalModule<P>>) clazz.asSubclass(IExternalModule.class);
-                    Constructor<? extends IExternalModule<P>> con       = mainClass.getConstructor(plugin.getClass());
-                    IExternalModule<P>                        module    = con.newInstance(plugin);
+                    Constructor<? extends IExternalModule<P>> con    = mainClass.getConstructor(plugin.getClass());
+                    IExternalModule<P>                        module = con.newInstance(plugin);
                     if (module == null) continue;
 
                     return module;

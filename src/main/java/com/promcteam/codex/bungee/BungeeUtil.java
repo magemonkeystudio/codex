@@ -3,7 +3,7 @@ package com.promcteam.codex.bungee;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import com.promcteam.risecore.Core;
+import com.promcteam.codex.CodexEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -36,12 +36,11 @@ public class BungeeUtil {
     }
 
     private static boolean sendMessage(String channel, UUID id, Player sender, String... data) {
-        if (!Core.IS_BUNGEE)
-            return false;
+        if (!CodexEngine.IS_BUNGEE) return false;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
         out.writeUTF(id == null ? UUID.randomUUID().toString() : id.toString());
-        out.writeUTF(Core.BUNGEE_ID);
+        out.writeUTF(CodexEngine.BUNGEE_ID);
 //        out.writeUTF(event);
         for (String dat : data)
             out.writeUTF(dat);
@@ -56,7 +55,7 @@ public class BungeeUtil {
             return true;
         }
 
-        sender.sendPluginMessage(Core.getInstance(), channel, out.toByteArray());
+        sender.sendPluginMessage(CodexEngine.get(), channel, out.toByteArray());
         return true;
     }
 
@@ -74,7 +73,7 @@ public class BungeeUtil {
     }
 
     private static void sendMessage(String channel, Player sender, ByteArrayDataOutput out) {
-        sender.sendPluginMessage(Core.getInstance(), channel, out.toByteArray());
+        sender.sendPluginMessage(CodexEngine.get(), channel, out.toByteArray());
     }
 
     public static void broadcastMessage(String message) {
@@ -94,7 +93,7 @@ public class BungeeUtil {
     }
 
     private static void sendFirstQueue() {
-        if (queued.size() == 0) return;
+        if (queued.isEmpty()) return;
 
         ByteArrayDataOutput out = queued.get(0);
         if (out == null) {
@@ -112,19 +111,16 @@ public class BungeeUtil {
 
         new BukkitRunnable() {
             public void run() {
-                if (Bukkit.getOnlinePlayers().size() == 0)
-                    return;
+                if (Bukkit.getOnlinePlayers().isEmpty()) return;
 
-                while (queued.size() > 0) {
+                while (!queued.isEmpty()) {
                     sendFirstQueue();
                 }
 
-                if (queued.size() == 0) {
-                    queueRunning = false;
-                    this.cancel();
-                }
+                queueRunning = false;
+                this.cancel();
             }
-        }.runTaskTimerAsynchronously(Core.getInstance(), 20L, 20L);
+        }.runTaskTimerAsynchronously(CodexEngine.get(), 20L, 20L);
     }
 
 }
