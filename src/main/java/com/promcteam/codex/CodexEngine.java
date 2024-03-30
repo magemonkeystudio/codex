@@ -32,6 +32,7 @@ import com.promcteam.codex.mccore.scoreboard.CycleTask;
 import com.promcteam.codex.mccore.scoreboard.ScoreboardCommander;
 import com.promcteam.codex.mccore.scoreboard.UpdateTask;
 import com.promcteam.codex.mccore.util.VersionManager;
+import com.promcteam.codex.migration.MigrationUtil;
 import com.promcteam.codex.nms.NMS;
 import com.promcteam.codex.nms.packets.PacketManager;
 import com.promcteam.codex.util.Debugger;
@@ -60,7 +61,6 @@ import java.util.Hashtable;
 import java.util.Set;
 
 public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
-
     private static final Hashtable<String, Config> configs = new Hashtable<>();
     private static       CodexEngine               instance;
     private final        Set<CodexPlugin<?>>       plugins;
@@ -128,6 +128,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private void setInstance() {
         instance = this;
         this.pluginManager = this.getServer().getPluginManager();
+        MigrationUtil.renameDirectory("plugins/ProMCCore", "plugins/Codex");
         ItemUT.setEngine(this);
         Reflex.setEngine(this);
     }

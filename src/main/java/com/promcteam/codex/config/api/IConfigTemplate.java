@@ -33,13 +33,13 @@ public abstract class IConfigTemplate {
 
     public final void setup() {
         this.cfg = plugin.getConfigManager().configMain;
-        this.cfg.addMissing("general.command-aliases", plugin.getName().toLowerCase());
-        this.cfg.addMissing("general.lang", "en");
-        this.cfg.addMissing("general.prefix", plugin.getName());
+        this.cfg.addMissing("core.command-aliases", plugin.getName().toLowerCase());
+        this.cfg.addMissing("core.lang", "en");
+        this.cfg.addMissing("core.prefix", plugin.getName());
 
-        this.pluginName = StringUT.color(cfg.getString("general.prefix", plugin.getName()));
-        this.cmds = cfg.getString("general.command-aliases", "").split(",");
-        this.lang = cfg.getString("general.lang", "en").toLowerCase();
+        this.pluginName = StringUT.color(cfg.getString("core.prefix", plugin.getName()));
+        this.cmds = cfg.getString("core.command-aliases", "").split(",");
+        this.lang = cfg.getString("core.lang", "en").toLowerCase();
 
         if (this.plugin instanceof CodexDataPlugin) {
             this.cfg.addMissing("data.auto-save", 20);
