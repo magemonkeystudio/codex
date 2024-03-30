@@ -6,18 +6,20 @@ import com.promcteam.risecore.legacy.util.DeserializationWorker;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 @NoArgsConstructor
+@SerializableAs("Codex_BookMeta")
 public class BookDataBuilder extends DataBuilder {
     private String       title;
     private String       author;
     private List<String> pages = new ArrayList<>(10);
 
-    @SuppressWarnings("unchecked")
     public BookDataBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
         this.title = w.getString("title");
@@ -160,6 +162,7 @@ public class BookDataBuilder extends DataBuilder {
                 .toString();
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(4).append(super.serialize());

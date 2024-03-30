@@ -3,36 +3,46 @@ package com.promcteam.codex.legacy.item;
 import com.promcteam.codex.util.ItemUtils;
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@NoArgsConstructor
+@SerializableAs("Codex_Item")
 public class ItemBuilder implements ConfigurationSerializable {
-    protected Material                  material    = Material.AIR;
-    protected int                       amount      = 1;
-    protected short                     durability  = 0;
-    protected boolean                   unbreakable = false;
-    protected String                    name;
+    @Getter
+    protected Material material   = Material.AIR;
+    @Getter
+    protected int     amount      = 1;
+    @Getter
+    protected short   durability  = 0;
+    @Getter
+    protected boolean      unbreakable = false;
+    @Getter
+    protected String       name;
+    @Getter
     protected List<String>              lore        = new ArrayList<>(5);
+    @Getter
     protected Map<Enchantment, Integer> enchants    = new LinkedHashMap<>(3);
+    @Getter
     protected DataBuilder               dataBuilder = null;
+    @Getter
     protected List<ItemFlag>            flags       = new ArrayList<>(5);
-    protected int                       modelData   = -1;
-    //  protected UnaryOperator<String> func;
+    protected int            modelData   = -1;
 
-    public ItemBuilder() {
-    }
-
-    @SuppressWarnings("unchecked")
     /**
      * @deprecated Items should be store using ItemMeta and loaded the same way. It is less likely to break that way.
      */
@@ -71,42 +81,6 @@ public class ItemBuilder implements ConfigurationSerializable {
                 .append("enchants", this.enchants)
                 .append("dataBuilder", this.dataBuilder)
                 .toString();
-    }
-
-    public Material getMaterial() {
-        return this.material;
-    }
-
-    public int getAmount() {
-        return this.amount;
-    }
-
-    public short getDurability() {
-        return this.durability;
-    }
-
-    public List<String> getLore() {
-        return this.lore;
-    }
-
-    public boolean isUnbreakable() {
-        return this.unbreakable;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public List<ItemFlag> getFlags() {
-        return this.flags;
-    }
-
-    public Map<Enchantment, Integer> getEnchants() {
-        return this.enchants;
-    }
-
-    public DataBuilder getDataBuilder() {
-        return this.dataBuilder;
     }
 
     public ItemBuilder unbreakable(final boolean flag) {
@@ -172,12 +146,6 @@ public class ItemBuilder implements ConfigurationSerializable {
         this.amount = source.getAmount();
         return this;
     }
-//
-//    public ItemBuilder apply(final UnaryOperator<String> func)
-//    {
-//        this.func = func;
-//        return this;
-//    }
 
     public ItemBuilder name(final String name) {
         this.name = name;
@@ -370,26 +338,6 @@ public class ItemBuilder implements ConfigurationSerializable {
         return item;
     }
 
-//    private void applyFunc()
-//    {
-//        if (this.func == null)
-//        {
-//            return;
-//        }
-//        if (this.name != null)
-//        {
-//            this.name = this.func.apply(this.name);
-//        }
-//        if ((this.lore != null) && ! this.lore.isEmpty())
-//        {
-//            this.lore = Stream.of(this.func.apply(StringUtils.join(this.lore, '\n')).split("\n")).filter(s -> ! s.equals("<NO-LINE>")).collect(Collectors.toList());
-//        }
-//        if (this.dataBuilder != null)
-//        {
-//            this.dataBuilder.applyFunc(this.func);
-//        }
-//    }
-
     public ItemBuilder reset() {
         this.material = Material.AIR;
         this.amount = 1;
@@ -416,6 +364,7 @@ public class ItemBuilder implements ConfigurationSerializable {
         return this;
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(7);

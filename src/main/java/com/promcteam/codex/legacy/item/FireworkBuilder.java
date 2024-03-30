@@ -3,20 +3,22 @@ package com.promcteam.codex.legacy.item;
 import com.promcteam.codex.util.ItemUtils;
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.FireworkEffect;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+@NoArgsConstructor
+@SerializableAs("Codex_FireworkMeta")
 public class FireworkBuilder extends DataBuilder {
     private List<FireworkEffect> effects = new ArrayList<>(10);
     private int                  power;
-
-    public FireworkBuilder() {
-    }
 
     @SuppressWarnings("unchecked")
     public FireworkBuilder(final Map<String, Object> map) {
@@ -132,6 +134,7 @@ public class FireworkBuilder extends DataBuilder {
         return "firework";
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(3).append(super.serialize());

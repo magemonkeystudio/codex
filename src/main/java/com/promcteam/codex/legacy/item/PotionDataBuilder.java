@@ -2,23 +2,27 @@ package com.promcteam.codex.legacy.item;
 
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Getter
 @NoArgsConstructor
+@SerializableAs("Codex_PotionMeta")
 public class PotionDataBuilder extends DataBuilder {
     protected Map<PotionEffectType, PotionData> potions = new LinkedHashMap<>(5);
     protected PotionEffectType                  main    = PotionEffectType.SPEED;
 
-    @SuppressWarnings("unchecked")
     public PotionDataBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
         this.main = PotionEffectType.getByName(w.getString("main", "SPEED"));
@@ -32,14 +36,6 @@ public class PotionDataBuilder extends DataBuilder {
             final boolean               ambient = effect.getBoolean("ambient");
             this.potions.put(type, new PotionData(power, time, ambient));
         }
-    }
-
-    public Map<PotionEffectType, PotionData> getPotions() {
-        return this.potions;
-    }
-
-    public PotionEffectType getMain() {
-        return this.main;
     }
 
     public PotionDataBuilder potions(final Map<PotionEffectType, PotionData> potions) {
@@ -126,6 +122,7 @@ public class PotionDataBuilder extends DataBuilder {
         return "potion";
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(3).append(super.serialize());

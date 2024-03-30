@@ -1,21 +1,25 @@
 package com.promcteam.codex.legacy.item;
 
 import com.promcteam.codex.util.SerializationBuilder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+@Getter
+@NoArgsConstructor
+@SerializableAs("Codex_EnchantmentStorageMeta")
 public class EnchantmentStorageBuilder extends DataBuilder {
     private Map<Enchantment, Integer> enchants = new LinkedHashMap<>(3);
-
-    public EnchantmentStorageBuilder() {
-    }
 
     public EnchantmentStorageBuilder(final Map<String, Object> map) {
         for (final Map.Entry<String, Object> entry : map.entrySet()) {
@@ -31,10 +35,6 @@ public class EnchantmentStorageBuilder extends DataBuilder {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).appendSuper(super.toString())
                 .append("enchants", this.enchants)
                 .toString();
-    }
-
-    public Map<Enchantment, Integer> getEnchants() {
-        return this.enchants;
     }
 
     public EnchantmentStorageBuilder enchant(final Map<Enchantment, Integer> enchants) {
@@ -96,6 +96,7 @@ public class EnchantmentStorageBuilder extends DataBuilder {
         return "enchantment_book";
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(this.enchants.size() + 1).append(super.serialize());

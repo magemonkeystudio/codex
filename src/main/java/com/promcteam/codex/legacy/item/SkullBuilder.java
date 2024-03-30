@@ -3,25 +3,26 @@ package com.promcteam.codex.legacy.item;
 import com.promcteam.codex.util.ItemUtils;
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+@Getter
 @NoArgsConstructor
+@SerializableAs("Codex_SkullMeta")
 public class SkullBuilder extends DataBuilder {
     private String owner;
 
     public SkullBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
         this.owner = w.getString("owner");
-    }
-
-    public String getOwner() {
-        return this.owner;
     }
 
     @SuppressWarnings("TypeMayBeWeakened")
@@ -61,6 +62,7 @@ public class SkullBuilder extends DataBuilder {
         return "skull";
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(2).append(super.serialize());

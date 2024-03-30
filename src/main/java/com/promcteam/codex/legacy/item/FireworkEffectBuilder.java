@@ -3,21 +3,24 @@ package com.promcteam.codex.legacy.item;
 import com.promcteam.codex.util.ItemUtils;
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.FireworkEffect;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+@Getter
+@NoArgsConstructor
+@SerializableAs("Codex_FireworkEffectMeta")
 public class FireworkEffectBuilder extends DataBuilder {
     private FireworkEffect effect;
 
-    public FireworkEffectBuilder() {
-    }
-
-    @SuppressWarnings("unchecked")
     public FireworkEffectBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
         this.effect = ItemUtils.simpleDeserializeEffect(w.getTypedObject("effect"));
@@ -28,10 +31,6 @@ public class FireworkEffectBuilder extends DataBuilder {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).appendSuper(super.toString())
                 .append("effect", this.effect)
                 .toString();
-    }
-
-    public FireworkEffect getEffect() {
-        return this.effect;
     }
 
     public FireworkEffectBuilder effect(final FireworkEffect effect) {
@@ -70,6 +69,7 @@ public class FireworkEffectBuilder extends DataBuilder {
         return "firework_effect";
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(2).append(super.serialize());

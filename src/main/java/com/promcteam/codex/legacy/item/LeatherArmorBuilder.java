@@ -3,16 +3,20 @@ package com.promcteam.codex.legacy.item;
 import com.promcteam.codex.util.ItemUtils;
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.Color;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.Map;
 
+@Getter
 @NoArgsConstructor
+@SerializableAs("Codex_LeatherArmorMeta")
 public class LeatherArmorBuilder extends DataBuilder {
     private int red, green, blue;
 
@@ -23,18 +27,6 @@ public class LeatherArmorBuilder extends DataBuilder {
             return;
         }
         this.color(color);
-    }
-
-    public int getRed() {
-        return this.red;
-    }
-
-    public int getBlue() {
-        return this.blue;
-    }
-
-    public int getGreen() {
-        return this.green;
     }
 
     public LeatherArmorBuilder red(final int red) {

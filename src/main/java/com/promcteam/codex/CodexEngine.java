@@ -15,7 +15,7 @@ import com.promcteam.codex.hooks.Hooks;
 import com.promcteam.codex.hooks.external.*;
 import com.promcteam.codex.hooks.external.citizens.CitizensHK;
 import com.promcteam.codex.items.CodexItemManager;
-import com.promcteam.codex.legacy.item.ItemBuilder;
+import com.promcteam.codex.legacy.item.*;
 import com.promcteam.codex.legacy.placeholder.PlaceholderRegistry;
 import com.promcteam.codex.legacy.riseitem.DarkRiseItemImpl;
 import com.promcteam.codex.listeners.BoatListener;
@@ -128,7 +128,15 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private void setInstance() {
         instance = this;
         this.pluginManager = this.getServer().getPluginManager();
-        MigrationUtil.renameDirectory("plugins/ProMCCore", "plugins/Codex");
+        try {
+            if (new File("plugins/ProMCCore").exists()) {
+                getLogger().info("Migrating ProMCCore to Codex");
+                MigrationUtil.renameDirectory("plugins/ProMCCore", "plugins/Codex");
+                MigrationUtil.replace("plugins/Codex/lang/messages_en.yml", "Core:", "Codex:");
+            }
+        } catch (Exception e) {
+            getLogger().warning("Failed to migrate ProMCCore to Codex. " + e.getMessage());
+        }
         ItemUT.setEngine(this);
         Reflex.setEngine(this);
     }
@@ -142,6 +150,16 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         unstuck = new UnstuckCommand();
 
         ConfigurationSerialization.registerClass(ItemBuilder.class);
+        ConfigurationSerialization.registerClass(EnchantmentStorageBuilder.class, "Codex_EnchantmentStorageMeta");
+        ConfigurationSerialization.registerClass(FireworkEffectBuilder.class, "Codex_FireworkEffectMeta");
+        ConfigurationSerialization.registerClass(LeatherArmorBuilder.class, "Codex_LeatherArmorMeta");
+        ConfigurationSerialization.registerClass(PotionDataBuilder.class, "Codex_PotionMeta");
+        ConfigurationSerialization.registerClass(FireworkBuilder.class, "Codex_FireworkMeta");
+        ConfigurationSerialization.registerClass(BookDataBuilder.class, "Codex_BookMeta");
+        ConfigurationSerialization.registerClass(SkullBuilder.class, "Codex_SkullMeta");
+        ConfigurationSerialization.registerClass(MapBuilder.class, "Codex_MapMeta");
+        ConfigurationSerialization.registerClass(ItemBuilder.class, "Codex_Item");
+
         ConfigurationSerialization.registerClass(DarkRiseItemImpl.class, "DarkRiseItemImpl");
         ConfigurationSerialization.registerClass(DarkRiseItemImpl.DivineItemsMeta.class, "DarkRiseItemImpl_Divine");
 

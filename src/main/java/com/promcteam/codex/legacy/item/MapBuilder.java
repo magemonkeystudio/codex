@@ -2,25 +2,26 @@ package com.promcteam.codex.legacy.item;
 
 import com.promcteam.codex.util.SerializationBuilder;
 import com.promcteam.risecore.legacy.util.DeserializationWorker;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
+@Getter
 @NoArgsConstructor
+@SerializableAs("Codex_MapMeta")
 public class MapBuilder extends DataBuilder {
     private boolean scaling;
 
     public MapBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
         this.scaling = w.getBoolean("scaling");
-    }
-
-    public boolean isScaling() {
-        return this.scaling;
     }
 
     public MapBuilder scaling(final boolean scaling) {
@@ -62,6 +63,7 @@ public class MapBuilder extends DataBuilder {
         return "map";
     }
 
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(2).append(super.serialize());

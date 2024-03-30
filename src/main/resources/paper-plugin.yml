@@ -2,7 +2,7 @@ name: ${project.name}
 main: com.promcteam.codex.CodexEngine
 version: ${project.version}
 description: Core plugin for the ProMCTeam suite
-api-version: '1.16'
+api-version: '1.19'
 load: STARTUP
 authors:
   - Travja
