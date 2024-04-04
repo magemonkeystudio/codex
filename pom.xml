@@ -5,14 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.promcteam</groupId>
-        <version>1.20.4-R1-SNAPSHOT</version>
-        <artifactId>promc-parent</artifactId>
+        <groupId>studio.magemonkey</groupId>
+        <artifactId>magemonkey-parent</artifactId>
+        <version>1.20.4-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex</artifactId>
     <name>Codex</name>
     <version>1.0.0-R0.1-SNAPSHOT</version>
+    <description>The core plugin for Mage Monkey Studios plugins</description>
 
     <repositories>
         <repository>
@@ -199,9 +200,9 @@
 
     <developers>
         <developer>
-            <name>ProMCTeam</name>
-            <organization>ProMCTeam</organization>
-            <organizationUrl>https://promcteam.com</organizationUrl>
+            <name>Mage Monkey Studios</name>
+            <organization>Mage Monkey Studios</organization>
+            <organizationUrl>https://magemonkey.studio</organizationUrl>
         </developer>
     </developers>
 

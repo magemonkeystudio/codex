@@ -1,7 +1,7 @@
 name: ${project.name}
-main: com.promcteam.codex.CodexEngine
+main: studio.magemonkey.codex.CodexEngine
 version: ${project.version}
-description: Core plugin for the ProMCTeam suite
+description: Core plugin for the Mage Monkey Studios suite
 authors: [ Travja, goflish ]
 softdepend: [ Vault, WorldGuard, MythicMobs ]
 api-version: 1.16
