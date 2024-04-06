@@ -1,7 +1,7 @@
 [![Build](https://github.com/promcteam/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/studio/magemonkey/codex/1.0.0-R0.1-SNAPSHOT)
 [![Build](https://github.com/promcteam/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/studio/magemonkey/codex/1.0.0-R0.1-SNAPSHOT)
 
-# Codex
+# Codex (Formerly ProMCCore)
 
 If you wish to use Codex as a dependency in your projects, Codex is available through Maven Central
 or snapshots through Sonatype.
@@ -21,6 +21,6 @@ or snapshots through Sonatype.
 
 ### A huge thanks to our contributors
 
-<a href="https://github.com/promcteam/promccore/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=promcteam/promccore" />
+<a href="https://github.com/promcteam/codex/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=promcteam/codex" />
 </a>
