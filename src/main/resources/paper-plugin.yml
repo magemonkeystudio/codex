@@ -1,7 +1,7 @@
 name: ${project.name}
-main: mc.promcteam.engine.NexEngine
+main: studio.magemonkey.codex.CodexEngine
 version: ${project.version}
-description: ProRPG Core plugin
+description: Core plugin for the Mage Monkey Studios suite
 api-version: '1.19'
 load: STARTUP
 authors:
@@ -9,6 +9,18 @@ authors:
   - goflish
 has-open-classloader: true
 libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
+provides:
+  - ProMCCore
+commands:
+  stuck:
+    description: Find yourself in a pickle? Use /<command> to get out.
+    usage: /<command>
+    permission: codex.stuck
+
+permissions:
+  codex.stuck:
+    description: Allows the player to use the /stuck command.
+    default: true
 
 dependencies:
   - name: Vault
@@ -21,7 +33,7 @@ dependencies:
     required: false
     bootstrap: true
 load-before:
-  - name: ProSkillAPI
+  - name: Fabled
     boostrap: false
-  - name: ProRPGItems
+  - name: Divinity
     boostrap: false

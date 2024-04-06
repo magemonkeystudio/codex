@@ -1,6 +1,6 @@
 core:
   lang: en
-  command-aliases: 'nexengine'
+  command-aliases: codex,codexengine
 
 locale:
   world-names:
@@ -14,3 +14,34 @@ Features:
 
 Settings:
   command-cooldown-message: "&4Please wait &6{time} seconds &4before using the command again."
+
+bungee: false
+bungee_id: codex
+
+# Commands executed for player on login. This placeholders are supported:
+# {player} - name of player
+onJoin:
+  - delay: 100
+    as: CONSOLE
+    cmd: give {player} cookie 1
+onFirstJoin:
+  - delay: 100
+    as: CONSOLE
+    cmd: give {player} cookie 1
+# Commands executed when player click on block, use type of -1 to ignore type.
+# Players with 'core.oninteract.bypass' permission will be ignored.
+onInteract:
+  - material: CRAFTING_TABLE
+    type: -1
+    cancelAction: true
+    delayedCommands:
+      - delay: 0
+        as: CONSOLE
+        cmd: give {player} cookie 1
+
+debug: false
+removeBoatOnExit: true
+
+unstuck:
+  cooldown: 30
+  warmup: 5

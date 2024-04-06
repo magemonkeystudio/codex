@@ -5,14 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.promcteam</groupId>
+        <groupId>studio.magemonkey</groupId>
+        <artifactId>magemonkey-parent</artifactId>
         <version>1.20.4-SNAPSHOT</version>
-        <artifactId>promc-parent</artifactId>
     </parent>
 
-    <artifactId>promccore</artifactId>
-    <name>ProMCCore</name>
-    <version>1.2.2-R0.3-SNAPSHOT</version>
+    <artifactId>codex</artifactId>
+    <name>Codex</name>
+    <version>1.0.0-R0.1-SNAPSHOT</version>
+    <description>The core plugin for Mage Monkey Studios plugins</description>
 
     <repositories>
         <repository>
@@ -23,12 +24,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.20</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <groupId>net.md-5</groupId>
+            <artifactId>bungeecord-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mojang</groupId>
@@ -73,11 +70,6 @@
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -91,12 +83,9 @@
             </exclusions>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -115,10 +104,6 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-reload4j</artifactId>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -191,7 +176,7 @@
                 <version>3.0.0-M7</version>
                 <configuration>
                     <systemPropertyVariables>
-                        <PROMCCORE_VERSION>${project.version}</PROMCCORE_VERSION>
+                        <CODEX_VERSION>${project.version}</CODEX_VERSION>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -209,15 +194,15 @@
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
         </license>
     </licenses>
 
     <developers>
         <developer>
-            <name>ProMCTeam</name>
-            <organization>ProMCTeam</organization>
-            <organizationUrl>https://promcteam.com</organizationUrl>
+            <name>Mage Monkey Studios</name>
+            <organization>Mage Monkey Studios</organization>
+            <organizationUrl>https://magemonkey.studio</organizationUrl>
         </developer>
     </developers>
 
