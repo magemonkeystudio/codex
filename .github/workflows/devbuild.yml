@@ -41,15 +41,14 @@ jobs:
           exit $result_code
       - name: Tag release version
         run: |
-          git add .
           version=$(mvn org.apache.maven.plugins:maven-help-plugin:3.1.0:evaluate -Dexpression=project.version -q -DforceStdout)
           git tag -a $version -m "Dev $version"
-          git commit -m "[ci skip] Deploy dev version $version"
       - name: Update version
         run: python ./.github/update_version.py true
       - name: Push to git
         run: |
           git add .
+          git reset settings.xml log.txt toolchains.xml
           git commit -m "[ci skip] Update dev version"
           git push
           git push --tags
