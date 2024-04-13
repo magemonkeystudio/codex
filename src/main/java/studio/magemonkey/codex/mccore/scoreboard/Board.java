@@ -26,6 +26,7 @@
  */
 package studio.magemonkey.codex.mccore.scoreboard;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -40,6 +41,7 @@ import java.util.UUID;
 public abstract class Board {
     protected final String     plugin;
     private final   String     title;
+    @Getter
     private final   Scoreboard scoreboard;
     private final   Objective  objective;
     private         UUID       uuid;
@@ -48,9 +50,14 @@ public abstract class Board {
      * @param title  title of the scoreboard
      * @param plugin plugin owning the scoreboard
      */
+    @SuppressWarnings("deprecation")
     public Board(String title, String plugin) {
         this.plugin = plugin;
         this.title = title;
+
+        if (Bukkit.getScoreboardManager() == null) {
+            throw new IllegalStateException("Scoreboard manager is null");
+        }
 
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         objective = scoreboard.registerNewObjective(title, "dummy");
@@ -87,6 +94,8 @@ public abstract class Board {
     }
 
     private void resetScores(int score) {
+        if (objective.getScoreboard() == null) return;
+
         objective.getScoreboard().getEntries()
                 .stream().filter(str -> objective.getScore(str).getScore() == score)
                 .forEach(objective.getScoreboard()::resetScores);
@@ -95,12 +104,12 @@ public abstract class Board {
     /**
      * Shows the board to it's player
      */
-    @SuppressWarnings("unchecked")
     public boolean showPlayer() {
         Player player = getPlayer();
         if (player == null || !player.isOnline())
             return false;
 
+        BoardManager.update(scoreboard);
         player.setScoreboard(scoreboard);
         return true;
     }
@@ -128,10 +137,12 @@ public abstract class Board {
      */
     public void clearDisplay() {
         Player player = getPlayer();
-        if (player == null || !player.isOnline())
+        if (player == null || !player.isOnline() || Bukkit.getScoreboardManager() == null)
             return;
 
-        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        Scoreboard board = Bukkit.getScoreboardManager().getNewScoreboard();
+        BoardManager.update(board);
+        player.setScoreboard(board);
     }
 
     /**

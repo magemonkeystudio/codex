@@ -31,16 +31,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * Main accessor for player scoreboards
  */
 public class BoardManager {
-    private static final HashMap<String, PlayerBoards> players = new HashMap<>();
-    private static final HashMap<String, String>       teams   = new HashMap<>();
+    private static final Map<String, PlayerBoards> players = new HashMap<>();
+    private static final Map<String, String>       teams   = new HashMap<>();
 
     private static Scoreboard scoreboard;
 
@@ -48,8 +51,7 @@ public class BoardManager {
 
     static void init(Player player) {
         init();
-        if (scoreboardUsed && player != null)
-            player.setScoreboard(scoreboard);
+        if (scoreboardUsed && player != null) player.setScoreboard(scoreboard);
     }
 
     /**
@@ -57,6 +59,9 @@ public class BoardManager {
      */
     public static void init() {
         if (scoreboard != null) return;
+        if (Bukkit.getScoreboardManager() == null) {
+            throw new IllegalStateException("Scoreboard manager is null");
+        }
 
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
     }
@@ -68,13 +73,12 @@ public class BoardManager {
      * @return player's scoreboard data
      */
     public static PlayerBoards getPlayerBoards(String player) {
-        if (!players.containsKey(player.toLowerCase()))
-            players.put(player.toLowerCase(), new PlayerBoards(player));
+        if (!players.containsKey(player.toLowerCase())) players.put(player.toLowerCase(), new PlayerBoards(player));
         return players.get(player.toLowerCase());
     }
 
     /**
-     * <p>Registers a new team with all player boards</p>
+     * Registers a new team with all player boards
      *
      * @param team team to register
      */
@@ -97,10 +101,24 @@ public class BoardManager {
     public static void updateTeam(Team team) {
         init();
         org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(team.getName());
-        if (team.getPrefix() != null)
-            sbTeam.setPrefix(team.getPrefix());
-        if (team.getSuffix() != null)
-            sbTeam.setSuffix(team.getSuffix());
+        if (sbTeam == null) return;
+
+        if (team.getPrefix() != null) sbTeam.setPrefix(team.getPrefix());
+        if (team.getSuffix() != null) sbTeam.setSuffix(team.getSuffix());
+
+        // Also update on all player boards
+        getAllPlayerBoards().forEach(playerBoards -> {
+            Board activeBoard = playerBoards.getActiveBoard();
+            if (activeBoard == null) return;
+
+            Scoreboard                 pBoard = activeBoard.getScoreboard();
+            org.bukkit.scoreboard.Team pTeam  = pBoard.getTeam(team.getName());
+            if (pTeam != null) return;
+
+            pTeam = pBoard.registerNewTeam(team.getName());
+            pTeam.setAllowFriendlyFire(true);
+            pTeam.setCanSeeFriendlyInvisibles(false);
+        });
     }
 
     /**
@@ -114,9 +132,26 @@ public class BoardManager {
     public static void setTeam(String player, String team) {
         try {
             enableScoreboard();
-            scoreboard.getTeam(team).addEntry(player);
+            org.bukkit.scoreboard.Team sTeam = scoreboard.getTeam(team);
+            if (sTeam == null) {
+                sTeam = scoreboard.registerNewTeam(team);
+            }
+            sTeam.addEntry(player);
             teams.put(player, team);
-        } catch (NoSuchMethodError nsme) {
+
+            // Also update on all player boards
+            getAllPlayerBoards().forEach(playerBoards -> {
+                Board activeBoard = playerBoards.getActiveBoard();
+                if (activeBoard == null) return;
+
+                Scoreboard                 pBoard = activeBoard.getScoreboard();
+                org.bukkit.scoreboard.Team pTeam  = pBoard.getTeam(team);
+                if (pTeam == null) {
+                    pTeam = pBoard.registerNewTeam(team);
+                }
+                pTeam.addEntry(player);
+            });
+        } catch (NoSuchMethodError ignored) {
             // Cauldron/Thermos cannot do this
         }
     }
@@ -127,12 +162,22 @@ public class BoardManager {
      * @param player player name
      */
     public static void clearTeam(String player) {
-        if (!teams.containsKey(player))
-            return;
+        if (!teams.containsKey(player)) return;
 
         init();
-        org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(teams.remove(player));
+        String teamName = teams.remove(player);
+        org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(teamName);
         if (sbTeam != null) sbTeam.removeEntry(player);
+
+        // Also remove from all player boards
+        getAllPlayerBoards().forEach(playerBoards -> {
+            Board activeBoard = playerBoards.getActiveBoard();
+            if (activeBoard == null) return;
+
+            Scoreboard                 pBoard = activeBoard.getScoreboard();
+            org.bukkit.scoreboard.Team pTeam  = pBoard.getTeam(teamName);
+            if (pTeam != null) pTeam.removeEntry(player);
+        });
     }
 
     /**
@@ -140,6 +185,7 @@ public class BoardManager {
      *
      * @param t text to show
      */
+    @SuppressWarnings("deprecation")
     public static void setTextBelowNames(String t) {
         enableScoreboard();
         Objective objective = scoreboard.getObjective(DisplaySlot.BELOW_NAME);
@@ -154,12 +200,11 @@ public class BoardManager {
      * Enables the scoreboard, overriding all players' scoreboards
      */
     private static void enableScoreboard() {
-        if (!scoreboardUsed) {
-            init();
-            for (Player player : Bukkit.getOnlinePlayers())
-                player.setScoreboard(scoreboard);
-            scoreboardUsed = true;
-        }
+        if (scoreboardUsed) return;
+
+        init();
+        Bukkit.getOnlinePlayers().forEach(player -> player.setScoreboard(scoreboard));
+        scoreboardUsed = true;
     }
 
     /**
@@ -168,14 +213,33 @@ public class BoardManager {
      * @param player player to set for
      * @param score  score to set
      */
+    @SuppressWarnings("deprecation")
     public static void setBelowNameScore(String player, int score) {
-        if (!scoreboardUsed)
-            throw new IllegalStateException("Cannot set below name score before text");
+        if (!scoreboardUsed) throw new IllegalStateException("Cannot set below name score before text");
 
         init();
-        scoreboard.getObjective(DisplaySlot.BELOW_NAME)
-                .getScore(player)
-                .setScore(score);
+        Objective objective = scoreboard.getObjective(DisplaySlot.BELOW_NAME);
+        if (objective == null) {
+            CodexEngine.get().warn("Failed to update below-name score since the objective is missing");
+            return;
+        }
+
+        objective.getScore(player).setScore(score);
+
+        // Also update on all player boards
+        getAllPlayerBoards().forEach(playerBoards -> {
+            Board activeBoard = playerBoards.getActiveBoard();
+            if (activeBoard == null) return;
+
+            Scoreboard pBoard = activeBoard.getScoreboard();
+            Objective  obj    = pBoard.getObjective(DisplaySlot.BELOW_NAME);
+            if (obj == null) {
+                obj = pBoard.registerNewObjective("dummy", "dummy");
+                obj.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            }
+
+            obj.getScore(player).setScore(score);
+        });
     }
 
     /**
@@ -186,15 +250,15 @@ public class BoardManager {
     public static void clearScore(String player) {
         init();
         scoreboard.resetScores(player);
-    }
 
-    /**
-     * Updates a scoreboard with the text below the player's name, if any
-     *
-     * @param board board to update
-     */
-    @Deprecated
-    public static void updateBoard(Board board) {
+        // Also update on all player boards
+        getAllPlayerBoards().forEach(playerBoards -> {
+            Board activeBoard = playerBoards.getActiveBoard();
+            if (activeBoard == null) return;
+
+            Scoreboard pBoard = activeBoard.getScoreboard();
+            pBoard.resetScores(player);
+        });
     }
 
     /**
@@ -221,8 +285,7 @@ public class BoardManager {
      * @param board scoreboard to add
      */
     public static void addGlobalScoreboard(Board board) {
-        for (PlayerBoards player : players.values())
-            player.addBoard(board);
+        players.values().forEach(player -> player.addBoard(board));
     }
 
     /**
@@ -231,8 +294,7 @@ public class BoardManager {
      * @param plugin plugin to clear
      */
     public static void clearPluginBoards(String plugin) {
-        for (PlayerBoards player : players.values())
-            player.removeBoards(plugin);
+        players.values().forEach(player -> player.removeBoards(plugin));
     }
 
     /**
@@ -242,5 +304,44 @@ public class BoardManager {
      */
     public static void clearPlayer(String name) {
         players.remove(name.toLowerCase());
+    }
+
+    /**
+     * Copies the scoreboard data from the main scoreboard to the provided scoreboard
+     *
+     * @param update scoreboard to copy to
+     */
+    public static void update(Scoreboard update) {
+        if (scoreboard == null) return;
+
+        scoreboard.getTeams().forEach(team -> {
+            org.bukkit.scoreboard.Team sbTeam = update.getTeam(team.getName());
+            if (sbTeam == null) {
+                sbTeam = update.registerNewTeam(team.getName());
+            }
+            sbTeam.setAllowFriendlyFire(team.allowFriendlyFire());
+            sbTeam.setCanSeeFriendlyInvisibles(team.canSeeFriendlyInvisibles());
+            sbTeam.setDisplayName(team.getDisplayName());
+            sbTeam.setPrefix(team.getPrefix());
+            sbTeam.setSuffix(team.getSuffix());
+
+            team.getEntries().forEach(sbTeam::addEntry);
+        });
+
+        scoreboard.getObjectives().forEach(objective -> {
+            Objective obj = update.getObjective(objective.getName());
+            if (obj == null) {
+                obj = update.registerNewObjective(objective.getName(),
+                        objective.getTrackedCriteria(),
+                        objective.getDisplayName());
+            }
+            obj.setDisplaySlot(objective.getDisplaySlot());
+            obj.setDisplayName(objective.getDisplayName());
+
+            Objective finalObj = obj;
+            Objects.requireNonNull(objective.getScoreboard())
+                    .getEntries()
+                    .forEach(entry -> finalObj.getScore(entry).setScore(objective.getScore(entry).getScore()));
+        });
     }
 }

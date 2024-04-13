@@ -26,25 +26,50 @@
  */
 package studio.magemonkey.codex.mccore.scoreboard;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Scoreboard data for a player
  */
 public class PlayerBoards {
-    private final List<Board> boards = new ArrayList<Board>();
-
-    private final String  player;
     /**
-     * Whether or not the player's scoreboard is cycling
+     * -- GETTER --
+     *
+     * @return the boards attached to the player
      */
+    @Getter
+    private final List<Board> boards = new ArrayList<>();
+
+    /**
+     * -- GETTER --
+     *
+     * @return name of the owning player
+     */
+    @Getter
+    private final String  playerName;
+    /**
+     * Whether the player's scoreboard is cycling
+     * -- GETTER --
+     *
+     * @return true if cycling, false otherwise
+     */
+    @Getter
     protected     boolean cycling;
     private       Board   currentBoard;
+    /**
+     * -- GETTER --
+     *
+     * @return true if enabled, false otherwise
+     */
+    @Getter
     private       boolean enabled = true;
     private       int     current = 0;
 
@@ -54,7 +79,7 @@ public class PlayerBoards {
      * @param playerName name of the player
      */
     public PlayerBoards(String playerName) {
-        this.player = playerName;
+        this.playerName = playerName;
         cycling = true;
     }
 
@@ -72,24 +97,10 @@ public class PlayerBoards {
     }
 
     /**
-     * @return true if enabled, false otherwise
-     */
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    /**
      * @return owning player reference
      */
     public Player getPlayer() {
-        return Bukkit.getPlayer(player);
-    }
-
-    /**
-     * @return name of the owning player
-     */
-    public String getPlayerName() {
-        return player;
+        return Bukkit.getPlayer(playerName);
     }
 
     /**
@@ -98,10 +109,11 @@ public class PlayerBoards {
      * @param board board to add
      */
     public void addBoard(Board board) {
-        if (getPlayer() == null)
+        Player player = getPlayer();
+        if (player == null)
             throw new IllegalStateException("Cannot add boards when no player is present");
 
-        board.setPlayer(getPlayer());
+        board.setPlayer(player);
         boards.add(board);
         if (currentBoard == null)
             showNextBoard();
@@ -129,9 +141,8 @@ public class PlayerBoards {
      * @param plugin plugin name
      */
     public void removeBoards(String plugin) {
-        for (int i = 0; i < boards.size(); i++)
-            if (boards.get(i).plugin.equalsIgnoreCase(plugin))
-                boards.remove(i);
+        boards.stream().filter(board -> board.plugin.equalsIgnoreCase(plugin))
+                .collect(Collectors.toSet()).forEach(this::removeBoard);
 
         clear();
     }
@@ -172,11 +183,10 @@ public class PlayerBoards {
      * Shows the next scoreboard
      */
     public void showNextBoard() {
-        if (boards.size() == 0 || !enabled)
-            return;
+        if (boards.isEmpty() || !enabled) return;
+
         int next = (current + 1) % boards.size();
-        if (next != current)
-            show(next);
+        if (next != current) show(next);
     }
 
     /**
@@ -196,10 +206,7 @@ public class PlayerBoards {
      * @return board manager
      */
     public Board getBoard(String name) {
-        for (Board board : boards)
-            if (format(board.getName()).equals(name))
-                return board;
-        return null;
+        return boards.stream().filter(board -> format(board.getName()).equals(name)).findFirst().orElse(null);
     }
 
     /**
@@ -207,31 +214,18 @@ public class PlayerBoards {
      *
      * @return active board
      */
+    @Nullable
     public Board getActiveBoard() {
         return currentBoard;
     }
 
     /**
-     * Checks whether or not the player has an active scoreboard
+     * Checks whether the player has an active scoreboard
      *
-     * @return true if has an active scoreboard, false otherwise
+     * @return if the player has an active scoreboard
      */
     public boolean hasActiveBoard() {
-        return boards.size() > 0 && enabled;
-    }
-
-    /**
-     * @return the boards attached to the player
-     */
-    public List<Board> getBoards() {
-        return boards;
-    }
-
-    /**
-     * @return true if cycling, false otherwise
-     */
-    public boolean isCycling() {
-        return cycling;
+        return !boards.isEmpty() && enabled;
     }
 
     /**
