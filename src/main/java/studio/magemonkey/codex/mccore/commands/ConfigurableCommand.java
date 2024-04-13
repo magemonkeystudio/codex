@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.commands.ConfigurableCommand
+ * Codex
+ * studio.magemonkey.codex.mccore.commands.ConfigurableCommand
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -682,7 +682,7 @@ public class ConfigurableCommand extends Command {
 
     /**
      * <p>Loads the command data from the configuration</p>
-     * <p>This is handled automatically by MCCore. You generally
+     * <p>This is handled automatically by Codex. You generally
      * will not use this command unless you want to override MCCore's
      * default configuration.</p>
      *

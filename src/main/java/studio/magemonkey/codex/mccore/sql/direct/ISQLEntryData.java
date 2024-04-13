@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.sql.direct.ISQLEntryData
+ * Codex
+ * studio.magemonkey.codex.mccore.sql.direct.ISQLEntryData
  * <p>
  * The MIT License (MIT)
  * <p>

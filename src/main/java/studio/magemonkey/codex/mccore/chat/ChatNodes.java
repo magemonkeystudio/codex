@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.chat.ChatNodes
+ * Codex
+ * studio.magemonkey.codex.mccore.chat.ChatNodes
  * <p>
  * The MIT License (MIT)
  * <p>

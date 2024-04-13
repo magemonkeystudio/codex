@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.commands.CommandManager
+ * Codex
+ * studio.magemonkey.codex.mccore.commands.CommandManager
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -133,7 +133,7 @@ public class CommandManager {
      * <p>Checks whether or not the CommandManager was able
      * to register commands successfully with Bukkit. If
      * it is invalid, then commands will be handled by
-     * MCCore instead of the default command system.</p>
+     * Codex instead of the default command system.</p>
      *
      * @return true if commands could not be registered, false otherwise
      */
@@ -249,7 +249,7 @@ public class CommandManager {
      * <p>Unregisters all commands for all plugins</p>
      * <p>If no commands were registered, this does nothing</p>
      *
-     * <p>You shouldn't use this method as it's meant for MCCore to
+     * <p>You shouldn't use this method as it's meant for Codex to
      * clear the data when it's disabled.</p>
      */
     public static void unregisterAll() {
@@ -523,7 +523,7 @@ public class CommandManager {
 
     /**
      * <p>Loads options for displaying command usages from the configuration</p>
-     * <p>This is called by MCCore automatically and doesn't need to be called by
+     * <p>This is called by Codex automatically and doesn't need to be called by
      * you. If you want to override MCCore's default configuration, you could use
      * this method to apply a different one as long as it uses the same format.</p>
      *

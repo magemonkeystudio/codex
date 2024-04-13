@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.chat.ChatListener
+ * Codex
+ * studio.magemonkey.codex.mccore.chat.ChatListener
  * <p>
  * The MIT License (MIT)
  * <p>

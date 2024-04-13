@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.text.TextSizer
+ * Codex
+ * studio.magemonkey.codex.mccore.text.TextSizer
  * <p>
  * The MIT License (MIT)
  * <p>

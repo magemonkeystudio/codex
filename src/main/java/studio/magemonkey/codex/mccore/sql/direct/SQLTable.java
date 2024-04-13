@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.sql.direct.SQLTable
+ * Codex
+ * studio.magemonkey.codex.mccore.sql.direct.SQLTable
  * <p>
  * The MIT License (MIT)
  * <p>

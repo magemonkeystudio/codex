@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.parse.JSONParser
+ * Codex
+ * studio.magemonkey.codex.mccore.config.parse.JSONParser
  * <p>
  * The MIT License (MIT)
  * <p>

@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.reflect.ParticleType
+ * Codex
+ * studio.magemonkey.codex.mccore.reflect.ParticleType
  * <p>
  * The MIT License (MIT)
  * <p>

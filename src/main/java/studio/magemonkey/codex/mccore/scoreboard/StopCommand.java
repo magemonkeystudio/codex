@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.scoreboard.StopCommand
+ * Codex
+ * studio.magemonkey.codex.mccore.scoreboard.StopCommand
  * <p>
  * The MIT License (MIT)
  * <p>

@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.items.InventoryManager
+ * Codex
+ * studio.magemonkey.codex.mccore.items.InventoryManager
  * <p>
  * The MIT License (MIT)
  * <p>

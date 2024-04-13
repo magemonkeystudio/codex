@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.sql.direct.SQLEntry
+ * Codex
+ * studio.magemonkey.codex.mccore.sql.direct.SQLEntry
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -26,6 +26,9 @@
  */
 package studio.magemonkey.codex.mccore.sql.direct;
 
+import lombok.Getter;
+
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,9 +43,16 @@ public class SQLEntry {
     private static final DateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private static final char       SQUOTE = '`';
 
-    private SQLDatabase database;
-    private SQLTable    table;
-    private String      name;
+    private       SQLDatabase database;
+    private final SQLTable    table;
+    /**
+     * -- GETTER --
+     * <p>Retrieves the name of the entry.</p>
+     *
+     * @return entry name
+     */
+    @Getter
+    private final String      name;
 
     /**
      * <p>Initializes a new SQL entry</p>
@@ -55,15 +65,6 @@ public class SQLEntry {
         this.database = database;
         this.table = table;
         this.name = name;
-    }
-
-    /**
-     * <p>Retrieves the name of the entry.</p>
-     *
-     * @return entry name
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -101,7 +102,7 @@ public class SQLEntry {
             set.next();
             String value = set.getString(key);
             set.close();
-            if (value != null) return value.replace(SQUOTE, '\'');
+            if (value != null) return value.replace(SQUOTE, '\'').replace('√', '\'');
             else return null;
         } catch (Exception ex) {
             return null;
@@ -196,10 +197,11 @@ public class SQLEntry {
      */
     public void set(String key, String value) {
         try {
-            if (value != null) value = value.replace('\'', SQUOTE);
-            database.getStatement()
-                    .execute(
-                            "UPDATE " + table.getName() + " SET " + key + "='" + value + "' WHERE Name='" + name + "'");
+            PreparedStatement statement =
+                    database.getStatement("UPDATE " + table.getName() + " SET " + key + "=? WHERE Name=?");
+            statement.setString(1, value);
+            statement.setString(2, name);
+            statement.execute();
         } catch (Exception ex) {
             database.getLogger()
                     .severe("Failed to set the value \"" + key + "\" for \"" + name + "\" - " + ex.getMessage());

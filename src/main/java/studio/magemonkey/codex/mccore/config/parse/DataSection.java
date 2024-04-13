@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.parse.DataSection
+ * Codex
+ * studio.magemonkey.codex.mccore.config.parse.DataSection
  * <p>
  * The MIT License (MIT)
  * <p>

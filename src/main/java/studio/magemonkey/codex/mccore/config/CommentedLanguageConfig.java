@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.CommentedLanguageConfig
+ * Codex
+ * studio.magemonkey.codex.mccore.config.CommentedLanguageConfig
  * <p>
  * The MIT License (MIT)
  * <p>

@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.items.ItemManager
+ * Codex
+ * studio.magemonkey.codex.mccore.items.ItemManager
  * <p>
  * The MIT License (MIT)
  * <p>

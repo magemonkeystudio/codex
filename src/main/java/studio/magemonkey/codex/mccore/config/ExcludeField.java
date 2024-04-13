@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.ExcludeField
+ * Codex
+ * studio.magemonkey.codex.mccore.config.ExcludeField
  * <p>
  * The MIT License (MIT)
  * <p>

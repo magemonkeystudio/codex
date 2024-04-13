@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.chat.ResetCommand
+ * Codex
+ * studio.magemonkey.codex.mccore.chat.ResetCommand
  * <p>
  * The MIT License (MIT)
  * <p>

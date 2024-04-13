@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.gui.MapScene
+ * Codex
+ * studio.magemonkey.codex.mccore.gui.MapScene
  * <p>
  * The MIT License (MIT)
  * <p>

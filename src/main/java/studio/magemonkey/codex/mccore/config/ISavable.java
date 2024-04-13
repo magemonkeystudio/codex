@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.ISavable
+ * Codex
+ * studio.magemonkey.codex.mccore.config.ISavable
  * <p>
  * The MIT License (MIT)
  * <p>

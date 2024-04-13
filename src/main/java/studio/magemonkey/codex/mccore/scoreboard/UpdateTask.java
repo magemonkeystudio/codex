@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.scoreboard.UpdateTask
+ * Codex
+ * studio.magemonkey.codex.mccore.scoreboard.UpdateTask
  * <p>
  * The MIT License (MIT)
  * <p>

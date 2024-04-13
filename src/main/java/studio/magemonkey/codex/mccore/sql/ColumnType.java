@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.sql.ColumnType
+ * Codex
+ * studio.magemonkey.codex.mccore.sql.ColumnType
  * <p>
  * The MIT License (MIT)
  * <p>

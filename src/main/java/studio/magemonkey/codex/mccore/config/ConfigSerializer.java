@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.ConfigSerializer
+ * Codex
+ * studio.magemonkey.codex.mccore.config.ConfigSerializer
  * <p>
  * The MIT License (MIT)
  * <p>

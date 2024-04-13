@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.scoreboard.ScoreboardCommander
+ * Codex
+ * studio.magemonkey.codex.mccore.scoreboard.ScoreboardCommander
  * <p>
  * The MIT License (MIT)
  * <p>

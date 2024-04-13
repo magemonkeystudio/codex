@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.commands.ICommand
+ * Codex
+ * studio.magemonkey.codex.mccore.commands.ICommand
  * <p>
  * The MIT License (MIT)
  * <p>

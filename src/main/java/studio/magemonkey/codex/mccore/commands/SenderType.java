@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.commands.SenderType
+ * Codex
+ * studio.magemonkey.codex.mccore.commands.SenderType
  * <p>
  * The MIT License (MIT)
  * <p>

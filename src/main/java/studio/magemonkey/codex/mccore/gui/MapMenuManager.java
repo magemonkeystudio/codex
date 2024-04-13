@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.gui.MapMenuManager
+ * Codex
+ * studio.magemonkey.codex.mccore.gui.MapMenuManager
  * <p>
  * The MIT License (MIT)
  * <p>

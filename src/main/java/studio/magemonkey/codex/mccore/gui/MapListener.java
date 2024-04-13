@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.gui.MapListener
+ * Codex
+ * studio.magemonkey.codex.mccore.gui.MapListener
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -50,7 +50,7 @@ public class MapListener implements Listener {
      * Sets up the map listener. Other plugins should
      * not initialize this.
      *
-     * @param core MCCore reference
+     * @param core Codex reference
      */
     public MapListener(CodexEngine core) {
         core.getServer().getPluginManager().registerEvents(this, core);

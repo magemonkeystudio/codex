@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.gui.MapScheme
+ * Codex
+ * studio.magemonkey.codex.mccore.gui.MapScheme
  * <p>
  * The MIT License (MIT)
  * <p>

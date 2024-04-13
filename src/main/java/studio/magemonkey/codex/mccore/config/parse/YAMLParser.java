@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.parse.YAMLParser
+ * Codex
+ * studio.magemonkey.codex.mccore.config.parse.YAMLParser
  * <p>
  * The MIT License (MIT)
  * <p>

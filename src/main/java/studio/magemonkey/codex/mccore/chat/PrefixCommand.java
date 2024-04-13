@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.chat.PrefixCommand
+ * Codex
+ * studio.magemonkey.codex.mccore.chat.PrefixCommand
  * <p>
  * The MIT License (MIT)
  * <p>

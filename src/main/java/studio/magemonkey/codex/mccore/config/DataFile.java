@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.DataFile
+ * Codex
+ * studio.magemonkey.codex.mccore.config.DataFile
  * <p>
  * The MIT License (MIT)
  * <p>

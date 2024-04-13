@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.FilterType
+ * Codex
+ * studio.magemonkey.codex.mccore.config.FilterType
  * <p>
  * The MIT License (MIT)
  * <p>

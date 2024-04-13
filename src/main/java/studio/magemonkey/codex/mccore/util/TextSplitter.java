@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.text.TextSplitter
+ * Codex
+ * studio.magemonkey.codex.mccore.text.TextSplitter
  * <p>
  * The MIT License (MIT)
  * <p>

@@ -385,8 +385,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
      * <p>Retrieves the configuration file for a plugin</p>
      * <p>If the config file hasn't been loaded yet, this will
      * load the file first.</p>
-     * <p>Configs retrieved via this method are handled by MCCore
-     * and automatically saved when MCCore disables.</p>
+     * <p>Configs retrieved via this method are handled by Codex
+     * and automatically saved when Codex disables.</p>
      * <p>This should not be used for settings configs
      * that admins may want to edit while the server is running
      * as the auto save will overwrite any changes they make.</p>
@@ -404,7 +404,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     }
 
     /**
-     * <p>Registers the Config with MCCore for auto saving.</p>
+     * <p>Registers the Config with Codex for auto saving.</p>
      * <p>If the Config was already registered, this method will
      * not do anything.</p>
      *

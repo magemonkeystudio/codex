@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.version.ServerType
+ * Codex
+ * studio.magemonkey.codex.mccore.version.ServerType
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -27,7 +27,7 @@
 package studio.magemonkey.codex.mccore.util;
 
 /**
- * <p>The different types of servers supported by MCCore</p>
+ * <p>The different types of servers supported by Codex</p>
  */
 public enum ServerType {
 

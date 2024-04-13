@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.parse.NumberParser
+ * Codex
+ * studio.magemonkey.codex.mccore.config.parse.NumberParser
  * <p>
  * The MIT License (MIT)
  * <p>

@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.LocationData
+ * Codex
+ * studio.magemonkey.codex.mccore.config.LocationData
  * <p>
  * The MIT License (MIT)
  * <p>

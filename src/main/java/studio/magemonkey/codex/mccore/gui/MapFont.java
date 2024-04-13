@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.gui.MapFont
+ * Codex
+ * studio.magemonkey.codex.mccore.gui.MapFont
  * <p>
  * The MIT License (MIT)
  * <p>

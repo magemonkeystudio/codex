@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.SerializableField
+ * Codex
+ * studio.magemonkey.codex.mccore.config.SerializableField
  * <p>
  * The MIT License (MIT)
  * <p>

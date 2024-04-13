@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.version.VersionManager
+ * Codex
+ * studio.magemonkey.codex.mccore.version.VersionManager
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -155,7 +155,7 @@ public class VersionManager {
 
     /**
      * <p>Initializes the version data</p>
-     * <p>MCCore already calls this by default and
+     * <p>Codex already calls this by default and
      * this is called in case it wasn't called before
      * data is started to be accessed so you shouldn't
      * ever need to call this method.</p>

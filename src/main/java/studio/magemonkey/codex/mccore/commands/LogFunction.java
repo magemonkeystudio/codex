@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.commands.LogFunction
+ * Codex
+ * studio.magemonkey.codex.mccore.commands.LogFunction
  * <p>
  * The MIT License (MIT)
  * <p>

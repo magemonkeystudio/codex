@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.commands.CommandLog
+ * Codex
+ * studio.magemonkey.codex.mccore.commands.CommandLog
  * <p>
  * The MIT License (MIT)
  * <p>
@@ -71,7 +71,7 @@ public class CommandLog implements CommandSender {
 
     @Override
     public String getName() {
-        return "MCCore Logger";
+        return "Codex Logger";
     }
 
     @NotNull

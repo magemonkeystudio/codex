@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.chat.NameCommand
+ * Codex
+ * studio.magemonkey.codex.mccore.chat.NameCommand
  * <p>
  * The MIT License (MIT)
  * <p>

@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.mobs.MobManager
+ * Codex
+ * studio.magemonkey.codex.mccore.mobs.MobManager
  * <p>
  * The MIT License (MIT)
  * <p>

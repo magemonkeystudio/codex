@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.config.parse.DataArray
+ * Codex
+ * studio.magemonkey.codex.mccore.config.parse.DataArray
  * <p>
  * The MIT License (MIT)
  * <p>

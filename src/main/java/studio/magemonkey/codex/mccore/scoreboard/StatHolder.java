@@ -1,6 +1,6 @@
 /**
- * MCCore
- * com.rit.sucy.scoreboard.StatHolder
+ * Codex
+ * studio.magemonkey.codex.mccore.scoreboard.StatHolder
  * <p>
  * The MIT License (MIT)
  * <p>
