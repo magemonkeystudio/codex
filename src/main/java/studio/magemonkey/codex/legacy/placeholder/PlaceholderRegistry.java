@@ -90,7 +90,7 @@ public final class PlaceholderRegistry {
         LOCATION.registerItem("exactY", Location::getY);
         LOCATION.registerItem("exactZ", Location::getZ);
         LOCATION.registerItem("world", l -> l.getWorld().getName());
-        WORLD.registerItem("name", World::getName);
+        WORLD.registerItem("name", w -> w.getName());
         WORLD.registerItem("difficulty", w -> w.getDifficulty().name().toLowerCase());
         WORLD.registerItem("environment", w -> w.getEnvironment().name().toLowerCase());
         WORLD.registerItem("seed", World::getSeed);
