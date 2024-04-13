@@ -93,7 +93,7 @@ public final class PlaceholderRegistry {
         WORLD.registerItem("name", w -> w.getName());
         WORLD.registerItem("difficulty", w -> w.getDifficulty().name().toLowerCase());
         WORLD.registerItem("environment", w -> w.getEnvironment().name().toLowerCase());
-        WORLD.registerItem("seed", World::getSeed);
+        WORLD.registerItem("seed", w -> w.getSeed());
         WORLD.registerItem("uuid", w -> w.getUID().toString());
         WORLD.registerItem("type", w -> w.getWorldType().name().toLowerCase());
         WORLD.registerItem("folder", w -> w.getWorldFolder().getPath());
