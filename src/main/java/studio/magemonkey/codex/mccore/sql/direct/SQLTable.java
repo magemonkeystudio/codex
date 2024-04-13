@@ -32,10 +32,10 @@ import studio.magemonkey.codex.mccore.sql.ColumnType;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>Represents a single table in a MySQL database.</p>
@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class SQLTable {
 
-    private final HashMap<String, SQLEntry> entries = new HashMap<String, SQLEntry>();
+    private final Map<String, SQLEntry> entries = new HashMap<>();
 
     private final PreparedStatement
             QUERY_NAME,
@@ -108,6 +108,20 @@ public class SQLTable {
         return false;
     }
 
+    public String getColumnType(String name) {
+        try {
+            DatabaseMetaData meta   = database.getMeta();
+            ResultSet        result = meta.getColumns(null, null, this.name, name);
+            if (result.next()) {
+                return result.getString("TYPE_NAME");
+            }
+        } catch (Exception ex) {
+            database.getLogger().severe("Unable to validate table: " + ex.getMessage());
+        }
+
+        return null;
+    }
+
     /**
      * <p>Creates a new column in the table.</p>
      *
@@ -115,10 +129,30 @@ public class SQLTable {
      * @param type type of the column
      */
     public void createColumn(String name, ColumnType type) {
-        if (columnExists(name)) return;
+        if (columnExists(name)) {
+            String colType  = getColumnType(name);
+            String baseType = type.toString().split(" ")[0];
+            if (colType.equals(baseType)) return;
+
+            database.getLogger()
+                    .warning("Column \"" + name + "\" already exists in the table \"" + this.name
+                            + "\", but with a different type (" + colType + "). Attempting to update to " + type + ".");
+            try {
+                PreparedStatement statement =
+                        database.getStatement("ALTER TABLE " + this.name + " MODIFY " + name + " " + type);
+                statement.executeUpdate();
+            } catch (Exception ex) {
+                database.getLogger()
+                        .severe("Failed to update the column \"" + name + "\" in the table \"" + this.name + "\" - "
+                                + ex.getMessage());
+            }
+
+            return;
+        }
         try {
-            Statement statement = database.getStatement();
-            statement.execute("ALTER TABLE " + this.name + " ADD " + name + " " + type.toString());
+            PreparedStatement statement =
+                    database.getStatement("ALTER TABLE " + this.name + " ADD " + name + " " + type);
+            statement.executeUpdate();
         } catch (Exception ex) {
             database.getLogger()
                     .severe("Failed to add the column \"" + name + "\" to the table \"" + this.name + "\" - "
