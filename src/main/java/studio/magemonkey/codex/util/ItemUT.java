@@ -2,10 +2,6 @@ package studio.magemonkey.codex.util;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.config.ConfigManager;
-import studio.magemonkey.codex.core.Version;
-import studio.magemonkey.codex.hooks.Hooks;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -20,6 +16,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.config.ConfigManager;
+import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.hooks.Hooks;
 
 import java.util.*;
 import java.util.function.UnaryOperator;
@@ -101,9 +101,11 @@ public class ItemUT {
     }
 
     public static int getLoreIndex(@NotNull ItemStack item, @NotNull String id, int type) {
-        String storedText = DataUT.getStringData(item, ItemUT.getLoreKey(id));
-        if (storedText == null)
-            storedText = DataUT.getStringData(item, ItemUT.getLoreKey2(id));
+        String storedText = null;
+        for (NamespacedKey key : ItemUT.getLoreKeys(id)) {
+            storedText = DataUT.getStringData(item, key);
+            if (storedText != null) break;
+        }
         if (storedText == null) return -1;
 
         ItemMeta meta = item.getItemMeta();
@@ -146,57 +148,61 @@ public class ItemUT {
     }
 
     @NotNull
-    private static NamespacedKey getLoreKey(@NotNull String id) {
-        return new NamespacedKey(engine, LORE_FIX_PREFIX + id.toLowerCase());
+    private static List<NamespacedKey> getLoreKeys(@NotNull String id) {
+        return List.of(
+                new NamespacedKey(engine, LORE_FIX_PREFIX + id.toLowerCase()),
+                Objects.requireNonNull(NamespacedKey.fromString("promccore:" + LORE_FIX_PREFIX + id.toLowerCase())),
+                Objects.requireNonNull(NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id.toLowerCase()))
+        );
     }
 
     @NotNull
-    private static NamespacedKey getLoreKey2(@NotNull String id) {
-        return Objects.requireNonNull(NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id.toLowerCase()));
-    }
-
-    @NotNull
-    private static NamespacedKey getNameKey(@NotNull String id) {
-        return new NamespacedKey(engine, NAME_FIX_PREFIX + id.toLowerCase());
+    private static List<NamespacedKey> getNameKeys(@NotNull String id) {
+        return List.of(
+                new NamespacedKey(engine, NAME_FIX_PREFIX + id.toLowerCase()),
+                Objects.requireNonNull(NamespacedKey.fromString("promccore:" + NAME_FIX_PREFIX + id.toLowerCase())),
+                Objects.requireNonNull(NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id.toLowerCase()))
+        );
     }
 
     public static void addLoreTag(@NotNull ItemStack item, @NotNull String id, @NotNull String text) {
-        DataUT.setData(item, ItemUT.getLoreKey(id), text);
+        DataUT.setData(item, ItemUT.getLoreKeys(id).get(0), text);
     }
 
     public static void delLoreTag(@NotNull ItemStack item, @NotNull String id) {
-        DataUT.removeData(item, ItemUT.getLoreKey(id));
-        DataUT.removeData(item,
-                NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
+        for (NamespacedKey key : ItemUT.getLoreKeys(id)) {
+            DataUT.removeData(item, key);
+        }
     }
 
     @Nullable
     public static String getLoreTag(@NotNull ItemStack item, @NotNull String id) {
-        String data = DataUT.getStringData(item, ItemUT.getLoreKey(id));
-        return data != null
-                ? data
-                : DataUT.getStringData(item,
-                        NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id));
+        String data;
+        for (NamespacedKey key : ItemUT.getLoreKeys(id)) {
+            data = DataUT.getStringData(item, key);
+            if (data != null) return data;
+        }
+        return null;
     }
 
     public static void addNameTag(@NotNull ItemStack item, @NotNull String id, @NotNull String text) {
-        DataUT.setData(item, ItemUT.getNameKey(id), text);
+        DataUT.setData(item, ItemUT.getNameKeys(id).get(0), text);
     }
 
     public static void delNameTag(@NotNull ItemStack item, @NotNull String id) {
-        DataUT.removeData(item, ItemUT.getNameKey(id));
-        DataUT.removeData(item,
-                NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id));
+        for (NamespacedKey key : ItemUT.getLoreKeys(id)) {
+            DataUT.removeData(item, key);
+        }
     }
 
     @Nullable
     public static String getNameTag(@NotNull ItemStack item, @NotNull String id) {
-        String data = DataUT.getStringData(item, ItemUT.getNameKey(id));
-        String name = data != null
-                ? data
-                : DataUT.getStringData(item,
-                        NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id));
-        return name;
+        String data;
+        for (NamespacedKey key : ItemUT.getNameKeys(id)) {
+            data = DataUT.getStringData(item, key);
+            if (data != null) return data;
+        }
+        return null;
     }
 
     @NotNull
