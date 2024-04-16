@@ -116,7 +116,7 @@
         <dependency>
             <groupId>com.github.oraxen</groupId>
             <artifactId>oraxen</artifactId>
-            <version>1.157.3</version>
+            <version>1.173.0</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
