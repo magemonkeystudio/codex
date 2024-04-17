@@ -13,7 +13,7 @@
     <artifactId>codex</artifactId>
     <name>Codex</name>
     <version>1.0.0-R0.8-SNAPSHOT</version>
-    <description>The core plugin for Mage Monkey Studios plugins</description>
+    <description>The core plugin for MageMonkeyStudio plugins</description>
 
     <properties>
         <delombok.dir>${project.build.directory}/javadoc-delombok</delombok.dir>
@@ -267,8 +267,8 @@
 
     <developers>
         <developer>
-            <name>Mage Monkey Studios</name>
-            <organization>Mage Monkey Studios</organization>
+            <name>MageMonkeyStudio</name>
+            <organization>MageMonkeyStudio</organization>
             <organizationUrl>https://magemonkey.studio</organizationUrl>
         </developer>
     </developers>

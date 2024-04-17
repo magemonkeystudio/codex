@@ -1,7 +1,7 @@
 name: ${project.name}
 main: studio.magemonkey.codex.CodexEngine
 version: ${project.version}
-description: Core plugin for the Mage Monkey Studios suite
+description: Core plugin for the MageMonkeyStudio suite
 api-version: '1.19'
 load: STARTUP
 authors:
