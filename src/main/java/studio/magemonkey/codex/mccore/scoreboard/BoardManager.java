@@ -165,8 +165,8 @@ public class BoardManager {
         if (!teams.containsKey(player)) return;
 
         init();
-        String teamName = teams.remove(player);
-        org.bukkit.scoreboard.Team sbTeam = scoreboard.getTeam(teamName);
+        String                     teamName = teams.remove(player);
+        org.bukkit.scoreboard.Team sbTeam   = scoreboard.getTeam(teamName);
         if (sbTeam != null) sbTeam.removeEntry(player);
 
         // Also remove from all player boards
@@ -331,9 +331,15 @@ public class BoardManager {
         scoreboard.getObjectives().forEach(objective -> {
             Objective obj = update.getObjective(objective.getName());
             if (obj == null) {
-                obj = update.registerNewObjective(objective.getName(),
-                        objective.getTrackedCriteria(),
-                        objective.getDisplayName());
+                try {
+                    obj = update.registerNewObjective(objective.getName(),
+                            objective.getTrackedCriteria(),
+                            objective.getDisplayName());
+                } catch (NoSuchMethodError e) {
+                    obj = update.registerNewObjective(objective.getName(),
+                            objective.getCriteria(),
+                            objective.getDisplayName());
+                }
             }
             obj.setDisplaySlot(objective.getDisplaySlot());
             obj.setDisplayName(objective.getDisplayName());
