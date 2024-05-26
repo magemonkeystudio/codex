@@ -70,7 +70,7 @@ public final class ResourceExtractor {
     public void extract(boolean override, boolean subpaths) throws IOException {
         File jarfile = null;
 
-        /**
+        /*
          * Get the jar file from the plugin.
          */
         try {
@@ -82,7 +82,7 @@ public final class ResourceExtractor {
             throw new IOException(e);
         }
 
-        /**
+        /*
          * Make the folders if missing.
          */
         if (!this.extractfolder.exists()) {
@@ -91,7 +91,7 @@ public final class ResourceExtractor {
 
         JarFile jar = new JarFile(jarfile);
 
-        /**
+        /*
          * Loop through all the entries.
          */
         Enumeration<JarEntry> entries = jar.entries();
@@ -99,7 +99,7 @@ public final class ResourceExtractor {
             JarEntry entry = entries.nextElement();
             String   path  = entry.getName();
 
-            /**
+            /*
              * Not in the folder.
              */
             if (!path.startsWith(this.folderpath)) {
@@ -124,7 +124,7 @@ public final class ResourceExtractor {
             } else {
                 File file;
 
-                /**
+                /*
                  * Use the right path.
                  */
                 if (subpaths) {
@@ -135,7 +135,7 @@ public final class ResourceExtractor {
 
                 String name = file.getName();
 
-                /**
+                /*
                  * Be sure that the file is valid.
                  */
                 if (this.regex == null || name.matches(this.regex)) {
@@ -145,7 +145,7 @@ public final class ResourceExtractor {
 
                     if (!file.exists()) {
                         FileUT.create(file);
-                        /**
+                        /*
                          * Copy the file to the path.
                          */
                         InputStream      is  = jar.getInputStream(entry);
