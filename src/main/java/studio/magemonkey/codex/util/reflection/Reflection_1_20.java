@@ -1,7 +1,6 @@
 package studio.magemonkey.codex.util.reflection;
 
 import com.google.common.collect.Multimap;
-import net.minecraft.server.MinecraftServer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -106,15 +105,17 @@ public class Reflection_1_20 extends Reflection_1_17 {
     public Object save(Object nmsItem, Object nbtCompound) {
         try {
             if (Version.CURRENT.isAtLeast(Version.V1_20_R4)) {
+                Class<?> mcServerClass = getClazz("net.minecraft.server.MinecraftServer");
+                Object serverInst = Reflex.invokeMethod(Reflex.getMethod(mcServerClass, "getServer"), null);
                 Class<?> providerClass = getClazz("net.minecraft.core.HolderLookup$a");
                 Class<?> nbtBaseClass  = getClazz("net.minecraft.nbt.NBTBase");
                 Method registryAccess =
-                        Reflex.getMethod(MinecraftServer.getServer().getClass(), getRegistryAccessMethodName());
+                        Reflex.getMethod(serverInst.getClass(), getRegistryAccessMethodName());
                 Method save = Reflex.getMethod(nmsItem.getClass(), "b", providerClass, nbtBaseClass);
 
                 return Reflex.invokeMethod(save,
                         nmsItem,
-                        Reflex.invokeMethod(registryAccess, MinecraftServer.getServer()),
+                        Reflex.invokeMethod(registryAccess, serverInst),
                         nbtCompound);
             } else {
                 Method save = Reflex.getMethod(nmsItem.getClass(), "b", nbtCompound.getClass());
@@ -188,13 +189,15 @@ public class Reflection_1_20 extends Reflection_1_17 {
                 // item.parseOptional(MinecraftServer.getServer().registryAccess(), (CompoundTag) nbtTagCompoundRoot);
 
                 // Provider class is located at net.minecraft.core.HolderLookup in a subclass called "a"
+                Class<?> mcServerClass = getClazz("net.minecraft.server.MinecraftServer");
+                Object serverInst = Reflex.invokeMethod(Reflex.getMethod(mcServerClass, "getServer"), null);
                 Class<?> providerClass = getClazz("net.minecraft.core.HolderLookup$a");
                 Method   parseOptional = Reflex.getMethod(nmsItemClass, "a", providerClass, compoundClass);
                 Method registryAccess =
-                        Reflex.getMethod(MinecraftServer.getServer().getClass(), getRegistryAccessMethodName());
+                        Reflex.getMethod(serverInst.getClass(), getRegistryAccessMethodName());
                 nmsItem = Reflex.invokeMethod(parseOptional,
                         null,
-                        Reflex.invokeMethod(registryAccess, MinecraftServer.getServer()),
+                        Reflex.invokeMethod(registryAccess, serverInst),
                         nbtTagCompoundRoot);
             } else {
                 Method parse = Reflex.getMethod(nmsItemClass, "a", compoundClass);
