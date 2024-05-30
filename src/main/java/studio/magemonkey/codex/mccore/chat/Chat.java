@@ -54,7 +54,7 @@ public class Chat {
 
         // Initialize data if it doesn't exist
         if (!players.containsKey(playerName)) {
-            CodexEngine core       = (CodexEngine) Bukkit.getPluginManager().getPlugin("Codex");
+            CodexEngine core       = CodexEngine.get();
             Config      configFile = core.getConfigFile(core, "data");
             ChatData    data       = new ChatData(configFile.getConfig(), playerName);
             configFile.addSavable(data, playerName + ".");
