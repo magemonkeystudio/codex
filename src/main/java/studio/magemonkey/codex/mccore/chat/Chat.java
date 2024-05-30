@@ -26,12 +26,11 @@
  */
 package studio.magemonkey.codex.mccore.chat;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.mccore.config.Config;
-import studio.magemonkey.codex.mccore.util.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.mccore.config.Config;
 
 import java.util.Hashtable;
 
@@ -101,7 +100,7 @@ public class Chat {
      * @param message    message to send
      */
     public static void sendMessage(String permission, String message) {
-        for (Player player : VersionManager.getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission(permission)) player.sendMessage(message);
         }
     }
@@ -132,7 +131,7 @@ public class Chat {
         if (width < 0) point.setX(point.getX() + width);
         if (height < 0) point.setY(point.getY() + height);
         if (depth < 0) point.setZ(point.getZ() + depth);
-        for (Player player : VersionManager.getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             Location loc = player.getLocation();
             if (loc.getX() >= point.getX() && loc.getY() >= point.getY() && loc.getZ() >= point.getZ()
                     && loc.getX() <= point.getX() + Math.abs(width) && loc.getY() <= point.getY() + Math.abs(height)
@@ -149,7 +148,7 @@ public class Chat {
      * @param sphere sphere if true, cylinder if false (cylinder contains all y within the defined circle)
      */
     public static void sendMessage(Location center, int radius, boolean sphere, String message) {
-        for (Player player : VersionManager.getOnlinePlayers()) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             Location loc = player.getLocation();
             if (!sphere) loc.setY(center.getY());
             if (loc.distanceSquared(center) < radius * radius) player.sendMessage(message);

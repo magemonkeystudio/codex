@@ -26,11 +26,12 @@
  */
 package studio.magemonkey.codex.mccore.util;
 
-import studio.magemonkey.codex.util.Reflex;
-import studio.magemonkey.codex.util.reflection.ReflectionManager;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import studio.magemonkey.codex.util.Reflex;
+import studio.magemonkey.codex.util.reflection.ReflectionManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -184,10 +185,7 @@ public class Particle {
      * @param speed  speed of the particle
      */
     public static void playBlockCrack(int mat, short data, Location loc, int radius, float speed) {
-        if (VersionManager.isVersionAtLeast(VersionManager.V1_8_0))
-            play("blockcrack_", loc, radius, 0, 0, 0, speed, 1, new int[]{mat, data});
-        else
-            play("blockcrack_" + mat + "_" + data, loc, radius, speed);
+        play("blockcrack_", loc, radius, 0, 0, 0, speed, 1, new int[]{mat, data});
     }
 
     /**
@@ -243,10 +241,7 @@ public class Particle {
      * @param speed  speed of the particle
      */
     public static void playIconCrack(int mat, short data, Location loc, int radius, float speed) {
-        if (VersionManager.isVersionAtLeast(VersionManager.V1_8_0))
-            play("iconcrack_", loc, radius, 0, 0, 0, speed, 1, new int[]{mat, data});
-        else
-            play("iconcrack_" + mat + "_" + data, loc, radius, speed);
+        play("iconcrack_", loc, radius, 0, 0, 0, speed, 1, new int[]{mat, data});
     }
 
     /**
@@ -302,10 +297,7 @@ public class Particle {
      * @param speed  speed of the particle
      */
     public static void playBlockDust(int mat, short data, Location loc, int radius, float speed) {
-        if (VersionManager.isVersionAtLeast(VersionManager.V1_8_0))
-            play("blockdust_", loc, radius, 0, 0, 0, speed, 1, new int[]{mat, data});
-        else
-            play("blockdust_" + mat + "_" + data, loc, radius, speed);
+        play("blockdust_", loc, radius, 0, 0, 0, speed, 1, new int[]{mat, data});
     }
 
     /**
@@ -363,69 +355,49 @@ public class Particle {
         if (packetClass == null) {
             return;
         }
-        if (VersionManager.isVersionAtLeast(VersionManager.V1_8_0)) {
-            if (CONVERSION.containsKey(particle)) {
-                particle = CONVERSION.get(particle);
-            } else particle = particle.toUpperCase().replace(" ", "_");
-            Object[] values    = particleEnum.getEnumConstants();
-            Object   enumValue = null;
-            for (Object value : values) {
-                if (value.toString().equals(particle)) {
-                    enumValue = value;
-                }
+        if (CONVERSION.containsKey(particle)) {
+            particle = CONVERSION.get(particle);
+        } else particle = particle.toUpperCase().replace(" ", "_");
+        Object[] values    = particleEnum.getEnumConstants();
+        Object   enumValue = null;
+        for (Object value : values) {
+            if (value.toString().equals(particle)) {
+                enumValue = value;
             }
-            if (enumValue != null) {
-                try {
-                    Object packet = packetClass.getConstructor(particleEnum,
-                                    Boolean.TYPE,
-                                    Float.TYPE,
-                                    Float.TYPE,
-                                    Float.TYPE,
-                                    Float.TYPE,
-                                    Float.TYPE,
-                                    Float.TYPE,
-                                    Float.TYPE,
-                                    Integer.TYPE,
-                                    int[].class)
-                            .newInstance(enumValue,
-                                    true,
-                                    (float) loc.getX(),
-                                    (float) loc.getY(),
-                                    (float) loc.getZ(),
-                                    dx,
-                                    dy,
-                                    dz,
-                                    speed,
-                                    count,
-                                    extra);
+        }
+        if (enumValue != null) {
+            try {
+                Object packet = packetClass.getConstructor(particleEnum,
+                                Boolean.TYPE,
+                                Float.TYPE,
+                                Float.TYPE,
+                                Float.TYPE,
+                                Float.TYPE,
+                                Float.TYPE,
+                                Float.TYPE,
+                                Float.TYPE,
+                                Integer.TYPE,
+                                int[].class)
+                        .newInstance(enumValue,
+                                true,
+                                (float) loc.getX(),
+                                (float) loc.getY(),
+                                (float) loc.getZ(),
+                                dx,
+                                dy,
+                                dz,
+                                speed,
+                                count,
+                                extra);
 
-                    for (Player player : VersionManager.getOnlinePlayers()) {
-                        if (player.getWorld() == loc.getWorld()
-                                && player.getLocation().distanceSquared(loc) < radius * radius) {
-                            ReflectionManager.getReflectionUtil().sendPacket(player, packet);
-                        }
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.getWorld() == loc.getWorld()
+                            && player.getLocation().distanceSquared(loc) < radius * radius) {
+                        ReflectionManager.getReflectionUtil().sendPacket(player, packet);
                     }
-                } catch (Exception ex) {
-                    // Do nothing
                 }
-            }
-        } else {
-            Object packet = Reflex.getInstance(packetClass);
-
-            Reflex.setValue(packet, "a", particle);
-            Reflex.setValue(packet, "b", (float) loc.getX());
-            Reflex.setValue(packet, "c", (float) loc.getY());
-            Reflex.setValue(packet, "d", (float) loc.getZ());
-            Reflex.setValue(packet, "e", dx);
-            Reflex.setValue(packet, "f", dy);
-            Reflex.setValue(packet, "g", dz);
-            Reflex.setValue(packet, "h", speed);
-            Reflex.setValue(packet, "i", count);
-            for (Player player : VersionManager.getOnlinePlayers()) {
-                if (player.getWorld() == loc.getWorld()
-                        && player.getLocation().distanceSquared(loc) < radius * radius) {
-                    ReflectionManager.getReflectionUtil().sendPacket(player, packet);
-                }
+            } catch (Exception ex) {
+                // Do nothing
             }
         }
     }

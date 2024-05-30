@@ -28,7 +28,7 @@ public class EffectUT {
         Particle particle = CollectionsUT.getEnum(particleName, Particle.class);
         if (particle == null) return;
 
-        if (particle == Particle.REDSTONE) {
+        if (particle.getKey().getKey().equals("dust")) { // REDSTONE/DUST
             Color color = Color.WHITE;
             if (particleData != null) {
                 String[] pColor = particleData.split(",");
@@ -43,14 +43,14 @@ public class EffectUT {
             return;
         }
 
-        if (particle == Particle.BLOCK_CRACK || particle == Particle.LEGACY_BLOCK_CRACK) {
+        if (particle.getKey().getKey().equals("block")) { // BLOCK_CRACK/BLOCK
             Material  m         = particleData != null ? Material.getMaterial(particleData) : Material.STONE;
             BlockData blockData = m != null ? m.createBlockData() : Material.STONE.createBlockData();
             world.spawnParticle(particle, loc, amount, x, y, z, speed, blockData);
             return;
         }
 
-        if (particle == Particle.ITEM_CRACK) {
+        if (particle.getKey().getKey().equals("item")) { // ITEM_CRACK/ITEM
             Material  m    = particleData != null ? Material.getMaterial(particleData) : Material.STONE;
             ItemStack item = m != null ? new ItemStack(m) : new ItemStack(Material.STONE);
             world.spawnParticle(particle, loc, amount, x, y, z, speed, item);

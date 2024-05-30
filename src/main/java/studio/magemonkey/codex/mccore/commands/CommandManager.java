@@ -26,12 +26,6 @@
  */
 package studio.magemonkey.codex.mccore.commands;
 
-import studio.magemonkey.codex.mccore.config.CommentedConfig;
-import studio.magemonkey.codex.mccore.config.parse.DataSection;
-import studio.magemonkey.codex.mccore.util.TextFormatter;
-import studio.magemonkey.codex.mccore.util.TextSizer;
-import studio.magemonkey.codex.mccore.util.TextSplitter;
-import studio.magemonkey.codex.mccore.util.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -41,6 +35,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import studio.magemonkey.codex.mccore.config.CommentedConfig;
+import studio.magemonkey.codex.mccore.config.parse.DataSection;
+import studio.magemonkey.codex.mccore.util.TextFormatter;
+import studio.magemonkey.codex.mccore.util.TextSizer;
+import studio.magemonkey.codex.mccore.util.TextSplitter;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -59,8 +58,8 @@ import java.util.List;
 public class CommandManager {
 
     private static final HashMap<String, ConfigurableCommand> commands = new HashMap<>();
-    private static final HashMap<Plugin, List<String>>    plugins = new HashMap<>();
-    private static final HashMap<Plugin, CommentedConfig> configs = new HashMap<>();
+    private static final HashMap<Plugin, List<String>>        plugins  = new HashMap<>();
+    private static final HashMap<Plugin, CommentedConfig>     configs  = new HashMap<>();
 
     // Configuration keys for the usage settings
     private static final String
@@ -370,10 +369,8 @@ public class CommandManager {
         // Get number of entries
         int entries;
         if (sender instanceof Player) {
-            if (VersionManager.isTellRaw()) {
-                entries = playerSize - helpWithButton.size() + 1;
-                if (entries >= keys.size() + 1) entries++;
-            } else entries = playerSize - helpNoButton.size() + 1;
+            entries = playerSize - helpWithButton.size() + 1;
+            if (entries >= keys.size() + 1) entries++;
         } else entries = consoleSize - helpNoButton.size() + 1;
         if (entries < 1) entries = 1;
 
@@ -400,8 +397,7 @@ public class CommandManager {
         if (sender instanceof Player) maxSize += 4;
         else maxSize += 1;
 
-        // Player usage post-1.7.9
-        if (VersionManager.isTellRaw() && sender instanceof Player) {
+        if (sender instanceof Player) {
 
             // Button JSON
             String ends    = "PreviousNext";
@@ -448,28 +444,6 @@ public class CommandManager {
                 } else if (line.contains("{buttons}")) {
                     if (maxPage > 1) {
                         Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), buttons);
-                    }
-                } else sender.sendMessage(line.replace("{title}", titleString).replace("{page}", pageString));
-            }
-        }
-
-        // Player usage pre-1.7.9
-        else if (sender instanceof Player) {
-
-            for (String line : helpNoButton) {
-                if (line.contains("{commands}")) {
-                    index = 0;
-                    for (String key : keys) {
-                        index++;
-                        if (index <= (page - 1) * entries || index > page * entries) continue;
-
-                        ConfigurableCommand sub = c.getSubCommand(key);
-                        String args =
-                                sub.getArgs().replace("[", optionalArgs + "[").replace("<", requiredArgs + "<");
-                        sender.sendMessage(line.replace("{commands}",
-                                command + "/" + c.toString() + " "
-                                        + TextSizer.expand(key + " " + args, maxSize, false)
-                                        + ChatColor.GRAY + "- " + description + sub.getDescription()));
                     }
                 } else sender.sendMessage(line.replace("{title}", titleString).replace("{page}", pageString));
             }

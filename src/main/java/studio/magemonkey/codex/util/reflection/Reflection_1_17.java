@@ -2,10 +2,6 @@ package studio.magemonkey.codex.util.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.core.Version;
-import studio.magemonkey.codex.util.Reflex;
-import studio.magemonkey.codex.util.random.Rnd;
 import io.netty.channel.Channel;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -16,6 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.util.Reflex;
+import studio.magemonkey.codex.util.random.Rnd;
 
 import java.io.*;
 import java.lang.reflect.Constructor;

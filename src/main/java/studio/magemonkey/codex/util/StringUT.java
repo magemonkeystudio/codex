@@ -1,7 +1,5 @@
 package studio.magemonkey.codex.util;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.core.Version;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -9,6 +7,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -76,7 +75,7 @@ public class StringUT {
 
     @NotNull
     public static String color(@NotNull String str) {
-        if (Version.CURRENT.isHigher(Version.V1_15_R1)) str = colorHex(str);
+        str = colorHex(str);
         return ChatColor.translateAlternateColorCodes('&', colorFix(str));
     }
 
@@ -108,8 +107,6 @@ public class StringUT {
 
     @NotNull
     public static String colorHexRaw(@NotNull String str) {
-        if (Version.CURRENT.isLower(Version.V1_16_R2)) return str;
-
         StringBuffer buffer = new StringBuffer(str);
 
         int index;

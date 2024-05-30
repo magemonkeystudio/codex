@@ -1,5 +1,18 @@
 package studio.magemonkey.codex;
 
+import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginEnableEvent;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.armor.ArmorListener;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
@@ -25,13 +38,11 @@ import studio.magemonkey.codex.manager.api.menu.MenuManager;
 import studio.magemonkey.codex.manager.editor.EditorManager;
 import studio.magemonkey.codex.mccore.chat.ChatCommander;
 import studio.magemonkey.codex.mccore.chat.ChatListener;
-import studio.magemonkey.codex.mccore.commands.CommandLog;
 import studio.magemonkey.codex.mccore.config.Config;
 import studio.magemonkey.codex.mccore.scoreboard.BoardListener;
 import studio.magemonkey.codex.mccore.scoreboard.CycleTask;
 import studio.magemonkey.codex.mccore.scoreboard.ScoreboardCommander;
 import studio.magemonkey.codex.mccore.scoreboard.UpdateTask;
-import studio.magemonkey.codex.mccore.util.VersionManager;
 import studio.magemonkey.codex.migration.MigrationUtil;
 import studio.magemonkey.codex.nms.NMS;
 import studio.magemonkey.codex.nms.packets.PacketManager;
@@ -41,19 +52,6 @@ import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.craft.CraftManager;
 import studio.magemonkey.codex.util.messages.MessageUtil;
-import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.server.PluginEnableEvent;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.HashSet;
@@ -75,16 +73,16 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     @Getter
     private              CraftManager              craftManager;
     @Getter
-    private MenuManager  menuManager;
+    private              MenuManager               menuManager;
     @Getter
-    private VaultHK      vault;
+    private              VaultHK                   vault;
     @Getter
-    private CitizensHK   citizens;
+    private              CitizensHK                citizens;
     @Getter
-    private WorldGuardHK worldGuard;
+    private              WorldGuardHK              worldGuard;
     @Getter
-    private IMythicHook  mythicMobs;
-    private CoreConfig   cfg;
+    private              IMythicHook               mythicMobs;
+    private              CoreConfig                cfg;
     private              CoreLang                  lang;
     @Getter
     private              HookManager               hooksManager;
@@ -243,11 +241,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     @Override
     public void enable() {
         EditorManager.setup();
-
-        CommandLog.callback = VersionManager::initialize;
-        if (!Version.TEST.isCurrent())
-            getServer().dispatchCommand(new CommandLog(), "version");
-
         getLogger().info("Codex has been enabled!");
     }
 

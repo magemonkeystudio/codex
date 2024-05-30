@@ -1,6 +1,5 @@
 package studio.magemonkey.codex.manager.api.gui;
 
-import studio.magemonkey.codex.util.StringUT;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -10,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.util.StringUT;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public class JIcon {
             meta.setLore(this.lore);
         }
         if (this.enchanted) {
-            meta.addEnchant(Enchantment.ARROW_DAMAGE, 1, true);
+            meta.addEnchant(Enchantment.getByName("punch"), 1, true);
         }
         //meta.addItemFlags(ItemFlag.values());
         this.item.setItemMeta(meta);

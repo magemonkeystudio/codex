@@ -26,9 +26,6 @@
  */
 package studio.magemonkey.codex.mccore.config;
 
-import studio.magemonkey.codex.mccore.util.TextFormatter;
-import studio.magemonkey.codex.mccore.util.TextSizer;
-import studio.magemonkey.codex.mccore.util.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -36,6 +33,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import studio.magemonkey.codex.mccore.util.TextFormatter;
+import studio.magemonkey.codex.mccore.util.TextSizer;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -270,7 +269,7 @@ public class LanguageConfig extends Config {
      */
     public void sendMessage(String key, Collection<UUID> targetIds, FilterType filterType, CustomFilter... filters) {
         List<String> lines = getMessage(key, true, filterType, filters);
-        if (lines == null || !VersionManager.isUUID()) return;
+        if (lines == null) return;
         for (UUID id : targetIds) {
             Player target = Bukkit.getPlayer(id);
             if (target != null) {

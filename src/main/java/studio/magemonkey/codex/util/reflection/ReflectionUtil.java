@@ -3,10 +3,6 @@ package studio.magemonkey.codex.util.reflection;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.core.Version;
-import studio.magemonkey.codex.util.Reflex;
-import studio.magemonkey.codex.util.constants.JNumbers;
 import io.netty.channel.Channel;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -15,6 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.util.Reflex;
+import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -52,9 +52,9 @@ public interface ReflectionUtil {
     }
 
     default Class<?> getCraftClass(String craftClassName) throws ClassNotFoundException {
-        String version =
-                Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-        String   name       = "org.bukkit.craftbukkit." + version + craftClassName;
+        String pkg =
+                Bukkit.getServer().getClass().getPackage().getName();
+        String   name       = pkg + "." + craftClassName;
         Class<?> craftClass = Class.forName(name);
         return craftClass;
     }
@@ -193,6 +193,7 @@ public interface ReflectionUtil {
             case V1_17_R1, V1_18_R1, V1_18_R2 -> "a";
             case V1_19_R1, V1_19_R2 -> "b";
             case V1_20_R2, V1_20_R3 -> "c";
+            case V1_20_R4 -> "e";
             default -> "h";
         };
     }
@@ -201,7 +202,7 @@ public interface ReflectionUtil {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "channel";
             case V1_17_R1, V1_18_R1 -> "k";
-            case V1_20_R2, V1_20_R3 -> "n";
+            case V1_20_R2, V1_20_R3, V1_20_R4 -> "n";
             default -> "m";
         };
     }
@@ -213,6 +214,7 @@ public interface ReflectionUtil {
             case V1_19_R2 -> "w";
             case V1_19_R3 -> "z";
             case V1_20_R2, V1_20_R3 -> "B";
+            case V1_20_R4 -> "D";
             default -> "A";
         };
     }
@@ -220,7 +222,7 @@ public interface ReflectionUtil {
     default String getKillerField() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "killer";
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2 -> "bc";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_20_R4 -> "bc";
             case V1_19_R3 -> "aX";
             case V1_20_R2, V1_20_R3 -> "aY";
             default -> "aZ";
@@ -230,10 +232,19 @@ public interface ReflectionUtil {
     default String getDamageTimeField() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "lastDamageByPlayerTime";
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2 -> "bd";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_20_R4 -> "bd";
             case V1_19_R3 -> "aY";
             case V1_20_R2, V1_20_R3 -> "aZ";
             default -> "ba";
+        };
+    }
+
+    default String getRegistryAccessMethodName() {
+        // Really not verified... thanks Copilot :3
+        return switch (Version.CURRENT) {
+            case V1_16_R3 -> "getServer";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3, V1_20_R2, V1_20_R3, V1_20_R4 -> "bc";
+            default -> "b";
         };
     }
 }

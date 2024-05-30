@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.config.ConfigManager;
-import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.hooks.Hooks;
 
 import java.util.*;
@@ -314,10 +313,7 @@ public class ItemUT {
     public static boolean isAir(@Nullable ItemStack item) {
         if (item == null) return true;
 
-        if (Version.CURRENT.isHigher(Version.V1_14_R1)) {
-            return item.getType() == Material.AIR || item.getType().isAir();
-        }
-        return item.getType() == Material.AIR;
+        return item.getType() == Material.AIR || item.getType().isAir();
     }
 
     public static boolean isWeapon(@NotNull ItemStack item) {
@@ -371,7 +367,7 @@ public class ItemUT {
     }
 
     @Nullable
-    public static String toBase64(@NotNull ItemStack item) {
+    public static String toBase64(@Nullable ItemStack item) {
         try {
             return getEngine().getNMS().toBase64(item);
         } catch (Exception e) {

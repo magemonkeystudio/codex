@@ -1,12 +1,11 @@
 package studio.magemonkey.codex.util;
 
-import studio.magemonkey.codex.core.Version;
-import studio.magemonkey.codex.util.constants.JStrings;
 import net.md_5.bungee.api.chat.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.constants.JStrings;
 
 import java.util.*;
 
@@ -102,7 +101,7 @@ public class ClickText {
         }
     }
 
-    public class ClickWord {
+    public static class ClickWord {
 
         private final String     text;
         public        HoverEvent hover;
@@ -149,11 +148,7 @@ public class ClickText {
             }
 
             BaseComponent[] base = TextComponent.fromLegacyText(StringUT.color(textBuilder.toString()));
-            if (Version.CURRENT.isHigher(Version.V1_15_R1)) {
-                this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(base)});
-            } else {
-                this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, base);
-            }
+            this.hover = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new BaseComponent[]{new TextComponent(base)});
             return this;
         }
 

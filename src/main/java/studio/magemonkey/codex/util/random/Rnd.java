@@ -160,7 +160,8 @@ public class Rnd {
         World w = loc.getWorld();
         if (w == null) w = Bukkit.getWorlds().get(0);
 
-        Firework            fw   = (Firework) w.spawnEntity(loc, EntityType.FIREWORK);
+        // FIREWORK/FIREWORK_ROCKET
+        Firework            fw   = (Firework) w.spawnEntity(loc, EntityType.fromName("firework_rocket"));
         FireworkMeta        meta = fw.getFireworkMeta();
         FireworkEffect.Type type = Rnd.get(FireworkEffect.Type.values());
         Color               c1   = Color.fromBGR(Rnd.nextInt(254), Rnd.nextInt(254), Rnd.nextInt(254));

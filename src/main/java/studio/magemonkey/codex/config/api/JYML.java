@@ -1,16 +1,5 @@
 package studio.magemonkey.codex.config.api;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.manager.api.gui.ContentType;
-import studio.magemonkey.codex.manager.api.gui.GuiItem;
-import studio.magemonkey.codex.manager.types.ClickType;
-import studio.magemonkey.codex.util.*;
-import studio.magemonkey.codex.util.actions.ActionManipulator;
-import studio.magemonkey.codex.util.constants.JStrings;
-import studio.magemonkey.codex.util.craft.api.ICraftRecipe;
-import studio.magemonkey.codex.util.craft.api.IFurnaceRecipe;
-import studio.magemonkey.codex.util.random.Rnd;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +15,17 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.manager.api.gui.ContentType;
+import studio.magemonkey.codex.manager.api.gui.GuiItem;
+import studio.magemonkey.codex.manager.types.ClickType;
+import studio.magemonkey.codex.util.*;
+import studio.magemonkey.codex.util.actions.ActionManipulator;
+import studio.magemonkey.codex.util.constants.JStrings;
+import studio.magemonkey.codex.util.craft.api.ICraftRecipe;
+import studio.magemonkey.codex.util.craft.api.IFurnaceRecipe;
+import studio.magemonkey.codex.util.random.Rnd;
 
 import java.io.File;
 import java.io.IOException;
@@ -259,7 +259,7 @@ public class JYML extends YamlConfiguration {
         meta.setLore(StringUT.color(this.getStringList(path + "lore")));
 
         if (this.getBoolean(path + "enchanted")) {
-            meta.addEnchant(Enchantment.DURABILITY, 1, true);
+            meta.addEnchant(Enchantment.getByName("unbreaking"), 1, true);
         }
 
         int model = this.getInt(path + "model-data", this.getInt(path + "custom-model-data"));

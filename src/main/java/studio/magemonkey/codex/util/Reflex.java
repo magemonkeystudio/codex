@@ -1,10 +1,10 @@
 package studio.magemonkey.codex.util;
 
-import studio.magemonkey.codex.CodexEngine;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -81,11 +81,11 @@ public class Reflex {
     }
 
     public static String getCraftPackage() {
-        return "org.bukkit.craftbukkit." + VERSION;
+        return Bukkit.getServer().getClass().getPackage().getName();
     }
 
     public static Class<?> getCraftClass(String craftClassString) {
-        return getClass("org.bukkit.craftbukkit." + VERSION, craftClassString);
+        return getClass(getCraftPackage(), craftClassString);
     }
 
     @NotNull

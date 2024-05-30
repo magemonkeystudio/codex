@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 
 public class ReflectionUtil {
+    private static final String CRAFTBUKKIT_PACKAGE = Bukkit.getServer().getClass().getPackage().getName();
 
     private static final String  VERSION       =
             Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
@@ -17,7 +18,7 @@ public class ReflectionUtil {
     }
 
     public static Class<?> getBukkitClass(String name) throws ClassNotFoundException {
-        return Class.forName("org.bukkit.craftbukkit." + version + "." + name);
+        return Class.forName(CRAFTBUKKIT_PACKAGE + "." + name);
     }
 
     public static boolean isVersionGreater(int version) {

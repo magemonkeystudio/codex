@@ -28,7 +28,6 @@ package studio.magemonkey.codex.mccore.config;
 
 import studio.magemonkey.codex.mccore.util.TextFormatter;
 import studio.magemonkey.codex.mccore.util.TextSizer;
-import studio.magemonkey.codex.mccore.util.VersionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -281,7 +280,7 @@ public class CommentedLanguageConfig extends CommentedConfig {
      */
     public void sendMessage(String key, Collection<UUID> targetIds, FilterType filterType, CustomFilter... filters) {
         List<String> lines = getMessage(key, true, filterType, filters);
-        if (lines == null || !VersionManager.isUUID()) {
+        if (lines == null) {
             return;
         }
         for (UUID id : targetIds) {
