@@ -3,6 +3,7 @@ package studio.magemonkey.codex.config.api;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -259,7 +260,7 @@ public class JYML extends YamlConfiguration {
         meta.setLore(StringUT.color(this.getStringList(path + "lore")));
 
         if (this.getBoolean(path + "enchanted")) {
-            meta.addEnchant(Enchantment.getByName("unbreaking"), 1, true);
+            meta.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft("unbreaking")), 1, true);
         }
 
         int model = this.getInt(path + "model-data", this.getInt(path + "custom-model-data"));

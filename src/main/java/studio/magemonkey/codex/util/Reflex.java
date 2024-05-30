@@ -18,9 +18,13 @@ import java.util.List;
 public class Reflex {
 
     public static final String VERSION =
-            !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit")
-                    ? Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]
-                    : "";
+            !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit") ? (
+                    Integer.parseInt(Bukkit.getServer().getBukkitVersion().split("\\.")[1]) < 20 ? Bukkit.getServer()
+                            .getClass()
+                            .getPackage()
+                            .getName()
+                            .replace(".", ",")
+                            .split(",")[3] : Bukkit.getServer().getBukkitVersion().split("-")[0]) : "";
 
     @Setter
     private static CodexEngine engine;
@@ -69,15 +73,9 @@ public class Reflex {
         return obj;
     }
 
-
-    public static String getNMSPackage() {
-        return "net.minecraft.server." + VERSION;
-    }
-
     @Nullable
     public static Class<?> getNMSClass(@NotNull String name) {
-        return getClass("net.minecraft.server." + VERSION,
-                name);
+        return getClass("net.minecraft.server." + VERSION, name);
     }
 
     public static String getCraftPackage() {
@@ -247,8 +245,7 @@ public class Reflex {
         if (c == null) return null;
         try {
             for (Constructor<?> constructor : c.getDeclaredConstructors())
-                if (constructor.getGenericParameterTypes().length == args.length)
-                    return constructor.newInstance(args);
+                if (constructor.getGenericParameterTypes().length == args.length) return constructor.newInstance(args);
         } catch (Exception ex) { /* */ }
         return null;
     }
