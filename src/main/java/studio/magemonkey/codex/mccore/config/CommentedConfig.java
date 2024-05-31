@@ -26,9 +26,9 @@
  */
 package studio.magemonkey.codex.mccore.config;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import studio.magemonkey.codex.mccore.config.parse.DataSection;
 import studio.magemonkey.codex.mccore.config.parse.YAMLParser;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.logging.Level;
@@ -47,6 +47,8 @@ public class CommentedConfig {
     private DataSection data;
     private DataSection defaults;
 
+    private boolean fileTimings = false;
+
     /**
      * Constructor
      *
@@ -56,6 +58,8 @@ public class CommentedConfig {
     public CommentedConfig(JavaPlugin plugin, String name) {
         this.plugin = plugin;
         this.fileName = name + ".yml";
+
+        this.fileTimings = plugin.getConfig().getBoolean("file-timings", false);
 
         // Setup the path
         this.configFile = new File(plugin.getDataFolder().getAbsolutePath() + "/" + fileName);
@@ -97,7 +101,14 @@ public class CommentedConfig {
      * Reloads the config data
      */
     public void reload() {
+        long    start  = System.currentTimeMillis();
+        boolean exists = data != null;
         data = yamlParser.parseFile(configFile);
+        if (fileTimings) {
+            plugin.getLogger()
+                    .info((exists ? "Reloaded " : "Loaded ") + fileName
+                            + " in " + (System.currentTimeMillis() - start) + "ms");
+        }
     }
 
     /**
