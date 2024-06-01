@@ -31,7 +31,7 @@ public class EffectUT {
         if (particle == null) return;
 
         String partName = particle.name().toLowerCase(Locale.US);
-        if (partName.equals("dust") || partName.equals("REDSTONE") || partName.equals("REDSTONE_DUST")) {
+        if (partName.equals("dust") || partName.equals("redstone") || partName.equals("redstone_dust")) {
             Color color = Color.WHITE;
             if (particleData != null) {
                 String[] pColor = particleData.split(",");
