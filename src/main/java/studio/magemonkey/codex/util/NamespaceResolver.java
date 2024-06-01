@@ -1,13 +1,27 @@
 package studio.magemonkey.codex.util;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.Locale;
 
 public class NamespaceResolver {
 
     public static PotionEffectType getPotion(String... possibleNames) {
         for (String possibleName : possibleNames) {
-            PotionEffectType potion = PotionEffectType.getByName(possibleName);
+            PotionEffectType potion = null;
+
+            try {
+                potion = PotionEffectType.getByKey(NamespacedKey.minecraft(possibleName.toLowerCase(Locale.US)));
+                if (potion != null) return potion;
+            } catch (NoSuchMethodError ignored) {
+            }
+
+            potion = PotionEffectType.getByName(possibleName.toLowerCase(Locale.US));
+            if (potion == null) {
+                potion = PotionEffectType.getByName(possibleName.toUpperCase(Locale.US));
+            }
             if (potion != null) {
                 return potion;
             }
@@ -18,7 +32,8 @@ public class NamespaceResolver {
 
     public static Enchantment getEnchantment(String... possibleNames) {
         for (String possibleName : possibleNames) {
-            Enchantment enchantment = Enchantment.getByName(possibleName);
+            Enchantment enchantment =
+                    Enchantment.getByKey(NamespacedKey.minecraft(possibleName.toLowerCase(Locale.US)));
             if (enchantment != null) {
                 return enchantment;
             }

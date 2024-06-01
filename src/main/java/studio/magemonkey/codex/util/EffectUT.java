@@ -7,6 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 public class EffectUT {
 
     public static void playEffect(
@@ -28,7 +30,8 @@ public class EffectUT {
         Particle particle = CollectionsUT.getEnum(particleName, Particle.class);
         if (particle == null) return;
 
-        if (particle.getKey().getKey().equals("dust")) { // REDSTONE/DUST
+        String partName = particle.name().toLowerCase(Locale.US);
+        if (partName.equals("dust") || partName.equals("REDSTONE") || partName.equals("REDSTONE_DUST")) {
             Color color = Color.WHITE;
             if (particleData != null) {
                 String[] pColor = particleData.split(",");
@@ -43,14 +46,14 @@ public class EffectUT {
             return;
         }
 
-        if (particle.getKey().getKey().equals("block")) { // BLOCK_CRACK/BLOCK
+        if (partName.equals("block") || partName.equals("block_crack")) {
             Material  m         = particleData != null ? Material.getMaterial(particleData) : Material.STONE;
             BlockData blockData = m != null ? m.createBlockData() : Material.STONE.createBlockData();
             world.spawnParticle(particle, loc, amount, x, y, z, speed, blockData);
             return;
         }
 
-        if (particle.getKey().getKey().equals("item")) { // ITEM_CRACK/ITEM
+        if (partName.equals("item") || partName.equals("item_crack")) { // ITEM_CRACK/ITEM
             Material  m    = particleData != null ? Material.getMaterial(particleData) : Material.STONE;
             ItemStack item = m != null ? new ItemStack(m) : new ItemStack(Material.STONE);
             world.spawnParticle(particle, loc, amount, x, y, z, speed, item);
