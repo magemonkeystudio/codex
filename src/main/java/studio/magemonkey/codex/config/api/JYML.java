@@ -260,7 +260,7 @@ public class JYML extends YamlConfiguration {
         meta.setLore(StringUT.color(this.getStringList(path + "lore")));
 
         if (this.getBoolean(path + "enchanted")) {
-            meta.addEnchant(Enchantment.getByKey(NamespacedKey.minecraft("unbreaking")), 1, true);
+            meta.addEnchant(NamespaceResolver.getEnchantment("UNBREAKING", "DURABILITY"), 1, true);
         }
 
         int model = this.getInt(path + "model-data", this.getInt(path + "custom-model-data"));
