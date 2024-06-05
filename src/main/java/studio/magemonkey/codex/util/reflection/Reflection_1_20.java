@@ -25,9 +25,9 @@ public class Reflection_1_20 extends Reflection_1_17 {
 
             String fieldName = "c";
             Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
-            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass()
-                    .getSimpleName()
-                    .equals("GeneratedInterceptor")) {
+            if (!con.getClass().getSimpleName().equals("PlayerConnection")
+                    && !con.getClass().getSimpleName().equals("ServerGamePacketListenerImpl")
+                    && !con.getClass().getSimpleName().equals("GeneratedInterceptor")) {
                 CodexEngine.get()
                         .getLogger()
                         .warning("Expected PlayerConnection, got " + con.getClass().getSimpleName() + " instead!");
@@ -106,7 +106,7 @@ public class Reflection_1_20 extends Reflection_1_17 {
         try {
             if (Version.CURRENT.isAtLeast(Version.V1_20_R4)) {
                 Class<?> mcServerClass = getClazz("net.minecraft.server.MinecraftServer");
-                Object serverInst = Reflex.invokeMethod(Reflex.getMethod(mcServerClass, "getServer"), null);
+                Object   serverInst    = Reflex.invokeMethod(Reflex.getMethod(mcServerClass, "getServer"), null);
                 Class<?> providerClass = getClazz("net.minecraft.core.HolderLookup$a");
                 Class<?> nbtBaseClass  = getClazz("net.minecraft.nbt.NBTBase");
                 Method registryAccess =
@@ -190,7 +190,7 @@ public class Reflection_1_20 extends Reflection_1_17 {
 
                 // Provider class is located at net.minecraft.core.HolderLookup in a subclass called "a"
                 Class<?> mcServerClass = getClazz("net.minecraft.server.MinecraftServer");
-                Object serverInst = Reflex.invokeMethod(Reflex.getMethod(mcServerClass, "getServer"), null);
+                Object   serverInst    = Reflex.invokeMethod(Reflex.getMethod(mcServerClass, "getServer"), null);
                 Class<?> providerClass = getClazz("net.minecraft.core.HolderLookup$a");
                 Method   parseOptional = Reflex.getMethod(nmsItemClass, "a", providerClass, compoundClass);
                 Method registryAccess =
