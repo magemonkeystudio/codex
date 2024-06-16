@@ -26,11 +26,6 @@
  */
 package studio.magemonkey.codex.mccore.commands;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.mccore.config.CommentedConfig;
-import studio.magemonkey.codex.mccore.config.CustomFilter;
-import studio.magemonkey.codex.mccore.config.parse.DataSection;
-import studio.magemonkey.codex.mccore.util.TextFormatter;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -41,6 +36,11 @@ import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.mccore.config.CommentedConfig;
+import studio.magemonkey.codex.mccore.config.CustomFilter;
+import studio.magemonkey.codex.mccore.config.parse.DataSection;
+import studio.magemonkey.codex.mccore.util.TextFormatter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -82,10 +82,11 @@ public class ConfigurableCommand extends Command {
     private static final String MESSAGES_KEY    = "messages";
     private static final String COOLDOWN_KEY    = "cooldown";
 
-    private Map<String, ConfigurableCommand> subCommands = new HashMap<>();
-    private Map<String, String>              messages    = new HashMap<>();
+    private final JavaPlugin plugin;
 
-    private JavaPlugin          plugin;
+    private final Map<String, ConfigurableCommand> subCommands = new HashMap<>();
+    private final Map<String, String>              messages    = new HashMap<>();
+
     private ConfigurableCommand parent;
     private IFunction           function;
     private SenderType          senderType;
@@ -266,7 +267,7 @@ public class ConfigurableCommand extends Command {
     /**
      * <p>Checks whether or not this command has a description</p>
      *
-     * @return true if has a description, false otherwise
+     * @return true if the command has a description, false otherwise
      */
     public boolean hasDescription() {
         return description != null;
@@ -295,7 +296,7 @@ public class ConfigurableCommand extends Command {
      * <p>This is not case-sensitive</p>
      *
      * @param name sub command name
-     * @return true if has the sub command, false otherwise
+     * @return true if the command has the sub command, false otherwise
      */
     public boolean hasSubCommand(String name) {
         return subCommands.containsKey(name.toLowerCase());

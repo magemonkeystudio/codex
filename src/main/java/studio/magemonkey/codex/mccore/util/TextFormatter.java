@@ -17,15 +17,18 @@ public class TextFormatter {
      * @return formatted string
      */
     public static String format(String string) {
-        if (string == null || string.length() == 0)
+        if (string == null || string.isEmpty())
             return string;
 
         String[] pieces = string.split("[ _]");
-        String   result = pieces[0].substring(0, 1).toUpperCase() + pieces[0].substring(1).toLowerCase();
+        StringBuilder result =
+                new StringBuilder(pieces[0].substring(0, 1).toUpperCase() + pieces[0].substring(1).toLowerCase());
         for (int i = 1; i < pieces.length; i++) {
-            result += " " + pieces[i].substring(0, 1).toUpperCase() + pieces[i].substring(1).toLowerCase();
+            result.append(" ")
+                    .append(pieces[i].substring(0, 1).toUpperCase())
+                    .append(pieces[i].substring(1).toLowerCase());
         }
-        return result;
+        return result.toString();
     }
 
     /**
