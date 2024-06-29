@@ -26,12 +26,13 @@
  */
 package studio.magemonkey.codex.mccore.chat;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.mccore.config.ISavable;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.mccore.config.ISavable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -227,6 +228,7 @@ public class ChatData implements ISavable {
      * @param prefix prefix data
      */
     public void setPluginPrefix(Prefix prefix) {
+        if (prefix == null || StringUtils.isBlank(prefix.text)) return;
 
         // Clear any previous prefix by the plugin
         Prefix currentPrefix = getPrefix(prefix.pluginName);
@@ -293,10 +295,10 @@ public class ChatData implements ISavable {
 
         // Add each of the active prefixes
         for (Prefix prefix : pluginPrefixes) {
-            if (prefix == null) continue;
+            if (prefix == null || StringUtils.isBlank(prefix.text)) continue;
             name += prefix.braceColor + "[" + prefix.text + prefix.braceColor + "]";
         }
-        if (playerPrefix != null)
+        if (playerPrefix != null && !StringUtils.isBlank(playerPrefix.text))
             name += playerPrefix.braceColor + "[" + playerPrefix.text + playerPrefix.braceColor + "]";
         if (name.length() > 0) name += " ";
 
