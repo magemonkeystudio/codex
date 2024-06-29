@@ -1,7 +1,14 @@
 package studio.magemonkey.codex.util;
 
+import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.commons.lang3.StringUtils;
+import studio.magemonkey.codex.items.ItemType;
+import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
+import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
 import studio.magemonkey.codex.util.messages.MessageData;
 import studio.magemonkey.codex.util.messages.MessageUtil;
+import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
@@ -14,6 +21,32 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ItemUtils {
+    public static final PlaceholderType<ItemType> ITEM_TYPE =
+            PlaceholderType.create("itemTYpe", ItemType.class);
+
+    static {
+        ITEM_TYPE.registerItem("name", item -> {
+            ItemStack itemStack = item.create();
+            TextComponent textComponent = new TextComponent(itemStack.getItemMeta().getDisplayName());
+            textComponent.setHoverEvent(NMSPlayerUtils.convert(itemStack));
+            return textComponent;
+        });
+        ITEM_TYPE.registerItem("displayName", item -> {
+            ItemStack itemStack = item.create();
+            TextComponent textComponent = new TextComponent(itemStack.getItemMeta().getDisplayName());
+            textComponent.setHoverEvent(NMSPlayerUtils.convert(itemStack));
+            return textComponent;
+        });
+        ITEM_TYPE.registerItem("material", d -> d.create().getType());
+        ITEM_TYPE.registerItem("id", item -> {
+            TextComponent textComponent = new TextComponent(item.getNamespacedID());
+            textComponent.setHoverEvent(NMSPlayerUtils.convert(item.create()));
+            return textComponent;
+        });
+        ITEM_TYPE.registerItem("lore", c -> StringUtils.join(c.create().getItemMeta().getLore(), '\n'));
+        ITEM_TYPE.registerItem("enchantments", c -> StringUtils.join(c.create().getEnchantments().keySet(), ", "));
+        ITEM_TYPE.registerChild("item", PlaceholderRegistry.ITEM, ItemType::create);
+    }
 
     public static ItemStack replaceText(ItemStack item, MessageData... replace) {
         if (item == null) return null;
