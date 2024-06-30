@@ -1,11 +1,12 @@
 package studio.magemonkey.codex.util;
 
+import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.apache.commons.lang3.StringUtils;
 import studio.magemonkey.codex.items.ItemType;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
 import studio.magemonkey.codex.util.messages.MessageData;
 import studio.magemonkey.codex.util.messages.MessageUtil;
 import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
@@ -27,15 +28,41 @@ public class ItemUtils {
     static {
         ITEM_TYPE.registerItem("name", item -> {
             ItemStack itemStack = item.create();
-            TextComponent textComponent = new TextComponent(itemStack.getItemMeta().getDisplayName());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(itemStack));
-            return textComponent;
+            ItemMeta meta = itemStack.getItemMeta();
+            String string = null;
+            if (meta != null) {
+                string = meta.getDisplayName();
+                if (string.isEmpty()) {
+                    string = meta.getItemName();
+                }
+            }
+            BaseComponent baseComponent;
+            if (string == null || string.isEmpty()) {
+                baseComponent = new TranslatableComponent(itemStack.getType().getItemTranslationKey());
+            } else {
+                baseComponent = new TextComponent(string);
+            }
+            baseComponent.setHoverEvent(NMSPlayerUtils.convert(itemStack));
+            return baseComponent;
         });
         ITEM_TYPE.registerItem("displayName", item -> {
             ItemStack itemStack = item.create();
-            TextComponent textComponent = new TextComponent(itemStack.getItemMeta().getDisplayName());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(itemStack));
-            return textComponent;
+            ItemMeta meta = itemStack.getItemMeta();
+            String string = null;
+            if (meta != null) {
+                string = meta.getDisplayName();
+                if (string.isEmpty()) {
+                    string = meta.getItemName();
+                }
+            }
+            BaseComponent baseComponent;
+            if (string == null || string.isEmpty()) {
+                baseComponent = new TranslatableComponent(itemStack.getType().getItemTranslationKey());
+            } else {
+                baseComponent = new TextComponent(string);
+            }
+            baseComponent.setHoverEvent(NMSPlayerUtils.convert(itemStack));
+            return baseComponent;
         });
         ITEM_TYPE.registerItem("material", d -> d.create().getType());
         ITEM_TYPE.registerItem("id", item -> {
