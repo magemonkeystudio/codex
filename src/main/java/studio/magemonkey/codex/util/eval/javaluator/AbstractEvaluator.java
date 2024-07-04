@@ -11,7 +11,7 @@ import java.util.*;
  * @author Jean-Marc Astesana
  * @see <a href="../../../license.html">License information</a>
  */
-public abstract class AbstractEvaluator<T> {
+public abstract class AbstractEvaluator<T> implements EvaluationContext {
     protected final Tokenizer                   tokenizer;
     protected final Map<String, Function>       functions;
     protected final Map<String, List<Operator>> operators;
@@ -209,7 +209,7 @@ public abstract class AbstractEvaluator<T> {
      * @throws IllegalArgumentException if the expression is not correct.
      */
     public T evaluate(String expression) {
-        return evaluate(expression, null);
+        return evaluate(expression, this);
     }
 
     /**
