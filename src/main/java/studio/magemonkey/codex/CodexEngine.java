@@ -1,6 +1,7 @@
 package studio.magemonkey.codex;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -64,6 +65,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private static       CodexEngine               instance;
     private final        Set<CodexPlugin<?>>       plugins;
     @Getter
+    @Setter
     private              NMS                       NMS;
     @Getter
     private              PluginManager             pluginManager;
@@ -225,18 +227,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             return false;
         }
 
-        String   pack  = NMS.class.getPackage().getName();
-        Class<?> clazz = Reflex.getClass(pack, current.name());
-        if (clazz == null) return false;
-
-        try {
-            this.NMS = (NMS) clazz.getConstructor().newInstance();
-            this.info("Loaded NMS version: " + current.name());
-        } catch (Exception e) {
-            this.warn("Failed to set up NMS version: " + current.name() + ". " + e.getMessage());
-            e.printStackTrace();
-        }
-        return this.NMS != null;
+        this.setNMS(new NMS());
+        return true;
     }
 
     @Override

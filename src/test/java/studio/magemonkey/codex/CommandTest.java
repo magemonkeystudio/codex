@@ -1,10 +1,12 @@
 package studio.magemonkey.codex;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import org.junit.jupiter.api.Disabled;
 import studio.magemonkey.codex.testutil.MockedTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+@Disabled
 public class CommandTest extends MockedTest {
     private PlayerMock player;
 

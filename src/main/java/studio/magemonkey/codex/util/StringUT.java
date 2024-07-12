@@ -7,6 +7,7 @@ import net.md_5.bungee.chat.ComponentSerializer;
 import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 
 import java.util.*;
@@ -74,7 +75,9 @@ public class StringUT {
     }
 
     @NotNull
-    public static String color(@NotNull String str) {
+    public static String color(@Nullable String str) {
+        if (str == null || str.isBlank()) return "";
+
         str = colorHex(str);
         return ChatColor.translateAlternateColorCodes('&', colorFix(str));
     }

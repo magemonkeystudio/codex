@@ -1,31 +1,30 @@
 package studio.magemonkey.codex.nms;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.util.reflection.ReflectionManager;
-import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 import io.netty.channel.Channel;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.util.reflection.ReflectionManager;
+import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 
-public interface NMS {
-
-    ReflectionUtil reflectionUtil = ReflectionManager.getReflectionUtil();
+public class NMS {
+    private final ReflectionUtil reflectionUtil = ReflectionManager.getReflectionUtil();
 
     @NotNull
-    default String toJSON(@NotNull ItemStack item) {
+    public String toJSON(@NotNull ItemStack item) {
         return reflectionUtil.toJson(item);
     }
 
     @Nullable
-    default String toBase64(@NotNull ItemStack item) {
+    public String toBase64(@NotNull ItemStack item) {
         return reflectionUtil.toBase64(item);
     }
 
     @Nullable
-    default ItemStack fromBase64(@NotNull String data) {
+    public ItemStack fromBase64(@NotNull String data) {
         try {
             return reflectionUtil.fromBase64(data);
         } catch (Exception e) {
@@ -36,62 +35,62 @@ public interface NMS {
     }
 
     @NotNull
-    default String getNbtString(@NotNull ItemStack item) {
+    public String getNbtString(@NotNull ItemStack item) {
         return reflectionUtil.getNbtString(item);
     }
 
-    default void openChestAnimation(@NotNull Block chest, boolean open) {
+    public void openChestAnimation(@NotNull Block chest, boolean open) {
         reflectionUtil.openChestAnimation(chest, open);
     }
 
-    default void sendAttackPacket(@NotNull Player p, int i) {
+    public void sendAttackPacket(@NotNull Player p, int i) {
         reflectionUtil.sendAttackPacket(p, i);
     }
 
     @NotNull
-    default Channel getChannel(@NotNull Player p) {
+    public Channel getChannel(@NotNull Player p) {
         return reflectionUtil.getChannel(p);
     }
 
-    default void sendPacket(@NotNull Player p, @NotNull Object packet) {
+    public void sendPacket(@NotNull Player p, @NotNull Object packet) {
         reflectionUtil.sendPacket(p, packet);
     }
 
     @NotNull
-    default ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
+    public ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
         return reflectionUtil.damageItem(item, amount, player);
     }
 
     @NotNull
-    default String fixColors(@NotNull String str) {
+    public String fixColors(@NotNull String str) {
         return reflectionUtil.fixColors(str);
     }
 
-    default double getDefaultDamage(@NotNull ItemStack itemStack) {
+    public double getDefaultDamage(@NotNull ItemStack itemStack) {
         return reflectionUtil.getDefaultDamage(itemStack);
     }
 
-    default double getDefaultSpeed(@NotNull ItemStack itemStack) {
+    public double getDefaultSpeed(@NotNull ItemStack itemStack) {
         return reflectionUtil.getDefaultSpeed(itemStack);
     }
 
-    default double getDefaultArmor(@NotNull ItemStack itemStack) {
+    public double getDefaultArmor(@NotNull ItemStack itemStack) {
         return reflectionUtil.getDefaultArmor(itemStack);
     }
 
-    default double getDefaultToughness(@NotNull ItemStack itemStack) {
+    public double getDefaultToughness(@NotNull ItemStack itemStack) {
         return reflectionUtil.getDefaultToughness(itemStack);
     }
 
-    default boolean isWeapon(@NotNull ItemStack itemStack) {
+    public boolean isWeapon(@NotNull ItemStack itemStack) {
         return reflectionUtil.isWeapon(itemStack);
     }
 
-    default boolean isTool(@NotNull ItemStack itemStack) {
+    public boolean isTool(@NotNull ItemStack itemStack) {
         return reflectionUtil.isTool(itemStack);
     }
 
-    default boolean isArmor(@NotNull ItemStack itemStack) {
+    public boolean isArmor(@NotNull ItemStack itemStack) {
         return reflectionUtil.isArmor(itemStack);
     }
 }

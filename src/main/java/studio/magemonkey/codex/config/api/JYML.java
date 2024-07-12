@@ -3,11 +3,9 @@ package studio.magemonkey.codex.config.api;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
@@ -73,6 +71,8 @@ public class JYML extends YamlConfiguration {
     }
 
     public boolean reload() throws InvalidConfigurationException {
+        if (!this.file.exists()) return false;
+
         try {
             this.load(this.file);
             this.isChanged = false;
