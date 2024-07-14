@@ -429,7 +429,7 @@ public class Reflection_1_17 implements ReflectionUtil {
 
             Method getAmount = Reflex.getMethod(attributeModifierClass,
                     ReflectionManager.MINOR_VERSION == 17 ? "getAmount" :
-                            (Version.CURRENT.isAtLeast(Version.V1_20_R3) ? "c" : "d"));
+                            (Version.CURRENT == Version.V1_20_R3 ? "c" : "d"));
             double value = (double) Reflex.invokeMethod(getAmount, mod);
             if (attribute.equals(getGenericAttribute(DAMAGE_ATTRIBUTE))) { // Damage
                 value += 1;
@@ -467,6 +467,10 @@ public class Reflection_1_17 implements ReflectionUtil {
         try {
             Class<?> attributes = getClazz("net.minecraft.world.entity.ai.attributes.GenericAttributes");
             Object   value      = Reflex.getField(attributes, field).get(null);
+
+            if (Version.CURRENT.isAtLeast(Version.V1_20_R4)) {
+                value = Reflex.invokeMethod(Reflex.getMethod(value.getClass(), "a"), value);
+            }
 
             //AttributeBase or IAttribute
             return value;
