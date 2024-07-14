@@ -26,15 +26,10 @@ import java.util.Collection;
 import java.util.Random;
 
 public class Reflection_1_17 implements ReflectionUtil {
-
-    private static final String DAMAGE_ATTRIBUTE    = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-            ? "c" : "f";
-    private static final String SPEED_ATTRIBUTE     = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-            ? "e" : "h";
-    private static final String ARMOR_ATTRIBUTE     = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-            ? "a" : "i";
-    private static final String TOUGHNESS_ATTRIBUTE = Version.CURRENT.isAtLeast(Version.V1_20_R3)
-            ? "b" : "j";
+    private static final String DAMAGE_ATTRIBUTE    = "f";
+    private static final String SPEED_ATTRIBUTE     = "h";
+    private static final String ARMOR_ATTRIBUTE     = "i";
+    private static final String TOUGHNESS_ATTRIBUTE = "j";
 
     @Override
     public Object newNBTTagCompound() {
@@ -78,11 +73,7 @@ public class Reflection_1_17 implements ReflectionUtil {
     @Override
     public Object save(Object nmsItem, Object nbtCompound) {
         try {
-            Method save = Reflex.getMethod(nmsItem.getClass(),
-                    ReflectionManager.MINOR_VERSION >= 18
-                            ? "b"
-                            : "save",
-                    nbtCompound.getClass());
+            Method save = Reflex.getMethod(nmsItem.getClass(), "save", nbtCompound.getClass());
 
             return Reflex.invokeMethod(save, nmsItem, nbtCompound);
         } catch (Exception e) {
@@ -352,7 +343,7 @@ public class Reflection_1_17 implements ReflectionUtil {
     }
 
     @Override
-    public Multimap<Object, Object> getAttributes(@NotNull ItemStack itemStack) {
+    public Multimap<?, ?> getAttributes(@NotNull ItemStack itemStack) {
         try {
             Object nmsItem = getNMSCopy(itemStack);
             Method getItem = Reflex.getMethod(nmsItem.getClass(),
@@ -420,7 +411,7 @@ public class Reflection_1_17 implements ReflectionUtil {
                     getClazz("net.minecraft.world.entity.ai.attributes.AttributeModifier");
             Class<?> attributeBaseClass =
                     getClazz("net.minecraft.world.entity.ai.attributes.AttributeBase");
-            Multimap<Object, Object> attMap = getAttributes(item);
+            Multimap<Object, Object> attMap = (Multimap<Object, Object>) getAttributes(item);
             if (attMap == null || attMap.isEmpty()) return 0D;
 
             Collection<Object> att = attMap.get(attributeBaseClass.cast(attribute));

@@ -2,6 +2,7 @@ package studio.magemonkey.codex.util.reflection;
 
 import org.bukkit.Bukkit;
 import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.nms.V1_18_R1;
 
 public class ReflectionManager {
 
@@ -20,7 +21,8 @@ public class ReflectionManager {
         if (reflection != null) return reflection;
 
         switch (Version.CURRENT) {
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3 -> reflection = new Reflection_1_17();
+            case V1_17_R1 -> reflection = new Reflection_1_17();
+            case V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3 -> reflection = new Reflection_1_18();
             case V1_20_R1, V1_20_R2, V1_20_R3, V1_20_R4 -> reflection = new Reflection_1_20();
             default -> reflection = new DefaultReflectionUtil();
         }

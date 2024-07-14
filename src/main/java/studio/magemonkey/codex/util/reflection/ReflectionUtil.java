@@ -131,7 +131,7 @@ public interface ReflectionUtil {
 
     ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player);
 
-    Multimap<Object, Object> getAttributes(@NotNull ItemStack item);
+    Multimap<?, ?> getAttributes(@NotNull ItemStack item);
 
     double getAttributeValue(@NotNull ItemStack item, @NotNull Object attribute);
 
