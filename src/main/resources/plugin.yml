@@ -10,7 +10,7 @@ libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:co
 provides: [ ProMCCore ]
 commands:
   stuck:
-    description: Find yourself in a pickle? Use /<command> to get out.
+    description: Find yourself in a pickle? Use /<command> to get out
     usage: /<command>
     permission: codex.stuck
 
