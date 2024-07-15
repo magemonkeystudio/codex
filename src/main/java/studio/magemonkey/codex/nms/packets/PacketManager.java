@@ -1,9 +1,5 @@
 package studio.magemonkey.codex.nms.packets;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.manager.IManager;
-import studio.magemonkey.codex.nms.packets.events.EnginePlayerPacketEvent;
-import studio.magemonkey.codex.nms.packets.events.EngineServerPacketEvent;
 import io.netty.channel.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +7,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.manager.IManager;
+import studio.magemonkey.codex.nms.packets.events.EnginePlayerPacketEvent;
+import studio.magemonkey.codex.nms.packets.events.EngineServerPacketEvent;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -66,6 +67,8 @@ public class PacketManager extends IManager<CodexEngine> {
 
 
     private void removePlayer(@NotNull Player player) {
+        if (Version.CURRENT == Version.TEST) return;
+
         Channel channel = this.getChannel(player);
         if (channel.pipeline().get(INJECTOR_ID) != null) {
             channel.pipeline().remove(INJECTOR_ID);
@@ -77,6 +80,8 @@ public class PacketManager extends IManager<CodexEngine> {
     }
 
     private void injectPlayer(@NotNull Player player) {
+        if (Version.CURRENT == Version.TEST) return;
+
         ChannelPipeline pipe = this.getChannel(player).pipeline();
         if (pipe.get(INJECTOR_ID) != null) return;
 
