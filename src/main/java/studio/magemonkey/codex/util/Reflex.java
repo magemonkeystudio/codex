@@ -19,7 +19,7 @@ public class Reflex {
 
     public static final String VERSION =
             !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit") ? (
-                    Integer.parseInt(Bukkit.getServer().getBukkitVersion().split("\\.")[1]) < 20 ? Bukkit.getServer()
+                    Integer.parseInt(Bukkit.getServer().getBukkitVersion().split("[.-]")[1]) < 20 ? Bukkit.getServer()
                             .getClass()
                             .getPackage()
                             .getName()

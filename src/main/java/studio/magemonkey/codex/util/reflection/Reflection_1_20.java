@@ -1,5 +1,6 @@
 package studio.magemonkey.codex.util.reflection;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -142,6 +143,10 @@ public class Reflection_1_20 extends Reflection_1_18 {
             } else {
                 Method parse = Reflex.getMethod(nmsItemClass, "a", compoundClass);
                 nmsItem = Reflex.invokeMethod(parse, null, nbtTagCompoundRoot);
+            }
+
+            if (nmsItem == null) {
+                return new ItemStack(Material.AIR);
             }
 
             Method asBukkitCopy =
