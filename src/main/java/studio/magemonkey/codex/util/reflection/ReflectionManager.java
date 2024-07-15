@@ -2,7 +2,6 @@ package studio.magemonkey.codex.util.reflection;
 
 import org.bukkit.Bukkit;
 import studio.magemonkey.codex.core.Version;
-import studio.magemonkey.codex.nms.V1_18_R1;
 
 public class ReflectionManager {
 
