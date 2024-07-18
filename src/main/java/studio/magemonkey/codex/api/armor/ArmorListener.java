@@ -19,18 +19,18 @@ import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.util.InventoryUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import static studio.magemonkey.codex.api.armor.ArmorEquipEvent.EquipMethod;
 import static org.bukkit.event.inventory.InventoryType.CRAFTING;
+import static studio.magemonkey.codex.api.armor.ArmorEquipEvent.EquipMethod;
 
 public class ArmorListener implements Listener {
 
@@ -160,11 +160,12 @@ public class ArmorListener implements Listener {
         if (e.getAction() == InventoryAction.NOTHING) {
             return;
         }
-        InventoryView view = e.getView();
-        if (!(view.getBottomInventory() instanceof PlayerInventory)) {
+        Inventory top    = InventoryUtil.getTopInventory(e);
+        Inventory bottom = InventoryUtil.getBottomInventory(e);
+        if (!(bottom instanceof PlayerInventory)) {
             return;
         }
-        PlayerInventory playerInventory = ((PlayerInventory) view.getBottomInventory());
+        PlayerInventory playerInventory = (PlayerInventory) bottom;
         if (!(playerInventory.getHolder() instanceof Player)) {
             return;
         }
@@ -199,7 +200,7 @@ public class ArmorListener implements Listener {
                     default -> {
                         ItemStack     currentItem      = Objects.requireNonNull(e.getCurrentItem()).clone();
                         List<Integer> destinationSlots = new ArrayList<>();
-                        if (view.getTopInventory().getType() == CRAFTING) {
+                        if (top.getType() == CRAFTING) {
                             if (clickedPlayer) {
                                 if (slot != 40 && armorType == ArmorType.OFFHAND) {
                                     destinationSlots.addAll(getDestinationSlots(currentItem, playerInventory, 40, 40));
@@ -219,7 +220,7 @@ public class ArmorListener implements Listener {
                         } else {
                             if (clickedPlayer) {
                                 // Don't count slots from another inventory
-                                getDestinationSlots(currentItem, view.getTopInventory());
+                                getDestinationSlots(currentItem, top);
                             } else {
                                 destinationSlots.addAll(getDestinationSlots(currentItem, playerInventory, 8, 0));
                                 destinationSlots.addAll(getDestinationSlots(currentItem, playerInventory, 35, 9));
@@ -553,17 +554,16 @@ public class ArmorListener implements Listener {
         if (armorType == null) {
             return;
         }
-        InventoryView view = event.getView();
         for (int rawSlot : event.getRawSlots()) {
-            Inventory inventory = view.getInventory(rawSlot);
+            Inventory inventory = InventoryUtil.getInventory(event, rawSlot);
             if (inventory instanceof PlayerInventory) {
                 PlayerInventory playerInventory = (PlayerInventory) inventory;
                 int             heldSlot        = playerInventory.getHeldItemSlot();
-                int             slot            = view.convertSlot(rawSlot);
+                int             slot            = InventoryUtil.convertSlot(event, rawSlot);
                 if (armorType.matchesSlot(slot, heldSlot)) {
                     ArmorEquipEvent armorEquipEvent =
                             new ArmorEquipEvent((Player) playerInventory.getHolder(), EquipMethod.DRAG,
-                                    armorType, view.getItem(rawSlot), event.getNewItems().get(rawSlot));
+                                    armorType, InventoryUtil.getItem(event, rawSlot), event.getNewItems().get(rawSlot));
                     if (isChange(armorEquipEvent)) {
                         Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                         if (armorEquipEvent.isCancelled()) {

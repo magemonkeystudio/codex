@@ -1,7 +1,5 @@
 package studio.magemonkey.codex.manager.api.menu;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.manager.IManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryAction;
@@ -11,8 +9,10 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.scheduler.BukkitRunnable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.manager.IManager;
+import studio.magemonkey.codex.util.InventoryUtil;
 
 public class MenuManager extends IManager<CodexEngine> {
 
@@ -37,10 +37,10 @@ public class MenuManager extends IManager<CodexEngine> {
             return;
         }
 
-        InventoryView view = event.getView();
-        Inventory otherInventory = view.getTopInventory() == inventory
-                ? view.getBottomInventory()
-                : view.getTopInventory();
+        Inventory top    = InventoryUtil.getTopInventory(event);
+        Inventory bottom = InventoryUtil.getBottomInventory(event);
+
+        Inventory otherInventory = top == inventory ? bottom : top;
         if (otherInventory.getHolder() instanceof Menu
                 && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             event.setCancelled(true);
@@ -70,9 +70,8 @@ public class MenuManager extends IManager<CodexEngine> {
 
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
-        InventoryView view = event.getView();
         for (Integer rawSlot : event.getRawSlots()) {
-            Inventory inventory = view.getInventory(rawSlot);
+            Inventory inventory = InventoryUtil.getInventory(event, rawSlot);
             if (inventory != null && inventory.getHolder() instanceof Menu) {
                 event.setCancelled(true);
                 break;
