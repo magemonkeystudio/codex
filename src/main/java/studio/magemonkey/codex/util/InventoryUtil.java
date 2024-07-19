@@ -19,8 +19,12 @@ public class InventoryUtil {
      * @return The top Inventory object from the event's InventoryView.
      */
     public static Inventory getTopInventory(InventoryEvent event) {
+        Object view = event.getView();
+        return getTopInventory(view);
+    }
+
+    public static Inventory getTopInventory(Object view) {
         try {
-            Object view            = event.getView();
             Method getTopInventory = view.getClass().getMethod("getTopInventory");
             getTopInventory.setAccessible(true);
             return (Inventory) getTopInventory.invoke(view);
@@ -107,7 +111,7 @@ public class InventoryUtil {
      */
     public static ItemStack getItem(InventoryEvent event, int slot) {
         try {
-            Object view         = event.getView();
+            Object view    = event.getView();
             Method getItem = view.getClass().getMethod("getItem", int.class);
             getItem.setAccessible(true);
             return (ItemStack) getItem.invoke(view, slot);
@@ -129,7 +133,7 @@ public class InventoryUtil {
      */
     public static int convertSlot(InventoryEvent event, int slot) {
         try {
-            Object view         = event.getView();
+            Object view        = event.getView();
             Method convertSlot = view.getClass().getMethod("convertSlot", int.class);
             convertSlot.setAccessible(true);
             return (int) convertSlot.invoke(view, slot);
