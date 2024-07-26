@@ -73,6 +73,16 @@ public class InventoryUtil {
         }
     }
 
+    public static void setItem(Object view, int slot, ItemStack item) {
+        try {
+            Method setItem = view.getClass().getMethod("setItem", int.class, ItemStack.class);
+            setItem.setAccessible(true);
+            setItem.invoke(view, slot, item);
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * In API versions 1.20.6 and earlier, InventoryView is a class.
      * In versions 1.21 and later, it is an interface.

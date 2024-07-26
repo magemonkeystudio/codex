@@ -1,13 +1,5 @@
 package studio.magemonkey.codex.manager.api.gui;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.config.api.JYML;
-import studio.magemonkey.codex.manager.IListener;
-import studio.magemonkey.codex.manager.api.task.ITask;
-import studio.magemonkey.codex.manager.types.ClickType;
-import studio.magemonkey.codex.util.ItemUT;
-import studio.magemonkey.codex.util.StringUT;
-import studio.magemonkey.codex.util.actions.ActionManipulator;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,10 +8,18 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.config.api.JYML;
+import studio.magemonkey.codex.manager.IListener;
+import studio.magemonkey.codex.manager.api.task.ITask;
+import studio.magemonkey.codex.manager.types.ClickType;
+import studio.magemonkey.codex.util.InventoryUtil;
+import studio.magemonkey.codex.util.ItemUT;
+import studio.magemonkey.codex.util.StringUT;
+import studio.magemonkey.codex.util.actions.ActionManipulator;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -137,8 +137,8 @@ public abstract class NGUI<P extends CodexPlugin<P>> extends IListener<P> implem
     // TODO Experimental
     public void refill() {
         this.getViewers().forEach(player -> {
-            InventoryView view = player.getOpenInventory();
-            Inventory     top  = view.getTopInventory();
+            Object    view = player.getOpenInventory();
+            Inventory top  = InventoryUtil.getTopInventory(view);
             if (!(top.getHolder() instanceof NGUI<?>)) return;
 
             for (int slot = 0; slot < top.getSize(); slot++) {

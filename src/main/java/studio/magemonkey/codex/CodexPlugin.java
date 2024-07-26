@@ -18,6 +18,7 @@ import studio.magemonkey.codex.manager.editor.EditorHandler;
 import studio.magemonkey.codex.modules.ModuleManager;
 import studio.magemonkey.codex.nms.NMS;
 import studio.magemonkey.codex.nms.packets.PacketManager;
+import studio.magemonkey.codex.util.InventoryUtil;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.actions.Parametized;
 import studio.magemonkey.codex.util.craft.CraftManager;
@@ -27,7 +28,6 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -162,9 +162,9 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         // To prevent take items after unregister listeners
         for (Player p : this.getServer().getOnlinePlayers()) {
             if (p != null) {
-                InventoryView inv = p.getOpenInventory();
-                if (inv == null || inv.getTopInventory() == null) continue;
-                InventoryHolder ih = inv.getTopInventory().getHolder();
+                Object inv = p.getOpenInventory();
+                if (InventoryUtil.getTopInventory(inv) == null) continue;
+                InventoryHolder ih = InventoryUtil.getTopInventory(inv).getHolder();
                 if (ih instanceof NGUI) {
                     p.closeInventory();
                 }
