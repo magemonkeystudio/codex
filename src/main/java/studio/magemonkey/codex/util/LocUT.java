@@ -1,7 +1,5 @@
 package studio.magemonkey.codex.util;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.core.config.CoreConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -11,6 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.core.config.CoreConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +82,20 @@ public class LocUT {
 
     @NotNull
     public static Location getFirstGroundBlock(@NotNull Location loc) {
+        return getFirstGroundBlock(loc, false);
+    }
+
+    @NotNull
+    public static Location getFirstGroundBlock(@NotNull Location loc, boolean airOnly) {
         float yaw   = loc.getYaw();
         float pitch = loc.getPitch();
 
+        int minY = loc.getWorld() != null ? loc.getWorld().getMinHeight() : 0;
+
         Block under = loc.getBlock();
-        while ((under.isEmpty() || !under.getType().isSolid()) && under.getY() > 0) {
+        while ((under.isEmpty()
+                || ((airOnly && under.getType().isAir()) || (!airOnly && !under.getType().isSolid())))
+                && under.getY() > minY) {
             under = under.getRelative(BlockFace.DOWN);
         }
 
