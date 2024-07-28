@@ -517,7 +517,7 @@ public abstract class NGUI<P extends CodexPlugin<P>> extends IListener<P> implem
             }
 
             NGUI.this.getViewers().forEach(player -> {
-                Inventory inv = player.getOpenInventory().getTopInventory();
+                Inventory inv = InventoryUtil.getTopInventory(player.getOpenInventory());
                 NGUI.this.fillGUI(inv, player);
             });
         }
