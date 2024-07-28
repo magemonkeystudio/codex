@@ -3,6 +3,14 @@ package studio.magemonkey.codex.testutil;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
+import org.bukkit.event.Event;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
+import org.mockito.MockedStatic;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.commands.CommandRegister;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
@@ -17,14 +25,6 @@ import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.reflection.ReflectionManager;
 import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 import studio.magemonkey.codex.util.reflection.Reflection_1_17;
-import org.bukkit.event.Event;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.TestInstance;
-import org.mockito.MockedStatic;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -123,6 +123,12 @@ public abstract class MockedTest {
 
     @AfterAll
     public void destroy() {
+        reflex.close();
+        commandRegister.close();
+        mockedReflection.close();
+        mockedReflection17.close();
+        board.close();
+        reflectionManager.close();
         CommandManager.unregisterAll();
         MockBukkit.unmock();
     }
