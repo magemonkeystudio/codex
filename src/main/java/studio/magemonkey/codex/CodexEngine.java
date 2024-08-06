@@ -59,7 +59,7 @@ import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Set;
 
-// Main Codex logic
+//  Main Codex logic
 public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private static final Hashtable<String, Config> configs = new Hashtable<>();
     private static       CodexEngine               instance;
