@@ -12,7 +12,7 @@
 
     <artifactId>codex</artifactId>
     <name>Codex</name>
-    <version>1.0.1-R0.1-SNAPSHOT</version>
+    <version>1.0.1-R0.2-SNAPSHOT</version>
     <description>The core plugin for MageMonkeyStudio plugins</description>
 
     <properties>
