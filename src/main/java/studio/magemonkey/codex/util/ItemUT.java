@@ -20,6 +20,8 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.config.ConfigManager;
 import studio.magemonkey.codex.hooks.Hooks;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -248,12 +250,30 @@ public class ItemUT {
         if (profile == null) return null;
 
         Collection<Property> properties = profile.getProperties().get("textures");
-        Optional<Property> opt = properties.stream()
-                .filter(prop -> prop.getName().equalsIgnoreCase("textures") || prop.getSignature()
-                        .equalsIgnoreCase("textures"))
+        Optional<String> opt = properties.stream()
+                .map(property -> {
+                    try {
+                        return new String[]{property.name(), property.signature(), property.value()};
+                    } catch (NoSuchMethodError ex) {
+                        try {
+                            // Use reflection to get the fields
+                            Method getName      = property.getClass().getMethod("getName");
+                            Method getSignature = property.getClass().getMethod("getSignature");
+                            Method getValue     = property.getClass().getMethod("getValue");
+                            String name         = (String) getName.invoke(property);
+                            String signature    = (String) getSignature.invoke(property);
+                            String value        = (String) getValue.invoke(property);
+                            return new String[]{name, signature, value};
+                        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                            return new String[]{null, null, null};
+                        }
+                    }
+                })
+                .filter(fields -> fields[0].equalsIgnoreCase("textures") || fields[1].equalsIgnoreCase("textures"))
+                .map(fields -> fields[2])
                 .findFirst();
 
-        return opt.isPresent() ? opt.get().getValue() : null;
+        return opt.orElse(null);
     }
 
     public static void applyPlaceholderAPI(@NotNull Player player, @NotNull ItemStack item) {

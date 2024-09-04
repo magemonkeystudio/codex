@@ -193,7 +193,7 @@ public interface ReflectionUtil {
             case V1_17_R1, V1_18_R1, V1_18_R2 -> "a";
             case V1_19_R1, V1_19_R2 -> "b";
             case V1_20_R2, V1_20_R3 -> "c";
-            case V1_20_R4, V1_21_R1 -> "e";
+            case V1_20_R4, V1_21_R1, V1_21_R2 -> "e";
             default -> "h";
         };
     }
@@ -202,7 +202,7 @@ public interface ReflectionUtil {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "channel";
             case V1_17_R1, V1_18_R1 -> "k";
-            case V1_20_R2, V1_20_R3, V1_20_R4, V1_21_R1 -> "n";
+            case V1_20_R2, V1_20_R3, V1_20_R4, V1_21_R1, V1_21_R2 -> "n";
             default -> "m";
         };
     }
@@ -216,6 +216,7 @@ public interface ReflectionUtil {
             case V1_20_R2, V1_20_R3 -> "B";
             case V1_20_R4 -> "D";
             case V1_21_R1 -> "F";
+            case V1_21_R2 -> "gr";
             default -> "A";
         };
     }
@@ -223,7 +224,7 @@ public interface ReflectionUtil {
     default String getKillerField() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "killer";
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_20_R4, V1_21_R1 -> "bc";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_20_R4, V1_21_R1, V1_21_R2 -> "bc";
             case V1_19_R3 -> "aX";
             case V1_20_R2, V1_20_R3 -> "aY";
             default -> "aZ";
@@ -233,7 +234,7 @@ public interface ReflectionUtil {
     default String getDamageTimeField() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "lastDamageByPlayerTime";
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_20_R4, V1_21_R1 -> "bd";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_20_R4, V1_21_R1, V1_21_R2 -> "bd";
             case V1_19_R3 -> "aY";
             case V1_20_R2, V1_20_R3 -> "aZ";
             default -> "ba";
@@ -244,7 +245,7 @@ public interface ReflectionUtil {
         // Really not verified... thanks Copilot :3
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "getServer";
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3, V1_20_R2, V1_20_R3, V1_20_R4, V1_21_R1 -> "bc";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3, V1_20_R2, V1_20_R3, V1_20_R4, V1_21_R1, V1_21_R2 -> "bc";
             default -> "b";
         };
     }

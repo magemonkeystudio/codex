@@ -548,6 +548,7 @@ public class Reflection_1_17 implements ReflectionUtil {
         return str;
     }
 
+    // Now "getCurrentItemAttackStrengthDelay" -- (1.0 / this.getAttributeValue(Attributes.ATTACK_SPEED) * 20.0)
     public float getAttackCooldown(Player p) {
         try {
             Class<?> entityPlayerClass = getClazz("net.minecraft.server.level.EntityPlayer");

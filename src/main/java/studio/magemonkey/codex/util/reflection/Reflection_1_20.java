@@ -92,6 +92,9 @@ public class Reflection_1_20 extends Reflection_1_18 {
             Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
             Method a =
                     Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
+            if(a == null) {
+                a = Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), OutputStream.class);
+            }
 
             Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
 

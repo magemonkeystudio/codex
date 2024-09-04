@@ -19,15 +19,15 @@ public enum Version {
     V1_20_R2,
     V1_20_R3,
     V1_20_R4,
-    V1_21_R1;
+    V1_21_R1,
+    V1_21_R2;
 
     public static final Version CURRENT;
 
     static {
         String[] split      = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
         String   versionRaw = split[split.length - 1];
-        if (versionRaw.equals("mockbukkit"))
-            CURRENT = Version.TEST;
+        if (versionRaw.equals("mockbukkit")) CURRENT = Version.TEST;
         else if (versionRaw.equals("craftbukkit")) {
             // New as of Paper 1.20.6, no more version specific package
             // see: https://forums.papermc.io/threads/important-dev-psa-future-removal-of-cb-package-relocation.1106/
@@ -37,6 +37,7 @@ public enum Version {
             CURRENT = switch (version) {
                 case "1.20.6-R0.1-SNAPSHOT" -> Version.V1_20_R4;
                 case "1.21-R0.1-SNAPSHOT" -> Version.V1_21_R1;
+                case "1.21.1-R0.1-SNAPSHOT" -> Version.V1_21_R2;
                 default -> throw new IllegalStateException("Unexpected version: " + version);
             };
         } else
