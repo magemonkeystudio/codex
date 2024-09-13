@@ -1,8 +1,11 @@
 package studio.magemonkey.codex.util.reflection;
 
 import com.google.common.collect.Multimap;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -10,6 +13,8 @@ import org.bukkit.block.Chest;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
@@ -21,9 +26,11 @@ import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.math.BigInteger;
+import java.net.URL;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
+import java.util.UUID;
 
 public class Reflection_1_17 implements ReflectionUtil {
     private static final String DAMAGE_ATTRIBUTE    = "f";
@@ -576,9 +583,35 @@ public class Reflection_1_17 implements ReflectionUtil {
         try {
             if (!(b.getState() instanceof Skull)) return;
 
-            Skull       skull   = (Skull) b.getState();
-            GameProfile profile = getNonPlayerProfile(hash);
-            Reflex.setFieldValue(skull, "profile", profile);
+            Skull skull = (Skull) b.getState();
+            try {
+                PlayerProfile  profile  = Bukkit.createPlayerProfile(UUID.randomUUID(), hash.substring(0, 16));
+                PlayerTextures textures = profile.getTextures();
+
+                // If the hash is a URL, we can just set the skin directly, otherwise, we need to decode
+                // the hash from Base64 and extract the url from the JSON data.
+                if (hash.startsWith("http")) {
+                    textures.setSkin(new URL(hash));
+                } else {
+                    String decoded = new String(java.util.Base64.getDecoder().decode(hash));
+                    // Construct the json object
+                    JsonObject json = new Gson().fromJson(decoded, JsonObject.class);
+                    // Get the textures object
+                    JsonObject texturesJson = json.getAsJsonObject("textures");
+                    // Get the skin object
+                    JsonObject skin = texturesJson.getAsJsonObject("SKIN");
+                    // Get the url
+                    String url = skin.get("url").getAsString();
+                    textures.setSkin(new URL(url));
+                }
+
+                profile = profile.update().get();
+                skull.setOwnerProfile(profile);
+            } catch (NoSuchMethodError | Exception e) {
+                CodexEngine.get().getLogger().info("Could not change skull with modern method, trying legacy method.");
+                GameProfile profile = getNonPlayerProfile(hash);
+                Reflex.setFieldValue(skull, "profile", profile);
+            }
             skull.update();
         } catch (Exception e) {
             CodexEngine.get().getLogger().warning("Could not update skull");
