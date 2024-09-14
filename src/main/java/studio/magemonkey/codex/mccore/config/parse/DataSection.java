@@ -651,8 +651,9 @@ public class DataSection {
      * @param defaults default section to trim to
      */
     public void trim(DataSection defaults) {
-        ArrayList<String> copy = new ArrayList<String>(keys);
+        List<String> copy = new ArrayList<>(keys);
         for (String key : copy) {
+            if(key.equals("yields")) continue;
             if (!defaults.has(key)) {
                 remove(key);
             } else if (defaults.isSection(key)) {
