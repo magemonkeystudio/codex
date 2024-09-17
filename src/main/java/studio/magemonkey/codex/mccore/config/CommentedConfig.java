@@ -26,6 +26,7 @@
  */
 package studio.magemonkey.codex.mccore.config;
 
+import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.magemonkey.codex.mccore.config.parse.DataSection;
 import studio.magemonkey.codex.mccore.config.parse.YAMLParser;
@@ -41,8 +42,21 @@ public class CommentedConfig {
 
     private final YAMLParser yamlParser = new YAMLParser();
     private final String     fileName;
+    /**
+     * -- GETTER --
+     *
+     * @return plugin owning this config file
+     */
+    @Getter
     private final JavaPlugin plugin;
 
+    /**
+     * -- GETTER --
+     *  <p>Retrieves the file of the configuration</p>
+     *
+     * @return the file of the configuration
+     */
+    @Getter
     private File        configFile;
     private DataSection data;
     private DataSection defaults;
@@ -68,13 +82,6 @@ public class CommentedConfig {
             if (new File(path.substring(0, path.lastIndexOf(File.separator))).mkdirs())
                 plugin.getLogger().info("Created a new folder for config files");
         } catch (Exception e) { /* */ }
-    }
-
-    /**
-     * @return plugin owning this config file
-     */
-    public JavaPlugin getPlugin() {
-        return plugin;
     }
 
     /**
@@ -119,15 +126,6 @@ public class CommentedConfig {
             this.reload();
         }
         return data;
-    }
-
-    /**
-     * <p>Retrieves the file of the configuration</p>
-     *
-     * @return the file of the configuration
-     */
-    public File getConfigFile() {
-        return configFile;
     }
 
     /**

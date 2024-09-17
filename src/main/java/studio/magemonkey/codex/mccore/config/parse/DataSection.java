@@ -36,7 +36,7 @@ import java.util.*;
  */
 public class DataSection {
 
-    private YAMLParser yamlParser = new YAMLParser();
+    private final YAMLParser yamlParser = new YAMLParser();
 
     // Comments attached to each node
     private final HashMap<String, List<String>> comments = new HashMap<>();
@@ -44,7 +44,7 @@ public class DataSection {
     // Values attached to each node
     private final HashMap<String, Object> data = new HashMap<>();
 
-    // All of the available keys
+    // All the available keys
     private final ArrayList<String> keys = new ArrayList<>();
 
     /**
@@ -62,7 +62,7 @@ public class DataSection {
      * @return keys in the data section
      */
     public List<String> keys() {
-        return new ArrayList<String>(keys);
+        return new ArrayList<>(keys);
     }
 
     /**
@@ -97,16 +97,16 @@ public class DataSection {
      * @param comment comment to add
      */
     public void addComment(String key, String comment) {
-        if (!comments.containsKey(key)) comments.put(key, new ArrayList<String>());
+        if (!comments.containsKey(key)) comments.put(key, new ArrayList<>());
         comments.get(key).add(comment);
         if (!keys.contains(key)) keys.add(key);
     }
 
     /**
-     * Checks whether or not the data has a comment for it
+     * Checks whether the data has a comment for it
      *
      * @param key data key
-     * @return true if has comments
+     * @return true if the section has comments
      */
     public boolean hasComment(String key) {
         return comments.containsKey(key);
@@ -237,7 +237,7 @@ public class DataSection {
     }
 
     /**
-     * Checks whether or not the value at the
+     * Checks whether the value at the
      * given key is a data section
      *
      * @param key key of the value
@@ -248,7 +248,7 @@ public class DataSection {
     }
 
     /**
-     * Checks whether or not the data contains a value at the given key
+     * Checks whether the data contains a value at the given key
      *
      * @param key key to check
      * @return true if contains a value, false otherwise
@@ -263,7 +263,7 @@ public class DataSection {
     }
 
     /**
-     * Checks whether or not the data contains a list value
+     * Checks whether the data contains a list value
      * at the given key
      *
      * @param key key to check for a list value at
@@ -274,7 +274,7 @@ public class DataSection {
     }
 
     /**
-     * Checks whether or not the value at the key is a number
+     * Checks whether the value at the key is a number
      *
      * @param key key to check for a number value at
      * @return true if a number is at the key, false otherwise
@@ -307,7 +307,7 @@ public class DataSection {
 
     /**
      * Retrieves a character value from the data. If more than
-     * one characters are found, this will only return the first.
+     * one character is found, this will only return the first.
      *
      * @param key key of the value to retrieve
      * @return the character from the config or '\0' if not found
@@ -393,12 +393,12 @@ public class DataSection {
      * @return the list value or an empty list if not found
      */
     public List<String> getList(String key) {
-        return getList(key, new ArrayList<String>());
+        return getList(key, new ArrayList<>());
     }
 
     /**
      * Retrieves a character value from the data. If more than
-     * one characters are found, this will only return the first.
+     * one character is found, this will only return the first.
      *
      * @param key      key of the value to retrieve
      * @param fallback value to return if not found
@@ -412,7 +412,7 @@ public class DataSection {
         }
 
         String str = getString(key);
-        if (str == null || str.length() == 0) return fallback;
+        if (str == null || str.isEmpty()) return fallback;
         return str.charAt(0);
     }
 
@@ -588,9 +588,11 @@ public class DataSection {
         }
         Object obj = data.get(key);
         if (obj instanceof List) {
-            List              l    = (List) obj;
-            ArrayList<String> list = new ArrayList<String>(l.size());
-            list.addAll(l);
+            List<?>              l    = (List<?>) obj;
+            List<String> list = new ArrayList<>(l.size());
+            for (Object o : l) {
+                if (o != null) list.add(o.toString());
+            }
             return list;
         } else return fallback;
     }
@@ -685,7 +687,7 @@ public class DataSection {
      * Dumps the data contents into the stream
      *
      * @param write stream to dump to
-     * @throws IOException
+     * @throws IOException thrown if an error occurs while writing
      */
     public void dump(BufferedWriter write) throws IOException {
         yamlParser.save(this, write);
