@@ -1,10 +1,13 @@
 package studio.magemonkey.codex.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -14,6 +17,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
@@ -22,6 +26,8 @@ import studio.magemonkey.codex.hooks.Hooks;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
@@ -230,11 +236,25 @@ public class ItemUT {
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         if (meta == null) return;
 
-        GameProfile profile = new GameProfile(uuid, uuid.toString().substring(0, 16));
-        profile.getProperties().put("textures", new Property("textures", value));
-        Reflex.invokeMethod(Reflex.getMethod(meta,
-                "setProfile",
-                GameProfile.class), meta, profile);
+        try {
+            PlayerProfile playerProfile = Bukkit.createPlayerProfile(uuid, uuid.toString().substring(0, 16));
+            String        decoded       = new String(Base64.getDecoder().decode(value));
+            JsonObject    json          = new Gson().fromJson(decoded, JsonObject.class);
+            JsonObject    texturesJson  = json.getAsJsonObject("textures");
+            JsonObject    skin          = texturesJson.getAsJsonObject("SKIN");
+            String        url           = skin.get("url").getAsString();
+            playerProfile.getTextures().setSkin(new URL(url));
+            meta.setOwnerProfile(playerProfile);
+        } catch (MalformedURLException | NoClassDefFoundError | NoSuchMethodError | IllegalArgumentException e) {
+            try {
+                GameProfile profile = new GameProfile(uuid, uuid.toString().substring(0, 16));
+                profile.getProperties().put("textures", new Property("textures", value));
+                Objects.requireNonNull(Reflex.getField(meta.getClass(), "profile")).set(meta, profile);
+            } catch (NullPointerException | IllegalAccessException setException) {
+                engine.getLogger()
+                        .warning("Could not set player skull texture. " + setException.getMessage());
+            }
+        }
 
         item.setItemMeta(meta);
     }
