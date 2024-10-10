@@ -215,8 +215,7 @@ public interface ReflectionUtil {
             case V1_19_R3 -> "z";
             case V1_20_R2, V1_20_R3 -> "B";
             case V1_20_R4 -> "D";
-            case V1_21_R1 -> "F";
-            case V1_21_R2 -> "gr";
+            case V1_21_R1, V1_21_R2 -> "F";
             default -> "A";
         };
     }
