@@ -4,6 +4,9 @@ import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import studio.magemonkey.codex.items.ItemType;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
@@ -11,9 +14,6 @@ import studio.magemonkey.codex.util.messages.MessageData;
 import studio.magemonkey.codex.util.messages.MessageUtil;
 import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
-import org.bukkit.*;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,12 +28,15 @@ public class ItemUtils {
     static {
         ITEM_TYPE.registerItem("name", item -> {
             ItemStack itemStack = item.create();
-            ItemMeta meta = itemStack.getItemMeta();
-            String string = null;
+            ItemMeta  meta      = itemStack.getItemMeta();
+            String    string    = null;
             if (meta != null) {
                 string = meta.getDisplayName();
                 if (string.isEmpty()) {
-                    string = meta.getItemName();
+                    try {
+                        string = meta.getItemName();
+                    } catch (NoSuchMethodError ignored) {
+                    }
                 }
             }
             BaseComponent baseComponent;
@@ -47,12 +50,15 @@ public class ItemUtils {
         });
         ITEM_TYPE.registerItem("displayName", item -> {
             ItemStack itemStack = item.create();
-            ItemMeta meta = itemStack.getItemMeta();
-            String string = null;
+            ItemMeta  meta      = itemStack.getItemMeta();
+            String    string    = null;
             if (meta != null) {
                 string = meta.getDisplayName();
                 if (string.isEmpty()) {
-                    string = meta.getItemName();
+                    try {
+                        string = meta.getItemName();
+                    } catch (NoSuchMethodError ignored) {
+                    }
                 }
             }
             BaseComponent baseComponent;
