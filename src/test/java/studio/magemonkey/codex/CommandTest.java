@@ -17,7 +17,7 @@ public class CommandTest extends MockedTest {
     @Test
     public void testHelpText() {
         player.performCommand("codex help");
-        player.assertSaid("§8§m━━━━━━━━━━━━§8§l[ §e§lCodex §7- §6§lHelp §8§l]§8§m━━━━━━━━━━━━");
+        player.assertSaid("§8§m━━━━━━━━━━━━§8§l[ §e§lCodexCore §7- §6§lHelp §8§l]§8§m━━━━━━━━━━━━");
         player.assertSaid("§6» §e/codex help §7- Show help page.");
         player.assertSaid("§6» §e/codex base64 §7- Converts item to Base64");
         player.assertSaid("§6» §e/codex reload §7- Reload the plugin.");

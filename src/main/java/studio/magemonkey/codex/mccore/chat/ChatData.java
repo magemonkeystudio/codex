@@ -55,7 +55,7 @@ public class ChatData implements ISavable {
      * @param playerName name of the player
      */
     ChatData(String playerName) {
-        plugin = (CodexEngine) Bukkit.getPluginManager().getPlugin("Codex");
+        plugin = (CodexEngine) Bukkit.getPluginManager().getPlugin("CodexCore");
         pluginPrefixes = new ArrayList<Prefix>();
         unlockedPrefixes = new ArrayList<Prefix>();
         this.playerName = playerName;

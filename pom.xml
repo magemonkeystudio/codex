@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>codex</artifactId>
-    <name>Codex</name>
+    <name>CodexCore</name>
     <version>1.0.1-R0.8-SNAPSHOT</version>
     <description>The core plugin for MageMonkeyStudio plugins</description>
 

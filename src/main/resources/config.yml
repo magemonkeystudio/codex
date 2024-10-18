@@ -1,6 +1,6 @@
 core:
   lang: en
-  command-aliases: codex,codexengine
+  command-aliases: codex,codexengine,codexcore
 
 locale:
   world-names:
@@ -18,7 +18,7 @@ Settings:
 file-timings: false
 
 bungee: false
-bungee_id: codex
+bungee_id: codexcore
 
 # Commands executed for player on login. The following placeholders are supported:
 # {player} - name of player

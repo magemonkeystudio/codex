@@ -1,5 +1,5 @@
 Prefix: '&e%plugin%&8&7'
-Codex:
+CodexCore:
   Command:
     Usage: '&c* 用法: &f/%label% %cmd% %usage%'
     Help:

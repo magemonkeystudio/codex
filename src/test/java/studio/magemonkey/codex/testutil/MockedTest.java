@@ -79,7 +79,7 @@ public abstract class MockedTest {
         String coreVersion = System.getProperty("CODEX_VERSION");
 
         try {
-            File itemsJar = new File(server.getPluginsFolder().getAbsolutePath(), "Codex-" + coreVersion + ".jar");
+            File itemsJar = new File(server.getPluginsFolder().getAbsolutePath(), "CodexCore-" + coreVersion + ".jar");
             if (!itemsJar.exists()) itemsJar.createNewFile();
             createZipArchive(itemsJar, "target/classes");
         } catch (IOException e) {

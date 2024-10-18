@@ -131,12 +131,21 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         this.pluginManager = this.getServer().getPluginManager();
         try {
             if (new File("plugins/ProMCCore").exists()) {
-                getLogger().info("Migrating ProMCCore to Codex");
-                MigrationUtil.renameDirectory("plugins/ProMCCore", "plugins/Codex");
-                MigrationUtil.replace("plugins/Codex/lang/messages_en.yml", "Core:", "Codex:");
+                getLogger().info("Migrating ProMCCore to CodexCore");
+                MigrationUtil.renameDirectory("plugins/ProMCCore", "plugins/CodexCore");
+                MigrationUtil.replace("plugins/CodexCore/lang/messages_en.yml", "Core:", "CodexCore:");
             }
         } catch (Exception e) {
             getLogger().warning("Failed to migrate ProMCCore to Codex. " + e.getMessage());
+        }
+        try {
+            if (new File("plugins/Codex").exists()) {
+                getLogger().info("Migrating Codex to CodexCore");
+                MigrationUtil.renameDirectory("plugins/Codex", "plugins/CodexCore");
+                MigrationUtil.replace("plugins/CodexCore/lang/messages_en.yml", "Codex:", "CodexCore:");
+            }
+        } catch (Exception e) {
+            getLogger().warning("Failed to migrate Codex to CodexCore. " + e.getMessage());
         }
         ItemUT.setEngine(this);
         Reflex.setEngine(this);
@@ -219,7 +228,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         String   rawVersion = split[split.length - 1];
         this.info("You are running MC version " + current + " (RAW: " + rawVersion + ")");
         if (current == null) {
-            this.error("===== Codex Initialization Failure =====");
+            this.error("===== CodexCore Initialization Failure =====");
             this.error(rawVersion + " is not currently supported. Is this a new version of Spigot?");
             this.error("If this is a new version, please be patient and wait for a new build supporting the new version");
             this.error("If this is a version older than 1.16.5, sorry. We don't support <1.16.5");
@@ -234,7 +243,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     @Override
     public void enable() {
         EditorManager.setup();
-        getLogger().info("Codex has been enabled!");
+        getLogger().info("CodexCore has been enabled!");
     }
 
     @Override
