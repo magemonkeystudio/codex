@@ -11,6 +11,14 @@ import studio.magemonkey.codex.util.Reflex;
 import java.lang.reflect.Method;
 
 public class Reflection_1_20 extends Reflection_1_18 {
+    private boolean isConnClass(Object con) {
+        return con.getClass().getSimpleName().equals("PlayerConnection") || con.getClass()
+                .getSimpleName()
+                .equals("ServerGamePacketListenerImpl") || con.getClass()
+                .getSimpleName()
+                .equals("GeneratedInterceptor");
+    }
+
     @Override
     public Object getConnection(Player player) {
         try {
@@ -19,21 +27,26 @@ public class Reflection_1_20 extends Reflection_1_18 {
             Method getHandle = Reflex.getMethod(craftPlayerClass, "getHandle");
             Object nmsPlayer = Reflex.invokeMethod(getHandle, getCraftPlayer(player));
 
-            String fieldName = Version.CURRENT.isAtLeast(Version.V1_21_R2) ? "f" : "c";
+            String fieldName = "f";
             Object con       = Reflex.getFieldValue(nmsPlayer, fieldName); //WHY must you obfuscate
-            if (!con.getClass().getSimpleName().equals("PlayerConnection") && !con.getClass()
-                    .getSimpleName()
-                    .equals("ServerGamePacketListenerImpl") && !con.getClass()
-                    .getSimpleName()
-                    .equals("GeneratedInterceptor")) {
-                CodexEngine.get()
-                        .getLogger()
-                        .warning("Expected PlayerConnection, got " + con.getClass().getSimpleName() + " instead!");
-                throw new ClassNotFoundException(
-                        "Could not get connection from CraftPlayer using field " + fieldName + "\nNMS Player: "
-                                + nmsPlayer + "\n");
+            if (isConnClass(con)) {
+                return con;
+            } else {
+                // Try with "c" instead (for <=1.21.1)
+                fieldName = "c";
+                con = Reflex.getFieldValue(nmsPlayer, fieldName);
             }
-            return con;
+
+            if (isConnClass(con)) {
+                return con;
+            }
+
+            CodexEngine.get()
+                    .getLogger()
+                    .warning("Expected PlayerConnection, got " + con.getClass().getSimpleName() + " instead!");
+            throw new ClassNotFoundException(
+                    "Could not get connection from CraftPlayer using field " + fieldName + "\nNMS Player: "
+                            + nmsPlayer + "\n");
         } catch (Exception e) {
             e.printStackTrace();
         }
