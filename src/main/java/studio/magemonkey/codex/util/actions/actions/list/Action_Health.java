@@ -1,16 +1,16 @@
 package studio.magemonkey.codex.util.actions.actions.list;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.AttributeUT;
 import studio.magemonkey.codex.util.EntityUT;
 import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
 import studio.magemonkey.codex.util.actions.actions.IActionType;
 import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
 import studio.magemonkey.codex.util.actions.params.IParamValue;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -52,7 +52,8 @@ public class Action_Health extends IActionExecutor {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hp2          = hp;
-            double       maxHp        = EntityUT.getAttribute(livingEntity, Attribute.GENERIC_MAX_HEALTH);
+            double       maxHp        = EntityUT.getAttribute(livingEntity, AttributeUT.resolve("MAX_HEALTH"));
+
             if (percent) {
                 hp2 = maxHp * (hp / 100D);
             }

@@ -52,21 +52,21 @@ public class Reflection_1_18 extends Reflection_1_17 {
 
     @Override
     public double getDefaultDamage(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, Attribute.GENERIC_ATTACK_DAMAGE); // generic.attack_damage
+        return getAttributeValue(itemStack, Attribute.valueOf("GENERIC_ATTACK_DAMAGE")); // generic.attack_damage
     }
 
     @Override
     public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, Attribute.GENERIC_ATTACK_SPEED); // generic.attack_speed
+        return getAttributeValue(itemStack, Attribute.valueOf("GENERIC_ATTACK_SPEED")); // generic.attack_speed
     }
 
     @Override
     public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, Attribute.GENERIC_ARMOR); // generic.armor
+        return getAttributeValue(itemStack, Attribute.valueOf("GENERIC_ARMOR")); // generic.armor
     }
 
     @Override
     public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        return getAttributeValue(itemStack, Attribute.GENERIC_ARMOR_TOUGHNESS); // generic.armor_toughness
+        return getAttributeValue(itemStack, Attribute.valueOf("GENERIC_ARMOR_TOUGHNESS")); // generic.armor_toughness
     }
 }

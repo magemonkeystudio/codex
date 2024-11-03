@@ -13,32 +13,6 @@ import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 public class NMS {
     private final ReflectionUtil reflectionUtil = ReflectionManager.getReflectionUtil();
 
-    @NotNull
-    public String toJSON(@NotNull ItemStack item) {
-        return reflectionUtil.toJson(item);
-    }
-
-    @Nullable
-    public String toBase64(@NotNull ItemStack item) {
-        return reflectionUtil.toBase64(item);
-    }
-
-    @Nullable
-    public ItemStack fromBase64(@NotNull String data) {
-        try {
-            return reflectionUtil.fromBase64(data);
-        } catch (Exception e) {
-            CodexEngine.get().getLogger().warning("Error parsing item from data!");
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @NotNull
-    public String getNbtString(@NotNull ItemStack item) {
-        return reflectionUtil.getNbtString(item);
-    }
-
     public void openChestAnimation(@NotNull Block chest, boolean open) {
         reflectionUtil.openChestAnimation(chest, open);
     }

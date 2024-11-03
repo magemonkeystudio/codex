@@ -88,33 +88,6 @@ public interface ReflectionUtil {
 
     void openChestAnimation(Block chest, boolean open);
 
-    default String toJson(@NotNull ItemStack item) {
-        try {
-            Object nbtCompound = newNBTTagCompound();
-            Object nmsItem     = getNMSCopy(item);
-
-            nbtCompound = save(nmsItem, nbtCompound);
-
-            Method toString = Reflex.getMethod(nbtCompound.getClass(), "toString");
-
-            String js = (String) Reflex.invokeMethod(toString, nbtCompound);
-            if (js.length() > JNumbers.JSON_MAX) {
-                ItemStack item2 = new ItemStack(item.getType());
-                return toJson(item2);
-            }
-
-            return js;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    String toBase64(@NotNull ItemStack item);
-
-    ItemStack fromBase64(@NotNull String data);
-
     default String getNbtString(@NotNull ItemStack item) {
         try {
             Object nmsCopy        = getNMSCopy(item);
@@ -153,8 +126,6 @@ public interface ReflectionUtil {
 
     String fixColors(@NotNull String str);
 
-    float getAttackCooldown(Player player);
-
     void changeSkull(Block b, String hash);
 
     default GameProfile getNonPlayerProfile(String hash) {
@@ -187,6 +158,7 @@ public interface ReflectionUtil {
         }
     }
 
+    // ServerCommonPacketListenerImpl, find the NetworkManager variable
     default String getNetworkManagerFieldName() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "networkManager";
@@ -198,6 +170,7 @@ public interface ReflectionUtil {
         };
     }
 
+    // NetworkManager, find the Channel variable
     default String getChannelFieldName() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "channel";
@@ -207,6 +180,8 @@ public interface ReflectionUtil {
         };
     }
 
+    // EntityPlayer, the method signature should look something like
+    // public int F() { return this.de; }
     default String getAttackCooldownMethodName() {
         return switch (Version.CURRENT) {
             case V1_16_R3, V1_17_R1 -> "getAttackCooldown";
@@ -220,6 +195,7 @@ public interface ReflectionUtil {
         };
     }
 
+    // EntityLiving, look for @Nullable EntityHuman field (somewhere around bc)
     default String getKillerField() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "killer";
@@ -230,6 +206,7 @@ public interface ReflectionUtil {
         };
     }
 
+    // EntityLiving, should be RIGHT after the killer field
     default String getDamageTimeField() {
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "lastDamageByPlayerTime";
@@ -244,7 +221,9 @@ public interface ReflectionUtil {
         // Really not verified... thanks Copilot :3
         return switch (Version.CURRENT) {
             case V1_16_R3 -> "getServer";
-            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3, V1_20_R2, V1_20_R3, V1_20_R4, V1_21_R1, V1_21_R2 -> "bc";
+            case V1_17_R1, V1_18_R1, V1_18_R2, V1_19_R1, V1_19_R2, V1_19_R3, V1_20_R1, V1_20_R2, V1_20_R3, V1_20_R4,
+                 V1_21_R1 -> "bc";
+            case V1_21_R2 -> "ba";
             default -> "b";
         };
     }

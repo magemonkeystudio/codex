@@ -1,6 +1,12 @@
 package studio.magemonkey.codex.util.actions.conditions.list;
 
+import org.bukkit.attribute.Attribute;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.AttributeUT;
 import studio.magemonkey.codex.util.EntityUT;
 import studio.magemonkey.codex.util.actions.conditions.IConditionType;
 import studio.magemonkey.codex.util.actions.conditions.IConditionValidator;
@@ -8,11 +14,6 @@ import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
 import studio.magemonkey.codex.util.actions.params.IParamValue;
 import studio.magemonkey.codex.util.actions.params.IParamValue.IOperator;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;
@@ -58,7 +59,7 @@ public class Condition_EntityHealth extends IConditionValidator {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hpTarget     = livingEntity.getHealth();
-            double       hpTargetMax  = EntityUT.getAttribute(livingEntity, Attribute.GENERIC_MAX_HEALTH);
+            double       hpTargetMax = EntityUT.getAttribute(livingEntity, AttributeUT.resolve("MAX_HEALTH"));
 
             if (isPercent) {
                 hpTarget = hpTarget / hpTargetMax * 100D;

@@ -2,13 +2,11 @@ package studio.magemonkey.codex.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.data.serial.ItemStackSerializer;
-import studio.magemonkey.codex.data.users.IAbstractUser;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.data.users.IAbstractUser;
 
 import java.sql.*;
 import java.util.*;
@@ -16,20 +14,19 @@ import java.util.function.Function;
 
 public abstract class IDataHandler<P extends CodexPlugin<P>, U extends IAbstractUser<P>> {
 
-    protected static final String              COL_USER_UUID        = "uuid";
-    protected static final String              COL_USER_NAME        = "name";
-    protected static final String              COL_USER_LAST_ONLINE = "last_online";
-    private static final   ItemStackSerializer ITEM_SERIALIZER      = new ItemStackSerializer();
+    protected static final String      COL_USER_UUID        = "uuid";
+    protected static final String      COL_USER_NAME        = "name";
+    protected static final String      COL_USER_LAST_ONLINE = "last_online";
     @NotNull
-    protected final        P                   plugin;
-    protected final        String              TABLE_USERS;
-    private final          String              url;
-    protected              StorageType         dataType;
-    protected              Connection          con;
-    protected              long                lastLive;
-    protected              Gson                gson;
-    private                String              user;
-    private                String              password;
+    protected final        P           plugin;
+    protected final        String      TABLE_USERS;
+    private final          String      url;
+    protected              StorageType dataType;
+    protected              Connection  con;
+    protected              long        lastLive;
+    protected              Gson        gson;
+    private                String      user;
+    private                String      password;
 
     protected IDataHandler(@NotNull P plugin) throws SQLException {
         this.plugin = plugin;
@@ -103,9 +100,7 @@ public abstract class IDataHandler<P extends CodexPlugin<P>, U extends IAbstract
 
     @NotNull
     protected GsonBuilder registerAdapters(@NotNull GsonBuilder builder) {
-        // TODO Register for  location?
-        return builder
-                .registerTypeAdapter(ItemStack.class, ITEM_SERIALIZER);
+        return builder;
     }
 
     @NotNull

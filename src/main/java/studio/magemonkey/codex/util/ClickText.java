@@ -1,12 +1,17 @@
 package studio.magemonkey.codex.util;
 
 import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.util.constants.JNumbers;
 import studio.magemonkey.codex.util.constants.JStrings;
+import studio.magemonkey.codex.util.reflection.ReflectionManager;
 
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -155,14 +160,55 @@ public class ClickText {
         @SuppressWarnings("deprecation")
         @NotNull
         public ClickWord showItem(@NotNull ItemStack item) {
-            //if (Version.CURRENT.isHigher(Version.V1_15_R1)) {
-            //	Item item2 = new Item("f_item", item.getAmount(), ItemTag.ofNbt(FogusCore.get().getNMS().getNbtString(item)));
-            //	this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM, item2);
-            //}
-            //else {
-            this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM, toBase(item));
-            //}
+            if (Version.CURRENT.isAtLeast(Version.V1_20_R4)) {
+                String nbt = String.format("{\"id\":\"%s\",\"count\":%d,\"components\": %s}",
+                        item.getType().getKey().getKey(),
+                        item.getAmount(),
+                        item.getItemMeta() != null ? item.getItemMeta().getAsString() : "{}");
+                this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(nbt)});
+            } else if (Version.CURRENT.isAtLeast(Version.V1_18_R2)) {
+                this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM,
+                        new Item(item.getType().getKey().getKey().toString(),
+                                item.getAmount(),
+                                ItemTag.ofNbt(item.getItemMeta().getAsString())));
+            } else {
+                // 1.16.5 - 1.18.1
+                // We have to serialize the nbt from the item stack by hand
+                this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM, toBase(item));
+            }
             return this;
+        }
+
+        private BaseComponent[] toBase(@NotNull ItemStack item) {
+            String json = toJson(item);
+            if (json != null) {
+                return TextComponent.fromLegacyText(json);
+            }
+
+            return new BaseComponent[0];
+        }
+
+        private String toJson(@NotNull ItemStack item) {
+            try {
+                Object nbtCompound = ReflectionManager.getReflectionUtil().newNBTTagCompound();
+                Object nmsItem     = ReflectionManager.getReflectionUtil().getNMSCopy(item);
+
+                nbtCompound = ReflectionManager.getReflectionUtil().save(nmsItem, nbtCompound);
+
+                Method toString = Reflex.getMethod(nbtCompound.getClass(), "toString");
+
+                String js = (String) Reflex.invokeMethod(toString, nbtCompound);
+                if (js.length() > JNumbers.JSON_MAX) {
+                    ItemStack item2 = new ItemStack(item.getType());
+                    return toJson(item2);
+                }
+
+                return js;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return null;
         }
 
         @Deprecated
@@ -224,15 +270,6 @@ public class ClickText {
         @Deprecated
         private BaseComponent[] toBase(@NotNull String text) {
             return new BaseComponent[]{new TextComponent(text)};
-        }
-
-        @NotNull
-        private BaseComponent[] toBase(@NotNull ItemStack item) {
-            String json = ItemUT.toJson(item);
-            if (json != null)
-                return TextComponent.fromLegacyText(json);
-            else
-                return new BaseComponent[0];
         }
     }
 }

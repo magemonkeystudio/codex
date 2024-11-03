@@ -128,7 +128,7 @@ public class JYML extends YamlConfiguration {
     }
 
     @Override
-    public void set(String path, @Nullable Object o) {
+    public void set(@NotNull String path, @Nullable Object o) {
 		/*if (o != null && o instanceof String) {
 			String s = (String) o;
 			s = s.replace('§', '&');
@@ -157,7 +157,7 @@ public class JYML extends YamlConfiguration {
 
     @Override
     @Nullable
-    public String getString(String path) {
+    public String getString(@NotNull String path) {
         String str = super.getString(path);
         return str == null || str.isEmpty() ? null : str;
     }
@@ -199,7 +199,7 @@ public class JYML extends YamlConfiguration {
         for (int i = 0; i < raw.length; i++) {
             try {
                 slots[i] = Integer.parseInt(raw[i].trim());
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ignored) {
             }
         }
         return slots;
@@ -359,12 +359,10 @@ public class JYML extends YamlConfiguration {
 
         String permission = this.getString(path + "permission");
 
-        GuiItem guiItem = new GuiItem(
+        return new GuiItem(
                 id, type, item,
                 animAutoPlay, animStartFrame, animFrames,
                 customClicks, permission, slots);
-
-        return guiItem;
     }
 
     public void setItem(@NotNull String path, @Nullable ItemStack item) {
@@ -413,130 +411,14 @@ public class JYML extends YamlConfiguration {
             color = lm.getColor();
         }
         if (color != null) {
-            colorRaw = new StringBuilder()
-                    .append(color.getRed()).append(",")
-                    .append(color.getGreen()).append(",")
-                    .append(color.getBlue()).append(",").toString();
+            colorRaw = color.getRed() + ","
+                    + color.getGreen() + ","
+                    + color.getBlue() + ",";
         }
         this.set(path + "color", colorRaw);
 
         List<String> itemFlags = meta.getItemFlags().stream().map(ItemFlag::name).collect(Collectors.toList());
         this.set(path + "item-flags", itemFlags);
         this.set(path + "unbreakable", meta.isUnbreakable());
-    }
-
-    // Base 64
-
-    @Nullable
-    public ItemStack getItem64(@NotNull String path) {
-        String code = this.getString(path);
-        if (code == null) return null;
-
-        return ItemUT.fromBase64(code);
-    }
-
-    public void setItem64(@NotNull String path, @Nullable ItemStack item) {
-        if (item == null) {
-            this.set(path, null);
-        } else {
-            try {
-                String code = ItemUT.toBase64(item);
-                this.set(path, code);
-            } catch (Exception e) {
-                CodexEngine.get().getLogger().warning("Could not set Item64");
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @NotNull
-    public ItemStack[] getItemList64(@NotNull String path) {
-        List<String> list = this.getStringList(path);
-        return ItemUT.fromBase64(list);
-    }
-
-    public void setItemList64(@NotNull String path, @NotNull List<ItemStack> item) {
-        List<String> code = ItemUT.toBase64(item);
-        this.set(path, code);
-    }
-
-    // ----------------------------------------- //
-
-    @Nullable
-    public ICraftRecipe getCraftRecipe(@NotNull CodexPlugin<?> plugin, @NotNull String path) {
-        if (!path.endsWith(".")) path += ".";
-
-        String    id     = this.getString(path + "id", file.getName().replace(".yml", ""));
-        boolean   shape  = this.getBoolean(path + "shaped");
-        ItemStack result = this.getItem64(path + "result");
-        if (result == null) {
-            return null;
-        }
-
-        ICraftRecipe recipe   = new ICraftRecipe(plugin, id, result, shape);
-        int          ingCount = 0;
-        for (String s : this.getSection(path + "ingredients")) {
-            String    path2 = path + "ingredients." + s;
-            ItemStack ing   = this.getItem64(path2);
-            recipe.addIngredient(ingCount, ing);
-
-            ingCount++;
-        }
-
-        return recipe;
-    }
-
-    public void setRecipe(@NotNull String path, @Nullable ICraftRecipe recipe) {
-        if (!path.endsWith(".")) path += ".";
-        if (recipe == null) {
-            if (path.endsWith(".")) path = path.substring(0, path.length() - 1);
-            this.set(path, null);
-            return;
-        }
-
-        this.set(path + "shaped", recipe.isShaped());
-        this.setItem64(path + "result", recipe.getResult());
-
-        char[] ziga = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'};
-
-        ItemStack[] ings = recipe.getIngredients();
-        for (int i = 0; i < ings.length; i++) {
-            char c = ziga[i];
-            this.setItem64(path + "ingredients." + c, ings[i]);
-        }
-    }
-
-    @Nullable
-    public IFurnaceRecipe getFurnaceRecipe(@NotNull CodexPlugin<?> plugin, @NotNull String path) {
-        if (!path.endsWith(".")) path += ".";
-
-        String    id     = this.getString(path + "id", file.getName().replace(".yml", ""));
-        ItemStack input  = this.getItem64(path + "input");
-        ItemStack result = this.getItem64(path + "result");
-        if (result == null || input == null) {
-            return null;
-        }
-        float  exp  = (float) this.getDouble(path + "exp");
-        double time = this.getDouble(path + "time");
-
-        IFurnaceRecipe recipe = new IFurnaceRecipe(plugin, id, result, exp, time);
-        recipe.addIngredient(input);
-
-        return recipe;
-    }
-
-    public void setRecipe(@NotNull String path, @Nullable IFurnaceRecipe recipe) {
-        if (!path.endsWith(".")) path += ".";
-        if (recipe == null) {
-            if (path.endsWith(".")) path = path.substring(0, path.length() - 1);
-
-            this.set(path, null);
-            return;
-        }
-
-        this.setItem64(path + "input", recipe.getInput());
-        this.setItem64(path + "result", recipe.getResult());
-        this.set(path + "exp", recipe.getExp());
-        this.set(path + "time", recipe.getTime() / 20D); // Turn to decimal seconds
     }
 }

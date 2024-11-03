@@ -1,6 +1,7 @@
 package studio.magemonkey.codex.legacy.placeholder;
 
 import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.EnumUT;
 import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
@@ -56,7 +57,7 @@ public final class PlaceholderRegistry {
         BLOCK.registerItem("x", Block::getX);
         BLOCK.registerItem("y", Block::getY);
         BLOCK.registerItem("type", b -> b.getType().name().toLowerCase());
-        BLOCK.registerItem("biome", b -> b.getBiome().name().toLowerCase());
+        BLOCK.registerItem("biome", b -> EnumUT.getName(b.getBiome()).toLowerCase());
         BLOCK.registerItem("blockPower", Block::getBlockPower);
         BLOCK.registerItem("tmperature", b -> ((int) (b.getTemperature() * 10)) / 10);
         BLOCK.registerItem("humidity", b -> ((int) (b.getHumidity() * 10)) / 10);

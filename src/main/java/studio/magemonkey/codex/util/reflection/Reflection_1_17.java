@@ -124,14 +124,24 @@ public class Reflection_1_17 implements ReflectionUtil {
             manager = Reflex.getFieldValue(conn, managerFieldName);
             channel = Reflex.getFieldValue(manager, channelFieldName);
 
+            if (channel == null) {
+                CodexEngine.get().error(
+                        "Could not setup Channel for player." +
+                                "\n\nConnection: " + conn +
+                                "\nUsing Manager Field Name: " + managerFieldName +
+                                "\nManager: " + manager +
+                                "\nChannel Field name: " + channelFieldName +
+                                "\nChannel: " + channel + "\n"
+                );
+            }
             return (Channel) channel;
         } catch (ClassCastException e) {
             CodexEngine.get().error("Could not setup Channel for player." +
-                    "\n\nConnection: " + conn.toString() +
+                    "\n\nConnection: " + conn +
                     "\nUsing Manager Field Name: " + managerFieldName +
-                    "\nManager: " + manager.toString() +
+                    "\nManager: " + manager +
                     "\nChannel Field name: " + channelFieldName +
-                    "\nChannel: " + channel.toString() + "\n"
+                    "\nChannel: " + channel + "\n"
             );
             e.printStackTrace();
         } catch (Exception e) {
@@ -241,73 +251,6 @@ public class Reflection_1_17 implements ReflectionUtil {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public String toBase64(@NotNull ItemStack item) {
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            DataOutputStream      dataOutput   = new DataOutputStream(outputStream);
-
-            Object nbtTagListItems    = newNBTTagList();
-            Object nbtTagCompoundItem = newNBTTagCompound();
-
-            Object nmsItem = getNMSCopy(item);
-
-            save(nmsItem, nbtTagCompoundItem);
-
-            Method add = Reflex.getMethod(AbstractList.class, "add", Object.class);
-            Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
-
-            Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-            Method a =
-                    Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
-
-            Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
-
-            String str = new BigInteger(1, outputStream.toByteArray()).toString(32);
-
-            return str;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    public ItemStack fromBase64(@NotNull String data) {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
-
-            Object nbtTagCompoundRoot;
-            try {
-                Class<?> compressedClass = getClazz("net.minecraft.nbt.NBTCompressedStreamTools");
-                Method   a               = Reflex.getMethod(compressedClass, "a", DataInput.class);
-
-                nbtTagCompoundRoot = Reflex.invokeMethod(a, null, new DataInputStream(inputStream));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            Class<?> nmsItemClass  = getClazz("net.minecraft.world.item.ItemStack");
-            Class<?> compoundClass = getClazz("net.minecraft.nbt.NBTTagCompound");
-            Method   a             = Reflex.getMethod(nmsItemClass, "a", compoundClass);
-
-            Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
-
-            Method asBukkitCopy =
-                    Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
-
-            ItemStack item = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
-
-            return item;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 
     @Override
@@ -553,30 +496,6 @@ public class Reflection_1_17 implements ReflectionUtil {
         }
 
         return str;
-    }
-
-    // Now "getCurrentItemAttackStrengthDelay" -- (1.0 / this.getAttributeValue(Attributes.ATTACK_SPEED) * 20.0)
-    public float getAttackCooldown(Player p) {
-        try {
-            Class<?> entityPlayerClass = getClazz("net.minecraft.server.level.EntityPlayer");
-            Class    entityHumanClass  = getClazz("net.minecraft.world.entity.player.EntityHuman");
-            Object   craftPlayer       = getCraftPlayer(p);
-            Method   getHandle         = Reflex.getMethod(craftPlayer.getClass(), "getHandle");
-
-            Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
-
-            Method getAttackCooldown = Reflex.getMethod(entityHumanClass, getAttackCooldownMethodName(), float.class);
-            if (getAttackCooldown == null) {
-                throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection. " +
-                        "Attempting " + getAttackCooldownMethodName() + "(float)");
-            }
-
-            return (float) Reflex.invokeMethod(getAttackCooldown, entityHumanClass.cast(ep), 0f);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 
     public void changeSkull(Block b, String hash) {

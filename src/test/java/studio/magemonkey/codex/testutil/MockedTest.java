@@ -116,7 +116,6 @@ public abstract class MockedTest {
         nms = mock(NMS.class);
         when(nms.fixColors(anyString()))
                 .thenAnswer(args -> args.getArgument(0));
-        when(nms.toBase64(any())).thenReturn("");
 
         plugin = MockBukkit.load(CodexEngine.class);
     }
@@ -179,7 +178,7 @@ public abstract class MockedTest {
 
     private void addFolder(String srcFolder, String baseFolder, ZipOutputStream out) throws IOException {
         File   subDir       = new File(srcFolder);
-        String subdirList[] = subDir.list();
+        String[] subdirList = subDir.list();
         for (String sd : subdirList) {
             // get a list of files from current directory
             File f = new File(srcFolder + "/" + sd);

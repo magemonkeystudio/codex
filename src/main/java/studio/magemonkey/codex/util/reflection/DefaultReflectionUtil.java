@@ -200,73 +200,6 @@ public class DefaultReflectionUtil implements ReflectionUtil {
     }
 
     @Override
-    public String toBase64(@NotNull ItemStack item) {
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            DataOutputStream      dataOutput   = new DataOutputStream(outputStream);
-
-            Object nbtTagListItems    = newNBTTagList();
-            Object nbtTagCompoundItem = newNBTTagCompound();
-
-            Object nmsItem = getNMSCopy(item);
-
-            save(nmsItem, nbtTagCompoundItem);
-
-            Method add = Reflex.getMethod(AbstractList.class, "add", Object.class);
-            Reflex.invokeMethod(add, nbtTagListItems, nbtTagCompoundItem);
-
-            Class<?> compressedClass = getNMSClass("NBTCompressedStreamTools");
-            Method a =
-                    Reflex.getMethod(compressedClass, "a", nbtTagCompoundItem.getClass(), DataOutput.class);
-
-            Reflex.invokeMethod(a, null, nbtTagCompoundItem, dataOutput);
-
-            String str = new BigInteger(1, outputStream.toByteArray()).toString(32);
-
-            return str;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
-    public ItemStack fromBase64(@NotNull String data) {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(new BigInteger(data, 32).toByteArray());
-
-            Object   nbtTagCompoundRoot;
-            Class<?> compressedClass;
-            try {
-                compressedClass = getNMSClass("NBTCompressedStreamTools");
-            } catch (ClassNotFoundException e) {
-                compressedClass = Reflex.getClass("net.minecraft.nbt", "NBTCompressedStreamTools");
-            }
-            Method nbtA = Reflex.getMethod(compressedClass, "a", DataInput.class);
-
-            nbtTagCompoundRoot = Reflex.invokeMethod(nbtA, null, new DataInputStream(inputStream));
-
-            Class<?> nmsItemClass  = getNMSClass("ItemStack");
-            Class<?> compoundClass = getNMSClass("NBTTagCompound");
-            Method   a             = Reflex.getMethod(nmsItemClass, "a", compoundClass);
-
-            Object nmsItem = Reflex.invokeMethod(a, null, nbtTagCompoundRoot);
-
-            Method asBukkitCopy =
-                    Reflex.getMethod(getCraftClass("inventory.CraftItemStack"), "asBukkitCopy", nmsItemClass);
-
-            ItemStack item = (ItemStack) Reflex.invokeMethod(asBukkitCopy, null, nmsItem);
-
-            return item;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-    @Override
     public ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
         try {
             Object nmsStack = getNMSCopy(item);
@@ -503,36 +436,6 @@ public class DefaultReflectionUtil implements ReflectionUtil {
         }
 
         return str;
-    }
-
-    @Override
-    public float getAttackCooldown(Player p) {
-        try {
-            Class<?> entityPlayerClass = getNMSClass("EntityPlayer");
-            Class    entityHumanClass  = getNMSClass("EntityHuman");
-            Object   craftPlayer       = getCraftPlayer(p);
-            Method   getHandle         = Reflex.getMethod(craftPlayer.getClass(), "getHandle");
-
-            Object ep = entityPlayerClass.cast(Reflex.invokeMethod(getHandle, craftPlayer));
-
-            if (ReflectionManager.MINOR_VERSION < 16) {
-                Method s = Reflex.getMethod(entityHumanClass, "s", float.class);
-                if (s == null)
-                    throw new NullPointerException("Could not find a \"s\" method using Reflection.");
-
-                return (float) Reflex.invokeMethod(s, entityHumanClass.cast(ep), 0f);
-            } else {
-                Method getAttackCooldown = Reflex.getMethod(entityHumanClass, "getAttackCooldown", float.class);
-                if (getAttackCooldown == null)
-                    throw new NullPointerException("Could not find a \"getAttackCooldown\" method using Reflection.");
-
-                return (float) Reflex.invokeMethod(getAttackCooldown, entityHumanClass.cast(ep), 0f);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return 0;
     }
 
     @Override

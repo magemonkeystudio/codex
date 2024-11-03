@@ -2,6 +2,7 @@ package studio.magemonkey.codex.util;
 
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -45,8 +46,8 @@ public class MsgUT {
         }
 
         try {
-            Sound s = Sound.valueOf(sound.toUpperCase());
-            player.playSound(player.getLocation(), s, pitch, pitch);
+            Keyed s = SoundUT.getSound(sound.toUpperCase());
+            player.playSound(player.getLocation(), s.getKey().toString(), pitch, pitch);
         } catch (IllegalArgumentException ex) {
         }
     }
@@ -67,8 +68,8 @@ public class MsgUT {
         }
 
         try {
-            Sound s = Sound.valueOf(sound.toUpperCase());
-            w.playSound(loc, s, pitch, pitch);
+            Keyed s = SoundUT.getSound(sound.toUpperCase());
+            w.playSound(loc, s.getKey().toString(), pitch, pitch);
         } catch (IllegalArgumentException ex) {
         }
     }

@@ -2,7 +2,6 @@ package studio.magemonkey.codex.testutil.reflection;
 
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
-import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 import io.netty.channel.Channel;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -92,26 +92,6 @@ public class TestReflectionUtil implements ReflectionUtil {
     }
 
     @Override
-    public String toJson(@NotNull ItemStack item) {
-        return "json-string";
-    }
-
-    @Override
-    public String toBase64(@NotNull ItemStack item) {
-        return "b64-string";
-    }
-
-    @Override
-    public ItemStack fromBase64(@NotNull String data) {
-        return new ItemStack(Material.PUMPKIN);
-    }
-
-    @Override
-    public String getNbtString(@NotNull ItemStack item) {
-        return "nbt-string";
-    }
-
-    @Override
     public ItemStack damageItem(@NotNull ItemStack item, int amount, @Nullable Player player) {
         // TODO Actually damage the item
         return item;
@@ -170,11 +150,6 @@ public class TestReflectionUtil implements ReflectionUtil {
     @Override
     public String fixColors(@NotNull String str) {
         return str;
-    }
-
-    @Override
-    public float getAttackCooldown(Player player) {
-        return 0;
     }
 
     @Override

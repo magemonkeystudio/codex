@@ -19,7 +19,6 @@ import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
 import studio.magemonkey.codex.commands.UnstuckCommand;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
-import studio.magemonkey.codex.commands.list.Base64Command;
 import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.core.config.CoreConfig;
@@ -315,8 +314,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
     @Override
     public void registerCommands(@NotNull IGeneralCommand<CodexEngine> mainCommand) {
-        mainCommand.addSubCommand(new Base64Command(this));
-
         PluginCommand unstuckCommand = getCommand("stuck");
         if (unstuckCommand != null) unstuckCommand.setExecutor(unstuck);
     }

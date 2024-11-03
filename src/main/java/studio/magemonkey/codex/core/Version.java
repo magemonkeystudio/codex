@@ -37,7 +37,7 @@ public enum Version {
             CURRENT = switch (version) {
                 case "1.20.6-R0.1-SNAPSHOT" -> Version.V1_20_R4;
                 case "1.21-R0.1-SNAPSHOT" -> Version.V1_21_R1;
-                case "1.21.1-R0.1-SNAPSHOT" -> Version.V1_21_R2;
+                case "1.21.1-R0.1-SNAPSHOT", "1.21.2-R0.1-SNAPSHOT", "1.21.3-R0.1-SNAPSHOT" -> Version.V1_21_R2;
                 default -> throw new IllegalStateException("Unexpected version: " + version);
             };
         } else
