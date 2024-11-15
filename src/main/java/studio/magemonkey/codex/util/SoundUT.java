@@ -7,7 +7,7 @@ import studio.magemonkey.codex.CodexEngine;
 public class SoundUT {
     public static Keyed getSound(String name) {
         try {
-            Sound.valueOf(name);
+            return Sound.valueOf(name);
         } catch (IncompatibleClassChangeError e) {
             try {
                 return (Keyed) Enum.valueOf((Class<Enum>) Class.forName("org.bukkit.Sound"), name);
