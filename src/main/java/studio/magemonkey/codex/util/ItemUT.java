@@ -158,6 +158,7 @@ public class ItemUT {
     private static List<NamespacedKey> getLoreKeys(@NotNull String id) {
         return List.of(
                 new NamespacedKey(engine, LORE_FIX_PREFIX + id.toLowerCase()),
+                Objects.requireNonNull(NamespacedKey.fromString("codex:" + LORE_FIX_PREFIX + id.toLowerCase())),
                 Objects.requireNonNull(NamespacedKey.fromString("promccore:" + LORE_FIX_PREFIX + id.toLowerCase())),
                 Objects.requireNonNull(NamespacedKey.fromString("nexengine:" + LORE_FIX_PREFIX + id.toLowerCase()))
         );
@@ -167,6 +168,7 @@ public class ItemUT {
     private static List<NamespacedKey> getNameKeys(@NotNull String id) {
         return List.of(
                 new NamespacedKey(engine, NAME_FIX_PREFIX + id.toLowerCase()),
+                Objects.requireNonNull(NamespacedKey.fromString("codex:" + NAME_FIX_PREFIX + id.toLowerCase())),
                 Objects.requireNonNull(NamespacedKey.fromString("promccore:" + NAME_FIX_PREFIX + id.toLowerCase())),
                 Objects.requireNonNull(NamespacedKey.fromString("nexengine:" + NAME_FIX_PREFIX + id.toLowerCase()))
         );
