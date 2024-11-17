@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.testutil;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +7,9 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInstance;
+import org.mockbukkit.mockbukkit.MockBukkit;
+import org.mockbukkit.mockbukkit.ServerMock;
+import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockito.MockedStatic;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.commands.CommandRegister;
@@ -34,6 +34,8 @@ import java.util.function.Predicate;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import static org.mockbukkit.mockbukkit.matcher.plugin.PluginManagerFiredEventClassMatcher.hasFiredEventInstance;
+import static org.mockbukkit.mockbukkit.matcher.plugin.PluginManagerFiredEventFilterMatcher.hasFiredFilteredEvent;
 import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -153,11 +155,11 @@ public abstract class MockedTest {
     }
 
     public <T extends Event> void assertEventFired(Class<T> clazz) {
-        server.getPluginManager().assertEventFired(clazz);
+        hasFiredEventInstance(clazz).matches(server.getPluginManager());
     }
 
     public <T extends Event> void assertEventFired(Class<T> clazz, Predicate<T> predicate) {
-        server.getPluginManager().assertEventFired(clazz, predicate);
+        hasFiredFilteredEvent(clazz, predicate).matches(server.getPluginManager());
     }
 
     public void clearEvents() {
@@ -177,7 +179,7 @@ public abstract class MockedTest {
     }
 
     private void addFolder(String srcFolder, String baseFolder, ZipOutputStream out) throws IOException {
-        File   subDir       = new File(srcFolder);
+        File     subDir     = new File(srcFolder);
         String[] subdirList = subDir.list();
         for (String sd : subdirList) {
             // get a list of files from current directory

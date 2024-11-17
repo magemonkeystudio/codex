@@ -1,13 +1,11 @@
 package studio.magemonkey.codex.mccore.config.parse;
 
-import studio.magemonkey.codex.CodexEngine;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
-import studio.magemonkey.codex.mccore.config.parse.DataSection;
-import studio.magemonkey.codex.mccore.config.parse.YAMLParser;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
