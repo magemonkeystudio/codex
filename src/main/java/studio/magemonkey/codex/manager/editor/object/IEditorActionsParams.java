@@ -1,5 +1,13 @@
 package studio.magemonkey.codex.manager.editor.object;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.manager.api.gui.*;
@@ -11,15 +19,6 @@ import studio.magemonkey.codex.util.StringUT;
 import studio.magemonkey.codex.util.actions.ActionCategory;
 import studio.magemonkey.codex.util.actions.Parametized;
 import studio.magemonkey.codex.util.actions.params.IParam;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.manager.api.gui.*;
 
 import java.util.*;
 
@@ -79,9 +78,10 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
                         EditorManager.startEdit(p, IEditorActionsParams.this, type2);
                         p.closeInventory();
 
-                        StringBuilder builder  = new StringBuilder();
+                        StringBuilder                    builder  = new StringBuilder();
                         Set<IParam>                      params   = new HashSet<>(parametized.getParams());
-                        IEditorActionsMain.ActionBuilder abuilder = section.getEditorMain().getActionBuilder(section.getSectionId());
+                        IEditorActionsMain.ActionBuilder abuilder =
+                                section.getEditorMain().getActionBuilder(section.getSectionId());
                         if (abuilder == null) return;
 
                         // Remove already added.
@@ -161,7 +161,8 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
     @Override
     protected void onCreate(@NotNull Player p, @NotNull Inventory inv, int page) {
         // Check for valid Builder.
-        IEditorActionsMain.ActionBuilder builder = this.sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
+        IEditorActionsMain.ActionBuilder builder =
+                this.sectionEditor.getEditorMain().getActionBuilder(sectionEditor.getSectionId());
         if (builder == null) {
             plugin.warn("Invalid ActionBuilder for '" + sectionEditor.getSectionId() + "' section! (2)");
             return;

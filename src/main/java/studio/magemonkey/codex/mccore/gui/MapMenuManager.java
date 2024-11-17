@@ -26,13 +26,13 @@
  */
 package studio.magemonkey.codex.mccore.gui;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.mccore.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.map.MapView;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.mccore.config.Config;
 
 import java.util.HashMap;
 

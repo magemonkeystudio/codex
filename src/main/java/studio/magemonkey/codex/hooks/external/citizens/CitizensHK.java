@@ -1,9 +1,5 @@
 package studio.magemonkey.codex.hooks.external.citizens;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.hooks.HookState;
-import studio.magemonkey.codex.hooks.NHook;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.event.NPCLeftClickEvent;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -12,6 +8,10 @@ import net.citizensnpcs.api.trait.TraitInfo;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.hooks.HookState;
+import studio.magemonkey.codex.hooks.NHook;
 
 import java.util.*;
 

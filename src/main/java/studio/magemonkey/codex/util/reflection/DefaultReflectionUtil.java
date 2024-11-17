@@ -15,11 +15,8 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.random.Rnd;
 
-import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
-import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
 

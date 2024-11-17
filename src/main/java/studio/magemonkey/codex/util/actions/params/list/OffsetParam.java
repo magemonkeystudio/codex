@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.util.actions.params.list;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.util.StringUT;
 import studio.magemonkey.codex.util.actions.params.IParam;
 import studio.magemonkey.codex.util.actions.params.IParamType;
 import studio.magemonkey.codex.util.actions.params.IParamValue;
 import studio.magemonkey.codex.util.actions.params.parser.IParamParser;
-import org.jetbrains.annotations.NotNull;
 
 public class OffsetParam extends IParam {
 

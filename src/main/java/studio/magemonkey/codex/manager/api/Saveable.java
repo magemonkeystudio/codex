@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.manager.api;
 
-import studio.magemonkey.codex.config.api.JYML;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.config.api.JYML;
 
 public interface Saveable {
 

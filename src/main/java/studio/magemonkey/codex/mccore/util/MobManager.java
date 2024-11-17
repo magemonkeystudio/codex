@@ -26,8 +26,8 @@
  */
 package studio.magemonkey.codex.mccore.util;
 
-import studio.magemonkey.codex.util.Reflex;
 import org.bukkit.entity.*;
+import studio.magemonkey.codex.util.Reflex;
 
 import java.util.Hashtable;
 

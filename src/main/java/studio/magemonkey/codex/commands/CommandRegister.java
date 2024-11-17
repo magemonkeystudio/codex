@@ -1,13 +1,13 @@
 package studio.magemonkey.codex.commands;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.commands.api.IGeneralCommand;
-import studio.magemonkey.codex.util.Reflex;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.*;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.IGeneralCommand;
+import studio.magemonkey.codex.util.Reflex;
 
 import java.lang.reflect.Method;
 import java.util.*;

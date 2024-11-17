@@ -26,9 +26,9 @@
  */
 package studio.magemonkey.codex.mccore.config;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import studio.magemonkey.codex.mccore.config.parse.DataSection;
 import studio.magemonkey.codex.mccore.config.parse.JSONParser;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.logging.Level;

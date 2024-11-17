@@ -1,13 +1,12 @@
 package studio.magemonkey.codex.config.api;
 
-import studio.magemonkey.codex.config.api.ILangTemplate;
-import studio.magemonkey.codex.util.CollectionsUT;
-import studio.magemonkey.codex.util.MsgUT;
-import studio.magemonkey.codex.util.StringUT;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.CollectionsUT;
+import studio.magemonkey.codex.util.MsgUT;
+import studio.magemonkey.codex.util.StringUT;
 
 import java.util.ArrayList;
 import java.util.Collections;

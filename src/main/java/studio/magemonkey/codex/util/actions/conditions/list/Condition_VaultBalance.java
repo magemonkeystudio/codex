@@ -1,5 +1,9 @@
 package studio.magemonkey.codex.util.actions.conditions.list;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.hooks.external.VaultHK;
 import studio.magemonkey.codex.util.actions.conditions.IConditionType;
@@ -8,10 +12,6 @@ import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
 import studio.magemonkey.codex.util.actions.params.IParamValue;
 import studio.magemonkey.codex.util.actions.params.IParamValue.IOperator;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;

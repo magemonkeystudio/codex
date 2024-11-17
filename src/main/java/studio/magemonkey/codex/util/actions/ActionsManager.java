@@ -1,5 +1,7 @@
 package studio.magemonkey.codex.util.actions;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.manager.IManager;
 import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
@@ -19,8 +21,6 @@ import studio.magemonkey.codex.util.actions.targets.ITargetSelector;
 import studio.magemonkey.codex.util.actions.targets.list.Target_FromSight;
 import studio.magemonkey.codex.util.actions.targets.list.Target_Radius;
 import studio.magemonkey.codex.util.actions.targets.list.Target_Self;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;

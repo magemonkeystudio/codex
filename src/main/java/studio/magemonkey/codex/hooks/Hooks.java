@@ -1,10 +1,5 @@
 package studio.magemonkey.codex.hooks;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.hooks.external.IMythicHook;
-import studio.magemonkey.codex.hooks.external.VaultHK;
-import studio.magemonkey.codex.hooks.external.WorldGuardHK;
-import studio.magemonkey.codex.util.constants.JStrings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.entity.Entity;
@@ -13,6 +8,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.mcmonkey.sentinel.SentinelTrait;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.hooks.external.IMythicHook;
+import studio.magemonkey.codex.hooks.external.VaultHK;
+import studio.magemonkey.codex.hooks.external.WorldGuardHK;
+import studio.magemonkey.codex.util.constants.JStrings;
 
 import java.util.Collections;
 import java.util.Map;

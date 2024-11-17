@@ -1,13 +1,13 @@
 package studio.magemonkey.codex.manager.api.gui;
 
-import studio.magemonkey.codex.manager.types.ClickType;
-import studio.magemonkey.codex.util.actions.ActionManipulator;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.manager.types.ClickType;
+import studio.magemonkey.codex.util.actions.ActionManipulator;
 
 import java.util.ArrayList;
 import java.util.List;

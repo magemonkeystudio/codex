@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.util.actions.params;
 
-import studio.magemonkey.codex.util.actions.params.parser.IParamParser;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.actions.params.parser.IParamParser;
 
 import java.util.regex.Pattern;
 

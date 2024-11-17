@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.nms.packets.events;
 
-import studio.magemonkey.codex.manager.api.event.ICancellableEvent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.manager.api.event.ICancellableEvent;
 
 public abstract class EnginePacketEvent extends ICancellableEvent {
 

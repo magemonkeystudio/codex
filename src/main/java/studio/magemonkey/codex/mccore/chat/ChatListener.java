@@ -26,12 +26,12 @@
  */
 package studio.magemonkey.codex.mccore.chat;
 
-import studio.magemonkey.codex.CodexEngine;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import studio.magemonkey.codex.CodexEngine;
 
 /**
  * Listens for players joining/quitting to load and clear data appropriately

@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.commands.api;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.util.CollectionsUT;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.CollectionsUT;
 
 import java.util.Collections;
 import java.util.List;

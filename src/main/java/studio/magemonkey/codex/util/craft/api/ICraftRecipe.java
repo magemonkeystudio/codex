@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.util.craft.api;
 
-import studio.magemonkey.codex.CodexPlugin;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
 
 public class ICraftRecipe extends IAbstractRecipe {
 

@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.util.reflection.ReflectionManager;
 import studio.magemonkey.codex.util.reflection.ReflectionUtil;
 

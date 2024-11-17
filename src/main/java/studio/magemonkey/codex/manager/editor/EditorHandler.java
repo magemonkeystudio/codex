@@ -1,10 +1,5 @@
 package studio.magemonkey.codex.manager.editor;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.manager.IListener;
-import studio.magemonkey.codex.manager.api.gui.NGUI;
-import studio.magemonkey.codex.util.StringUT;
-import studio.magemonkey.codex.util.constants.JStrings;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -12,6 +7,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.manager.IListener;
+import studio.magemonkey.codex.manager.api.gui.NGUI;
+import studio.magemonkey.codex.util.StringUT;
+import studio.magemonkey.codex.util.constants.JStrings;
 
 import java.util.Map;
 

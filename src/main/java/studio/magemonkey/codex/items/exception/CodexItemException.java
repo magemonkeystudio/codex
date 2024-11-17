@@ -1,7 +1,5 @@
 package studio.magemonkey.codex.items.exception;
 
-import studio.magemonkey.codex.items.exception.MissingItemException;
-import studio.magemonkey.codex.items.exception.MissingProviderException;
 import studio.magemonkey.codex.items.providers.ICodexItemProvider;
 
 /**

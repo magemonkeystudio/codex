@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.hooks.external;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.hooks.HookState;
-import studio.magemonkey.codex.hooks.NHook;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
@@ -15,6 +12,9 @@ import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.hooks.HookState;
+import studio.magemonkey.codex.hooks.NHook;
 
 import java.util.Collection;
 

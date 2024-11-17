@@ -1,5 +1,17 @@
 package studio.magemonkey.codex;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.plugin.PluginDescriptionFile;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.commands.CommandManager;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import studio.magemonkey.codex.commands.list.MainCommand;
@@ -22,18 +34,6 @@ import studio.magemonkey.codex.util.InventoryUtil;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.actions.Parametized;
 import studio.magemonkey.codex.util.craft.CraftManager;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.java.JavaPluginLoader;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.util.List;

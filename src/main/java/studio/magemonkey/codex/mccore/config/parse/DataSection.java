@@ -588,7 +588,7 @@ public class DataSection {
         }
         Object obj = data.get(key);
         if (obj instanceof List) {
-            List<?>              l    = (List<?>) obj;
+            List<?>      l    = (List<?>) obj;
             List<String> list = new ArrayList<>(l.size());
             for (Object o : l) {
                 if (o != null) list.add(o.toString());
@@ -655,7 +655,7 @@ public class DataSection {
     public void trim(DataSection defaults) {
         List<String> copy = new ArrayList<>(keys);
         for (String key : copy) {
-            if(key.equals("yields")) continue;
+            if (key.equals("yields")) continue;
             if (!defaults.has(key)) {
                 remove(key);
             } else if (defaults.isSection(key)) {

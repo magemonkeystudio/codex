@@ -1,11 +1,10 @@
 package studio.magemonkey.codex.commands;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import studio.magemonkey.codex.commands.list.*;
-import studio.magemonkey.codex.commands.list.AboutCommand;
 import studio.magemonkey.codex.manager.api.Loadable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;

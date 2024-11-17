@@ -1,6 +1,5 @@
 package studio.magemonkey.codex.util.actions.conditions.list;
 
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
@@ -59,7 +58,7 @@ public class Condition_EntityHealth extends IConditionValidator {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hpTarget     = livingEntity.getHealth();
-            double       hpTargetMax = EntityUT.getAttribute(livingEntity, AttributeUT.resolve("MAX_HEALTH"));
+            double       hpTargetMax  = EntityUT.getAttribute(livingEntity, AttributeUT.resolve("MAX_HEALTH"));
 
             if (isPercent) {
                 hpTarget = hpTarget / hpTargetMax * 100D;

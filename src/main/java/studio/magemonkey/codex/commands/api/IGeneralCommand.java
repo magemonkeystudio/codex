@@ -1,7 +1,5 @@
 package studio.magemonkey.codex.commands.api;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.util.StringUT;
 import org.apache.commons.lang3.ArrayUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,6 +8,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.StringUT;
 
 import java.util.*;
 

@@ -1,10 +1,10 @@
 package studio.magemonkey.codex.items.providers;
 
-import studio.magemonkey.codex.items.CodexItemManager;
-import studio.magemonkey.codex.items.ItemType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.items.CodexItemManager;
+import studio.magemonkey.codex.items.ItemType;
 
 public class VanillaProvider implements ICodexItemProvider<VanillaProvider.VanillaItemType> {
     public static final String NAMESPACE = "VANILLA";

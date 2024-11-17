@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.api;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.util.SerializationBuilder;
+import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.*;
 

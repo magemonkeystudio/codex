@@ -1,15 +1,16 @@
 package studio.magemonkey.codex.legacy.item;
 
-import studio.magemonkey.codex.util.ItemUtils;
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.bukkit.Color;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import studio.magemonkey.codex.util.ItemUtils;
+import studio.magemonkey.codex.util.SerializationBuilder;
+import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.Map;
 

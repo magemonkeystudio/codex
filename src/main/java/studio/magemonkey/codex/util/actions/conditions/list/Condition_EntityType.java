@@ -1,13 +1,13 @@
 package studio.magemonkey.codex.util.actions.conditions.list;
 
+import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.util.actions.conditions.IConditionType;
 import studio.magemonkey.codex.util.actions.conditions.IConditionValidator;
 import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
-import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Set;

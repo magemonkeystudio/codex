@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.legacy.item;
 
-import studio.magemonkey.codex.util.ItemUtils;
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -12,6 +9,9 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.ItemUtils;
+import studio.magemonkey.codex.util.SerializationBuilder;
+import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.Map;
 

@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.api;
 
-import studio.magemonkey.codex.util.Debugger;
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.Debugger;
+import studio.magemonkey.codex.util.SerializationBuilder;
+import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.Iterator;
 import java.util.List;

@@ -183,9 +183,10 @@ public class CommandManager {
                 CommandMap map = (CommandMap) field.get(Bukkit.getPluginManager());
                 map.register(command.getName(), command);
             } else {
-                Field field = Class.forName("be.seeseemelk.mockbukkit.ServerMock").getDeclaredField("commandMap");
+                Field field = Class.forName("org.mockbukkit.mockbukkit.ServerMock").getDeclaredField("commandMap");
                 Field commands =
-                        Class.forName("be.seeseemelk.mockbukkit.plugin.PluginManagerMock").getDeclaredField("commands");
+                        Class.forName("org.mockbukkit.mockbukkit.plugin.PluginManagerMock")
+                                .getDeclaredField("commands");
                 if (!field.canAccess(Bukkit.getServer())) field.setAccessible(true);
                 if (!commands.canAccess(Bukkit.getServer().getPluginManager())) commands.setAccessible(true);
                 CommandMap          map  = (CommandMap) field.get(Bukkit.getServer());

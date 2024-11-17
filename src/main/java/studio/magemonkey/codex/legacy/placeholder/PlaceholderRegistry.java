@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.legacy.placeholder;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.util.EnumUT;
-import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -18,6 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.EnumUT;
+import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 
 public final class PlaceholderRegistry {
     public static final PlaceholderType<Location>    LOCATION    = PlaceholderType.create("location", Location.class);

@@ -1,6 +1,10 @@
 package studio.magemonkey.codex.util.actions;
 
 import com.google.common.collect.Sets;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.hooks.Hooks;
@@ -10,10 +14,6 @@ import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
 import studio.magemonkey.codex.util.actions.targets.ITargetSelector;
 import studio.magemonkey.codex.util.constants.JStrings;
-import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.function.UnaryOperator;

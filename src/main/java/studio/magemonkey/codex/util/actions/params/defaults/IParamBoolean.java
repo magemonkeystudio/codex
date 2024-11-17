@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.util.actions.params.defaults;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.util.actions.params.IParam;
 import studio.magemonkey.codex.util.actions.params.parser.IParamParser;
-import org.jetbrains.annotations.NotNull;
 
 public class IParamBoolean extends IParam {
 

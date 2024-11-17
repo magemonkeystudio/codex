@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.legacy.item;
 
-import studio.magemonkey.codex.util.SerializationBuilder;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.util.SerializationBuilder;
 
 import java.util.HashMap;
 import java.util.Map;

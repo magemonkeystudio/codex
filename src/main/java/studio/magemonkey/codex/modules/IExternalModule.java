@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.modules;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.core.config.CoreConfig;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class IExternalModule<P extends CodexPlugin<P>> extends IModule<P> {
 

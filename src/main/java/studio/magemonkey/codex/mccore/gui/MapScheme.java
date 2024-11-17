@@ -26,10 +26,10 @@
  */
 package studio.magemonkey.codex.mccore.gui;
 
-import studio.magemonkey.codex.mccore.config.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
+import studio.magemonkey.codex.mccore.config.Config;
 
 import java.awt.*;
 import java.io.File;

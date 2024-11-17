@@ -1,9 +1,5 @@
 package studio.magemonkey.codex.commands;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
-import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -18,6 +14,10 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
+import studio.magemonkey.codex.util.messages.MessageData;
+import studio.magemonkey.codex.util.messages.MessageUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -85,7 +85,9 @@ public class UnstuckCommand implements CommandExecutor, Listener {
             long time = cooldown.get(id) - System.currentTimeMillis();
             if (time > 0) {
                 long seconds = TimeUnit.MILLISECONDS.toSeconds(time);
-                MessageUtil.sendMessage("general.commands.unstuck.err.cooldown", sender, new MessageData("time", seconds));
+                MessageUtil.sendMessage("general.commands.unstuck.err.cooldown",
+                        sender,
+                        new MessageData("time", seconds));
                 return true;
             } else
                 cooldown.remove(id);

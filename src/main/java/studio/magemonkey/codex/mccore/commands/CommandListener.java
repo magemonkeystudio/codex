@@ -26,13 +26,13 @@
  */
 package studio.magemonkey.codex.mccore.commands;
 
-import studio.magemonkey.codex.CodexEngine;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import studio.magemonkey.codex.CodexEngine;
 
 /**
  * <p>Listener for cleaning up configurable commands

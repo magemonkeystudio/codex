@@ -26,7 +26,6 @@
  */
 package studio.magemonkey.codex.mccore.commands;
 
-import studio.magemonkey.codex.mccore.util.TextSizer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -35,6 +34,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import studio.magemonkey.codex.mccore.util.TextSizer;
 
 import java.util.ArrayList;
 import java.util.Collections;

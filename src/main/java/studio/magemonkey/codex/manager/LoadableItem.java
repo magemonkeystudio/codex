@@ -1,9 +1,9 @@
 package studio.magemonkey.codex.manager;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.config.api.JYML;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.config.api.JYML;
 
 import java.io.File;
 
@@ -11,8 +11,8 @@ public abstract class LoadableItem {
 
     public final    CodexPlugin<?> plugin;
     protected       String         id;
-    protected final String path;
-    protected final JYML   cfg;
+    protected final String         path;
+    protected final JYML           cfg;
 
     public LoadableItem(@NotNull CodexPlugin<?> plugin, @NotNull String path) throws InvalidConfigurationException {
         this(plugin, new JYML(new File(path)));

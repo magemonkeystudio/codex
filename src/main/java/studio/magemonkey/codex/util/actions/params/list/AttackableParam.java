@@ -1,12 +1,12 @@
 package studio.magemonkey.codex.util.actions.params.list;
 
+import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.hooks.Hooks;
 import studio.magemonkey.codex.util.actions.params.IAutoValidated;
 import studio.magemonkey.codex.util.actions.params.IParamType;
 import studio.magemonkey.codex.util.actions.params.IParamValue;
 import studio.magemonkey.codex.util.actions.params.defaults.IParamBoolean;
-import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 

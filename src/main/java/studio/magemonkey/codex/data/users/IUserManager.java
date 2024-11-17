@@ -1,13 +1,5 @@
 package studio.magemonkey.codex.data.users;
 
-import studio.magemonkey.codex.CodexDataPlugin;
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.data.event.EngineUserCreatedEvent;
-import studio.magemonkey.codex.data.event.EngineUserLoadEvent;
-import studio.magemonkey.codex.data.event.EngineUserUnloadEvent;
-import studio.magemonkey.codex.hooks.Hooks;
-import studio.magemonkey.codex.manager.IManager;
-import studio.magemonkey.codex.manager.api.task.ITask;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -17,6 +9,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexDataPlugin;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.data.event.EngineUserCreatedEvent;
+import studio.magemonkey.codex.data.event.EngineUserLoadEvent;
+import studio.magemonkey.codex.data.event.EngineUserUnloadEvent;
+import studio.magemonkey.codex.hooks.Hooks;
+import studio.magemonkey.codex.manager.IManager;
+import studio.magemonkey.codex.manager.api.task.ITask;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;

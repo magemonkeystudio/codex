@@ -1,11 +1,5 @@
 package studio.magemonkey.codex.legacy.riseitem;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.api.DelayedCommand;
-import studio.magemonkey.codex.api.Replacer;
-import studio.magemonkey.codex.legacy.item.ItemBuilder;
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import lombok.Getter;
 import org.apache.commons.lang3.DoubleRange;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,6 +10,12 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.DelayedCommand;
+import studio.magemonkey.codex.api.Replacer;
+import studio.magemonkey.codex.legacy.item.ItemBuilder;
+import studio.magemonkey.codex.util.SerializationBuilder;
+import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.*;
 import java.util.stream.Collectors;

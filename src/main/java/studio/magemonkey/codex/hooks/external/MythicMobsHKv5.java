@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.hooks.external;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.hooks.HookState;
-import studio.magemonkey.codex.hooks.NHook;
 import io.lumine.mythic.api.adapters.AbstractEntity;
 import io.lumine.mythic.api.adapters.AbstractLocation;
 import io.lumine.mythic.api.mobs.MythicMob;
@@ -16,6 +13,9 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.hooks.HookState;
+import studio.magemonkey.codex.hooks.NHook;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

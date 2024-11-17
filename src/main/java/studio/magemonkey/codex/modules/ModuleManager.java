@@ -1,12 +1,12 @@
 package studio.magemonkey.codex.modules;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.core.config.CoreConfig;
 import studio.magemonkey.codex.manager.api.Loadable;
 import studio.magemonkey.codex.modules.IExternalModule.LoadPriority;
 import studio.magemonkey.codex.util.FileUT;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.lang.reflect.Constructor;

@@ -26,7 +26,6 @@
  */
 package studio.magemonkey.codex.mccore.gui;
 
-import studio.magemonkey.codex.CodexEngine;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,6 +35,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.util.Vector;
+import studio.magemonkey.codex.CodexEngine;
 
 /**
  * Handles controls events for map menus

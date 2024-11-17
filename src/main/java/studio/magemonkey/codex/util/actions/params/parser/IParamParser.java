@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.util.actions.params.parser;
 
-import studio.magemonkey.codex.util.actions.params.IParamValue;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.actions.params.IParamValue;
 
 public interface IParamParser {
 

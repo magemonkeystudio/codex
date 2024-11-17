@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.util.craft;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.manager.api.Loadable;
-import studio.magemonkey.codex.util.craft.api.IAbstractRecipe;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -11,6 +8,9 @@ import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.manager.api.Loadable;
+import studio.magemonkey.codex.util.craft.api.IAbstractRecipe;
 
 import java.util.HashSet;
 import java.util.Iterator;

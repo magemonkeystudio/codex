@@ -1,14 +1,14 @@
 package studio.magemonkey.codex.util.actions.actions.list;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
 import studio.magemonkey.codex.util.actions.actions.IActionType;
 import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
-import org.bukkit.Location;
-import org.bukkit.entity.Entity;
-import org.bukkit.util.Vector;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;

@@ -1,9 +1,9 @@
 package studio.magemonkey.codex.core.config;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.config.api.IConfigTemplate;
 import studio.magemonkey.codex.util.StringUT;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;

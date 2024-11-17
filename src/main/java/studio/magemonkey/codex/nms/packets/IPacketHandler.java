@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.nms.packets;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.nms.packets.events.EnginePlayerPacketEvent;
 import studio.magemonkey.codex.nms.packets.events.EngineServerPacketEvent;
-import org.jetbrains.annotations.NotNull;
 
 public interface IPacketHandler {
 

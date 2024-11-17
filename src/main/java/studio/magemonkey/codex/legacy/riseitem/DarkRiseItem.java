@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.legacy.riseitem;
 
-import studio.magemonkey.codex.api.DelayedCommand;
 import org.apache.commons.lang3.DoubleRange;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.api.DelayedCommand;
 
 import java.util.List;
 

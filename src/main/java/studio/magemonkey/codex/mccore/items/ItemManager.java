@@ -26,9 +26,9 @@
  */
 package studio.magemonkey.codex.mccore.items;
 
-import studio.magemonkey.codex.mccore.util.TextFormatter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import studio.magemonkey.codex.mccore.util.TextFormatter;
 
 import java.util.Collection;
 import java.util.HashMap;

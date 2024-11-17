@@ -26,12 +26,12 @@
  */
 package studio.magemonkey.codex.mccore.scoreboard;
 
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
+import studio.magemonkey.codex.mccore.commands.CommandHandler;
+import studio.magemonkey.codex.mccore.commands.ICommand;
+import studio.magemonkey.codex.mccore.commands.SenderType;
 
 /**
  * Stops a player's scoreboard from cycling

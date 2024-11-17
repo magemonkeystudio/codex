@@ -22,8 +22,6 @@ import studio.magemonkey.codex.manager.types.ClickType;
 import studio.magemonkey.codex.util.*;
 import studio.magemonkey.codex.util.actions.ActionManipulator;
 import studio.magemonkey.codex.util.constants.JStrings;
-import studio.magemonkey.codex.util.craft.api.ICraftRecipe;
-import studio.magemonkey.codex.util.craft.api.IFurnaceRecipe;
 import studio.magemonkey.codex.util.random.Rnd;
 
 import java.io.File;

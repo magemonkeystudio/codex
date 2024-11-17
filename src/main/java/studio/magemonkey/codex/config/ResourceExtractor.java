@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.config;
 
-import studio.magemonkey.codex.util.FileUT;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
+import studio.magemonkey.codex.util.FileUT;
 
 import java.io.File;
 import java.io.FileOutputStream;

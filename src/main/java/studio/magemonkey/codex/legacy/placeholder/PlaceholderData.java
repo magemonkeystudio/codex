@@ -24,10 +24,10 @@
 
 package studio.magemonkey.codex.legacy.placeholder;
 
-import studio.magemonkey.codex.legacy.utils.ComponentUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.plugin.Plugin;
+import studio.magemonkey.codex.legacy.utils.ComponentUtils;
 
 import java.util.Collection;
 import java.util.HashMap;

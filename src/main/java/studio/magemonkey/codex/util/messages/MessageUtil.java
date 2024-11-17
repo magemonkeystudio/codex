@@ -1,12 +1,5 @@
 package studio.magemonkey.codex.util.messages;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.bungee.BungeeUtil;
-import studio.magemonkey.codex.legacy.placeholder.PlaceholderItem;
-import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
-import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
-import studio.magemonkey.codex.legacy.utils.ComponentUtils;
-import studio.magemonkey.codex.util.ItemUtils;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
@@ -16,6 +9,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.bungee.BungeeUtil;
+import studio.magemonkey.codex.legacy.placeholder.PlaceholderItem;
+import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
+import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
+import studio.magemonkey.codex.legacy.utils.ComponentUtils;
+import studio.magemonkey.codex.util.ItemUtils;
 
 import java.util.*;
 import java.util.regex.Pattern;

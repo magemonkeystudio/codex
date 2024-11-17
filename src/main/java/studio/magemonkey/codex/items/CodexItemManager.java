@@ -1,17 +1,16 @@
 package studio.magemonkey.codex.items;
 
+import lombok.RequiredArgsConstructor;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.items.ItemType;
 import studio.magemonkey.codex.items.exception.MissingItemException;
 import studio.magemonkey.codex.items.exception.MissingProviderException;
 import studio.magemonkey.codex.items.providers.ICodexItemProvider;
 import studio.magemonkey.codex.items.providers.ItemsAdderProvider;
 import studio.magemonkey.codex.items.providers.OraxenProvider;
 import studio.magemonkey.codex.items.providers.VanillaProvider;
-import lombok.RequiredArgsConstructor;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.logging.Logger;

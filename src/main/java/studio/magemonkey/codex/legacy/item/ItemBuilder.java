@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.legacy.item;
 
-import studio.magemonkey.codex.util.ItemUtils;
-import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,6 +13,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.ItemUtils;
+import studio.magemonkey.codex.util.SerializationBuilder;
+import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,15 +24,15 @@ import java.util.stream.Collectors;
 @SerializableAs("Codex_Item")
 public class ItemBuilder implements ConfigurationSerializable {
     @Getter
-    protected Material material   = Material.AIR;
+    protected Material                  material    = Material.AIR;
     @Getter
-    protected int     amount      = 1;
+    protected int                       amount      = 1;
     @Getter
-    protected short   durability  = 0;
+    protected short                     durability  = 0;
     @Getter
-    protected boolean      unbreakable = false;
+    protected boolean                   unbreakable = false;
     @Getter
-    protected String       name;
+    protected String                    name;
     @Getter
     protected List<String>              lore        = new ArrayList<>(5);
     @Getter
@@ -41,7 +41,7 @@ public class ItemBuilder implements ConfigurationSerializable {
     protected DataBuilder               dataBuilder = null;
     @Getter
     protected List<ItemFlag>            flags       = new ArrayList<>(5);
-    protected int            modelData   = -1;
+    protected int                       modelData   = -1;
 
     /**
      * @deprecated Items should be store using ItemMeta and loaded the same way. It is less likely to break that way.

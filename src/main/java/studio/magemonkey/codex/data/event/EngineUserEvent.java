@@ -1,9 +1,9 @@
 package studio.magemonkey.codex.data.event;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexDataPlugin;
 import studio.magemonkey.codex.data.users.IAbstractUser;
 import studio.magemonkey.codex.manager.api.event.IEvent;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class EngineUserEvent<P extends CodexDataPlugin<P, U>, U extends IAbstractUser<P>> extends IEvent {
 

@@ -1,12 +1,12 @@
 package studio.magemonkey.codex.util.actions.actions;
 
+import org.bukkit.entity.Entity;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.util.actions.ActionManipulator;
 import studio.magemonkey.codex.util.actions.Parametized;
 import studio.magemonkey.codex.util.actions.params.IParamResult;
 import studio.magemonkey.codex.util.actions.params.IParamType;
-import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;

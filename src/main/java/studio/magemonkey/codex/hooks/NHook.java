@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.hooks;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.manager.IListener;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 

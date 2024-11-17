@@ -3,10 +3,10 @@ package studio.magemonkey.codex.bungee;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import studio.magemonkey.codex.CodexEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.util.ArrayList;
 import java.util.List;

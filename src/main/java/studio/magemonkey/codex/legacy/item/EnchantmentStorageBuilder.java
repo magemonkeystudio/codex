@@ -1,6 +1,5 @@
 package studio.magemonkey.codex.legacy.item;
 
-import studio.magemonkey.codex.util.SerializationBuilder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -10,6 +9,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.SerializationBuilder;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;

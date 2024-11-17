@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.commands.list;
 
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.commands.api.ISubCommand;
 import studio.magemonkey.codex.util.StringUT;
-import org.bukkit.command.CommandSender;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.List;

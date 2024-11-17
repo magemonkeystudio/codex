@@ -1,9 +1,9 @@
 package studio.magemonkey.codex.registry.damage;
 
-import studio.magemonkey.codex.CodexEngine;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.util.HashMap;
 import java.util.Locale;

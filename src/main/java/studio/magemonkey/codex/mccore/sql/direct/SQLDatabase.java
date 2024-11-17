@@ -26,9 +26,9 @@
  */
 package studio.magemonkey.codex.mccore.sql.direct;
 
-import studio.magemonkey.codex.mccore.sql.ColumnType;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
+import studio.magemonkey.codex.mccore.sql.ColumnType;
 
 import java.sql.*;
 import java.util.HashMap;

@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.util.actions.params.parser;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.util.StringUT;
 import studio.magemonkey.codex.util.actions.params.IParamValue;
-import org.jetbrains.annotations.NotNull;
 
 public class ParamStringParser implements IParamParser {
 

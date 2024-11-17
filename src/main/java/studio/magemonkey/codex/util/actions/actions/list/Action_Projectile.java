@@ -1,10 +1,5 @@
 package studio.magemonkey.codex.util.actions.actions.list;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
-import studio.magemonkey.codex.util.actions.actions.IActionType;
-import studio.magemonkey.codex.util.actions.params.IParamResult;
-import studio.magemonkey.codex.util.actions.params.IParamType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -12,6 +7,11 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
+import studio.magemonkey.codex.util.actions.actions.IActionType;
+import studio.magemonkey.codex.util.actions.params.IParamResult;
+import studio.magemonkey.codex.util.actions.params.IParamType;
 
 import java.util.List;
 import java.util.Set;

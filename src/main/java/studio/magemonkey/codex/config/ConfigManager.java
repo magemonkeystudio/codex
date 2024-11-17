@@ -1,11 +1,10 @@
 package studio.magemonkey.codex.config;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.config.ResourceExtractor;
-import studio.magemonkey.codex.config.api.JYML;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.config.api.JYML;
 
 import java.io.File;
 import java.io.IOException;

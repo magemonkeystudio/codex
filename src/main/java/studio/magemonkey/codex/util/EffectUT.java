@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.util;
 
-import studio.magemonkey.codex.util.random.Rnd;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.random.Rnd;
 
 import java.util.Locale;
 

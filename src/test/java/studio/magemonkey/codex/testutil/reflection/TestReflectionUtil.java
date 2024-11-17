@@ -3,7 +3,6 @@ package studio.magemonkey.codex.testutil.reflection;
 import com.google.common.collect.Multimap;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

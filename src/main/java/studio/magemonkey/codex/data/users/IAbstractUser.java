@@ -1,10 +1,10 @@
 package studio.magemonkey.codex.data.users;
 
-import studio.magemonkey.codex.CodexPlugin;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
 
 import java.util.UUID;
 

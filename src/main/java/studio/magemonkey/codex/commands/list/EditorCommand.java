@@ -1,10 +1,10 @@
 package studio.magemonkey.codex.commands.list;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.commands.api.ISubCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
 
 public class EditorCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
 

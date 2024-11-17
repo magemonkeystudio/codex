@@ -1,11 +1,11 @@
 package studio.magemonkey.codex.items.providers;
 
-import studio.magemonkey.codex.items.CodexItemManager;
-import studio.magemonkey.codex.items.ItemType;
 import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.items.ItemBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.items.CodexItemManager;
+import studio.magemonkey.codex.items.ItemType;
 
 public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenItemType> {
     public static final String NAMESPACE = "ORAXEN";

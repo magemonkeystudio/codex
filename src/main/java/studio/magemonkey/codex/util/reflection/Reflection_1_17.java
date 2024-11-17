@@ -22,12 +22,9 @@ import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.random.Rnd;
 
-import java.io.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
-import java.math.BigInteger;
 import java.net.URL;
-import java.util.AbstractList;
 import java.util.Collection;
 import java.util.Random;
 import java.util.UUID;

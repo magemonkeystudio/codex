@@ -14,7 +14,6 @@ import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.util.Reflex;
-import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

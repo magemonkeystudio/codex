@@ -1,5 +1,12 @@
 package studio.magemonkey.codex.manager.editor.object;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.manager.api.gui.*;
@@ -10,14 +17,6 @@ import studio.magemonkey.codex.util.ClickText.ClickWord;
 import studio.magemonkey.codex.util.StringUT;
 import studio.magemonkey.codex.util.actions.ActionCategory;
 import studio.magemonkey.codex.util.actions.Parametized;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.manager.api.gui.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

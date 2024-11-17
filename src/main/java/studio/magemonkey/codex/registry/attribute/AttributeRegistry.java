@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.registry.attribute;
 
-import studio.magemonkey.codex.CodexEngine;
 import org.bukkit.entity.LivingEntity;
+import studio.magemonkey.codex.CodexEngine;
 
 import java.util.ArrayList;
 import java.util.List;

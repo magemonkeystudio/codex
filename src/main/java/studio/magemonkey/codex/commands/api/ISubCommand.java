@@ -1,8 +1,8 @@
 package studio.magemonkey.codex.commands.api;
 
-import studio.magemonkey.codex.CodexPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexPlugin;
 
 import java.util.List;
 

@@ -1,5 +1,8 @@
 package studio.magemonkey.codex.manager.editor.object;
 
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.manager.api.gui.ContentType;
@@ -8,9 +11,6 @@ import studio.magemonkey.codex.manager.api.gui.GuiItem;
 import studio.magemonkey.codex.manager.api.gui.NGUI;
 import studio.magemonkey.codex.manager.editor.EditorManager;
 import studio.magemonkey.codex.util.actions.ActionCategory;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;

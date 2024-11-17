@@ -1,12 +1,12 @@
 package studio.magemonkey.codex.config.api;
 
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexDataPlugin;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.data.StorageType;
 import studio.magemonkey.codex.modules.IModule;
 import studio.magemonkey.codex.util.CollectionsUT;
 import studio.magemonkey.codex.util.StringUT;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class IConfigTemplate {
 

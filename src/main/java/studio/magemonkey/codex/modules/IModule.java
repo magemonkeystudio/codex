@@ -1,13 +1,13 @@
 package studio.magemonkey.codex.modules;
 
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.core.config.CoreConfig;
 import studio.magemonkey.codex.manager.IListener;
 import studio.magemonkey.codex.manager.api.Loggable;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class IModule<P extends CodexPlugin<P>> extends IListener<P> implements Loggable {
 

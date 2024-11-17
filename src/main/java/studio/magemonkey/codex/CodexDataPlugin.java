@@ -1,12 +1,12 @@
 package studio.magemonkey.codex;
 
-import studio.magemonkey.codex.data.IDataHandler;
-import studio.magemonkey.codex.data.users.IAbstractUser;
-import studio.magemonkey.codex.data.users.IUserManager;
 import lombok.NoArgsConstructor;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.data.IDataHandler;
+import studio.magemonkey.codex.data.users.IAbstractUser;
+import studio.magemonkey.codex.data.users.IUserManager;
 
 import java.io.File;
 

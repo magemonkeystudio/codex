@@ -1,12 +1,10 @@
 package studio.magemonkey.codex.config.api;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.StringUT;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.config.api.ILangMsg;
-import studio.magemonkey.codex.config.api.JYML;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -16,9 +14,9 @@ import java.util.Map;
 
 public abstract class ILangTemplate {
 
-    protected CodexPlugin<?> plugin;
-    protected JYML           config;
-    protected ILangTemplate  parent;
+    protected CodexPlugin<?>      plugin;
+    protected JYML                config;
+    protected ILangTemplate       parent;
     protected Map<String, String> customPlaceholders;
 
     public ILangTemplate(@NotNull CodexPlugin<?> plugin, @NotNull JYML config) {

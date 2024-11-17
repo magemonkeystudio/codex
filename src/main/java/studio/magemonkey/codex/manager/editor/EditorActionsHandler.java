@@ -1,5 +1,8 @@
 package studio.magemonkey.codex.manager.editor;
 
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.manager.editor.object.IEditorActionsMain;
 import studio.magemonkey.codex.manager.editor.object.IEditorActionsParametized;
@@ -10,9 +13,6 @@ import studio.magemonkey.codex.util.actions.ActionCategory;
 import studio.magemonkey.codex.util.actions.ActionSection;
 import studio.magemonkey.codex.util.actions.Parametized;
 import studio.magemonkey.codex.util.actions.params.IParam;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
@@ -49,8 +49,8 @@ public class EditorActionsHandler extends EditorHandler<CodexEngine> {
         if (type == EditorType.OBJECT_ACTIONS_PARAMETIZED_ADD) {
             if (editObject == null) return false;
 
-            IEditorActionsParametized<?> editor = (IEditorActionsParametized<?>) editObject;
-            String                       pzId   = msg;
+            IEditorActionsParametized<?> editor   = (IEditorActionsParametized<?>) editObject;
+            String                       pzId     = msg;
             ActionCategory               category = editor.getSectionType();
             Parametized                  pz       = plugin.getActionsManager().getParametized(category, pzId);
             if (pz == null) {

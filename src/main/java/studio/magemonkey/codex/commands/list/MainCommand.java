@@ -1,9 +1,9 @@
 package studio.magemonkey.codex.commands.list;
 
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.IGeneralCommand;
 
 public final class MainCommand<P extends CodexPlugin<P>> extends IGeneralCommand<P> {
 

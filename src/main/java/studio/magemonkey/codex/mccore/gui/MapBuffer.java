@@ -26,9 +26,9 @@
  */
 package studio.magemonkey.codex.mccore.gui;
 
-import studio.magemonkey.codex.util.Reflex;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapView;
+import studio.magemonkey.codex.util.Reflex;
 
 import java.lang.reflect.Method;
 

@@ -1,16 +1,16 @@
 package studio.magemonkey.codex.core.config;
 
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.config.api.ILangMsg;
-import studio.magemonkey.codex.config.api.ILangTemplate;
-import studio.magemonkey.codex.util.StringUT;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.config.api.ILangMsg;
+import studio.magemonkey.codex.config.api.ILangTemplate;
+import studio.magemonkey.codex.util.StringUT;
 
 public class CoreLang extends ILangTemplate {
     public ILangMsg Prefix                                             = new ILangMsg(this, "&e%plugin% &8» &7");
