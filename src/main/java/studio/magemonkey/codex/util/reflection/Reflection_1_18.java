@@ -1,7 +1,6 @@
 package studio.magemonkey.codex.util.reflection;
 
 import com.google.common.collect.Multimap;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -29,23 +28,24 @@ public class Reflection_1_18 extends Reflection_1_17 {
     @Override
     public Object getGenericAttribute(String name) {
         try {
-            return Attribute.valueOf("GENERIC_" + name);
+            return AttributeUT.resolve(name);
         } catch (IllegalArgumentException e) {
             return null;
         }
     }
 
     @Override
-    public Multimap<Attribute, AttributeModifier> getAttributes(@NotNull ItemStack itemStack) {
+    @SuppressWarnings("rawtypes")
+    public Multimap getAttributes(@NotNull ItemStack itemStack) {
         EquipmentSlot slot = itemStack.getType().getEquipmentSlot();
         return itemStack.getType().getDefaultAttributeModifiers(slot);
     }
 
     @Override
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public double getAttributeValue(@NotNull ItemStack item, @NotNull Object attribute) {
-        Attribute                              attr      = (Attribute) attribute;
-        Multimap<Attribute, AttributeModifier> modifiers = getAttributes(item);
-        Collection<AttributeModifier>          mod       = modifiers.get(attr);
+        Multimap                      modifiers = getAttributes(item);
+        Collection<AttributeModifier> mod       = modifiers.get(attribute);
         if (mod.isEmpty()) return 0;
 
         return mod.stream().mapToDouble(AttributeModifier::getAmount).sum();

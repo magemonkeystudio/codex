@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.util;
 
+import org.bukkit.Keyed;
 import org.bukkit.Material;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.EntityEquipment;
@@ -9,15 +9,23 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Method;
+
 public class EntityUT {
 
-    public static double getAttribute(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
-        AttributeInstance ai = entity.getAttribute(attribute);
+    public static AttributeInstance getAttributeInstance(@NotNull LivingEntity entity, @NotNull Keyed attribute) {
+        Class<?> attrClass    = Reflex.getClass("org.bukkit.attribute.Attribute");
+        Method   getAttribute = Reflex.getMethod("org.bukkit.entity.LivingEntity", "getAttribute", attrClass);
+        return (AttributeInstance) Reflex.invokeMethod(getAttribute, entity, attribute);
+    }
+
+    public static double getAttribute(@NotNull LivingEntity entity, @NotNull Keyed attribute) {
+        AttributeInstance ai = getAttributeInstance(entity, attribute);
         return ai == null ? 0D : ai.getValue();
     }
 
-    public static double getAttributeBase(@NotNull LivingEntity entity, @NotNull Attribute attribute) {
-        AttributeInstance ai = entity.getAttribute(attribute);
+    public static double getAttributeBase(@NotNull LivingEntity entity, @NotNull Keyed attribute) {
+        AttributeInstance ai = getAttributeInstance(entity, attribute);
         return ai == null ? 0D : ai.getBaseValue();
     }
 

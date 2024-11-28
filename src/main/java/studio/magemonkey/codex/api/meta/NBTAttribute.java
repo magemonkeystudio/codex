@@ -1,6 +1,6 @@
 package studio.magemonkey.codex.api.meta;
 
-import org.bukkit.attribute.Attribute;
+import org.bukkit.Keyed;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.util.AttributeUT;
@@ -45,11 +45,11 @@ public enum NBTAttribute {
             "1f1173-9999-3333-5555-99cb0245f9c7"),
     ;
 
-    private final String    nmsName;
-    private final Attribute att;
-    private final String    uuid;
+    private final String nmsName;
+    private final Keyed  att;
+    private final String uuid;
 
-    NBTAttribute(@NotNull String nmsName, @NotNull Attribute att, @NotNull String uuid) {
+    NBTAttribute(@NotNull String nmsName, @NotNull Keyed att, @NotNull String uuid) {
         this.nmsName = nmsName;
         this.att = att;
         this.uuid = uuid;
@@ -61,7 +61,7 @@ public enum NBTAttribute {
     }
 
     @NotNull
-    public Attribute getAttribute() {
+    public Keyed getAttribute() {
         return this.att;
     }
 
