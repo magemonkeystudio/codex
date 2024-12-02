@@ -30,6 +30,12 @@
             <name>Oraxen Repository</name>
             <url>https://repo.oraxen.com/releases</url>
         </repository>
+
+        <repository>
+            <id>nexo</id>
+            <name>Nexo Repository</name>
+            <url>https://repo.nexomc.com/snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -85,6 +91,7 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>${mysql.version}</version>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.protobuf</groupId>
@@ -171,6 +178,13 @@
                     <artifactId>java</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.nexomc</groupId>
+            <artifactId>nexo</artifactId>
+            <version>0.1.0-dev.0</version>
+            <classifier>dev</classifier>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.LoneDev6</groupId>

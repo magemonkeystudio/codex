@@ -1,19 +1,18 @@
 package studio.magemonkey.codex.items.providers;
 
-import io.th0rgal.oraxen.api.OraxenItems;
-import io.th0rgal.oraxen.items.ItemBuilder;
+import com.nexomc.nexo.api.NexoItems;
+import com.nexomc.nexo.items.ItemBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.items.CodexItemManager;
 import studio.magemonkey.codex.items.ItemType;
 
-@Deprecated(forRemoval = true, since = "Dec 2024")
-public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenItemType> {
-    public static final String NAMESPACE = "ORAXEN";
+public class NexoProvider implements ICodexItemProvider<NexoProvider.NexoItemType> {
+    public static final String NAMESPACE = "NEXO";
 
     @Override
     public String pluginName() {
-        return "Oraxen";
+        return "Nexo";
     }
 
     @Override
@@ -28,41 +27,41 @@ public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenI
 
     @Override
     @Nullable
-    public OraxenItemType getItem(String id) {
+    public NexoItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
         id = CodexItemManager.stripPrefix(NAMESPACE, id);
 
-        ItemBuilder itemBuilder = OraxenItems.getItemById(id);
+        ItemBuilder itemBuilder = NexoItems.itemFromId(id);
         if (itemBuilder == null) return null;
-        return new OraxenItemType(id, itemBuilder);
+        return new NexoItemType(id, itemBuilder);
     }
 
     @Override
     @Nullable
-    public OraxenItemType getItem(ItemStack itemStack) {
-        return getItem(OraxenItems.getIdByItem(itemStack));
+    public NexoItemType getItem(ItemStack itemStack) {
+        return getItem(NexoItems.idFromItem(itemStack));
     }
 
     @Override
     public boolean isCustomItem(ItemStack item) {
-        return OraxenItems.getIdByItem(item) != null;
+        return NexoItems.idFromItem(item) != null;
     }
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
         id = CodexItemManager.stripPrefix(NAMESPACE, id);
 
-        if (!OraxenItems.exists(id)) return false;
-        String itemId = OraxenItems.getIdByItem(item);
+        if (!NexoItems.exists(id)) return false;
+        String itemId = NexoItems.idFromItem(item);
         return itemId != null && itemId.equals(id);
     }
 
-    public static class OraxenItemType extends ItemType {
+    public static class NexoItemType extends ItemType {
         private final String      id;
         private final ItemBuilder itemBuilder;
 
-        public OraxenItemType(String id, ItemBuilder itemBuilder) {
+        public NexoItemType(String id, ItemBuilder itemBuilder) {
             this.id = id;
             this.itemBuilder = itemBuilder;
         }
@@ -89,7 +88,7 @@ public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenI
 
         @Override
         public boolean isInstance(@Nullable ItemStack itemStack) {
-            String itemId = OraxenItems.getIdByItem(itemStack);
+            String itemId = NexoItems.idFromItem(itemStack);
             return itemId != null && itemId.equals(this.id);
         }
     }
