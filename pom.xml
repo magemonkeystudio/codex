@@ -11,9 +11,17 @@
     </parent>
 
     <artifactId>codex</artifactId>
-    <name>CodexCore</name>
-    <version>1.0.1-R0.18-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Codex</name>
+    <version>1.1.0-R0.1-SNAPSHOT</version>
     <description>The core plugin for MageMonkeyStudio plugins</description>
+
+    <modules>
+        <module>codex-core</module>
+        <module>codex-nms</module>
+        <module>codex-plugin</module>
+        <module>codex-api</module>
+    </modules>
 
     <properties>
         <delombok.dir>${project.build.directory}/javadoc-delombok</delombok.dir>
@@ -85,6 +93,7 @@
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>${mysql.version}</version>
+            <scope>provided</scope>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.protobuf</groupId>
@@ -184,22 +193,6 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
                 <configuration>
@@ -274,8 +267,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/promcteam/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:ssh://github.com:promcteam/${project.artifactId}.git</developerConnection>
-        <url>https://github.com/promcteam/${project.artifactId}</url>
+        <connection>scm:git:git://github.com/magemonkeystudio/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/${project.artifactId}</url>
     </scm>
 </project>
