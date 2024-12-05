@@ -8,7 +8,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.NMSProvider;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -90,13 +90,13 @@ public class StringUT {
      */
     @NotNull
     public static String colorFix(@NotNull String str) {
-        return CodexEngine.get().getVersionManager().getNms().fixColors(str);
+        return NMSProvider.getNms().fixColors(str);
     }
 
     @NotNull
     public static String colorHex(@NotNull String str) {
-        Matcher      matcher = HEX_PATTERN.matcher(str);
-        StringBuffer buffer  = new StringBuffer(str.length() + 4 * 8);
+        Matcher       matcher = HEX_PATTERN.matcher(str);
+        StringBuilder buffer  = new StringBuilder(str.length() + 4 * 8);
         while (matcher.find()) {
             String group = matcher.group(1);
             matcher.appendReplacement(buffer, ChatColor.COLOR_CHAR + "x"
@@ -139,7 +139,7 @@ public class StringUT {
 
     @NotNull
     public static List<String> color(@NotNull List<String> list) {
-        list.replaceAll(line -> color(line));
+        list.replaceAll(StringUT::color);
         return list;
     }
 
@@ -207,13 +207,12 @@ public class StringUT {
     }
 
     public static int[] getIntArray(@NotNull String str) {
-        int[]    slots = new int[1];
         String[] raw   = str.replaceAll("\\s", ",").replace(",,", ",").split(",");
-        slots = new int[raw.length];
+        int[]    slots = new int[raw.length];
         for (int i = 0; i < raw.length; i++) {
             try {
                 slots[i] = Integer.parseInt(raw[i].trim());
-            } catch (NumberFormatException ex) {
+            } catch (NumberFormatException ignored) {
             }
         }
         return slots;

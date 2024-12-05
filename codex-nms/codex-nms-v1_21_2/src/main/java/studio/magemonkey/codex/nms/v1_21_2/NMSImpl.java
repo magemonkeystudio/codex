@@ -12,6 +12,8 @@ import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.state.IBlockData;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
@@ -29,6 +31,7 @@ import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Locale;
 
 public class NMSImpl implements NMS {
     @Override
@@ -173,5 +176,11 @@ public class NMSImpl implements NMS {
         }
 
         return null;
+    }
+
+    @NotNull
+    @Override
+    public Attribute getAttribute(String name) {
+        return Registry.ATTRIBUTE.getOrThrow(NamespacedKey.minecraft(name.toLowerCase(Locale.US)));
     }
 }

@@ -30,7 +30,7 @@ public class EditorCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
     }
 
     @Override
-    public void perform(@NotNull CommandSender sender, String label, @NotNull String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         Player player = (Player) sender;
         this.plugin.openEditor(player);
     }

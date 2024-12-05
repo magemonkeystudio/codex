@@ -21,6 +21,7 @@ import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.NMSProvider;
 import studio.magemonkey.codex.config.ConfigManager;
 import studio.magemonkey.codex.hooks.Hooks;
 
@@ -125,8 +126,8 @@ public class ItemUT {
         int      count    = 0;
 
         if (type == 0) {
-            for (int i = 0; i < lines.length; i++) {
-                lastText = lines[i];
+            for (String line : lines) {
+                lastText = line;
                 if (!StringUT.colorOff(lastText).isEmpty()) {
                     break;
                 }
@@ -222,12 +223,10 @@ public class ItemUT {
         return name;
     }
 
-    @NotNull
     public static void addSkullTexture(@NotNull ItemStack item, @NotNull String value) {
         ItemUT.addSkullTexture(item, value, "");
     }
 
-    @NotNull
     public static void addSkullTexture(@NotNull ItemStack item, @NotNull String value, @NotNull String id) {
         if (item.getType() != Material.PLAYER_HEAD) return;
 
@@ -358,15 +357,15 @@ public class ItemUT {
     }
 
     public static boolean isWeapon(@NotNull ItemStack item) {
-        return getEngine().getVersionManager().getNms().isWeapon(item);
+        return NMSProvider.getNms().isWeapon(item);
     }
 
     public static boolean isTool(@NotNull ItemStack item) {
-        return getEngine().getVersionManager().getNms().isTool(item);
+        return NMSProvider.getNms().isTool(item);
     }
 
     public static boolean isArmor(@NotNull ItemStack item) {
-        return getEngine().getVersionManager().getNms().isArmor(item);
+        return NMSProvider.getNms().isArmor(item);
     }
 
     public static boolean isBow(@NotNull ItemStack item) {

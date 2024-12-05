@@ -1,10 +1,10 @@
-package studio.magemonkey.codex.items.providers;
+package studio.magemonkey.codex.api.items.providers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.items.ItemType;
-import studio.magemonkey.codex.items.exception.MissingProviderException;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.exception.MissingProviderException;
 
 public interface ICodexItemProvider<T extends ItemType> {
     default void assertEnabled() throws MissingProviderException {

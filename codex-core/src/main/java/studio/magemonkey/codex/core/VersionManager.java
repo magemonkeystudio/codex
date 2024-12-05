@@ -1,25 +1,22 @@
 package studio.magemonkey.codex.core;
 
-import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.magemonkey.codex.api.NMS;
+import studio.magemonkey.codex.api.NMSProvider;
 
-@Getter
 public class VersionManager {
-    private final NMS nms;
-
     public VersionManager(JavaPlugin plugin) {
         String version = Bukkit.getServer().getBukkitVersion().split("-")[0];
 
         try {
             String packageName = getPackageFromVersion(version);
-            this.nms = (NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl").getConstructor().newInstance();
+            NMSProvider.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl").getConstructor().newInstance());
         } catch (Exception e) {
             throw new RuntimeException("Could not find NMS implementation for version " + version, e);
         }
 
-        plugin.getLogger().info("Using NMS implementation for version " + nms.getVersion());
+        plugin.getLogger().info("Using NMS implementation for version " + NMSProvider.getNms().getVersion());
     }
 
     private static String getPackageFromVersion(String version) {

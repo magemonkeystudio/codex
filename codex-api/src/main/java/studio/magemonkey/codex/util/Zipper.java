@@ -13,7 +13,7 @@ import java.util.zip.ZipOutputStream;
 
 public class Zipper {
 
-    private List<String> filesListInDir = new ArrayList<String>();
+    private final List<String> filesListInDir = new ArrayList<>();
 
     public static void createBackupZip(File dir) {
         String date       = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -39,7 +39,7 @@ public class Zipper {
             for (String filePath : filesListInDir) {
                 //System.out.println("Zipping " + filePath);
                 //for ZipEntry we need to keep only relative file path, so we used substring on absolute path
-                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1, filePath.length()));
+                ZipEntry ze = new ZipEntry(filePath.substring(dir.getAbsolutePath().length() + 1));
                 zos.putNextEntry(ze);
                 //read the file and write to ZipOutputStream
                 FileInputStream fis    = new FileInputStream(filePath);
@@ -66,6 +66,8 @@ public class Zipper {
      */
     private void populateFilesList(File dir) throws IOException {
         File[] files = dir.listFiles();
+        if (files == null) return;
+
         for (File file : files) {
             if (file.isFile()) filesListInDir.add(file.getAbsolutePath());
             else populateFilesList(file);

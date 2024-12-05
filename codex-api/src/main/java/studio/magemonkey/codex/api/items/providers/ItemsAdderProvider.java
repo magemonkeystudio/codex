@@ -1,10 +1,10 @@
-package studio.magemonkey.codex.items.providers;
+package studio.magemonkey.codex.api.items.providers;
 
 import dev.lone.itemsadder.api.CustomStack;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.items.CodexItemManager;
-import studio.magemonkey.codex.items.ItemType;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.PrefixHelper;
 
 public class ItemsAdderProvider implements ICodexItemProvider<ItemsAdderProvider.ItemsAdderItemType> {
     public static final String NAMESPACE = "ITEMSADDER";
@@ -29,7 +29,7 @@ public class ItemsAdderProvider implements ICodexItemProvider<ItemsAdderProvider
     public ItemsAdderItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
-        id = CodexItemManager.stripPrefix(NAMESPACE, id);
+        id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
         CustomStack customStack = CustomStack.getInstance(id);
         if (customStack == null) return null;
@@ -51,7 +51,7 @@ public class ItemsAdderProvider implements ICodexItemProvider<ItemsAdderProvider
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        id = CodexItemManager.stripPrefix(NAMESPACE, id);
+        id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
         if (!CustomStack.isInRegistry(id)) return false;
         String itemId = CustomStack.byItemStack(item).getNamespacedID();

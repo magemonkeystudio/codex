@@ -1,8 +1,8 @@
-package studio.magemonkey.codex.items;
+package studio.magemonkey.codex.api.items;
 
 import org.bukkit.inventory.ItemStack;
-import studio.magemonkey.codex.items.providers.ICodexItemProvider;
-import studio.magemonkey.codex.items.providers.VanillaProvider;
+import studio.magemonkey.codex.api.items.providers.ICodexItemProvider;
+import studio.magemonkey.codex.api.items.providers.VanillaProvider;
 
 import java.util.Arrays;
 

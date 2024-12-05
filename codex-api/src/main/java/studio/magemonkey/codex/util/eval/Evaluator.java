@@ -1,6 +1,6 @@
 package studio.magemonkey.codex.util.eval;
 
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.Codex;
 import studio.magemonkey.codex.util.eval.javaluator.DoubleEvaluator;
 
 public class Evaluator {
@@ -24,7 +24,7 @@ public class Evaluator {
         try {
             return jl.evaluate(exp);
         } catch (IllegalArgumentException e) {
-            CodexEngine.get().error("[E1] Unable to evaluate '" + exp + "'. Trying with E0...");
+            Codex.error("[E1] Unable to evaluate '" + exp + "'. Trying with E0...");
             return eval(exp, 0);
         }
     }
@@ -93,11 +93,13 @@ public class Evaluator {
                     while (ch >= 'a' && ch <= 'z') nextChar();
                     String func = str.substring(startPos, this.pos);
                     x = parseFactor();
-                    if (func.equals("sqrt")) x = Math.sqrt(x);
-                    else if (func.equals("sin")) x = Math.sin(Math.toRadians(x));
-                    else if (func.equals("cos")) x = Math.cos(Math.toRadians(x));
-                    else if (func.equals("tan")) x = Math.tan(Math.toRadians(x));
-                    else throw new RuntimeException("Unknown function: " + func);
+                    x = switch (func) {
+                        case "sqrt" -> Math.sqrt(x);
+                        case "sin" -> Math.sin(Math.toRadians(x));
+                        case "cos" -> Math.cos(Math.toRadians(x));
+                        case "tan" -> Math.tan(Math.toRadians(x));
+                        default -> throw new RuntimeException("Unknown function: " + func);
+                    };
                 } else {
                     throw new RuntimeException("Unexpected: " + (char) ch);
                 }

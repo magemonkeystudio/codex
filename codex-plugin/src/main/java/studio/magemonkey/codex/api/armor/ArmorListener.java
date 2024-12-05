@@ -31,6 +31,7 @@ import java.util.Objects;
 
 import static org.bukkit.event.inventory.InventoryType.CRAFTING;
 import static studio.magemonkey.codex.api.armor.ArmorEquipEvent.EquipMethod;
+import static studio.magemonkey.codex.util.constants.ItemHelper.isAirOrNull;
 
 public class ArmorListener implements Listener {
 
@@ -620,12 +621,4 @@ public class ArmorListener implements Listener {
             }
         }
     }
-
-    /**
-     * A utility method to support versions that use null or air ItemStacks.
-     */
-    public static boolean isAirOrNull(ItemStack item) {
-        return item == null || item.getType().isAir();
-    }
-
 }

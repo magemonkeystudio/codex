@@ -1,6 +1,6 @@
-package studio.magemonkey.codex.items.exception;
+package studio.magemonkey.codex.api.items.exception;
 
-import studio.magemonkey.codex.items.providers.ICodexItemProvider;
+import studio.magemonkey.codex.api.items.providers.ICodexItemProvider;
 
 /**
  * Thrown when an attempting to use an {@link ICodexItemProvider}.

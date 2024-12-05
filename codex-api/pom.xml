@@ -11,8 +11,6 @@
 
     <artifactId>codex-api</artifactId>
 
-    <properties></properties>
-
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>

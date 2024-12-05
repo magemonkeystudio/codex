@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.NMSProvider;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.util.constants.JStrings;
 
@@ -178,7 +178,7 @@ public class ClickText {
         }
 
         private BaseComponent[] toBase(@NotNull ItemStack item) {
-            String json = CodexEngine.get().getVersionManager().getNms().toJson(item);
+            String json = NMSProvider.getNms().toJson(item);
             if (json != null) {
                 return TextComponent.fromLegacyText(json);
             }

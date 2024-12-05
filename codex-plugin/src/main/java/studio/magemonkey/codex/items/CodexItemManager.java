@@ -5,12 +5,13 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.items.exception.MissingItemException;
-import studio.magemonkey.codex.items.exception.MissingProviderException;
-import studio.magemonkey.codex.items.providers.ICodexItemProvider;
-import studio.magemonkey.codex.items.providers.ItemsAdderProvider;
-import studio.magemonkey.codex.items.providers.OraxenProvider;
-import studio.magemonkey.codex.items.providers.VanillaProvider;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.exception.MissingItemException;
+import studio.magemonkey.codex.api.items.exception.MissingProviderException;
+import studio.magemonkey.codex.api.items.providers.ICodexItemProvider;
+import studio.magemonkey.codex.api.items.providers.ItemsAdderProvider;
+import studio.magemonkey.codex.api.items.providers.OraxenProvider;
+import studio.magemonkey.codex.api.items.providers.VanillaProvider;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -21,18 +22,6 @@ public class CodexItemManager {
     private       Logger      log;
 
     private final Map<String, ICodexItemProvider<?>> providers = new LinkedHashMap<>();
-
-    /**
-     * Removes the given prefix from the provided id, if applicable.
-     *
-     * @param prefix the provider prefix to remove
-     * @param id     the item id, prefixed or not
-     * @return the stripped id
-     */
-    public static String stripPrefix(String prefix, String id) {
-        String[] split = id.split("_", 2);
-        return split.length == 2 && split[0].equalsIgnoreCase(prefix) ? split[1] : id;
-    }
 
     /**
      * Removes any prefixes corresponding to the currently registered Item Providers, if there is any.

@@ -125,6 +125,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
     private void setInstance() {
         instance = this;
+        Codex.setPlugin(this);
         this.pluginManager = this.getServer().getPluginManager();
         try {
             if (new File("plugins/ProMCCore").exists()) {
@@ -174,6 +175,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         getServer().getMessenger().registerOutgoingPluginChannel(this, BungeeUtil.CHANNEL);
         getServer().getMessenger().registerIncomingPluginChannel(this, BungeeUtil.CHANNEL, new BungeeListener());
 
+        // This call actually sets up the NMS version in the NMSProvider
         versionManager = new VersionManager(this);
         if (!this.setupNMS()) {
             this.error("Could not setup NMS version. Plugin will be disabled.");

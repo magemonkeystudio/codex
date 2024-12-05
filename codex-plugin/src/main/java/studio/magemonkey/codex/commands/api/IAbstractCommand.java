@@ -18,7 +18,7 @@ public abstract class IAbstractCommand<P extends CodexPlugin<P>> {
     protected String   permission;
 
     public IAbstractCommand(@NotNull P plugin, @NotNull List<String> aliases) {
-        this(plugin, aliases.toArray(new String[aliases.size()]));
+        this(plugin, aliases.toArray(new String[0]));
     }
 
     public IAbstractCommand(@NotNull P plugin, @NotNull String[] aliases) {
@@ -26,7 +26,7 @@ public abstract class IAbstractCommand<P extends CodexPlugin<P>> {
     }
 
     public IAbstractCommand(@NotNull P plugin, @NotNull List<String> aliases, @Nullable String permission) {
-        this(plugin, aliases.toArray(new String[aliases.size()]), permission);
+        this(plugin, aliases.toArray(new String[0]), permission);
     }
 
     public IAbstractCommand(@NotNull P plugin, @NotNull String[] aliases, @Nullable String permission) {

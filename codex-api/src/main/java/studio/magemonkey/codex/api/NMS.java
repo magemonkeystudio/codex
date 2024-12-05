@@ -1,6 +1,7 @@
 package studio.magemonkey.codex.api;
 
 import io.netty.channel.Channel;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -128,4 +129,35 @@ public interface NMS {
      * @return the NBT string of the item
      */
     String toJson(@NotNull ItemStack itemStack);
+
+    @NotNull
+    default Attribute getAttribute(String name) {
+        Attribute attr = null;
+        try {
+            attr = Attribute.valueOf(name);
+        } catch (IllegalArgumentException ignored) {
+        }
+        if (attr == null) {
+            // Try with GENERIC_ prefix
+            try {
+                attr = Attribute.valueOf("GENERIC_" + name);
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+
+        if (attr == null) {
+            // Try with PLAYER_ prefix
+            try {
+                attr = Attribute.valueOf("PLAYER_" + name);
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+
+        if (attr == null) {
+            // Throw an exception if the attribute is still null
+            throw new IllegalArgumentException("Unknown attribute: " + name);
+        }
+
+        return attr;
+    }
 }

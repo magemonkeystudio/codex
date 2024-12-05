@@ -29,7 +29,7 @@ public final class MainCommand<P extends CodexPlugin<P>> extends IGeneralCommand
     }
 
     @Override
-    public void perform(@NotNull CommandSender sender, String label, @NotNull String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         // We do not need to put here anything as this command has defaultCommand in CommandManager.
     }
 }

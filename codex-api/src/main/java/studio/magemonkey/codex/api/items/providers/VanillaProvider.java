@@ -1,10 +1,10 @@
-package studio.magemonkey.codex.items.providers;
+package studio.magemonkey.codex.api.items.providers;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.items.CodexItemManager;
-import studio.magemonkey.codex.items.ItemType;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.PrefixHelper;
 
 public class VanillaProvider implements ICodexItemProvider<VanillaProvider.VanillaItemType> {
     public static final String NAMESPACE = "VANILLA";
@@ -34,7 +34,7 @@ public class VanillaProvider implements ICodexItemProvider<VanillaProvider.Vanil
     public VanillaItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
-        Material material = Material.matchMaterial(CodexItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
+        Material material = Material.matchMaterial(PrefixHelper.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
         if (material == null) return null;
 
         return new VanillaItemType(material);
@@ -56,7 +56,7 @@ public class VanillaProvider implements ICodexItemProvider<VanillaProvider.Vanil
     public boolean isCustomItemOfId(ItemStack item, String id) {
         return item.getType()
                 .name()
-                .equalsIgnoreCase(CodexItemManager.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
+                .equalsIgnoreCase(PrefixHelper.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
     }
 
     public static class VanillaItemType extends ItemType {

@@ -3,7 +3,8 @@ package studio.magemonkey.codex.api.meta;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.util.AttributeUT;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.NMSProvider;
 
 import java.util.UUID;
 
@@ -11,37 +12,37 @@ public enum NBTAttribute {
 
     ARMOR(
             "generic.armor",
-            AttributeUT.resolve("ARMOR"),
+            NMSProvider.getNms().getAttribute("ARMOR"),
             "1f1173-9999-3333-5555-99cb0245f9c1"), // '1' at start
 
     ARMOR_TOUGHNESS(
             "generic.armorToughness",
-            AttributeUT.resolve("ARMOR_TOUGHNESS"),
+            NMSProvider.getNms().getAttribute("ARMOR_TOUGHNESS"),
             "1f1173-9999-3333-5555-99cb0245f9c2"),
 
     ATTACK_DAMAGE(
             "generic.attackDamage",
-            AttributeUT.resolve("ATTACK_DAMAGE"),
+            NMSProvider.getNms().getAttribute("ATTACK_DAMAGE"),
             "1f1173-9999-3333-5555-99cb0245f9c3"),
 
     ATTACK_SPEED(
             "generic.attackSpeed",
-            AttributeUT.resolve("ATTACK_SPEED"),
+            NMSProvider.getNms().getAttribute("ATTACK_SPEED"),
             "1f1173-9999-3333-5555-99cb0245f9c4"),
 
     MOVEMENT_SPEED(
             "generic.movementSpeed",
-            AttributeUT.resolve("MOVEMENT_SPEED"),
+            NMSProvider.getNms().getAttribute("MOVEMENT_SPEED"),
             "1f1173-9999-3333-5555-99cb0245f9c5"),
 
     MAX_HEALTH(
             "generic.maxHealth",
-            AttributeUT.resolve("MAX_HEALTH"),
+            NMSProvider.getNms().getAttribute("MAX_HEALTH"),
             "1f1173-9999-3333-5555-99cb0245f9c6"),
 
     KNOCKBACK_RESISTANCE(
             "generic.knockbackResistance",
-            AttributeUT.resolve("KNOCKBACK_RESISTANCE"),
+            NMSProvider.getNms().getAttribute("KNOCKBACK_RESISTANCE"),
             "1f1173-9999-3333-5555-99cb0245f9c7"),
     ;
 

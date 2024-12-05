@@ -1,11 +1,11 @@
-package studio.magemonkey.codex.items.providers;
+package studio.magemonkey.codex.api.items.providers;
 
 import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.items.ItemBuilder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.items.CodexItemManager;
-import studio.magemonkey.codex.items.ItemType;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.PrefixHelper;
 
 public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenItemType> {
     public static final String NAMESPACE = "ORAXEN";
@@ -30,7 +30,7 @@ public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenI
     public OraxenItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
-        id = CodexItemManager.stripPrefix(NAMESPACE, id);
+        id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
         ItemBuilder itemBuilder = OraxenItems.getItemById(id);
         if (itemBuilder == null) return null;
@@ -50,7 +50,7 @@ public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenI
 
     @Override
     public boolean isCustomItemOfId(ItemStack item, String id) {
-        id = CodexItemManager.stripPrefix(NAMESPACE, id);
+        id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
         if (!OraxenItems.exists(id)) return false;
         String itemId = OraxenItems.getIdByItem(item);

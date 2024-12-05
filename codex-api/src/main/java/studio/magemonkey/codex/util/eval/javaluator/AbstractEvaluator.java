@@ -99,7 +99,6 @@ public abstract class AbstractEvaluator<T> implements EvaluationContext {
      *
      * @param operators The operators to validate.
      * @throws IllegalArgumentException if the homonyms are not compatibles.
-     * @see #guessOperator(Token, List)
      */
     private void validateHomonyms(List<Operator> operators) {
         if (operators.size() > 2) {

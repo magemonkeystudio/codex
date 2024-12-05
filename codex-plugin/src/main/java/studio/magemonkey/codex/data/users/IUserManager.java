@@ -82,7 +82,7 @@ public abstract class IUserManager<P extends CodexDataPlugin<P, U>, U extends IA
 
         int on  = this.activeUsers.size();
         int off = this.toSave.size();
-        this.toSave.forEach(userOff -> this.save(userOff));
+        this.toSave.forEach(this::save);
         this.toSave.clear();
 
         plugin.info("Auto-save: Saved " + on + " online users | " + off + " offline users.");
@@ -159,9 +159,9 @@ public abstract class IUserManager<P extends CodexDataPlugin<P, U>, U extends IA
             final U user2 = user;
             this.activeUsers.put(user.getUUID().toString(), user2);
 
-            // Игрок уже успел войти полностью на сервер (пройти JoinEvent)
-            // поэтому кастомный ивент в JoinEvent вызван не будет, а значит
-            // вызываем его здесь в основном потоке.
+            // The player has already fully joined the server (passed the JoinEvent)
+            // so the custom event in JoinEvent will not be called, therefore
+            // we call it here in the main thread.
             if (this.isPassJoin.remove(user2.getUUID())) {
                 this.plugin.getServer().getScheduler().runTask(plugin, () -> {
                     this.onUserLoad(user2);
@@ -185,8 +185,7 @@ public abstract class IUserManager<P extends CodexDataPlugin<P, U>, U extends IA
         });
 
         this.plugin.info("Created new user data for: '" + uuid + "'");
-        this.plugin.getServer().getScheduler()
-                .runTaskAsynchronously(plugin, () -> this.plugin.getData().addUser(user2));
+        this.plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> this.plugin.getData().addUser(user2));
         this.activeUsers.put(uuid, user2);
         this.toCreate.remove(user2.getUUID());
         return user2;
@@ -262,18 +261,18 @@ public abstract class IUserManager<P extends CodexDataPlugin<P, U>, U extends IA
     public void onUserJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
 
-        // Добавляем игрока в джойн лист для дальнейших проверок.
+        // Add the player to the join list for further checks.
         this.isPassJoin.add(player.getUniqueId());
 
-        // Если игрок до сих пор не был загружен из БД и при этом запись о нем есть в базе,
-        // мы выходим из метода, оставляя его в "джойн" листе, таким образом
-        // при завершении загрузки из БД, в методе getOrLoadUser менеджер увидит
-        // его и загрузит в память с вызовом кастомного ивента.
+        // If the player has not yet been loaded from the database and there is a record of them in the database,
+        // we exit the method, leaving them in the "join" list, so that
+        // when the loading from the database is completed, the manager will see them in the getOrLoadUser method
+        // and load them into memory with a custom event call.
         if (!this.isLoaded(player) && !this.toCreate.contains(player.getUniqueId())) return;
 
-        // Так как при загрузке данных в асихнронном режиме мы не можем получить объект игрока,
-        // то мы получаем уже загруженные его данные здесь для вызова кастомного ивента.
-        // Либо здесь же создаются новые данные если игрока не было в базе.
+        // Since we cannot get the player object when loading data asynchronously,
+        // we get their already loaded data here to call the custom event.
+        // Or new data is created here if the player was not in the database.
         @Nullable U user = this.getOrLoadUser(player);
         if (user == null) return;
 

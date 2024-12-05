@@ -11,8 +11,8 @@ public class CollectionsUT {
     public static final boolean[] BOOLEANS = new boolean[]{true, false};
 
     @NotNull
-    public static <T extends Object> List<List<T>> split(@NotNull List<T> list, int targetSize) {
-        List<List<T>> lists = new ArrayList<List<T>>();
+    public static <T> List<List<T>> split(@NotNull List<T> list, int targetSize) {
+        List<List<T>> lists = new ArrayList<>();
         if (targetSize <= 0) return lists;
 
         for (int i = 0; i < list.size(); i += targetSize) {
@@ -24,13 +24,7 @@ public class CollectionsUT {
     @NotNull
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(@NotNull Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
-            @SuppressWarnings("null")
-            @Override
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        });
+        list.sort(Map.Entry.comparingByValue());
 
         Map<K, V> result = new LinkedHashMap<>();
         for (Map.Entry<K, V> entry : list) {
@@ -43,13 +37,7 @@ public class CollectionsUT {
     @NotNull
     public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueUpDown(@NotNull Map<K, V> map) {
         List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
-        Collections.sort(list, Collections.reverseOrder(new Comparator<Map.Entry<K, V>>() {
-            @SuppressWarnings("null")
-            @Override
-            public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return (o1.getValue()).compareTo(o2.getValue());
-            }
-        }));
+        list.sort(Collections.reverseOrder(Map.Entry.comparingByValue()));
 
         Map<K, V> result = new LinkedHashMap<>();
         for (Map.Entry<K, V> entry : list) {
