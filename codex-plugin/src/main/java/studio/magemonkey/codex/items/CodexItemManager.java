@@ -8,10 +8,7 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.api.items.ItemType;
 import studio.magemonkey.codex.api.items.exception.MissingItemException;
 import studio.magemonkey.codex.api.items.exception.MissingProviderException;
-import studio.magemonkey.codex.api.items.providers.ICodexItemProvider;
-import studio.magemonkey.codex.api.items.providers.ItemsAdderProvider;
-import studio.magemonkey.codex.api.items.providers.OraxenProvider;
-import studio.magemonkey.codex.api.items.providers.VanillaProvider;
+import studio.magemonkey.codex.api.items.providers.*;
 
 import java.util.*;
 import java.util.logging.Logger;
@@ -42,6 +39,7 @@ public class CodexItemManager {
         log = plugin.getLogger();
         registerProvider(VanillaProvider.NAMESPACE, new VanillaProvider());
         registerProvider(OraxenProvider.NAMESPACE, new OraxenProvider());
+        registerProvider(NexoProvider.NAMESPACE, new NexoProvider());
         registerProvider(ItemsAdderProvider.NAMESPACE, new ItemsAdderProvider());
     }
 
