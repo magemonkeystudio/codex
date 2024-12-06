@@ -6,9 +6,9 @@ import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.manager.api.Loadable;
 import studio.magemonkey.codex.util.craft.api.IAbstractRecipe;
 
@@ -17,11 +17,11 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class CraftManager implements Loadable {
+    private final JavaPlugin plugin;
 
-    private CodexEngine        plugin;
     private Set<NamespacedKey> registered;
 
-    public CraftManager(@NotNull CodexEngine engine) {
+    public CraftManager(@NotNull JavaPlugin engine) {
         this.plugin = engine;
     }
 
@@ -40,17 +40,17 @@ public class CraftManager implements Loadable {
         Recipe bukkitRecipe = recipe.getRecipe();
         try {
             if (!this.plugin.getServer().addRecipe(bukkitRecipe)) {
-                this.plugin.error("Could not register recipe: '" + recipe.getId() + "': Unknown reason.");
+                this.plugin.getLogger().severe("Could not register recipe: '" + recipe.getId() + "': Unknown reason.");
                 return false;
             }
         } catch (Exception ex) {
-            this.plugin.error("Could not register recipe: '" + recipe.getId() + "': ");
+            this.plugin.getLogger().severe("Could not register recipe: '" + recipe.getId() + "': ");
             ex.printStackTrace();
             return false;
         }
 
         this.discoverRecipe(recipe.getKey());
-        this.plugin.info("Recipe registered: '" + recipe.getId() + "' !");
+        this.plugin.getLogger().info("Recipe registered: '" + recipe.getId() + "' !");
         return true;
     }
 
@@ -59,7 +59,7 @@ public class CraftManager implements Loadable {
             if (player == null) continue;
 
             player.discoverRecipe(key);
-            //this.plugin.info("Recipe undiscover for " + p.getName() + ": " + b + " (" + key.getKey() + ")");
+            //this.plugin.getLogger().info("Recipe undiscover for " + p.getName() + ": " + b + " (" + key.getKey() + ")");
         }
     }
 
@@ -79,7 +79,7 @@ public class CraftManager implements Loadable {
             NamespacedKey recipeKey = getRecipeKey(recipe);
             if (recipeKey != null && this.registered.remove(recipeKey)) {
                 this.undiscoverRecipe(recipeKey);
-                this.plugin.info("Recipe unregistered: '" + recipeKey.getKey() + "' !");
+                this.plugin.getLogger().info("Recipe unregistered: '" + recipeKey.getKey() + "' !");
                 iter.remove();
             }
         }
@@ -97,7 +97,7 @@ public class CraftManager implements Loadable {
             NamespacedKey key    = getRecipeKey(recipe);
             if (key != null && key.getKey().endsWith(id) && this.registered.remove(key)) {
                 this.undiscoverRecipe(key);
-                this.plugin.info("Recipe unregistered: '" + id + "' !");
+                this.plugin.getLogger().info("Recipe unregistered: '" + id + "' !");
                 iter.remove();
             }
         }

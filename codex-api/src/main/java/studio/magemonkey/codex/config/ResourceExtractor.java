@@ -14,29 +14,28 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 public final class ResourceExtractor {
+    private final JavaPlugin plugin;
+    private final File       extractFolder;
 
-    protected final JavaPlugin plugin;
-    protected final File       extractfolder;
-
-    protected final String folderpath;
-    protected final String regex;
+    private final String folderPath;
+    private final String regex;
 
     /**
      * You can extract complete folders of resources from your plugin jar to a target folder. You
      * can append a regex to match the file names.
      *
      * @param plugin        The plugin the files will be extracted from.
-     * @param extractfolder The folder where the files will be extracted to.
-     * @param folderpath    The path where the files are inside in the jar located.
+     * @param extractFolder The folder where the files will be extracted to.
+     * @param folderPath    The path where the files are inside in the jar located.
      * @param regex         A regex to match the file names. This can be 'null' if you don't want to use it.
      */
-    public ResourceExtractor(JavaPlugin plugin, File extractfolder, String folderpath, String regex) {
+    public ResourceExtractor(JavaPlugin plugin, File extractFolder, String folderPath, String regex) {
         Validate.notNull(plugin, "The plugin cannot be null!");
         Validate.notNull(plugin, "The extract folder cannot be null!");
         Validate.notNull(plugin, "The folder path cannot be null!");
 
-        this.extractfolder = extractfolder;
-        this.folderpath = folderpath;
+        this.extractFolder = extractFolder;
+        this.folderPath = folderPath;
         this.plugin = plugin;
         this.regex = regex;
     }
@@ -64,10 +63,10 @@ public final class ResourceExtractor {
      * Starts extracting the files.
      *
      * @param override Whether you want to override the old files.
-     * @param subpaths Whether you want to create sub folders if it's also found in the jar file.
+     * @param subPaths Whether you want to create sub folders if it's also found in the jar file.
      * @throws IOException
      */
-    public void extract(boolean override, boolean subpaths) throws IOException {
+    public void extract(boolean override, boolean subPaths) throws IOException {
         File jarfile = null;
 
         /*
@@ -85,8 +84,8 @@ public final class ResourceExtractor {
         /*
          * Make the folders if missing.
          */
-        if (!this.extractfolder.exists()) {
-            this.extractfolder.mkdirs();
+        if (!this.extractFolder.exists()) {
+            this.extractFolder.mkdirs();
         }
 
         JarFile jar = new JarFile(jarfile);
@@ -102,13 +101,13 @@ public final class ResourceExtractor {
             /*
              * Not in the folder.
              */
-            if (!path.startsWith(this.folderpath)) {
+            if (!path.startsWith(this.folderPath)) {
                 continue;
             }
 
             if (entry.isDirectory()) {
-                if (subpaths) {
-                    File file = new File(this.extractfolder, entry.getName().replaceFirst(this.folderpath, ""));
+                if (subPaths) {
+                    File file = new File(this.extractFolder, entry.getName().replaceFirst(this.folderPath, ""));
                     if (!file.exists()) {
                         file.mkdirs();
                     }
@@ -127,10 +126,10 @@ public final class ResourceExtractor {
                 /*
                  * Use the right path.
                  */
-                if (subpaths) {
-                    file = new File(this.extractfolder, path.replaceFirst(this.folderpath, ""));
+                if (subPaths) {
+                    file = new File(this.extractFolder, path.replaceFirst(this.folderPath, ""));
                 } else {
-                    file = new File(this.extractfolder, path.substring(path.indexOf(File.separatorChar)));
+                    file = new File(this.extractFolder, path.substring(path.indexOf(File.separatorChar)));
                 }
 
                 String name = file.getName();

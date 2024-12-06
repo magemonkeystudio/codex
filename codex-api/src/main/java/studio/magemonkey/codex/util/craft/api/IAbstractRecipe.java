@@ -3,19 +3,19 @@ package studio.magemonkey.codex.util.craft.api;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexPlugin;
 
 public abstract class IAbstractRecipe {
 
-    protected final CodexPlugin<?> plugin;
-    protected final String         id;
-    protected       ItemStack      result;
+    protected final JavaPlugin plugin;
+    protected final String     id;
+    protected       ItemStack  result;
 
     protected final NamespacedKey key;
 
-    public IAbstractRecipe(@NotNull CodexPlugin<?> plugin, @NotNull String id, @NotNull ItemStack result) {
+    public IAbstractRecipe(@NotNull JavaPlugin plugin, @NotNull String id, @NotNull ItemStack result) {
         this.plugin = plugin;
         this.id = id.toLowerCase().replace(" ", "_");
         this.result = result;

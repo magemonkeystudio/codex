@@ -1,42 +1,31 @@
 package studio.magemonkey.codex.util.craft.api;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexPlugin;
 
+@Getter
 public class ICraftRecipe extends IAbstractRecipe {
+    private final boolean     shaped;
+    @NotNull
+    private final String[]    shape;
+    private final ItemStack[] ingredients;
 
-    private boolean     isShape;
-    private String[]    shape;
-    private ItemStack[] ings;
-
-    public ICraftRecipe(@NotNull CodexPlugin<?> plugin,
+    public ICraftRecipe(@NotNull JavaPlugin plugin,
                         @NotNull String id,
                         @NotNull ItemStack result,
-                        boolean isShape) {
+                        boolean shaped) {
         super(plugin, id, result);
-        this.isShape = isShape;
+        this.shaped = shaped;
         this.shape = new String[]{"ABC", "DEF", "GHI"};
-        this.ings = new ItemStack[(int) Math.pow(this.shape.length, 2)];
-        for (int i = 0; i < this.ings.length; i++) {
-            this.ings[i] = new ItemStack(Material.AIR);
+        this.ingredients = new ItemStack[(int) Math.pow(this.shape.length, 2)];
+        for (int i = 0; i < this.ingredients.length; i++) {
+            this.ingredients[i] = new ItemStack(Material.AIR);
         }
-    }
-
-    public boolean isShaped() {
-        return this.isShape;
-    }
-
-    public ItemStack[] getIngredients() {
-        return this.ings;
-    }
-
-    @NotNull
-    public String[] getShape() {
-        return this.shape;
     }
 
     @Override
@@ -46,10 +35,9 @@ public class ICraftRecipe extends IAbstractRecipe {
         }
 
         if (item == null) item = new ItemStack(Material.AIR);
-        this.ings[pos] = item;
+        this.ingredients[pos] = item;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     @NotNull
     public Recipe getRecipe() {

@@ -3,14 +3,13 @@ package studio.magemonkey.codex.registry.damage;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.Codex;
 
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
 public class DamageRegistry {
-
     private static final Map<String, DamageTypeProvider> PROVIDERS = new HashMap<>();
 
     public static void registerProvider(DamageTypeProvider provider) {
@@ -20,9 +19,7 @@ public class DamageRegistry {
         }
 
         PROVIDERS.put(namespace, provider);
-        CodexEngine.get()
-                .getLogger()
-                .info("[DamageRegistry] Successfully registered provider for " + namespace + " damage");
+        Codex.info("[DamageRegistry] Successfully registered provider for " + namespace + " damage");
     }
 
     public static void unregisterProvider(Class<? extends DamageTypeProvider> providerClass) {

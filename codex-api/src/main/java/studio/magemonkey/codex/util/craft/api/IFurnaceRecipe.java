@@ -1,22 +1,24 @@
 package studio.magemonkey.codex.util.craft.api;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexPlugin;
 
+@Getter
 public class IFurnaceRecipe extends IAbstractRecipe {
+    @Nullable
+    private       ItemStack input;
+    private final float     exp;
+    private final int       time;
 
-    private ItemStack input;
-    private float     exp;
-    private int       time;
-
-    public IFurnaceRecipe(@NotNull CodexPlugin<?> plugin,
+    public IFurnaceRecipe(@NotNull JavaPlugin plugin,
                           @NotNull String id,
                           @NotNull ItemStack result,
                           float exp,
@@ -26,18 +28,6 @@ public class IFurnaceRecipe extends IAbstractRecipe {
         this.time = (int) Math.max(1, 20D * time);
     }
 
-    @NotNull
-    public ItemStack getInput() {
-        return this.input;
-    }
-
-    public float getExp() {
-        return this.exp;
-    }
-
-    public int getTime() {
-        return this.time;
-    }
 
     public void addIngredient(@NotNull ItemStack ing) {
         this.addIngredient(0, ing);
@@ -48,10 +38,10 @@ public class IFurnaceRecipe extends IAbstractRecipe {
         if (ing == null || ing.getType() == Material.AIR) {
             throw new IllegalArgumentException("Input can not be null or AIR!");
         }
+
         this.input = ing;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     @NotNull
     public Recipe getRecipe() {
@@ -60,6 +50,10 @@ public class IFurnaceRecipe extends IAbstractRecipe {
         ItemStack     result = this.getResult();
         float         exp    = this.getExp();
         int           time   = this.getTime();
+
+        if (input == null) {
+            throw new RuntimeException("Recipe input is null. Recipe is invalid");
+        }
 
         if (input.hasItemMeta()) {
             return new FurnaceRecipe(key, result, new RecipeChoice.ExactChoice(input), exp, time);

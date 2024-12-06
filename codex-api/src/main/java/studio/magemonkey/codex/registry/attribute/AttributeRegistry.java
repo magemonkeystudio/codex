@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.registry.attribute;
 
 import org.bukkit.entity.LivingEntity;
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.Codex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +34,7 @@ public class AttributeRegistry {
             try {
                 scaled = provider.scaleAttribute(name, entity, scaled);
             } catch (Exception e) {
-                CodexEngine.get()
-                        .getLogger()
-                        .warning("Unable to scale stat with provider: " + provider.getClass().getSimpleName());
+                Codex.warn("Unable to scale stat with provider: " + provider.getClass().getSimpleName());
                 e.printStackTrace();
             }
         }
