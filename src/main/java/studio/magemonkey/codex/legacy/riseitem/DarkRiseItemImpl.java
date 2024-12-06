@@ -14,8 +14,8 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.api.DelayedCommand;
 import studio.magemonkey.codex.api.Replacer;
 import studio.magemonkey.codex.legacy.item.ItemBuilder;
+import studio.magemonkey.codex.util.DeserializationWorker;
 import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.*;
 import java.util.stream.Collectors;

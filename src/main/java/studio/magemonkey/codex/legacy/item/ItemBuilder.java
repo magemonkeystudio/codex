@@ -13,9 +13,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.DeserializationWorker;
 import studio.magemonkey.codex.util.ItemUtils;
 import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.*;
 import java.util.stream.Collectors;

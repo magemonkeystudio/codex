@@ -9,9 +9,9 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.DeserializationWorker;
 import studio.magemonkey.codex.util.ItemUtils;
 import studio.magemonkey.codex.util.SerializationBuilder;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.Map;
 

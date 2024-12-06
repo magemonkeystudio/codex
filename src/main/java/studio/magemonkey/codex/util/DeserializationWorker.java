@@ -1,4 +1,4 @@
-package studio.magemonkey.risecore.legacy.util;
+package studio.magemonkey.codex.util;
 
 
 import org.apache.commons.lang3.builder.ToStringBuilder;

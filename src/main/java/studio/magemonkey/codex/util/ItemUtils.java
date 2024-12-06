@@ -13,7 +13,6 @@ import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
 import studio.magemonkey.codex.util.messages.MessageData;
 import studio.magemonkey.codex.util.messages.MessageUtil;
 import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
-import studio.magemonkey.risecore.legacy.util.DeserializationWorker;
 
 import java.util.ArrayList;
 import java.util.Collection;
