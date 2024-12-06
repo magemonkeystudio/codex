@@ -68,6 +68,11 @@
             <artifactId>codex-nms-v1_21_2</artifactId>
             <version>${codex.version}</version>
         </dependency>
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_21_4</artifactId>
+            <version>${codex.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
