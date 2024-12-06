@@ -2,6 +2,7 @@ target/
 *.iml
 /.idea/
 gh-pages/
+apidocs/
 settings.xml
 toolchains.xml
 log.txt

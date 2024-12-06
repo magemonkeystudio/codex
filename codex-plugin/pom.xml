@@ -5,12 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>studio.magemonkey</groupId>
-        <artifactId>codex</artifactId>
+        <artifactId>codex-parent</artifactId>
         <version>1.1.0-R0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>codex-plugin</artifactId>
+    <artifactId>codex</artifactId>
     <name>CodexCore</name>
+    <description>The core plugin for MageMonkeyStudio plugins</description>
 
     <dependencies>
         <dependency>

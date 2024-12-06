@@ -1,10 +1,10 @@
-[![Build](https://github.com/magemonkeystudios/${project.artifactId}/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/studio/magemonkey/${project.artifactId}/${project.version})
-[![Build](https://github.com/magemonkeystudios/${project.artifactId}/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/studio/magemonkey/${project.artifactId}/${project.version})
+[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/studio/magemonkey/codex/${project.version})
+[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/studio/magemonkey/codex/${project.version})
 [![Discord](https://dcbadge.vercel.app/api/server/6UzkTe6RvW?style=flat)](https://discord.gg/6UzkTe6RvW)
 
-# ${project.name} (Formerly ProMCCore)
+# Codex (Formerly ProMCCore)
 
-If you wish to use ${project.name} as a dependency in your projects, ${project.name} is available through Maven Central
+If you wish to use Codex as a dependency in your projects, Codex is available through Maven Central
 or snapshots through Sonatype.
 
 ```xml
@@ -15,13 +15,13 @@ or snapshots through Sonatype.
 ...
 <dependency>
     <groupId>${project.groupId}</groupId>
-    <artifactId>${project.artifactId}</artifactId>
+    <artifactId>codex</artifactId>
     <version>${project.version}</version>
 </dependency>
 ```
 
 ### A huge thanks to our contributors
 
-<a href="https://github.com/magemonkeystudios/${project.artifactId}/graphs/contributors">
-<img src="https://contrib.rocks/image?repo=magemonkeystudios/${project.artifactId}" />
+<a href="https://github.com/magemonkeystudios/codex/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=magemonkeystudios/codex" />
 </a>
