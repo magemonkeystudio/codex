@@ -3,6 +3,7 @@ package studio.magemonkey.codex.api;
 import io.netty.channel.Channel;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -129,6 +130,8 @@ public interface NMS {
      * @return the NBT string of the item
      */
     String toJson(@NotNull ItemStack itemStack);
+
+    void setKiller(@NotNull LivingEntity entity, @NotNull Player killer);
 
     @NotNull
     default Attribute getAttribute(String name) {

@@ -10,6 +10,8 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutAnimation;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.NamespacedKey;
@@ -19,9 +21,12 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_21_R2.CraftRegistry;
 import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_21_R2.util.CraftChatMessage;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -176,6 +181,21 @@ public class NMSImpl implements NMS {
         }
 
         return null;
+    }
+
+    @Override
+    public void setKiller(@NotNull LivingEntity entity, @NotNull Player killer) {
+        try {
+            EntityLiving hit      = ((CraftLivingEntity) entity).getHandle();
+            hit.bc = ((CraftPlayer) killer).getHandle();
+            Field  damageTime  = hit.getClass().getField("bd");
+
+            damageTime.setAccessible(true);
+
+            damageTime.set(hit, 100);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Unable to set killer. Something went wrong", e);
+        }
     }
 
     @NotNull

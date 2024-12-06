@@ -7,9 +7,12 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_16_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -17,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 import java.util.Collection;
 
 public class NMSImpl implements NMS {
@@ -137,8 +140,8 @@ public class NMSImpl implements NMS {
     @Override
     public String toJson(@NotNull ItemStack item) {
         try {
-            NBTTagCompound nbtCompound = new NBTTagCompound();
-            net.minecraft.server.v1_16_R3.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+            NBTTagCompound                          nbtCompound = new NBTTagCompound();
+            net.minecraft.server.v1_16_R3.ItemStack nmsItem     = CraftItemStack.asNMSCopy(item);
 
             nmsItem.save(nbtCompound);
 
@@ -154,5 +157,20 @@ public class NMSImpl implements NMS {
         }
 
         return null;
+    }
+
+    @Override
+    public void setKiller(@NotNull LivingEntity entity, @NotNull Player killer) {
+        try {
+            EntityLiving hit      = ((CraftLivingEntity) entity).getHandle();
+            hit.killer = ((CraftPlayer) killer).getHandle();
+            Field  damageTime  = hit.getClass().getField("lastHurtByPlayerTime");
+
+            damageTime.setAccessible(true);
+
+            damageTime.set(hit, 100);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Unable to set killer. Something went wrong", e);
+        }
     }
 }
