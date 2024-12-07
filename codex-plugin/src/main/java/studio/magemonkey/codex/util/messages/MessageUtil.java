@@ -323,7 +323,7 @@ public class MessageUtil {
     }
 
     public static void broadcastNetworkMessage(String key, MessageData... data) {
-        if (!CodexEngine.IS_BUNGEE) broadcastMessage(key, data);
+        if (!BungeeUtil.isBungee()) broadcastMessage(key, data);
         else BungeeUtil.broadcastMessage(getMessageAsString(key, key, false, data));
     }
 }

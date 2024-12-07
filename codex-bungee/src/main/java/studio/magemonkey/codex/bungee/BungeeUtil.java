@@ -3,10 +3,12 @@ package studio.magemonkey.codex.bungee;
 import com.google.common.collect.Iterables;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import studio.magemonkey.codex.CodexEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,17 @@ public class BungeeUtil {
     public static final  String                    CHANNEL      = "magemonkey:codex";
     private static final List<ByteArrayDataOutput> queued       = new ArrayList<>();
     private static       boolean                   queueRunning = false;
+
+    @Getter
+    @Setter
+    private static boolean bungee   = false;
+    @Getter
+    @Setter
+    private static String  bungeeId = "server";
+
+    @Getter
+    @Setter
+    private static JavaPlugin plugin;
 
     static {
         queue();
@@ -36,11 +49,11 @@ public class BungeeUtil {
     }
 
     private static boolean sendMessage(String channel, UUID id, Player sender, String... data) {
-        if (!CodexEngine.IS_BUNGEE) return false;
+        if (!isBungee()) return false;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
 
         out.writeUTF(id == null ? UUID.randomUUID().toString() : id.toString());
-        out.writeUTF(CodexEngine.BUNGEE_ID);
+        out.writeUTF(getBungeeId());
 //        out.writeUTF(event);
         for (String dat : data)
             out.writeUTF(dat);
@@ -55,7 +68,7 @@ public class BungeeUtil {
             return true;
         }
 
-        sender.sendPluginMessage(CodexEngine.get(), channel, out.toByteArray());
+        sender.sendPluginMessage(plugin, channel, out.toByteArray());
         return true;
     }
 
@@ -73,7 +86,7 @@ public class BungeeUtil {
     }
 
     private static void sendMessage(String channel, Player sender, ByteArrayDataOutput out) {
-        sender.sendPluginMessage(CodexEngine.get(), channel, out.toByteArray());
+        sender.sendPluginMessage(plugin, channel, out.toByteArray());
     }
 
     public static void broadcastMessage(String message) {
@@ -120,7 +133,7 @@ public class BungeeUtil {
                 queueRunning = false;
                 this.cancel();
             }
-        }.runTaskTimerAsynchronously(CodexEngine.get(), 20L, 20L);
+        }.runTaskTimerAsynchronously(plugin, 20L, 20L);
     }
 
 }

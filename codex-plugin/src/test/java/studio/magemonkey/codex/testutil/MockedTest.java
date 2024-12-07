@@ -113,9 +113,9 @@ public abstract class MockedTest {
 
     @AfterAll
     public void destroy() {
-        reflex.close();
-        commandRegister.close();
-        board.close();
+        if(reflex != null) reflex.close();
+        if(commandRegister != null) commandRegister.close();
+        if(board != null) board.close();
         CommandManager.unregisterAll();
         MockBukkit.unmock();
     }

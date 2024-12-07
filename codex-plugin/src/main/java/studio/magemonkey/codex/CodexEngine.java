@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.NMSProvider;
-import studio.magemonkey.codex.listeners.ArmorListener;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
 import studio.magemonkey.codex.commands.UnstuckCommand;
@@ -31,6 +30,7 @@ import studio.magemonkey.codex.items.CodexItemManager;
 import studio.magemonkey.codex.legacy.item.*;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
 import studio.magemonkey.codex.legacy.riseitem.DarkRiseItemImpl;
+import studio.magemonkey.codex.listeners.ArmorListener;
 import studio.magemonkey.codex.listeners.BoatListener;
 import studio.magemonkey.codex.listeners.InteractListener;
 import studio.magemonkey.codex.listeners.JoinListener;
@@ -287,8 +287,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         scoreboardsEnabled = this.cfg.getJYML().getBoolean("Features.scoreboards-enabled", true);
 
         // Load config data
-        BUNGEE_ID = cfg().getJYML().getString("bungee_id", "server");
-        IS_BUNGEE = cfg().getJYML().getBoolean("bungee", false);
+        setupBungee();
 
         boolean debug = cfg().getJYML().getBoolean("debug", false);
         Debugger.setDebug(debug);
@@ -297,15 +296,25 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             new ChatCommander(this);
             new ChatListener(this);
         }
+        setupScoreboards();
+
+        this.lang = new CoreLang(this);
+        this.lang.setup();
+    }
+
+    private void setupScoreboards() {
         if (scoreboardsEnabled) {
             new ScoreboardCommander(this);
             new BoardListener(this);
             cTask = new CycleTask(this);
             uTask = new UpdateTask(this);
         }
+    }
 
-        this.lang = new CoreLang(this);
-        this.lang.setup();
+    private void setupBungee() {
+        BungeeUtil.setBungeeId(cfg().getJYML().getString("bungee_id", "server"));
+        BungeeUtil.setBungee(cfg().getJYML().getBoolean("bungee", false));
+        BungeeUtil.setPlugin(this);
     }
 
     @Override

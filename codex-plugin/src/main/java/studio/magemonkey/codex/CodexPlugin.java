@@ -40,9 +40,6 @@ import java.util.logging.Logger;
 
 @NoArgsConstructor
 public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin implements Loggable {
-    public static boolean IS_BUNGEE = false;
-    public static String  BUNGEE_ID = "server";
-
     private       Logger  logger;
     private       boolean isEngine;
     private final boolean isSpigot = true;
