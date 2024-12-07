@@ -7,3 +7,4 @@ settings.xml
 toolchains.xml
 log.txt
 logs/
+**/build/*.jar
