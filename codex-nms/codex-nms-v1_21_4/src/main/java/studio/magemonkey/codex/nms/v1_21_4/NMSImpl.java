@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.nms.v1_21_2;
+package studio.magemonkey.codex.nms.v1_21_4;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
