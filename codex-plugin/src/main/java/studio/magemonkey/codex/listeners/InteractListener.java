@@ -5,7 +5,7 @@ import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-import studio.magemonkey.codex.api.CommandBlock;
+import studio.magemonkey.codex.action.CommandBlock;
 import studio.magemonkey.codex.config.api.JYML;
 
 import java.util.ArrayList;

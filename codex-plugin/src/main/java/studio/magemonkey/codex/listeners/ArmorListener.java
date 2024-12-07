@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.api.armor;
+package studio.magemonkey.codex.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -22,6 +22,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.api.armor.ArmorEquipEvent;
+import studio.magemonkey.codex.api.armor.ArmorType;
 import studio.magemonkey.codex.util.InventoryUtil;
 
 import java.util.ArrayList;

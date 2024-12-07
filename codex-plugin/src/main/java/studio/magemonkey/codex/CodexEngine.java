@@ -14,7 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.NMSProvider;
-import studio.magemonkey.codex.api.armor.ArmorListener;
+import studio.magemonkey.codex.listeners.ArmorListener;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
 import studio.magemonkey.codex.commands.UnstuckCommand;
