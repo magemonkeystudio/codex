@@ -1,12 +1,19 @@
 package studio.magemonkey.codex.api;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import io.netty.channel.Channel;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
+import java.util.UUID;
 
 public interface NMS {
     /**
@@ -133,6 +140,26 @@ public interface NMS {
 
     void setKiller(@NotNull LivingEntity entity, @NotNull Player killer);
 
+    void changeSkull(@NotNull Block block, @NotNull String hash);
+
+    default GameProfile getNonPlayerProfile(String hash) {
+        UUID        uid     = UUID.randomUUID();
+        GameProfile profile = new GameProfile(uid, uid.toString().substring(0, 8));
+        profile.getProperties().put("textures", new Property("textures", hash));
+
+        return profile;
+    }
+
+    default double getAttributeValue(@NotNull ItemStack item, @NotNull Attribute attribute) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return 0;
+
+        Collection<AttributeModifier> modifiers = meta.getAttributeModifiers(attribute);
+        if (modifiers == null || modifiers.isEmpty()) return 0;
+
+        return modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+    }
+
     @NotNull
     default Attribute getAttribute(String name) {
         Attribute attr = null;
@@ -163,4 +190,6 @@ public interface NMS {
 
         return attr;
     }
+
+    Object getNMSCopy(@NotNull ItemStack itemStack);
 }

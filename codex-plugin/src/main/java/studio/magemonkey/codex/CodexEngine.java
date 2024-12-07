@@ -13,6 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.api.NMSProvider;
 import studio.magemonkey.codex.api.armor.ArmorListener;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
@@ -20,7 +21,6 @@ import studio.magemonkey.codex.commands.UnstuckCommand;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
 import studio.magemonkey.codex.core.Version;
-import studio.magemonkey.codex.core.VersionManager;
 import studio.magemonkey.codex.core.config.CoreConfig;
 import studio.magemonkey.codex.core.config.CoreLang;
 import studio.magemonkey.codex.hooks.HookManager;
@@ -62,8 +62,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private static final Hashtable<String, Config> configs = new Hashtable<>();
     private static       CodexEngine               instance;
     private final        Set<CodexPlugin<?>>       plugins;
-    @Getter
-    private              VersionManager            versionManager;
     @Getter
     private              PluginManager             pluginManager;
     @Getter
@@ -175,10 +173,17 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         getServer().getMessenger().registerOutgoingPluginChannel(this, BungeeUtil.CHANNEL);
         getServer().getMessenger().registerIncomingPluginChannel(this, BungeeUtil.CHANNEL, new BungeeListener());
 
-        // This call actually sets up the NMS version in the NMSProvider
-        versionManager = new VersionManager(this);
         if (!this.setupNMS()) {
             this.error("Could not setup NMS version. Plugin will be disabled.");
+            return false;
+        }
+        // This call actually sets up the NMS version in the NMSProvider
+        try {
+            NMSProvider.setup();
+            getLogger().info("Using NMS implementation for version " + NMSProvider.getNms().getVersion());
+        } catch (Exception e) {
+            getLogger().severe("Failed to setup NMSProvider. Plugin will be disabled.");
+            e.printStackTrace();
             return false;
         }
 

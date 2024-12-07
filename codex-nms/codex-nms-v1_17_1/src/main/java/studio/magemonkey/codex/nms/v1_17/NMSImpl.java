@@ -1,6 +1,7 @@
 package studio.magemonkey.codex.nms.v1_17;
 
 import com.google.common.base.Preconditions;
+import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,16 +10,14 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutAnimation;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityLiving;
-import net.minecraft.world.entity.player.EntityHuman;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.entity.TileEntitySkull;
 import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_17_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
@@ -26,13 +25,11 @@ import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 
 public class NMSImpl implements NMS {
     @Override
@@ -85,46 +82,22 @@ public class NMSImpl implements NMS {
 
     @Override
     public double getDefaultDamage(@NotNull ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return 0;
-
-        Collection<AttributeModifier> modifiers = itemMeta.getAttributeModifiers(Attribute.GENERIC_ATTACK_DAMAGE);
-        if (modifiers == null || modifiers.isEmpty()) return 0;
-
-        return modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+        return getAttributeValue(itemStack, Attribute.GENERIC_ATTACK_DAMAGE);
     }
 
     @Override
     public double getDefaultSpeed(@NotNull ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return 0;
-
-        Collection<AttributeModifier> modifiers = itemMeta.getAttributeModifiers(Attribute.GENERIC_ATTACK_SPEED);
-        if (modifiers == null || modifiers.isEmpty()) return 0;
-
-        return modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+        return getAttributeValue(itemStack, Attribute.GENERIC_ATTACK_SPEED);
     }
 
     @Override
     public double getDefaultArmor(@NotNull ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return 0;
-
-        Collection<AttributeModifier> modifiers = itemMeta.getAttributeModifiers(Attribute.GENERIC_ARMOR);
-        if (modifiers == null || modifiers.isEmpty()) return 0;
-
-        return modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+        return getAttributeValue(itemStack, Attribute.GENERIC_ARMOR);
     }
 
     @Override
     public double getDefaultToughness(@NotNull ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return 0;
-
-        Collection<AttributeModifier> modifiers = itemMeta.getAttributeModifiers(Attribute.GENERIC_ARMOR_TOUGHNESS);
-        if (modifiers == null || modifiers.isEmpty()) return 0;
-
-        return modifiers.stream().mapToDouble(AttributeModifier::getAmount).sum();
+        return getAttributeValue(itemStack, Attribute.GENERIC_ARMOR_TOUGHNESS);
     }
 
     @Override
@@ -173,9 +146,9 @@ public class NMSImpl implements NMS {
     @Override
     public void setKiller(@NotNull LivingEntity entity, @NotNull Player killer) {
         try {
-            EntityLiving hit      = ((CraftLivingEntity) entity).getHandle();
+            EntityLiving hit = ((CraftLivingEntity) entity).getHandle();
             hit.bc = ((CraftPlayer) killer).getHandle();
-            Field  damageTime  = hit.getClass().getField("bd");
+            Field damageTime = hit.getClass().getField("bd");
 
             damageTime.setAccessible(true);
 
@@ -183,5 +156,22 @@ public class NMSImpl implements NMS {
         } catch (NoSuchFieldException | IllegalAccessException e) {
             throw new RuntimeException("Unable to set killer. Something went wrong", e);
         }
+    }
+
+    @Override
+    public void changeSkull(@NotNull Block block, @NotNull String hash) {
+        if (!(block.getState() instanceof Skull)) return;
+
+        TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle().getTileEntity(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+        if (skull == null) return;
+
+        GameProfile profile = getNonPlayerProfile(hash);
+        skull.setGameProfile(profile);
+        skull.update();
+    }
+
+    @Override
+    public Object getNMSCopy(@NotNull ItemStack item) {
+        return CraftItemStack.asNMSCopy(item);
     }
 }
