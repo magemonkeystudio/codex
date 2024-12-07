@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.exception.UnsupportedVersionException;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
 import studio.magemonkey.codex.commands.UnstuckCommand;
@@ -173,16 +174,27 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         getServer().getMessenger().registerOutgoingPluginChannel(this, BungeeUtil.CHANNEL);
         getServer().getMessenger().registerIncomingPluginChannel(this, BungeeUtil.CHANNEL, new BungeeListener());
 
-        if (!this.setupNMS()) {
-            this.error("Could not setup NMS version. Plugin will be disabled.");
-            return false;
-        }
         // This call actually sets up the NMS version in the NMSProvider
         try {
             NMSProvider.setup();
             getLogger().info("Using NMS implementation for version " + NMSProvider.getNms().getVersion());
         } catch (Exception e) {
             getLogger().severe("Failed to setup NMSProvider. Plugin will be disabled.");
+
+            if (e instanceof UnsupportedVersionException) {
+                Version  current    = Version.CURRENT;
+                String[] split      = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
+                String   rawVersion = split[split.length - 1];
+                this.info("You are running MC version " + rawVersion);
+                if (current == null) {
+                    this.error("===== CodexCore Initialization Failure =====");
+                    this.error(rawVersion + " is not currently supported. Is this a new version of Spigot?");
+                    this.error("If this is a new version, please be patient and wait for a new build supporting the new version");
+                    this.error("If this is a version older than 1.16.5, sorry. We don't support <1.16.5");
+                    this.error("============================================");
+                }
+            }
+
             e.printStackTrace();
             return false;
         }
@@ -224,23 +236,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
         this.menuManager = new MenuManager(this);
         this.menuManager.setup();
-    }
-
-    private boolean setupNMS() {
-        Version  current    = Version.CURRENT;
-        String[] split      = Bukkit.getServer().getClass().getPackage().getName().split("\\.");
-        String   rawVersion = split[split.length - 1];
-        this.info("You are running MC version " + current + " (RAW: " + rawVersion + ")");
-        if (current == null) {
-            this.error("===== CodexCore Initialization Failure =====");
-            this.error(rawVersion + " is not currently supported. Is this a new version of Spigot?");
-            this.error("If this is a new version, please be patient and wait for a new build supporting the new version");
-            this.error("If this is a version older than 1.16.5, sorry. We don't support <1.16.5");
-            this.error("============================================");
-            return false;
-        }
-
-        return true;
     }
 
     @Override
@@ -315,6 +310,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         BungeeUtil.setBungeeId(cfg().getJYML().getString("bungee_id", "server"));
         BungeeUtil.setBungee(cfg().getJYML().getBoolean("bungee", false));
         BungeeUtil.setPlugin(this);
+        if (BungeeUtil.isBungee()) BungeeUtil.queue();
     }
 
     @Override

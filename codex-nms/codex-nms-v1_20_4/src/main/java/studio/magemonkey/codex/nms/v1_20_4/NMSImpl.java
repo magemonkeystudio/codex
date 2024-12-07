@@ -38,6 +38,7 @@ import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.util.Objects;
 import java.util.UUID;
 
 public class NMSImpl implements NMS {
@@ -58,7 +59,7 @@ public class NMSImpl implements NMS {
         PlayerConnection connection = ((PlayerConnection) getConnection(player));
         // We have to reflexively get the `channel` field
         try {
-            Field networkManagerField = connection.getClass().getDeclaredField("connection");
+            Field networkManagerField = getField(connection.getClass(), "c");
             networkManagerField.setAccessible(true);
             NetworkManager networkManager = (NetworkManager) networkManagerField.get(connection);
             return networkManager.n;
@@ -166,7 +167,7 @@ public class NMSImpl implements NMS {
         try {
             EntityLiving hit = ((CraftLivingEntity) entity).getHandle();
             hit.aY = ((CraftPlayer) killer).getHandle();
-            Field damageTime = hit.getClass().getField("aZ");
+            Field damageTime = getField(hit.getClass(), "aZ");
 
             damageTime.setAccessible(true);
 

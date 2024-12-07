@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -192,4 +193,17 @@ public interface NMS {
     }
 
     Object getNMSCopy(@NotNull ItemStack itemStack);
+
+    @NotNull
+    default Field getField(@NotNull Class<?> clazz, @NotNull String fieldName) throws NoSuchFieldException {
+        try {
+            return clazz.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            Class<?> superClass = clazz.getSuperclass();
+            if (superClass == null) {
+                throw e;
+            }
+            return getField(superClass, fieldName);
+        }
+    }
 }

@@ -31,10 +31,6 @@ public class BungeeUtil {
     @Setter
     private static JavaPlugin plugin;
 
-    static {
-        queue();
-    }
-
     public static boolean sendMessage(String... data) {
         return sendMessage(CHANNEL, data);
     }
@@ -118,7 +114,7 @@ public class BungeeUtil {
         queued.remove(out);
     }
 
-    private static void queue() {
+    public static void queue() {
         if (queueRunning)
             return;
 
