@@ -1,6 +1,6 @@
 package studio.magemonkey.codex.migration;
 
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.Codex;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,9 +14,9 @@ public class MigrationUtil {
         if (oldDir.exists()) {
             boolean renamed = oldDir.renameTo(newDir);
             if (!renamed) {
-                CodexEngine.get().getLogger().warning("Failed to rename directory: " + oldPath + " -> " + newPath);
+                Codex.warn("Failed to rename directory: " + oldPath + " -> " + newPath);
             } else {
-                CodexEngine.get().getLogger().info("Renamed directory: " + oldPath + " -> " + newPath);
+                Codex.info("Renamed directory: " + oldPath + " -> " + newPath);
             }
         }
     }
@@ -30,10 +30,7 @@ public class MigrationUtil {
 
                 try (FileOutputStream fos = new FileOutputStream(f)) {
                     fos.write(content.getBytes());
-                    CodexEngine.get()
-                            .getLogger()
-                            .info("Replaced instances of '" + searchRegex + "' with '" + replacement + "' in file: "
-                                    + file);
+                    Codex.info("Replaced instances of '" + searchRegex + "' with '" + replacement + "' in file: " + file);
                 }
             }
         }

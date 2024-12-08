@@ -149,7 +149,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             getLogger().warning("Failed to migrate Codex to CodexCore. " + e.getMessage());
         }
         ItemUT.setEngine(this);
-        Reflex.setEngine(this);
     }
 
     @NotNull
