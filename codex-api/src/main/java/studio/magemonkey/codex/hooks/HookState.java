@@ -3,7 +3,6 @@ package studio.magemonkey.codex.hooks;
 import org.jetbrains.annotations.NotNull;
 
 public enum HookState {
-
     SUCCESS("Success!"),
     ERROR("Error!"),
     ;

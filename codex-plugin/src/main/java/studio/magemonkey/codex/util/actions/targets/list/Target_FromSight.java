@@ -36,7 +36,7 @@ public class Target_FromSight extends ITargetSelector {
     }
 
     @Override
-    protected void validateTarget(Entity exe, Set<Entity> targets, IParamResult result) {
+    protected void validateTarget(@NotNull Entity exe, @NotNull Set<Entity> targets, @NotNull IParamResult result) {
         double dist = -1;
         if (result.hasParam(IParamType.DISTANCE)) {
             dist = result.getParamValue(IParamType.DISTANCE).getDouble(0);

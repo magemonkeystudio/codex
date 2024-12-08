@@ -7,9 +7,9 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
+import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
 import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -21,7 +21,7 @@ public class RisePlugin extends JavaPlugin {
 
     public Logger log;
 
-    {
+    public RisePlugin() {
         log = this.getLogger();
     }
 
@@ -50,7 +50,7 @@ public class RisePlugin extends JavaPlugin {
 
     public boolean checkPermission(CommandSender sender, String s) {
         if (!(sender instanceof ConsoleCommandSender) && !sender.hasPermission(s)) {
-            MessageUtil.sendMessage("noPermissions", sender, new MessageData("permission", s));
+            CodexEngine.get().getMessageUtil().sendMessage("noPermissions", sender, new MessageData("permission", s));
             return false;
         }
 
@@ -93,21 +93,21 @@ public class RisePlugin extends JavaPlugin {
         FileConfiguration conf = getLang();
         if (conf == null)
             return;
-        MessageUtil.load(conf, this);
+        CodexEngine.get().getMessageUtil().load(conf, this);
     }
 
     public void reloadLang() {
         FileConfiguration conf = getLang();
         if (conf == null)
             return;
-        MessageUtil.reload(conf, this);
+        CodexEngine.get().getMessageUtil().reload(conf, this);
     }
 
     public void reloadMessages() {
         FileConfiguration lang =
                 LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang", "lang_en.yml"),
                         getResource("lang/lang_en.yml"));
-        MessageUtil.reload(lang, this);
+        CodexEngine.get().getMessageUtil().reload(lang, this);
     }
 
 }

@@ -26,12 +26,12 @@ public class HookManager extends IManager<CodexEngine> {
 
     @Override
     public void shutdown() {
-        this.hooks.values().forEach(hooks -> hooks.forEach(hook -> hook.unhook()));
+        this.hooks.values().forEach(hooks -> hooks.forEach(NHook::unhook));
         this.hooks.clear();
     }
 
     public void shutdown(@NotNull CodexPlugin<?> holder) {
-        this.getHooks(holder).forEach(hook -> hook.unhook());
+        this.getHooks(holder).forEach(NHook::unhook);
         this.hooks.remove(holder.getName());
     }
 
@@ -44,10 +44,8 @@ public class HookManager extends IManager<CodexEngine> {
         T hook;
         try {
             hook = clazz.getConstructor(holder.getClass()).newInstance(holder);
-            if (hook != null) {
-                hook.pluginName = pluginName;
-                return this.register(holder, hook);
-            }
+            hook.pluginName = pluginName;
+            return this.register(holder, hook);
         } catch (Exception | NoClassDefFoundError e) {
             holder.error("Could not initialize hook for '" + clazz.getSimpleName() + "' !");
             e.printStackTrace();

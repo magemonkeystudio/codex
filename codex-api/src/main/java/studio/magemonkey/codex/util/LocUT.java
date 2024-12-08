@@ -9,8 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.core.config.CoreConfig;
+import studio.magemonkey.codex.Codex;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,18 +22,14 @@ public class LocUT {
         World world = loc.getWorld();
         if (world == null) return null;
 
-        StringBuilder raw = new StringBuilder()
-                .append(loc.getX()).append(",").append(loc.getY()).append(",")
-                .append(loc.getZ()).append(",").append(loc.getPitch()).append(",")
-                .append(loc.getYaw()).append(",").append(world.getName());
-
-        return raw.toString();
+        return loc.getX() + "," + loc.getY() + "," +
+                loc.getZ() + "," + loc.getPitch() + "," +
+                loc.getYaw() + "," + world.getName();
     }
 
     @NotNull
     public static List<String> serialize(@NotNull List<Location> list) {
-        List<String> raw = list.stream().map(loc -> serialize(loc)).collect(Collectors.toList());
-        return raw;
+        return list.stream().map(LocUT::serialize).collect(Collectors.toList());
     }
 
     @Nullable
@@ -44,7 +39,7 @@ public class LocUT {
 
         World world = Bukkit.getWorld(split[5]);
         if (world == null) {
-            CodexEngine.get().error("Invalid/Unloaded world for: '" + raw + "' location!");
+            Codex.error("Invalid/Unloaded world for: '" + raw + "' location!");
             return null;
         }
 
@@ -67,17 +62,6 @@ public class LocUT {
             }
         });
         return locations;
-    }
-
-    @NotNull
-    public static String getWorldName(@NotNull Location loc) {
-        World world = loc.getWorld();
-        return world == null ? "null" : getWorldName(world);
-    }
-
-    @NotNull
-    public static String getWorldName(@NotNull World world) {
-        return CoreConfig.getWorldName(world.getName());
     }
 
     @NotNull
@@ -126,7 +110,7 @@ public class LocUT {
     }
 
     private static double getRelativeCoord(double cord) {
-        return cord < 0 ? cord + 0.5 : cord + 0.5;
+        return cord + 0.5;
     }
 
     @NotNull
@@ -142,8 +126,8 @@ public class LocUT {
     @Nullable
     public static BlockFace getDirection(@NotNull Entity e) {
         float n = e.getLocation().getYaw();
-        n = Float.valueOf(n / 90.0F);
-        n = Float.valueOf(Math.round(n));
+        n = n / 90.0F;
+        n = (float) Math.round(n);
         if ((n == -4.0F) || (n == 0.0F) || (n == 4.0F)) {
             return BlockFace.SOUTH;
         }
@@ -164,15 +148,13 @@ public class LocUT {
         Location origin = from.clone();
         Vector   target = to.clone().toVector();
         origin.setDirection(target.subtract(origin.toVector()));
-        Vector vector = origin.getDirection();
 
-        return vector;
+        return origin.getDirection();
     }
 
     @NotNull
     public static List<String> getWorldNames() {
-        List<String> list = Bukkit.getWorlds().stream().map(world -> world.getName())
+        return Bukkit.getWorlds().stream().map(World::getName)
                 .collect(Collectors.toList());
-        return list;
     }
 }

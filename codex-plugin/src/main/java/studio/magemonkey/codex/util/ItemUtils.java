@@ -6,13 +6,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.bukkit.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.api.items.ItemType;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderRegistry;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
 import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
-import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +39,7 @@ public class ItemUtils {
         ITEM_TYPE.registerItem("material", d -> d.create().getType());
         ITEM_TYPE.registerItem("id", item -> {
             TextComponent textComponent = new TextComponent(item.getNamespacedID());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(item.create()));
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(item.create()));
             return textComponent;
         });
         ITEM_TYPE.registerItem("lore", c -> StringUtils.join(c.create().getItemMeta().getLore(), '\n'));
@@ -54,13 +53,13 @@ public class ItemUtils {
 
         ItemMeta im = getItemMeta(item);
         if (im.hasDisplayName()) {
-            im.setDisplayName(MessageUtil.getMessageAsString(im.getDisplayName(), im.getDisplayName(), false, replace));
+            im.setDisplayName(CodexEngine.get().getMessageUtil().getMessageAsString(im.getDisplayName(), im.getDisplayName(), false, replace));
         }
 
         if (im.getLore() != null && !im.getLore().isEmpty()) {
             List<String> newLore = im.getLore()
                     .stream()
-                    .map(lore -> MessageUtil.getMessageAsString(lore, lore, false, replace))
+                    .map(lore -> CodexEngine.get().getMessageUtil().getMessageAsString(lore, lore, false, replace))
                     .collect(Collectors.toList());
             im.setLore(newLore);
         }

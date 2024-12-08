@@ -39,9 +39,7 @@ public abstract class IActionExecutor extends Parametized {
             final String fullStr2 = fullStr;
 
             if (delay > 0) {
-                plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                    this.process(exe, targetMap, fullStr2 + FLAG_NO_DELAY, manipulator);
-                }, delay);
+                plugin.getServer().getScheduler().runTaskLater(plugin, () -> this.process(exe, targetMap, fullStr2 + FLAG_NO_DELAY, manipulator), delay);
                 return;
             }
         }

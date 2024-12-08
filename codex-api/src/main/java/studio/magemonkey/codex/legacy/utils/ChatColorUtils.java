@@ -1,6 +1,5 @@
 package studio.magemonkey.codex.legacy.utils;
 
-
 import com.google.common.collect.Sets;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -12,11 +11,7 @@ public class ChatColorUtils {
     public static final  char           COLOR_CHAR                   = '\u00A7';
     public static final  char           DEFAULT_ALTERNATE_COLOR_CHAR = '&';
     private static final Pattern        STRIP_COLOR_PATTERN;
-    private static final Set<ChatColor> styles                       = Sets.newHashSet(ChatColor.UNDERLINE,
-            ChatColor.BOLD,
-            ChatColor.STRIKETHROUGH,
-            ChatColor.MAGIC,
-            ChatColor.ITALIC);
+    private static final Set<ChatColor> styles                       = Sets.newHashSet(ChatColor.UNDERLINE, ChatColor.BOLD, ChatColor.STRIKETHROUGH, ChatColor.MAGIC, ChatColor.ITALIC);
 
     public static ChatColor getByChar(final char code) {
         return ChatColor.getByChar(code);
@@ -34,8 +29,7 @@ public class ChatColorUtils {
     }
 
     public static BaseComponent[] translateAlternateColorCodes(final String textToTranslate) {
-        return ComponentUtils.fromLegacyText(translateAlternateColorCodesInString(DEFAULT_ALTERNATE_COLOR_CHAR,
-                textToTranslate));
+        return ComponentUtils.fromLegacyText(translateAlternateColorCodesInString(DEFAULT_ALTERNATE_COLOR_CHAR, textToTranslate));
     }
 
     public static String translateAlternateColorCodesInString(final char altColorChar, final String textToTranslate) {

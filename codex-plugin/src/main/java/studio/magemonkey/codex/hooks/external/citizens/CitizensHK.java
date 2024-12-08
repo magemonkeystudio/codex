@@ -16,7 +16,6 @@ import studio.magemonkey.codex.hooks.NHook;
 import java.util.*;
 
 public class CitizensHK extends NHook<CodexEngine> {
-
     private Map<CodexPlugin<?>, Set<TraitInfo>>        traits;
     private Map<CodexPlugin<?>, Set<CitizensListener>> listeners;
 

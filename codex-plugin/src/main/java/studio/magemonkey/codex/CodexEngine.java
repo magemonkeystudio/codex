@@ -51,6 +51,7 @@ import studio.magemonkey.codex.util.ItemUT;
 import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.craft.CraftManager;
+import studio.magemonkey.codex.util.messages.AbstractMessageUtil;
 import studio.magemonkey.codex.util.messages.MessageUtil;
 
 import java.io.File;
@@ -87,6 +88,9 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     private              HookManager               hooksManager;
     @Getter
     private              CodexItemManager          itemManager;
+
+    @Getter
+    private AbstractMessageUtil messageUtil = new MessageUtil();
 
     /**
      * -- GETTER --
@@ -199,10 +203,13 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             return false;
         }
 
-        MessageUtil.load(LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang",
+        messageUtil.load(LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang",
                 "messages_en.yml"), getResource("lang/messages_en.yml")), this);
         // Placeholder registration
         PlaceholderRegistry.load();
+        if (CodexEngine.get().getVault() != null) {
+            PlaceholderRegistry.PLAYER.registerItem("money", player -> (int) CodexEngine.get().getVault().getBalance(player));
+        }
 
         setupManagers();
 

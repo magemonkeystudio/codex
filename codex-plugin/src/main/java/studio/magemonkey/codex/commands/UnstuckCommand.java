@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
 import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,8 +54,7 @@ public class UnstuckCommand implements CommandExecutor, Listener {
      * Purge old locations every 3 days or more
      */
     private void purge() {
-        if (!config.contains("lastPurge"))
-            config.set("lastPurge", System.currentTimeMillis());
+        if (!config.contains("lastPurge")) config.set("lastPurge", System.currentTimeMillis());
         long lastPurge = config.getLong("lastPurge", System.currentTimeMillis());
         long diff      = System.currentTimeMillis() - lastPurge;
         long days      = TimeUnit.MILLISECONDS.toDays(diff);
@@ -69,10 +67,7 @@ public class UnstuckCommand implements CommandExecutor, Listener {
 
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender,
-                             @NotNull Command command,
-                             @NotNull String label,
-                             String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "You have to be a player to use that command!");
             return true;
@@ -85,23 +80,18 @@ public class UnstuckCommand implements CommandExecutor, Listener {
             long time = cooldown.get(id) - System.currentTimeMillis();
             if (time > 0) {
                 long seconds = TimeUnit.MILLISECONDS.toSeconds(time);
-                MessageUtil.sendMessage("general.commands.unstuck.err.cooldown",
-                        sender,
-                        new MessageData("time", seconds));
+                CodexEngine.get().getMessageUtil().sendMessage("general.commands.unstuck.err.cooldown", sender, new MessageData("time", seconds));
                 return true;
-            } else
-                cooldown.remove(id);
+            } else cooldown.remove(id);
         }
 
         if (warmingUp.containsKey(id)) {
-            MessageUtil.sendMessage("general.commands.unstuck.err.warmingUp", sender);
+            CodexEngine.get().getMessageUtil().sendMessage("general.commands.unstuck.err.warmingUp", sender);
             return true;
         }
 
         warmingUp.put(id, player.getLocation().getBlock().getLocation());
-        MessageUtil.sendMessage("general.commands.unstuck.warmup",
-                sender,
-                new MessageData("time", CodexEngine.get().cfg().getJYML().getLong("unstuck.warmup")));
+        CodexEngine.get().getMessageUtil().sendMessage("general.commands.unstuck.warmup", sender, new MessageData("time", CodexEngine.get().cfg().getJYML().getLong("unstuck.warmup")));
 
         String locStr = locToString(player.getLocation());
         CodexEngine.get().getLogger().info("STUCK - " + player.getName() + " executed '/stuck' at " + locStr);
@@ -120,10 +110,8 @@ public class UnstuckCommand implements CommandExecutor, Listener {
                 player.teleport(locs.get(player.getUniqueId()).getFirst());
                 tasks.remove(id);
                 warmingUp.remove(id);
-                cooldown.put(id,
-                        TimeUnit.SECONDS.toMillis(CodexEngine.get().cfg().getJYML().getLong("unstuck.cooldown"))
-                                + System.currentTimeMillis());
-                MessageUtil.sendMessage("general.commands.unstuck.teleported", sender);
+                cooldown.put(id, TimeUnit.SECONDS.toMillis(CodexEngine.get().cfg().getJYML().getLong("unstuck.cooldown")) + System.currentTimeMillis());
+                CodexEngine.get().getMessageUtil().sendMessage("general.commands.unstuck.teleported", sender);
             }
         }.runTaskLater(CodexEngine.get(), CodexEngine.get().cfg().getJYML().getLong("unstuck.warmup") * 20);
 
@@ -135,16 +123,12 @@ public class UnstuckCommand implements CommandExecutor, Listener {
     @EventHandler
     public void cancelWarmup(PlayerMoveEvent event) {
         if (warmingUp.containsKey(event.getPlayer().getUniqueId())) {
-            boolean same = event.getPlayer()
-                    .getLocation()
-                    .getBlock()
-                    .getLocation()
-                    .equals(warmingUp.get(event.getPlayer().getUniqueId()));
+            boolean same = event.getPlayer().getLocation().getBlock().getLocation().equals(warmingUp.get(event.getPlayer().getUniqueId()));
             if (!same) {
                 BukkitTask task = tasks.get(event.getPlayer().getUniqueId());
                 if (task != null) task.cancel();
                 warmingUp.remove(event.getPlayer().getUniqueId());
-                MessageUtil.sendMessage("general.commands.unstuck.err.cancelled", event.getPlayer());
+                CodexEngine.get().getMessageUtil().sendMessage("general.commands.unstuck.err.cancelled", event.getPlayer());
             }
         }
     }
@@ -162,17 +146,13 @@ public class UnstuckCommand implements CommandExecutor, Listener {
 
         pLocs.add(p.getLocation().getBlock().getLocation());
 
-        if (pLocs.size() > 10)
-            pLocs.removeFirst();
+        if (pLocs.size() > 10) pLocs.removeFirst();
 
         locs.put(p.getUniqueId(), pLocs);
     }
 
 
     public String locToString(Location loc) {
-        String builder = loc.getWorld().getName() + "," + loc.getX()
-                + "," + loc.getY()
-                + "," + loc.getZ();
-        return builder;
+        return Objects.requireNonNull(loc.getWorld()).getName() + "," + loc.getX() + "," + loc.getY() + "," + loc.getZ();
     }
 }

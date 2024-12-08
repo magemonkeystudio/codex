@@ -140,7 +140,7 @@ public class CoreLang extends ILangTemplate {
             new ILangMsg(this, "This command is for players only.");
     public ILangMsg Error_Internal                                     = new ILangMsg(this, "&cInternal error!");
 
-    public CoreLang(@NotNull CodexPlugin<?> plugin) {
+    public              CoreLang(@NotNull CodexPlugin<?> plugin) {
         super(plugin, plugin.getConfigManager().configLang, plugin.isEngine() ? null : CodexEngine.get().lang());
     }
 

@@ -9,7 +9,6 @@ import studio.magemonkey.codex.util.CollectionsUT;
 import studio.magemonkey.codex.util.StringUT;
 
 public abstract class IConfigTemplate {
-
     protected CodexPlugin<?> plugin;
     protected JYML           cfg;
 

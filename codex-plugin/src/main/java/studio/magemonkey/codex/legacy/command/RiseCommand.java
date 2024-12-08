@@ -6,6 +6,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.util.messages.MessageData;
 import studio.magemonkey.codex.util.messages.MessageUtil;
 
@@ -168,7 +169,7 @@ public abstract class RiseCommand implements CommandExecutor, TabCompleter {
             }
         }
         String s = sb.toString();
-        MessageUtil.sendMessage(usage,
+        CodexEngine.get().getMessageUtil().sendMessage(usage,
                 sender,
                 new MessageData("text", (s.isEmpty() ? "" : s + " ") + StringUtils.join(args, " ")));
     }

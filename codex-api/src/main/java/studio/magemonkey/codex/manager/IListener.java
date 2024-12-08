@@ -1,10 +1,9 @@
 package studio.magemonkey.codex.manager;
 
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.CodexPlugin;
 
-public abstract class IListener<P extends CodexPlugin<P>> implements AbstractListener {
-
+public abstract class IListener<P extends JavaPlugin> implements AbstractListener {
     @NotNull
     public final P plugin;
 
@@ -14,6 +13,6 @@ public abstract class IListener<P extends CodexPlugin<P>> implements AbstractLis
 
     @Override
     public void registerListeners() {
-        this.plugin.getPluginManager().registerEvents(this, this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(this, this.plugin);
     }
 }

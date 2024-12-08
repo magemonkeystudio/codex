@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class ILangTemplate {
-
     protected CodexPlugin<?>      plugin;
     protected JYML                config;
     protected ILangTemplate       parent;

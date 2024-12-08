@@ -29,7 +29,7 @@ public class Target_Self extends ITargetSelector {
     }
 
     @Override
-    protected void validateTarget(Entity exe, Set<Entity> targets, IParamResult result) {
+    protected void validateTarget(@NotNull Entity exe, @NotNull Set<Entity> targets, @NotNull IParamResult result) {
         Set<Entity> disTargets = new HashSet<>();
         disTargets.add(exe);
 

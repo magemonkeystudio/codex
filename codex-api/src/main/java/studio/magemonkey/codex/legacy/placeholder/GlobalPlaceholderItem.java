@@ -35,19 +35,21 @@ import java.util.function.Function;
  *
  * @param <T> type of object needed to get data for placeholder.
  */
-class BasePlaceholderItem<T> implements PlaceholderItem<T> {
-    protected final PlaceholderType<T>  type;
-    protected final String              id;
-    protected final Function<T, Object> func;
+class GlobalPlaceholderItem<T> implements PlaceholderItem<T> {
+    protected final PlaceholderType.GlobalPlaceholderType<T> type;
+    protected final String                                   id;
+    protected final Function<T, Object>                      func;
 
     /**
-     * Construct new placeholder item, using given type and functiom.
+     * Construct new placeholder item, using given type and function.
      *
      * @param type type of placeholder, like that "player" in player.name.
      * @param id   id/name of placeholder, like that "name" in player.name.
      * @param func function that should return {@link String} or {@link BaseComponent}, when using BaseComponent you may add click events, hovers events and all that stuff.
      */
-    BasePlaceholderItem(final PlaceholderType<T> type, final String id, final Function<T, Object> func) {
+    GlobalPlaceholderItem(final PlaceholderType.GlobalPlaceholderType<T> type,
+                          final String id,
+                          final Function<T, Object> func) {
         this.type = type;
         this.id = id.intern();
         this.func = func;
@@ -65,12 +67,16 @@ class BasePlaceholderItem<T> implements PlaceholderItem<T> {
 
     @Override
     public Object apply(final T obj, final Object[] args) {
-        return this.func.apply(obj);
+        return this.func.apply(this.type.globalSupplier.get());
     }
 
     @Override
     public String getFullId() {
         return this.type.getId() + "." + this.getId();
+    }
+
+    public Object apply(final Object[] args) {
+        return this.func.apply(this.type.globalSupplier.get());
     }
 
     @Override

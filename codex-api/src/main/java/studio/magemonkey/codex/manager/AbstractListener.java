@@ -5,9 +5,9 @@ import org.bukkit.event.Listener;
 
 public interface AbstractListener extends Listener {
 
-    public void registerListeners();
+    void registerListeners();
 
-    public default void unregisterListeners() {
+    default void unregisterListeners() {
         HandlerList.unregisterAll(this);
     }
 }

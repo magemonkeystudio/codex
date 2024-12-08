@@ -161,9 +161,6 @@ public class MsgUT {
             String              textOriginal    = e.getKey()[1];
             ClickText.ClickWord jsonData        = e.getValue();
 
-            //System.out.println("JS Place: " + textPlaceholder);
-            //System.out.println("JS Orig: " + textOriginal);
-
             ClickText.ClickWord clickWord = clickText.createPlaceholder(textPlaceholder, textOriginal);
             clickWord.click = jsonData.click;
             clickWord.hover = jsonData.hover;

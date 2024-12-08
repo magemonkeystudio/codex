@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.util.constants.ItemHelper;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -134,7 +135,7 @@ public class PlayerUT {
 
     public static boolean hasEmptyInventory(@NotNull Player player) {
         for (ItemStack item : player.getInventory().getContents()) {
-            if (!ItemUT.isAir(item)) {
+            if (!ItemHelper.isAirOrNull(item)) {
                 return false;
             }
         }
@@ -144,7 +145,7 @@ public class PlayerUT {
     public static int countItem(@NotNull Player player, @NotNull ItemStack item) {
         int userHas = 0;
         for (ItemStack itemHas : player.getInventory().getContents()) {
-            if (!ItemUT.isAir(itemHas) && itemHas.isSimilar(item)) {
+            if (!ItemHelper.isAirOrNull(itemHas) && itemHas.isSimilar(item)) {
                 userHas += itemHas.getAmount();
             }
         }

@@ -15,9 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.util.EnumUT;
-import studio.magemonkey.codex.util.messages.NMSPlayerUtils;
 
 public final class PlaceholderRegistry {
     public static final PlaceholderType<Location>    LOCATION    = PlaceholderType.create("location", Location.class);
@@ -103,7 +102,7 @@ public final class PlaceholderRegistry {
         ITEM.registerItem("material", i ->
         {
             TextComponent textComponent = new TextComponent(i.getType().name().toLowerCase());
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(i));
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(i));
             return textComponent;
         });
         ITEM.registerItem("displayName", i ->
@@ -113,7 +112,7 @@ public final class PlaceholderRegistry {
             }
             TextComponent textComponent =
                     new TextComponent(i.getItemMeta().hasDisplayName() ? i.getItemMeta().getDisplayName() : "");
-            textComponent.setHoverEvent(NMSPlayerUtils.convert(i));
+            textComponent.setHoverEvent(VersionManager.getNms().getHoverEvent(i));
             return textComponent;
         });
         ITEM.registerItem("lore", i -> i.getItemMeta().getLore());
@@ -122,9 +121,6 @@ public final class PlaceholderRegistry {
         PLAYER.registerItem("exp", Player::getExp);
         PLAYER.registerItem("totalExperience", Player::getTotalExperience);
         PLAYER.registerItem("expToLevel", HumanEntity::getExpToLevel);
-        if (CodexPlugin.getEngine().getVault() != null) {
-            PLAYER.registerItem("money", player -> (int) CodexPlugin.getEngine().getVault().getBalance(player));
-        }
 
         ENCHANTMENT.registerItem("id", e -> e/*.getId()*/.getKey().getKey()); //getKey used in 1.13+
         ENCHANTMENT.registerItem("name", e -> e/*.getName()*/.getKey().getKey());
