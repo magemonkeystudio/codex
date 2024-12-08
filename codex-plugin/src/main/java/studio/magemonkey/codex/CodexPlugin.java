@@ -158,7 +158,6 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         // To prevent take items after unregister listeners
         for (Player p : this.getServer().getOnlinePlayers()) {
             if (p != null) {
-                if (InventoryUtil.getTopInventory(p) == null) continue;
                 InventoryHolder ih = InventoryUtil.getTopInventory(p).getHolder();
                 if (ih instanceof NGUI) {
                     p.closeInventory();
