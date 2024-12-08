@@ -227,6 +227,7 @@ public interface NMS {
 
     Material getMaterial(Boat boat);
 
+    @SuppressWarnings("deprecation")
     default HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
         String json = toJson(itemStack);
         if (json != null) {
