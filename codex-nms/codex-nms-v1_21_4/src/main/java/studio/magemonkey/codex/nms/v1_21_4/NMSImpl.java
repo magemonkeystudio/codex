@@ -34,9 +34,13 @@ import org.bukkit.craftbukkit.v1_21_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_21_R3.util.CraftChatMessage;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -324,5 +328,15 @@ public class NMSImpl implements NMS {
         }
 
         return baseComponent;
+    }
+
+    @Override
+    @SuppressWarnings("UnstableApiUsage")
+    public EntityDamageByEntityEvent createEntityDamageEvent(@NotNull Entity entity, @NotNull Entity attacker, @NotNull EntityDamageByEntityEvent.DamageCause cause, double damage) {
+        return new EntityDamageByEntityEvent(attacker,
+                entity,
+                cause,
+                DamageSource.builder(DamageType.MOB_ATTACK).build(),
+                damage);
     }
 }

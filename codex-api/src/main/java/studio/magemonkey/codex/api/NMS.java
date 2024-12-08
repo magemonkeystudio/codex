@@ -12,8 +12,11 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Boat;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -260,6 +263,10 @@ public interface NMS {
         }
 
         return baseComponent;
+    }
+
+    default EntityDamageByEntityEvent createEntityDamageEvent(@NotNull Entity entity, @NotNull Entity attacker, @NotNull EntityDamageEvent.DamageCause cause, double damage) {
+        return new EntityDamageByEntityEvent(attacker, entity, cause, damage);
     }
 
     @NotNull
