@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.nms.packets.events;
+package studio.magemonkey.codex.api.events;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

@@ -11,8 +11,8 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.manager.IManager;
-import studio.magemonkey.codex.nms.packets.events.EnginePlayerPacketEvent;
-import studio.magemonkey.codex.nms.packets.events.EngineServerPacketEvent;
+import studio.magemonkey.codex.api.events.EnginePlayerPacketEvent;
+import studio.magemonkey.codex.api.events.EngineServerPacketEvent;
 
 import java.util.HashSet;
 import java.util.Set;

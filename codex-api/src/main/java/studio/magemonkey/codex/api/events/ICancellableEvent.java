@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.manager.api.event;
+package studio.magemonkey.codex.api.events;
 
 import org.bukkit.event.Cancellable;
 
