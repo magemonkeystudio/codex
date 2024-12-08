@@ -15,7 +15,7 @@ import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.manager.IListener;
 import studio.magemonkey.codex.manager.api.task.ITask;
-import studio.magemonkey.codex.manager.types.ClickType;
+import studio.magemonkey.codex.manager.api.ClickType;
 import studio.magemonkey.codex.util.InventoryUtil;
 import studio.magemonkey.codex.util.ItemUT;
 import studio.magemonkey.codex.util.StringUT;

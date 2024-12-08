@@ -51,7 +51,7 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
 
         GuiClick click = new GuiClick() {
             @Override
-            public void click(Player p, @Nullable Enum<?> type, InventoryClickEvent e) {
+            public void click(@NotNull Player p, @Nullable Enum<?> type, @NotNull InventoryClickEvent e) {
                 if (type == null) return;
 
                 Class<?> clazz = type.getClass();

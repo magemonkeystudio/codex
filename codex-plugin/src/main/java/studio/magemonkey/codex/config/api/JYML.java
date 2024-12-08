@@ -18,7 +18,7 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.CodexPlugin;
 import studio.magemonkey.codex.manager.api.gui.ContentType;
 import studio.magemonkey.codex.manager.api.gui.GuiItem;
-import studio.magemonkey.codex.manager.types.ClickType;
+import studio.magemonkey.codex.manager.api.ClickType;
 import studio.magemonkey.codex.util.*;
 import studio.magemonkey.codex.util.actions.ActionManipulator;
 import studio.magemonkey.codex.util.constants.JStrings;

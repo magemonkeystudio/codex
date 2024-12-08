@@ -1,11 +1,10 @@
-package studio.magemonkey.codex.manager.types;
+package studio.magemonkey.codex.manager.api;
 
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
 public enum ClickType {
-
     LEFT,
     RIGHT,
     MIDDLE,

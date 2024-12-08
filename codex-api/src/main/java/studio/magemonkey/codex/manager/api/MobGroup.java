@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.manager.types;
+package studio.magemonkey.codex.manager.api;
 
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;

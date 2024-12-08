@@ -6,6 +6,5 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface GuiClick {
-
     void click(@NotNull Player p, @Nullable Enum<?> type, @NotNull InventoryClickEvent e);
 }

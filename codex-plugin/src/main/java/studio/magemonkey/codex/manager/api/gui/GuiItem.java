@@ -1,12 +1,14 @@
 package studio.magemonkey.codex.manager.api.gui;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.manager.types.ClickType;
+import studio.magemonkey.codex.manager.api.ClickType;
 import studio.magemonkey.codex.util.actions.ActionManipulator;
 
 import java.util.ArrayList;
@@ -16,7 +18,6 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class GuiItem {
-
     private String    id;
     private Enum<?>   type;
     private ItemStack item;
@@ -25,9 +26,11 @@ public class GuiItem {
     private int                         animStartFrame;
     private TreeMap<Integer, ItemStack> animFrames;
 
-    private String                            permission;
-    private int[]                             slots;
-    private GuiClick                          click;
+    private String   permission;
+    @Setter
+    @Getter
+    private int[]    slots;
+    private GuiClick click;
     private Map<ClickType, ActionManipulator> customClicks;
 
     public GuiItem(
@@ -186,14 +189,6 @@ public class GuiItem {
 
     public void addAnimationFrame(int index, @NotNull ItemStack frame) {
         this.animFrames.put(index, new ItemStack(frame));
-    }
-
-    public int[] getSlots() {
-        return this.slots;
-    }
-
-    public void setSlots(int[] slot) {
-        this.slots = slot;
     }
 
     @Nullable
