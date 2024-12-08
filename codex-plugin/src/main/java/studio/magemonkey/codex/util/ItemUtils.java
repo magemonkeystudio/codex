@@ -99,51 +99,6 @@ public class ItemUtils {
         return null;
     }
 
-    public static String removeColors(String str) {
-        if (str == null) return null;
-        return ChatColor.stripColor(str);
-    }
-
-    /**
-     * Strips colors from the list.
-     *
-     * @param list List of Strings to remove color from
-     * @return New ArrayList of cleaned Strings
-     */
-    public static List<String> removeColors(List<String> list) {
-        if (list == null) return null;
-
-        return list.stream().map(ItemUtils::removeColors).collect(Collectors.toList());
-    }
-
-    /**
-     * Fixes color characters in a string
-     *
-     * @param msg message
-     * @return new string
-     */
-    public static String fixColors(String msg) {
-        if (msg == null) return null;
-
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
-    /**
-     * Fixes color characters in a List
-     *
-     * @param msg List
-     * @return new List
-     */
-    public static ArrayList<String> fixColors(List<String> msg) {
-        if (msg == null) return null;
-        ArrayList<String> ret = new ArrayList<>();
-        for (String s : msg) {
-            String fixColors = fixColors(s);
-            ret.add(fixColors);
-        }
-        return ret;
-    }
-
     public static ItemMeta getItemMeta(final ItemStack itemStack) {
         final ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());

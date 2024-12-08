@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.legacy.utils.Utils;
 import studio.magemonkey.codex.util.DeserializationWorker;
 import studio.magemonkey.codex.util.ItemUtils;
 import studio.magemonkey.codex.util.SerializationBuilder;
@@ -310,7 +311,7 @@ public class ItemBuilder implements ConfigurationSerializable {
         //((Damageable) meta).setDamage(this.durability); // 1.13+
 //        }
         if (this.name != null) {
-            meta.setDisplayName(ItemUtils.fixColors(this.name));
+            meta.setDisplayName(Utils.fixColors(this.name));
         }
         if ((this.flags != null) && !this.flags.isEmpty()) {
             meta.addItemFlags(this.flags.toArray(new ItemFlag[this.flags.size()]));
@@ -321,7 +322,7 @@ public class ItemBuilder implements ConfigurationSerializable {
                 Collections.addAll(lore, loreLine.split("\n"));
             }
 //            this.lore.stream().forEach(str -> Collections.addAll(lore, str.split("\n")));
-            meta.setLore(ItemUtils.fixColors(lore));
+            meta.setLore(Utils.fixColors(lore));
         }
         if (this.enchants != null) {
             for (final Map.Entry<Enchantment, Integer> entry : this.enchants.entrySet()) {

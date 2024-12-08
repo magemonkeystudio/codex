@@ -7,6 +7,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.legacy.utils.Utils;
 import studio.magemonkey.codex.util.DeserializationWorker;
 import studio.magemonkey.codex.util.ItemUtils;
 import studio.magemonkey.codex.util.SerializationBuilder;
@@ -112,9 +113,9 @@ public class BookDataBuilder extends DataBuilder {
         }
 
         BookMeta meta = (BookMeta) itemMeta;
-        meta.setPages(ItemUtils.fixColors(this.pages));
-        meta.setAuthor(ItemUtils.fixColors(this.author));
-        meta.setTitle(ItemUtils.fixColors(this.title));
+        meta.setPages(Utils.fixColors(this.pages));
+        meta.setAuthor(Utils.fixColors(this.author));
+        meta.setTitle(Utils.fixColors(this.title));
     }
 
     @Override
@@ -124,9 +125,9 @@ public class BookDataBuilder extends DataBuilder {
         }
 
         BookMeta meta = (BookMeta) itemMeta;
-        this.title = ItemUtils.removeColors(meta.getTitle());
-        this.author = ItemUtils.removeColors(meta.getAuthor());
-        this.pages = ItemUtils.removeColors(new ArrayList<>(meta.getPages()));
+        this.title = Utils.removeColors(meta.getTitle());
+        this.author = Utils.removeColors(meta.getAuthor());
+        this.pages = Utils.removeColors(new ArrayList<>(meta.getPages()));
         return this;
     }
 

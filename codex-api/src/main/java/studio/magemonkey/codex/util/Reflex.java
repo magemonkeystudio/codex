@@ -1,10 +1,9 @@
 package studio.magemonkey.codex.util;
 
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.Codex;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -15,8 +14,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * This class interacts with Spigot at a reflection level. This is used to hack some things together but should ultimately be removed for a more stable solution.
+ *
+ * @deprecated Transitioning to version-specific implementations for better stability
+ */
+@Deprecated(since = "1.1.0")
 public class Reflex {
-
     public static final String VERSION =
             !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit") ? (
                     Integer.parseInt(Bukkit.getServer().getBukkitVersion().split("[.-]")[1]) < 20 ? Bukkit.getServer()
@@ -25,10 +29,6 @@ public class Reflex {
                             .getName()
                             .replace(".", ",")
                             .split(",")[3] : Bukkit.getServer().getBukkitVersion().split("-")[0]) : "";
-
-    @Setter
-    private static CodexEngine engine;
-
 
     @Nullable
     public static Class<?> getClass(@NotNull String path, @NotNull String name) {
@@ -45,7 +45,7 @@ public class Reflex {
         try {
             return Class.forName(path);
         } catch (ClassNotFoundException e) {
-            engine.error("[Reflex] Class not found: " + path);
+            Codex.error("[Reflex] Class not found: " + path);
             e.printStackTrace();
             return null;
         }

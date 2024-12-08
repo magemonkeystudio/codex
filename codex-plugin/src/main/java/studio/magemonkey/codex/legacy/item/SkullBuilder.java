@@ -8,8 +8,8 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.legacy.utils.Utils;
 import studio.magemonkey.codex.util.DeserializationWorker;
-import studio.magemonkey.codex.util.ItemUtils;
 import studio.magemonkey.codex.util.SerializationBuilder;
 
 import java.util.Map;
@@ -43,7 +43,7 @@ public class SkullBuilder extends DataBuilder {
         }
 
         SkullMeta meta = (SkullMeta) itemMeta;
-        meta.setOwner(ItemUtils.fixColors(this.owner));
+        meta.setOwner(Utils.fixColors(this.owner));
     }
 
     @Override
@@ -53,7 +53,7 @@ public class SkullBuilder extends DataBuilder {
         }
 
         SkullMeta meta = (SkullMeta) itemMeta;
-        this.owner = ItemUtils.removeColors(meta.getOwner());
+        this.owner = Utils.removeColors(meta.getOwner());
         return this;
     }
 

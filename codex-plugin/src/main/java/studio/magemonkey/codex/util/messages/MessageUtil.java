@@ -7,7 +7,7 @@ import studio.magemonkey.codex.legacy.placeholder.PlaceholderItem;
 import studio.magemonkey.codex.legacy.placeholder.PlaceholderType;
 import studio.magemonkey.codex.legacy.riseitem.DarkRiseItem;
 import studio.magemonkey.codex.legacy.utils.ComponentUtils;
-import studio.magemonkey.codex.util.ItemUtils;
+import studio.magemonkey.codex.legacy.utils.Utils;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -103,7 +103,7 @@ public class MessageUtil extends AbstractMessageUtil {
             }
         }
 
-        return ItemUtils.fixColors(ret);
+        return Utils.fixColors(ret);
     }
 
     public static String getReplacement(String string) {

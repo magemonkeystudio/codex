@@ -5,13 +5,16 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.util.ItemUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public final class Utils {
     private static final String[] EMPTY_STRING_ARRAY = new String[0];
@@ -31,6 +34,12 @@ public final class Utils {
         }
     }
 
+    /**
+     * Fixes color characters in a string
+     *
+     * @param string message to fix
+     * @return new string
+     */
     public static String fixColors(final String string) {
         if (string == null) {
             return null;
@@ -48,24 +57,32 @@ public final class Utils {
         return strings;
     }
 
+    /**
+     * Fixes color characters in a List
+     *
+     * @param list List to fix
+     * @return new List
+     */
     public static List<String> fixColors(final List<String> list) {
-        if (list == null) {
-            return null;
+        if (list == null) return null;
+        ArrayList<String> ret = new ArrayList<>();
+        for (String s : list) {
+            String fixColors = fixColors(s);
+            ret.add(fixColors);
         }
-        for (int i = 0; i < list.size(); i++) {
-            list.set(i, fixColors(list.get(i)));
-        }
-        return list;
+        return ret;
     }
 
+    /**
+     * Strips colors from the list.
+     *
+     * @param list List of Strings to remove color from
+     * @return New ArrayList of cleaned Strings
+     */
     public static List<String> removeColors(final List<String> list) {
-        if (list == null) {
-            return null;
-        }
-        for (int i = 0; i < list.size(); i++) {
-            list.set(i, removeColors(list.get(i)));
-        }
-        return list;
+        if (list == null) return null;
+
+        return list.stream().map(Utils::removeColors).collect(Collectors.toList());
     }
 
     public static String[] removeColors(final String... strings) {
@@ -79,17 +96,8 @@ public final class Utils {
     }
 
     public static String removeColors(final String string) {
-        if (string == null) {
-            return null;
-        }
-        final char[] b = string.toCharArray();
-        for (int i = 0; i < (b.length - 1); i++) {
-            if ((b[i] == ChatColor.COLOR_CHAR) && ("0123456789AaBbCcDdEeFfKkLlMmNnOoRr".indexOf(b[i + 1]) > -1)) {
-                b[i] = '&';
-                b[i + 1] = Character.toLowerCase(b[i + 1]);
-            }
-        }
-        return new String(b);
+        if (string == null) return null;
+        return ChatColor.stripColor(string);
     }
 
     public static Integer toInt(final String str) {
