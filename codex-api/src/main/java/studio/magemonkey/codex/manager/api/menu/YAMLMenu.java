@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.util.ItemUT;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.util.StringUT;
 
 import java.io.File;
@@ -87,7 +87,7 @@ public abstract class YAMLMenu<T> {
             ItemStack itemStack    = new ItemStack(material, yamlItem.getInt("amount", 1));
             String    skullTexture = yamlItem.getString("skull-texture", null);
             if (skullTexture != null) {
-                ItemUT.addSkullTexture(itemStack, skullTexture);
+                VersionManager.getNms().addSkullTexture(itemStack, skullTexture, UUID.randomUUID());
             }
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {

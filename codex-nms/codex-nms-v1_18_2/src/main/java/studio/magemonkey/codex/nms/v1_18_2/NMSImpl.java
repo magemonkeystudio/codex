@@ -38,7 +38,7 @@ import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.Codex;
-import studio.magemonkey.codex.api.NMS;
+import studio.magemonkey.codex.compat.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;

@@ -17,7 +17,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.config.ConfigManager;
 import studio.magemonkey.codex.hooks.Hooks;
 

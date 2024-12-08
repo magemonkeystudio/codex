@@ -40,7 +40,7 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.Codex;
-import studio.magemonkey.codex.api.NMS;
+import studio.magemonkey.codex.compat.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;

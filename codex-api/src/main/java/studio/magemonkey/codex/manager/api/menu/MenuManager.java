@@ -9,14 +9,14 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
-import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.manager.IManager;
 import studio.magemonkey.codex.util.InventoryUtil;
 
-public class MenuManager extends IManager<CodexEngine> {
+public class MenuManager extends IManager<JavaPlugin> {
 
-    public MenuManager(CodexEngine plugin) {
+    public MenuManager(JavaPlugin plugin) {
         super(plugin);
     }
 
@@ -90,7 +90,7 @@ public class MenuManager extends IManager<CodexEngine> {
                     public void run() {
                         menu.onClose();
                     }
-                }.runTask(CodexEngine.get());
+                }.runTask(plugin);
             }
         }
     }

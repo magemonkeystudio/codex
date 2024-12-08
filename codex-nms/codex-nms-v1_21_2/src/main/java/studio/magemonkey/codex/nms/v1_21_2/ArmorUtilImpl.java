@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.trim.ArmorTrim;
 import org.bukkit.inventory.meta.trim.TrimMaterial;
 import org.bukkit.inventory.meta.trim.TrimPattern;
-import studio.magemonkey.codex.api.ArmorUtil;
+import studio.magemonkey.codex.compat.ArmorUtil;
 import studio.magemonkey.codex.util.random.Rnd;
 
 import java.util.Objects;

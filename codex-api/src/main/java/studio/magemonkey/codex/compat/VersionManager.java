@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.api;
+package studio.magemonkey.codex.compat;
 
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -10,6 +10,8 @@ public class VersionManager {
     protected static NMS       nms;
     @Setter
     private static   ArmorUtil armorUtil;
+    @Setter
+    private static   Compat    compat;
 
     public static void setup() {
         if (Version.CURRENT == Version.TEST) return;
@@ -18,6 +20,7 @@ public class VersionManager {
         try {
             String packageName = getPackageFromVersion(version);
             VersionManager.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl").getConstructor().newInstance());
+
             try {
                 VersionManager.setArmorUtil((ArmorUtil) Class.forName("studio.magemonkey.codex.nms." + packageName + ".ArmorUtilImpl").getConstructor().newInstance());
             } catch (ClassNotFoundException ignored) {
@@ -25,6 +28,8 @@ public class VersionManager {
                 VersionManager.setArmorUtil(new ArmorUtil() {
                 });
             }
+
+            VersionManager.setCompat((Compat) Class.forName("studio.magemonkey.codex.nms." + packageName + ".CompatImpl").getConstructor().newInstance());
         } catch (Exception e) {
             throw new UnsupportedVersionException("Could not find NMS implementation for version " + version, e);
         }
@@ -62,5 +67,13 @@ public class VersionManager {
         }
 
         return armorUtil;
+    }
+
+    public static Compat getCompat() {
+        if (compat == null) {
+            throw new RuntimeException("Compat has not been set yet! Something is wrong.");
+        }
+
+        return compat;
     }
 }

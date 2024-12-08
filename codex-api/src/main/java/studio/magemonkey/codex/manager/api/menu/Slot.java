@@ -1,10 +1,12 @@
 package studio.magemonkey.codex.manager.api.menu;
 
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
 public class Slot {
     protected Integer   i = null;
     protected Menu      menu;
+    @Setter
     protected ItemStack itemStack;
 
     public Slot(ItemStack itemStack) {this.itemStack = itemStack;} // Add permission
@@ -15,8 +17,6 @@ public class Slot {
     }
 
     public ItemStack getItemStack() {return itemStack == null ? null : itemStack.clone();}
-
-    public void setItemStack(ItemStack itemStack) {this.itemStack = itemStack;}
 
     public void onLeftClick() {}
 

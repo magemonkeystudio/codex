@@ -8,7 +8,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 
 import java.util.*;
 import java.util.regex.Matcher;

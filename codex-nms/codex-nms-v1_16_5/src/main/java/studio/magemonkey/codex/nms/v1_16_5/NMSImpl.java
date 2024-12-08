@@ -19,7 +19,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.api.NMS;
+import studio.magemonkey.codex.compat.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;

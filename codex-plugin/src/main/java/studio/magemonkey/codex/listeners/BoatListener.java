@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.ItemStack;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 
 public class BoatListener implements Listener {
     @EventHandler

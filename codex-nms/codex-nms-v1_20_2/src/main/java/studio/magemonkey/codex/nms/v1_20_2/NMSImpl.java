@@ -31,7 +31,6 @@ import org.bukkit.craftbukkit.v1_20_R2.util.CraftChatMessage;
 import org.bukkit.entity.Boat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -41,14 +40,13 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.Codex;
-import studio.magemonkey.codex.api.NMS;
+import studio.magemonkey.codex.compat.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Objects;
 import java.util.UUID;
 
 public class NMSImpl implements NMS {

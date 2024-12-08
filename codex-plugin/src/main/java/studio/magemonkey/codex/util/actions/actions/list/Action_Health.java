@@ -4,7 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.util.EntityUT;
 import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
 import studio.magemonkey.codex.util.actions.actions.IActionType;

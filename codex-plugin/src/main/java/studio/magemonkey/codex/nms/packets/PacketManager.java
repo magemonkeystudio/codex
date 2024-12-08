@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.manager.IManager;
 import studio.magemonkey.codex.nms.packets.events.EnginePlayerPacketEvent;

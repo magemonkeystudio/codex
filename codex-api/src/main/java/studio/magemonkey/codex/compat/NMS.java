@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.api;
+package studio.magemonkey.codex.compat;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;

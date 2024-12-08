@@ -13,7 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.api.exception.UnsupportedVersionException;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;

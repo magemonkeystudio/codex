@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.api.VersionManager;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.util.EntityUT;
 import studio.magemonkey.codex.util.actions.conditions.IConditionType;
 import studio.magemonkey.codex.util.actions.conditions.IConditionValidator;

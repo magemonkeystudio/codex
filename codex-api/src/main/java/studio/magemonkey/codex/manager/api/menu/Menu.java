@@ -1,5 +1,6 @@
 package studio.magemonkey.codex.manager.api.menu;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -14,8 +15,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.util.ItemUT;
+import studio.magemonkey.codex.Codex;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.util.StringUT;
 
 import java.util.*;
@@ -34,8 +35,10 @@ public abstract class Menu implements InventoryHolder {
     protected final TreeMap<Integer, Slot> slots       = new TreeMap<>();
     private final   Set<Listener>          listeners   = new HashSet<>();
     private final   Set<BukkitTask>        tasks       = new HashSet<>();
+    @Getter
     private         int                    page        = 0;
     protected       Menu                   parentMenu;
+    @Getter
     protected       boolean                opening     = false;
     protected       boolean                fakeClosing = false;
 
@@ -60,8 +63,6 @@ public abstract class Menu implements InventoryHolder {
         }
     }
 
-    public int getPage() {return page;}
-
     public void setSlot(int i, @Nullable Slot slot) {
         if (slot == null) {
             slots.remove(i);
@@ -82,7 +83,7 @@ public abstract class Menu implements InventoryHolder {
         new BukkitRunnable() {
             @Override
             public void run() {open();}
-        }.runTask(CodexEngine.get());
+        }.runTask(Codex.getPlugin());
     }
 
     public void open() {open(this.page);}
@@ -120,8 +121,6 @@ public abstract class Menu implements InventoryHolder {
         this.opening = false;
     }
 
-    public boolean isOpening() {return opening;}
-
     public void close() {
         close(1);
     }
@@ -133,7 +132,7 @@ public abstract class Menu implements InventoryHolder {
                 public void run() {
                     player.closeInventory();
                 }
-            }.runTaskLater(CodexEngine.get(), i);
+            }.runTaskLater(Codex.getPlugin(), i);
         }
     }
 
@@ -165,8 +164,8 @@ public abstract class Menu implements InventoryHolder {
 
     protected Slot getPrevButton() {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
-        ItemUT.addSkullTexture(itemStack,
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0YTliNzBhMjVhMjdkODE4OWU2MGQyN2VhOGNjOTYzMmMzNmI0NjkyODE1NWRlNzc1NWYzNjZlZjA0Yzg3NyJ9fX0=");
+        VersionManager.getNms().addSkullTexture(itemStack,
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0YTliNzBhMjVhMjdkODE4OWU2MGQyN2VhOGNjOTYzMmMzNmI0NjkyODE1NWRlNzc1NWYzNjZlZjA0Yzg3NyJ9fX0=", UUID.randomUUID());
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.RESET + "Previous Page");
@@ -184,8 +183,9 @@ public abstract class Menu implements InventoryHolder {
 
     protected Slot getNextButton() {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
-        ItemUT.addSkullTexture(itemStack,
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTkxNTJjMmU5MWY0NzA0ODViZTIyMmRiNWQyYTg5NWNhZGM5MDMzMjZmNWM2NzFiZjhhNTU5MTQ5NjczYmU4MCJ9fX0=");
+        VersionManager.getNms().addSkullTexture(itemStack,
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNTkxNTJjMmU5MWY0NzA0ODViZTIyMmRiNWQyYTg5NWNhZGM5MDMzMjZmNWM2NzFiZjhhNTU5MTQ5NjczYmU4MCJ9fX0=",
+                UUID.randomUUID());
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.RESET + "Next Page");
@@ -202,7 +202,7 @@ public abstract class Menu implements InventoryHolder {
     }
 
     public void registerListener(Listener listener) {
-        Bukkit.getPluginManager().registerEvents(listener, CodexEngine.get());
+        Bukkit.getPluginManager().registerEvents(listener, Codex.getPlugin());
         this.listeners.add(listener);
     }
 

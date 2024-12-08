@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.api;
+package studio.magemonkey.codex.compat;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.meta.ItemMeta;
