@@ -32,6 +32,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.VersionManager;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -331,15 +332,7 @@ public class BoardManager {
         scoreboard.getObjectives().forEach(objective -> {
             Objective obj = update.getObjective(objective.getName());
             if (obj == null) {
-                try {
-                    obj = update.registerNewObjective(objective.getName(),
-                            objective.getTrackedCriteria(),
-                            objective.getDisplayName());
-                } catch (NoSuchMethodError e) {
-                    obj = update.registerNewObjective(objective.getName(),
-                            objective.getCriteria(),
-                            objective.getDisplayName());
-                }
+                obj = VersionManager.getNms().registerNewObjective(update, objective);
             }
             obj.setDisplaySlot(objective.getDisplaySlot());
             obj.setDisplayName(objective.getDisplayName());

@@ -13,7 +13,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.api.exception.UnsupportedVersionException;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
@@ -176,8 +176,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
         // This call actually sets up the NMS version in the NMSProvider
         try {
-            NMSProvider.setup();
-            getLogger().info("Using NMS implementation for version " + NMSProvider.getNms().getVersion());
+            VersionManager.setup();
+            getLogger().info("Using NMS implementation for version " + VersionManager.getNms().getVersion());
         } catch (Exception e) {
             getLogger().severe("Failed to setup NMSProvider. Plugin will be disabled.");
 

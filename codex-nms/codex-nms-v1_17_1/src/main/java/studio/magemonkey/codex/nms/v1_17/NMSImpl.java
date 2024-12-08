@@ -3,6 +3,9 @@ package studio.magemonkey.codex.nms.v1_17;
 import com.google.common.base.Preconditions;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.chat.IChatBaseComponent;
@@ -14,6 +17,8 @@ import net.minecraft.world.entity.EntityLiving;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.TileEntitySkull;
 import net.minecraft.world.level.block.state.IBlockData;
+import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
@@ -22,9 +27,13 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
@@ -173,5 +182,19 @@ public class NMSImpl implements NMS {
     @Override
     public Object getNMSCopy(@NotNull ItemStack item) {
         return CraftItemStack.asNMSCopy(item);
+    }
+
+    @Override
+    public Material getMaterial(Boat boat) {
+        TreeSpecies woodType = boat.getWoodType();
+
+        return switch (woodType) {
+            case REDWOOD -> Material.SPRUCE_BOAT;
+            case BIRCH -> Material.BIRCH_BOAT;
+            case JUNGLE -> Material.JUNGLE_BOAT;
+            case ACACIA -> Material.ACACIA_BOAT;
+            case DARK_OAK -> Material.DARK_OAK_BOAT;
+            default -> Material.OAK_BOAT;
+        };
     }
 }

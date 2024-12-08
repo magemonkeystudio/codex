@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.manager.IManager;
 import studio.magemonkey.codex.nms.packets.events.EnginePlayerPacketEvent;
@@ -59,11 +59,11 @@ public class PacketManager extends IManager<CodexEngine> {
     }
 
     public Channel getChannel(@NotNull Player player) {
-        return NMSProvider.getNms().getChannel(player);
+        return VersionManager.getNms().getChannel(player);
     }
 
     public void sendPacket(@NotNull Player player, @NotNull Object packet) {
-        NMSProvider.getNms().sendPacket(player, packet);
+        VersionManager.getNms().sendPacket(player, packet);
     }
 
 

@@ -13,7 +13,7 @@ import org.mockbukkit.mockbukkit.entity.PlayerMock;
 import org.mockito.MockedStatic;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.api.NMS;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.commands.CommandRegister;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import studio.magemonkey.codex.core.config.CoreLang;
@@ -81,7 +81,7 @@ public abstract class MockedTest {
         when(nms.getVersion()).thenReturn("test");
         when(nms.fixColors(anyString())).thenAnswer(ans -> ans.getArgument(0));
 
-        NMSProvider.setNms(nms);
+        VersionManager.setNms(nms);
 
         reflex = mockStatic(Reflex.class);
         reflex.when(() -> Reflex.getClass(startsWith("studio.magemonkey"), anyString()))

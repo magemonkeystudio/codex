@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
+import net.md_5.bungee.api.chat.*;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.chat.IChatBaseComponent;
@@ -17,6 +18,8 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.block.entity.TileEntitySkull;
 import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
@@ -25,9 +28,12 @@ import org.bukkit.craftbukkit.v1_18_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_18_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_18_R2.util.CraftChatMessage;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
 import org.jetbrains.annotations.NotNull;
@@ -36,7 +42,9 @@ import studio.magemonkey.codex.api.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.UUID;
 
 public class NMSImpl implements NMS {
@@ -214,7 +222,53 @@ public class NMSImpl implements NMS {
     }
 
     @Override
+    public void addSkullTexture(@NotNull ItemStack item, @NotNull String value, @NotNull UUID uuid) {
+        if (item.getType() != Material.PLAYER_HEAD) return;
+
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if (meta == null) return;
+
+        try {
+            PlayerProfile playerProfile = Bukkit.createPlayerProfile(uuid, uuid.toString().substring(0, 16));
+            String        decoded       = new String(Base64.getDecoder().decode(value));
+            JsonObject    json          = new Gson().fromJson(decoded, JsonObject.class);
+            JsonObject    texturesJson  = json.getAsJsonObject("textures");
+            JsonObject    skin          = texturesJson.getAsJsonObject("SKIN");
+            String        url           = skin.get("url").getAsString();
+            playerProfile.getTextures().setSkin(new URL(url));
+            meta.setOwnerProfile(playerProfile);
+            item.setItemMeta(meta);
+        } catch (MalformedURLException | NoClassDefFoundError | NoSuchMethodError | IllegalArgumentException e) {
+            NMS.super.addSkullTexture(item, value, uuid);
+        }
+    }
+
+    @Override
     public Object getNMSCopy(@NotNull ItemStack item) {
         return CraftItemStack.asNMSCopy(item);
+    }
+
+    @Override
+    public Material getMaterial(Boat boat) {
+        TreeSpecies woodType = boat.getWoodType();
+
+        return switch (woodType) {
+            case REDWOOD -> Material.SPRUCE_BOAT;
+            case BIRCH -> Material.BIRCH_BOAT;
+            case JUNGLE -> Material.JUNGLE_BOAT;
+            case ACACIA -> Material.ACACIA_BOAT;
+            case DARK_OAK -> Material.DARK_OAK_BOAT;
+            default -> Material.OAK_BOAT;
+        };
+    }
+
+    @Override
+    public HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
+        ItemMeta meta       = itemStack.getItemMeta();
+        String   itemString = meta != null ? meta.getAsString() : "{}";
+        return new HoverEvent(HoverEvent.Action.SHOW_ITEM,
+                new net.md_5.bungee.api.chat.hover.content.Item(itemStack.getType().getKey().getKey(),
+                        itemStack.getAmount(),
+                        ItemTag.ofNbt(itemString)));
     }
 }

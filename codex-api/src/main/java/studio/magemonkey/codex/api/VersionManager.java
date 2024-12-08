@@ -5,9 +5,11 @@ import org.bukkit.Bukkit;
 import studio.magemonkey.codex.api.exception.UnsupportedVersionException;
 import studio.magemonkey.codex.core.Version;
 
-public class NMSProvider {
+public class VersionManager {
     @Setter
-    protected static NMS nms;
+    protected static NMS       nms;
+    @Setter
+    private static   ArmorUtil armorUtil;
 
     public static void setup() {
         if (Version.CURRENT == Version.TEST) return;
@@ -15,7 +17,14 @@ public class NMSProvider {
 
         try {
             String packageName = getPackageFromVersion(version);
-            NMSProvider.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl").getConstructor().newInstance());
+            VersionManager.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl").getConstructor().newInstance());
+            try {
+                VersionManager.setArmorUtil((ArmorUtil) Class.forName("studio.magemonkey.codex.nms." + packageName + ".ArmorUtilImpl").getConstructor().newInstance());
+            } catch (ClassNotFoundException ignored) {
+                // ArmorUtil is not implemented for this version -- (pre 1.19.4)
+                VersionManager.setArmorUtil(new ArmorUtil() {
+                });
+            }
         } catch (Exception e) {
             throw new UnsupportedVersionException("Could not find NMS implementation for version " + version, e);
         }
@@ -45,5 +54,13 @@ public class NMSProvider {
         }
 
         return nms;
+    }
+
+    public static ArmorUtil getArmorUtil() {
+        if (armorUtil == null) {
+            throw new RuntimeException("ArmorUtil has not been set yet! Something is wrong.");
+        }
+
+        return armorUtil;
     }
 }

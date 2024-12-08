@@ -3,14 +3,24 @@ package studio.magemonkey.codex.api;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import io.netty.channel.Channel;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.Codex;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -143,6 +153,23 @@ public interface NMS {
 
     void changeSkull(@NotNull Block block, @NotNull String hash);
 
+    default void addSkullTexture(@NotNull ItemStack item, @NotNull String value, @NotNull UUID uuid) {
+        if (item.getType() != Material.PLAYER_HEAD) return;
+
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if (meta == null) return;
+
+        try {
+            GameProfile profile = new GameProfile(uuid, uuid.toString().substring(0, 16));
+            profile.getProperties().put("textures", new Property("textures", value));
+            getField(meta.getClass(), "profile").set(meta, profile);
+        } catch (IllegalAccessException | NoSuchFieldException setException) {
+            Codex.warn("Could not set player skull texture. " + setException.getMessage());
+        }
+
+        item.setItemMeta(meta);
+    }
+
     default GameProfile getNonPlayerProfile(String hash) {
         UUID        uid     = UUID.randomUUID();
         GameProfile profile = new GameProfile(uid, uid.toString().substring(0, 8));
@@ -154,6 +181,7 @@ public interface NMS {
     default double getAttributeValue(@NotNull ItemStack item, @NotNull Attribute attribute) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return 0;
+        if (meta.getAttributeModifiers() == null || meta.getAttributeModifiers().isEmpty()) return 0;
 
         Collection<AttributeModifier> modifiers = meta.getAttributeModifiers(attribute);
         if (modifiers == null || modifiers.isEmpty()) return 0;
@@ -193,6 +221,46 @@ public interface NMS {
     }
 
     Object getNMSCopy(@NotNull ItemStack itemStack);
+
+    Material getMaterial(Boat boat);
+
+    default HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
+        String json = toJson(itemStack);
+        if (json != null) {
+            new HoverEvent(HoverEvent.Action.SHOW_ITEM, TextComponent.fromLegacyText(json));
+        }
+
+        return new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[0]);
+    }
+
+    default Objective registerNewObjective(Scoreboard scoreboard, Objective objective) {
+        return scoreboard.registerNewObjective(objective.getName(), objective.getCriteria(), objective.getDisplayName());
+    }
+
+    default BaseComponent getTranslatedComponent(@NotNull ItemStack itemStack) {
+        ItemMeta meta   = itemStack.getItemMeta();
+        String   string = null;
+        if (meta != null) {
+            string = meta.getDisplayName();
+            if (string.isEmpty() && meta.hasLocalizedName()) {
+                string = meta.getLocalizedName();
+            }
+        }
+        BaseComponent baseComponent;
+        if (string == null || string.isEmpty()) {
+            String id = itemStack.getType().getKey().getKey();
+            if (itemStack.getType().isBlock()) {
+                id = "block.minecraft" + id;
+            } else if (itemStack.getType().isItem()) {
+                id = "item.minecraft" + id;
+            }
+            baseComponent = new TranslatableComponent(id);
+        } else {
+            baseComponent = new TextComponent(string);
+        }
+
+        return baseComponent;
+    }
 
     @NotNull
     default Field getField(@NotNull Class<?> clazz, @NotNull String fieldName) throws NoSuchFieldException {

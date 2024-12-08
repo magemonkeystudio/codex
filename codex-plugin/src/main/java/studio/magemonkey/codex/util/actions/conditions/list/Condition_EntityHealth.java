@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.util.EntityUT;
 import studio.magemonkey.codex.util.actions.conditions.IConditionType;
 import studio.magemonkey.codex.util.actions.conditions.IConditionValidator;
@@ -58,7 +58,7 @@ public class Condition_EntityHealth extends IConditionValidator {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hpTarget     = livingEntity.getHealth();
-            double       hpTargetMax  = EntityUT.getAttribute(livingEntity, NMSProvider.getNms().getAttribute("MAX_HEALTH"));
+            double       hpTargetMax  = EntityUT.getAttribute(livingEntity, VersionManager.getNms().getAttribute("MAX_HEALTH"));
 
             if (isPercent) {
                 hpTarget = hpTarget / hpTargetMax * 100D;

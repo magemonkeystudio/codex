@@ -1,13 +1,11 @@
 package studio.magemonkey.codex.util;
 
 import net.md_5.bungee.api.chat.*;
-import net.md_5.bungee.api.chat.hover.content.Item;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.api.NMSProvider;
-import studio.magemonkey.codex.core.Version;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.util.constants.JStrings;
 
 import java.util.*;
@@ -155,30 +153,14 @@ public class ClickText {
             return this;
         }
 
-        @SuppressWarnings("deprecation")
         @NotNull
         public ClickWord showItem(@NotNull ItemStack item) {
-            if (Version.CURRENT.isAtLeast(Version.V1_20_R4)) {
-                String nbt = String.format("{\"id\":\"%s\",\"count\":%d,\"components\": %s}",
-                        item.getType().getKey().getKey(),
-                        item.getAmount(),
-                        item.getItemMeta() != null ? item.getItemMeta().getAsString() : "{}");
-                this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(nbt)});
-            } else if (Version.CURRENT.isAtLeast(Version.V1_18_R2)) {
-                this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM,
-                        new Item(item.getType().getKey().getKey().toString(),
-                                item.getAmount(),
-                                ItemTag.ofNbt(item.getItemMeta().getAsString())));
-            } else {
-                // 1.16.5 - 1.18.1
-                // We have to serialize the nbt from the item stack by hand
-                this.hover = new HoverEvent(HoverEvent.Action.SHOW_ITEM, toBase(item));
-            }
+            this.hover = VersionManager.getNms().getHoverEvent(item);
             return this;
         }
 
         private BaseComponent[] toBase(@NotNull ItemStack item) {
-            String json = NMSProvider.getNms().toJson(item);
+            String json = VersionManager.getNms().toJson(item);
             if (json != null) {
                 return TextComponent.fromLegacyText(json);
             }

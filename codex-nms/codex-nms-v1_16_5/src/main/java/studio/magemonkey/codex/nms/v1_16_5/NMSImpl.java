@@ -4,6 +4,8 @@ import com.google.common.base.Preconditions;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
 import net.minecraft.server.v1_16_R3.*;
+import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
@@ -12,6 +14,7 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_16_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftChatMessage;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -163,5 +166,19 @@ public class NMSImpl implements NMS {
     @Override
     public Object getNMSCopy(@NotNull ItemStack item) {
         return CraftItemStack.asNMSCopy(item);
+    }
+
+    @Override
+    public org.bukkit.Material getMaterial(Boat boat) {
+        TreeSpecies woodType = boat.getWoodType();
+
+        return switch (woodType) {
+            case REDWOOD -> org.bukkit.Material.SPRUCE_BOAT;
+            case BIRCH -> org.bukkit.Material.BIRCH_BOAT;
+            case JUNGLE -> org.bukkit.Material.JUNGLE_BOAT;
+            case ACACIA -> org.bukkit.Material.ACACIA_BOAT;
+            case DARK_OAK -> org.bukkit.Material.DARK_OAK_BOAT;
+            default -> Material.OAK_BOAT;
+        };
     }
 }

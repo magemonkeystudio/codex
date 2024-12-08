@@ -4,7 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexPlugin;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.util.EntityUT;
 import studio.magemonkey.codex.util.actions.actions.IActionExecutor;
 import studio.magemonkey.codex.util.actions.actions.IActionType;
@@ -52,7 +52,7 @@ public class Action_Health extends IActionExecutor {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hp2          = hp;
-            double       maxHp        = EntityUT.getAttribute(livingEntity, NMSProvider.getNms().getAttribute("MAX_HEALTH"));
+            double       maxHp        = EntityUT.getAttribute(livingEntity, VersionManager.getNms().getAttribute("MAX_HEALTH"));
 
             if (percent) {
                 hp2 = maxHp * (hp / 100D);

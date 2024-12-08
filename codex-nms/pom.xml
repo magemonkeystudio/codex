@@ -28,7 +28,7 @@
         <dependency>
             <groupId>studio.magemonkey</groupId>
             <artifactId>codex-api</artifactId>
-            <version>1.1.0-R0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

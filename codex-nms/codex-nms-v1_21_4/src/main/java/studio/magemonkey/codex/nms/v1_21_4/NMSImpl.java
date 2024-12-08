@@ -4,6 +4,10 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.netty.channel.Channel;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.TranslatableComponent;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
@@ -18,6 +22,7 @@ import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.level.block.entity.TileEntitySkull;
 import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
@@ -29,18 +34,25 @@ import org.bukkit.craftbukkit.v1_21_R3.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R3.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R3.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_21_R3.util.CraftChatMessage;
+import org.bukkit.entity.Boat;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 import org.bukkit.profile.PlayerTextures;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.Codex;
 import studio.magemonkey.codex.api.NMS;
 import studio.magemonkey.codex.util.constants.JNumbers;
 
 import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -227,6 +239,28 @@ public class NMSImpl implements NMS {
         }
     }
 
+    @Override
+    public void addSkullTexture(@NotNull ItemStack item, @NotNull String value, @NotNull UUID uuid) {
+        if (item.getType() != Material.PLAYER_HEAD) return;
+
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        if (meta == null) return;
+
+        try {
+            PlayerProfile playerProfile = Bukkit.createPlayerProfile(uuid, uuid.toString().substring(0, 16));
+            String        decoded       = new String(Base64.getDecoder().decode(value));
+            JsonObject    json          = new Gson().fromJson(decoded, JsonObject.class);
+            JsonObject    texturesJson  = json.getAsJsonObject("textures");
+            JsonObject    skin          = texturesJson.getAsJsonObject("SKIN");
+            String        url           = skin.get("url").getAsString();
+            playerProfile.getTextures().setSkin(new URL(url));
+            meta.setOwnerProfile(playerProfile);
+            item.setItemMeta(meta);
+        } catch (MalformedURLException | NoClassDefFoundError | NoSuchMethodError | IllegalArgumentException e) {
+            NMS.super.addSkullTexture(item, value, uuid);
+        }
+    }
+
     @NotNull
     @Override
     public Attribute getAttribute(String name) {
@@ -236,5 +270,59 @@ public class NMSImpl implements NMS {
     @Override
     public Object getNMSCopy(@NotNull ItemStack item) {
         return CraftItemStack.asNMSCopy(item);
+    }
+
+    @Override
+    public Material getMaterial(Boat boat) {
+        String boatClassName = boat.getClass().getSimpleName();
+        // Split on capital letters and join with underscores
+        // ex: AcaciaBoat -> ACACIA_BOAT
+        String   materialName = String.join("_", boatClassName.split("(?=[A-Z])")).toUpperCase(Locale.US);
+        Material mat          = Material.matchMaterial(materialName);
+
+        if (mat == null) mat = Material.OAK_BOAT;
+
+        return mat;
+    }
+
+    @Override
+    public Objective registerNewObjective(Scoreboard scoreboard, Objective objective) {
+        return scoreboard.registerNewObjective(objective.getName(),
+                objective.getTrackedCriteria(),
+                objective.getDisplayName());
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
+        String nbt = String.format("{\"id\":\"%s\",\"count\":%d,\"components\": %s}",
+                itemStack.getType().getKey().getKey(),
+                itemStack.getAmount(),
+                itemStack.getItemMeta() != null ? itemStack.getItemMeta().getAsString() : "{}");
+        return new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(nbt)});
+    }
+
+    @Override
+    public BaseComponent getTranslatedComponent(@NotNull ItemStack itemStack) {
+        ItemMeta meta   = itemStack.getItemMeta();
+        String   string = null;
+        if (meta != null) {
+            string = meta.getDisplayName();
+            if (string.isEmpty()) {
+                try {
+                    string = meta.getItemName();
+                } catch (NoSuchMethodError ignored) {
+                }
+            }
+        }
+
+        BaseComponent baseComponent;
+        if (string == null || string.isEmpty()) {
+            baseComponent = new TranslatableComponent(itemStack.getType().getItemTranslationKey());
+        } else {
+            baseComponent = new TextComponent(string);
+        }
+
+        return baseComponent;
     }
 }

@@ -1,13 +1,10 @@
 package studio.magemonkey.codex.util;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import lombok.Getter;
 import lombok.Setter;
 import me.clip.placeholderapi.PlaceholderAPI;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.World;
@@ -17,18 +14,15 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 import studio.magemonkey.codex.config.ConfigManager;
 import studio.magemonkey.codex.hooks.Hooks;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
@@ -217,10 +211,9 @@ public class ItemUT {
     @NotNull
     public static String getItemName(@NotNull ItemStack item) {
         ItemMeta meta = item.getItemMeta();
-        String name = meta != null && meta.hasDisplayName()
+        return meta != null && meta.hasDisplayName()
                 ? meta.getDisplayName()
                 : getEngine().lang().getEnum(item.getType());
-        return name;
     }
 
     public static void addSkullTexture(@NotNull ItemStack item, @NotNull String value) {
@@ -228,35 +221,9 @@ public class ItemUT {
     }
 
     public static void addSkullTexture(@NotNull ItemStack item, @NotNull String value, @NotNull String id) {
-        if (item.getType() != Material.PLAYER_HEAD) return;
-
         UUID uuid = ConfigManager.getTempUUID(id);
         if (uuid == null) uuid = UUID.randomUUID();
-
-        SkullMeta meta = (SkullMeta) item.getItemMeta();
-        if (meta == null) return;
-
-        try {
-            PlayerProfile playerProfile = Bukkit.createPlayerProfile(uuid, uuid.toString().substring(0, 16));
-            String        decoded       = new String(Base64.getDecoder().decode(value));
-            JsonObject    json          = new Gson().fromJson(decoded, JsonObject.class);
-            JsonObject    texturesJson  = json.getAsJsonObject("textures");
-            JsonObject    skin          = texturesJson.getAsJsonObject("SKIN");
-            String        url           = skin.get("url").getAsString();
-            playerProfile.getTextures().setSkin(new URL(url));
-            meta.setOwnerProfile(playerProfile);
-        } catch (MalformedURLException | NoClassDefFoundError | NoSuchMethodError | IllegalArgumentException e) {
-            try {
-                GameProfile profile = new GameProfile(uuid, uuid.toString().substring(0, 16));
-                profile.getProperties().put("textures", new Property("textures", value));
-                Objects.requireNonNull(Reflex.getField(meta.getClass(), "profile")).set(meta, profile);
-            } catch (NullPointerException | IllegalAccessException setException) {
-                engine.getLogger()
-                        .warning("Could not set player skull texture. " + setException.getMessage());
-            }
-        }
-
-        item.setItemMeta(meta);
+        VersionManager.getNms().addSkullTexture(item, value, uuid);
     }
 
     @Nullable
@@ -357,15 +324,15 @@ public class ItemUT {
     }
 
     public static boolean isWeapon(@NotNull ItemStack item) {
-        return NMSProvider.getNms().isWeapon(item);
+        return VersionManager.getNms().isWeapon(item);
     }
 
     public static boolean isTool(@NotNull ItemStack item) {
-        return NMSProvider.getNms().isTool(item);
+        return VersionManager.getNms().isTool(item);
     }
 
     public static boolean isArmor(@NotNull ItemStack item) {
-        return NMSProvider.getNms().isArmor(item);
+        return VersionManager.getNms().isArmor(item);
     }
 
     public static boolean isBow(@NotNull ItemStack item) {

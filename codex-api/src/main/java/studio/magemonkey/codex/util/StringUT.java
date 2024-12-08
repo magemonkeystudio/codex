@@ -8,7 +8,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.api.NMSProvider;
+import studio.magemonkey.codex.api.VersionManager;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -90,7 +90,7 @@ public class StringUT {
      */
     @NotNull
     public static String colorFix(@NotNull String str) {
-        return NMSProvider.getNms().fixColors(str);
+        return VersionManager.getNms().fixColors(str);
     }
 
     @NotNull
