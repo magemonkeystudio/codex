@@ -137,8 +137,7 @@ public abstract class NGUI<P extends CodexPlugin<P>> extends IListener<P> implem
     // TODO Experimental
     public void refill() {
         this.getViewers().forEach(player -> {
-            Object    view = player.getOpenInventory();
-            Inventory top  = InventoryUtil.getTopInventory(view);
+            Inventory top = InventoryUtil.getTopInventory(player);
             if (!(top.getHolder() instanceof NGUI<?>)) return;
 
             for (int slot = 0; slot < top.getSize(); slot++) {
@@ -516,10 +515,7 @@ public abstract class NGUI<P extends CodexPlugin<P>> extends IListener<P> implem
                 });
             }
 
-            NGUI.this.getViewers().forEach(player -> {
-                Inventory inv = InventoryUtil.getTopInventory(player.getOpenInventory());
-                NGUI.this.fillGUI(inv, player);
-            });
+            NGUI.this.getViewers().forEach(player -> NGUI.this.fillGUI(InventoryUtil.getTopInventory(player), player));
         }
     }
 }
