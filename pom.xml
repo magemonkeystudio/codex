@@ -10,10 +10,18 @@
         <version>1.21.3-R0.2</version>
     </parent>
 
-    <artifactId>codex</artifactId>
-    <name>CodexCore</name>
-    <version>1.0.1-R0.19-SNAPSHOT</version>
+    <artifactId>codex-parent</artifactId>
+    <version>1.1.0-R0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <description>The core plugin for MageMonkeyStudio plugins</description>
+
+    <modules>
+        <module>codex-core</module>
+        <module>codex-nms</module>
+        <module>codex-plugin</module>
+        <module>codex-api</module>
+        <module>codex-bungee</module>
+    </modules>
 
     <properties>
         <delombok.dir>${project.build.directory}/javadoc-delombok</delombok.dir>
@@ -24,25 +32,9 @@
             <id>sonatype</id>
             <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </repository>
-
-        <repository>
-            <id>oraxen</id>
-            <name>Oraxen Repository</name>
-            <url>https://repo.oraxen.com/releases</url>
-        </repository>
-
-        <repository>
-            <id>nexo</id>
-            <name>Nexo Repository</name>
-            <url>https://repo.nexomc.com/snapshots/</url>
-        </repository>
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>net.md-5</groupId>
-            <artifactId>bungeecord-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
@@ -127,66 +119,6 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.th0rgal</groupId>
-            <artifactId>oraxen</artifactId>
-            <version>1.173.0</version>
-            <classifier>dev</classifier>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>me.gabytm.util</groupId>
-                    <artifactId>actions-spigot</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.jetbrains</groupId>
-                    <artifactId>annotations</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.ticxo</groupId>
-                    <artifactId>PlayerAnimator</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.github.stefvanschie.inventoryframework</groupId>
-                    <artifactId>IF</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>io.th0rgal</groupId>
-                    <artifactId>protectionlib</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>dev.triumphteam</groupId>
-                    <artifactId>triumph-gui</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bstats</groupId>
-                    <artifactId>bstats-bukkit</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.jeff-media</groupId>
-                    <artifactId>custom-block-data</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.jeff-media</groupId>
-                    <artifactId>persistent-data-serializer</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.jeff_media</groupId>
-                    <artifactId>MorePersistentDataTypes</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>gs.mclo</groupId>
-                    <artifactId>java</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.nexomc</groupId>
-            <artifactId>nexo</artifactId>
-            <version>0.1.0-dev.0</version>
-            <classifier>dev</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>com.github.LoneDev6</groupId>
             <artifactId>api-itemsadder</artifactId>
             <version>3.6.3-beta-14</version>
@@ -196,22 +128,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.6.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -241,36 +157,90 @@
                             <goal>delombok</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
+                            <sourceDirectory>src/main/java</sourceDirectory>
                             <outputDirectory>${delombok.dir}</outputDirectory>
                             <addOutputDirectory>false</addOutputDirectory>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>module</id>
+            <activation>
+                <file>
+                    <exists>.module</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.1</version>
+                        <configuration>
+                            <sourcepath>${delombok.dir}</sourcepath>
+                            <doclint>all,-missing</doclint>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <detectOfflineLinks>false</detectOfflineLinks>
+                                    <attach>true</attach>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>parent</id>
+            <activation>
+                <file>
+                    <exists>.github</exists>
+                </file>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.11.1</version>
+                        <configuration>
+                            <outputDirectory>${project.basedir}</outputDirectory>
+                            <doclint>all,-missing</doclint>
+                            <sourcepath>codex-api/target/javadoc-delombok;codex-core/target/javadoc-delombok;codex-plugin/target/javadoc-delombok</sourcepath>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>aggregate</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+    <reporting>
+        <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <sourcepath>${delombok.dir}</sourcepath>
-                    <reportOutputDirectory>${project.basedir}</reportOutputDirectory>
-                    <destDir>gh-pages/javadocs</destDir>
-                    <doclint>all,-missing</doclint>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <attach>true</attach>
-                        </configuration>
-                    </execution>
-                </executions>
+                <version>3.11.1</version>
             </plugin>
         </plugins>
-    </build>
+    </reporting>
 
     <licenses>
         <license>
@@ -288,8 +258,8 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/promcteam/${project.artifactId}.git</connection>
-        <developerConnection>scm:git:ssh://github.com:promcteam/${project.artifactId}.git</developerConnection>
-        <url>https://github.com/promcteam/${project.artifactId}</url>
+        <connection>scm:git:git://github.com/magemonkeystudio/${project.artifactId}.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/${project.artifactId}.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/${project.artifactId}</url>
     </scm>
 </project>
