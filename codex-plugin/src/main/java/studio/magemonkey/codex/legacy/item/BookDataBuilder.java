@@ -9,7 +9,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.legacy.utils.Utils;
 import studio.magemonkey.codex.util.DeserializationWorker;
-import studio.magemonkey.codex.util.ItemUtils;
 import studio.magemonkey.codex.util.SerializationBuilder;
 
 import java.util.*;

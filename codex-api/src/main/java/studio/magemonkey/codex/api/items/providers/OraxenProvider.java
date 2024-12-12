@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.api.items.ItemType;
 import studio.magemonkey.codex.api.items.PrefixHelper;
 
+@Deprecated(forRemoval = true, since = "Dec 2024")
 public class OraxenProvider implements ICodexItemProvider<OraxenProvider.OraxenItemType> {
     public static final String NAMESPACE = "ORAXEN";
 
