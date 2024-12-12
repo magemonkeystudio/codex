@@ -16,7 +16,7 @@ public class NamespaceResolver {
             try {
                 potion = Registry.EFFECT.get(NamespacedKey.minecraft(possibleName.toLowerCase(Locale.US)));
                 if (potion != null) return potion;
-            } catch (Exception ignored) {
+            } catch (Throwable ignored) {
             }
 
             try {
@@ -44,7 +44,7 @@ public class NamespaceResolver {
             try {
                 enchantment = Registry.ENCHANTMENT.get(NamespacedKey.minecraft(possibleName.toLowerCase(Locale.US)));
                 if (enchantment != null) return enchantment;
-            } catch (Exception ignored) {
+            } catch (Throwable ignored) {
             }
 
             enchantment = Enchantment.getByKey(NamespacedKey.minecraft(possibleName.toLowerCase(Locale.US)));

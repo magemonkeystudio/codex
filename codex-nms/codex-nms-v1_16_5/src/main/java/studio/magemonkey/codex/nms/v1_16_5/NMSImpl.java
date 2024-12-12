@@ -141,7 +141,7 @@ public class NMSImpl implements NMS {
         try {
             EntityLiving hit = ((CraftLivingEntity) entity).getHandle();
             hit.killer = ((CraftPlayer) killer).getHandle();
-            Field damageTime = getField(hit.getClass(), "lastHurtByPlayerTime");
+            Field damageTime = getField(hit.getClass(), "lastDamageByPlayerTime");
 
             damageTime.setAccessible(true);
 
