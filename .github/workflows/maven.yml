@@ -26,13 +26,16 @@ jobs:
       - name: Install Spigot versions
         run: |
           wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-          $JAVA_HOME_11_x64/bin/java --version
-          $JAVA_HOME_17_x64/bin/java --version
-          $JAVA_HOME_21_x64/bin/java --version
-          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.16.5
-          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.17.1
-          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.18.2
-          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.19.4
+          echo "JAVA_HOME_11_X64: $JAVA_HOME_11_X64"
+          echo "JAVA_HOME_17_X64: $JAVA_HOME_17_X64"
+          echo "JAVA_HOME_21_X64: $JAVA_HOME_21_X64"
+          $JAVA_HOME_11_X64/bin/java --version
+          $JAVA_HOME_17_X64/bin/java --version
+          $JAVA_HOME_21_X64/bin/java --version
+          $JAVA_HOME_11_X64/bin/java -jar BuildTools.jar --rev 1.16.5
+          $JAVA_HOME_11_X64/bin/java -jar BuildTools.jar --rev 1.17.1
+          $JAVA_HOME_11_X64/bin/java -jar BuildTools.jar --rev 1.18.2
+          $JAVA_HOME_11_X64/bin/java -jar BuildTools.jar --rev 1.19.4
           java -jar BuildTools.jar --rev 1.20.2
           java -jar BuildTools.jar --rev 1.20.4
           java -jar BuildTools.jar --rev 1.20.6
