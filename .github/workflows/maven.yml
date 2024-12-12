@@ -22,27 +22,13 @@ jobs:
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      - name: Install Spigot versions
-        run: |
-          wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-          $JAVA_HOME_11_X64/bin/java -jar BuildTools.jar --rev 1.16.5
-          $JAVA_HOME_17_X64/bin/java -jar BuildTools.jar --rev 1.17.1
-          $JAVA_HOME_17_X64/bin/java -jar BuildTools.jar --rev 1.18.2
-          $JAVA_HOME_17_X64/bin/java -jar BuildTools.jar --rev 1.19.4
-          java -jar BuildTools.jar --rev 1.20.2
-          java -jar BuildTools.jar --rev 1.20.4
-          java -jar BuildTools.jar --rev 1.20.6
-          java -jar BuildTools.jar --rev 1.21.1
-          java -jar BuildTools.jar --rev 1.21.2
-          java -jar BuildTools.jar --rev 1.21.4
       - uses: actions/checkout@v4
       - name: 'Create settings.xml'
         uses: s4u/maven-settings-action@v3.0.0
         with:
           githubServer: false
       - name: Build with Maven
-        run: mvn clean package -e
-#        run: mvn clean package -e -pl \!codex-nms,\!codex-nms/codex-nms-v1_16_5,\!codex-nms/codex-nms-v1_17_1,\
-#          \!codex-nms/codex-nms-v1_18_2,\!codex-nms/codex-nms-v1_19_4,\!codex-nms/codex-nms-v1_20_2,\
-#          \!codex-nms/codex-nms-v1_20_4,\!codex-nms/codex-nms-v1_20_6,\!codex-nms/codex-nms-v1_21_1,\
-#          \!codex-nms/codex-nms-v1_21_2,\!codex-nms/codex-nms-v1_21_4
+        run: mvn clean package -e -pl \!codex-nms,\!codex-nms/codex-nms-v1_16_5,\!codex-nms/codex-nms-v1_17_1,\
+          \!codex-nms/codex-nms-v1_18_2,\!codex-nms/codex-nms-v1_19_4,\!codex-nms/codex-nms-v1_20_2,\
+          \!codex-nms/codex-nms-v1_20_4,\!codex-nms/codex-nms-v1_20_6,\!codex-nms/codex-nms-v1_21_1,\
+          \!codex-nms/codex-nms-v1_21_2,\!codex-nms/codex-nms-v1_21_4
