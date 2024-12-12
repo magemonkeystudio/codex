@@ -15,31 +15,27 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: |
+            11
+            17
+            21
           server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      - name: Set up SDKMAN
-        uses: sdkman/sdkman-action@v1
-        with:
-          candidate: java
-          version: 11.0.25-zulu
       - name: Install Spigot versions
         run: |
           wget https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
-          java -jar BuildTools.jar --rev 1.16.5
-          java -jar BuildTools.jar --rev 1.17.1
-          java -jar BuildTools.jar --rev 1.18.2
-          java -jar BuildTools.jar --rev 1.19.4
+          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.16.5
+          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.17.1
+          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.18.2
+          $JAVA_HOME_11_x64/bin/java -jar BuildTools.jar --rev 1.19.4
           java -jar BuildTools.jar --rev 1.20.2
           java -jar BuildTools.jar --rev 1.20.4
           java -jar BuildTools.jar --rev 1.20.6
           java -jar BuildTools.jar --rev 1.21.1
           java -jar BuildTools.jar --rev 1.21.2
           java -jar BuildTools.jar --rev 1.21.4
-      - name: Use Java 21
-        run: sdk use java 11.0.25-amzn
       - name: 'Create settings.xml'
         uses: s4u/maven-settings-action@v3.0.0
         with:
