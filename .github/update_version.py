@@ -50,5 +50,7 @@ if __name__ == "__main__":
     directory = os.getcwd()
     pom_files = find_pom_files(directory)
     for pom_file in pom_files:
+        # NMS versions should be updated manually when NMS is actually changed
+        if '-nms' in pom_file: continue
         print(f'Updating version in {pom_file}')
         replace_version(pom_file)
