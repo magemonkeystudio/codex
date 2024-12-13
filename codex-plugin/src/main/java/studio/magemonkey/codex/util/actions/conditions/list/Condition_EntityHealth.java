@@ -58,7 +58,8 @@ public class Condition_EntityHealth extends IConditionValidator {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hpTarget     = livingEntity.getHealth();
-            double       hpTargetMax  = EntityUT.getAttribute(livingEntity, VersionManager.getNms().getAttribute("MAX_HEALTH"));
+            double       hpTargetMax  =
+                    EntityUT.getAttribute(livingEntity, VersionManager.getNms().getAttribute("MAX_HEALTH"));
 
             if (isPercent) {
                 hpTarget = hpTarget / hpTargetMax * 100D;

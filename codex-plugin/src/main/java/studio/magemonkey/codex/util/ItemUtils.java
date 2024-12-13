@@ -56,7 +56,9 @@ public class ItemUtils {
 
         ItemMeta im = getItemMeta(item);
         if (im.hasDisplayName()) {
-            im.setDisplayName(CodexEngine.get().getMessageUtil().getMessageAsString(im.getDisplayName(), im.getDisplayName(), false, replace));
+            im.setDisplayName(CodexEngine.get()
+                    .getMessageUtil()
+                    .getMessageAsString(im.getDisplayName(), im.getDisplayName(), false, replace));
         }
 
         if (im.getLore() != null && !im.getLore().isEmpty()) {

@@ -165,7 +165,8 @@ public abstract class Menu implements InventoryHolder {
     protected Slot getPrevButton() {
         ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD);
         VersionManager.getNms().addSkullTexture(itemStack,
-                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0YTliNzBhMjVhMjdkODE4OWU2MGQyN2VhOGNjOTYzMmMzNmI0NjkyODE1NWRlNzc1NWYzNjZlZjA0Yzg3NyJ9fX0=", UUID.randomUUID());
+                "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWE0YTliNzBhMjVhMjdkODE4OWU2MGQyN2VhOGNjOTYzMmMzNmI0NjkyODE1NWRlNzc1NWYzNjZlZjA0Yzg3NyJ9fX0=",
+                UUID.randomUUID());
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.RESET + "Previous Page");

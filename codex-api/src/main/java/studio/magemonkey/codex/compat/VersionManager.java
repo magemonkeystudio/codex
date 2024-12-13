@@ -19,17 +19,23 @@ public class VersionManager {
 
         try {
             String packageName = getPackageFromVersion(version);
-            VersionManager.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl").getConstructor().newInstance());
+            VersionManager.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl")
+                    .getConstructor()
+                    .newInstance());
 
             try {
-                VersionManager.setArmorUtil((ArmorUtil) Class.forName("studio.magemonkey.codex.nms." + packageName + ".ArmorUtilImpl").getConstructor().newInstance());
+                VersionManager.setArmorUtil((ArmorUtil) Class.forName(
+                                "studio.magemonkey.codex.nms." + packageName + ".ArmorUtilImpl")
+                        .getConstructor()
+                        .newInstance());
             } catch (ClassNotFoundException ignored) {
                 // ArmorUtil is not implemented for this version -- (pre 1.19.4)
                 VersionManager.setArmorUtil(new ArmorUtil() {
                 });
             }
 
-            VersionManager.setCompat((Compat) Class.forName("studio.magemonkey.codex.nms." + packageName + ".CompatImpl").getConstructor().newInstance());
+            VersionManager.setCompat((Compat) Class.forName(
+                    "studio.magemonkey.codex.nms." + packageName + ".CompatImpl").getConstructor().newInstance());
         } catch (Exception e) {
             throw new UnsupportedVersionException("Could not find NMS implementation for version " + version, e);
         }
@@ -38,7 +44,8 @@ public class VersionManager {
     private static String getPackageFromVersion(String version) {
         return switch (version) {
             case "1.18", "1.18.1", "1.19", "1.19.1", "1.19.2", "1.19.3", "1.20", "1.20.1" ->
-                    throw new UnsupportedVersionException("Version " + version + " is not supported. Please upgrade to the latest minor version of your current major version.");
+                    throw new UnsupportedVersionException("Version " + version
+                            + " is not supported. Please upgrade to the latest minor version of your current major version.");
             case "1.16.5" -> "v1_16_5";
             case "1.17", "1.17.1" -> "v1_17";
             case "1.18.2" -> "v1_18_2";

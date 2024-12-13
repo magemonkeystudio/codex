@@ -30,7 +30,8 @@ public class MigrationUtil {
 
                 try (FileOutputStream fos = new FileOutputStream(f)) {
                     fos.write(content.getBytes());
-                    Codex.info("Replaced instances of '" + searchRegex + "' with '" + replacement + "' in file: " + file);
+                    Codex.info(
+                            "Replaced instances of '" + searchRegex + "' with '" + replacement + "' in file: " + file);
                 }
             }
         }

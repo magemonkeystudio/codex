@@ -13,7 +13,7 @@ class ReplacerTest {
 
     @Test
     void use() {
-        String str = "get this from";
+        String str    = "get this from";
         String result = replacer.use(str);
         assert result.equals("get this to");
     }

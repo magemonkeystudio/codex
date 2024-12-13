@@ -5,7 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import io.netty.channel.Channel;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.ItemTag;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.chat.IChatBaseComponent;
@@ -67,7 +68,8 @@ public class NMSImpl implements NMS {
 
     @Override
     public void sendPacket(@NotNull Player player, @NotNull Object packet) {
-        Preconditions.checkArgument(packet instanceof Packet, "Packet must be an instance of net.minecraft.server.Packet");
+        Preconditions.checkArgument(packet instanceof Packet,
+                "Packet must be an instance of net.minecraft.server.Packet");
         ((PlayerConnection) getConnection(player)).a((Packet<?>) packet);
     }
 
@@ -208,7 +210,8 @@ public class NMSImpl implements NMS {
                 Codex.info("Could not change skull with modern method, trying legacy method.");
                 if (!(block.getState() instanceof Skull)) return;
 
-                TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle().c_(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+                TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle()
+                        .c_(new BlockPosition(block.getX(), block.getY(), block.getZ()));
                 if (skull == null) return;
 
                 GameProfile profile = getNonPlayerProfile(hash);

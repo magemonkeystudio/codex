@@ -86,7 +86,8 @@ public class NMSImpl implements NMS {
 
     @Override
     public void sendPacket(@NotNull Player player, @NotNull Object packet) {
-        Preconditions.checkArgument(packet instanceof Packet, "Packet must be an instance of net.minecraft.server.Packet");
+        Preconditions.checkArgument(packet instanceof Packet,
+                "Packet must be an instance of net.minecraft.server.Packet");
         ((PlayerConnection) getConnection(player)).a((Packet<?>) packet);
     }
 
@@ -227,7 +228,8 @@ public class NMSImpl implements NMS {
                 Codex.info("Could not change skull with modern method, trying legacy method.");
                 if (!(block.getState() instanceof Skull)) return;
 
-                TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle().c_(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+                TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle()
+                        .c_(new BlockPosition(block.getX(), block.getY(), block.getZ()));
                 if (skull == null) return;
 
                 ResolvableProfile profile = new ResolvableProfile(getNonPlayerProfile(hash));
@@ -327,7 +329,10 @@ public class NMSImpl implements NMS {
 
     @Override
     @SuppressWarnings("UnstableApiUsage")
-    public EntityDamageByEntityEvent createEntityDamageEvent(@NotNull Entity entity, @NotNull Entity attacker, @NotNull EntityDamageByEntityEvent.DamageCause cause, double damage) {
+    public EntityDamageByEntityEvent createEntityDamageEvent(@NotNull Entity entity,
+                                                             @NotNull Entity attacker,
+                                                             @NotNull EntityDamageByEntityEvent.DamageCause cause,
+                                                             double damage) {
         return new EntityDamageByEntityEvent(attacker,
                 entity,
                 cause,

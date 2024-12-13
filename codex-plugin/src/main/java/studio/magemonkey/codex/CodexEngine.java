@@ -13,12 +13,12 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
-import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.api.exception.UnsupportedVersionException;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
 import studio.magemonkey.codex.commands.UnstuckCommand;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.core.config.CoreConfig;
@@ -48,7 +48,6 @@ import studio.magemonkey.codex.migration.MigrationUtil;
 import studio.magemonkey.codex.nms.packets.PacketManager;
 import studio.magemonkey.codex.util.Debugger;
 import studio.magemonkey.codex.util.ItemUT;
-import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.craft.CraftManager;
 import studio.magemonkey.codex.util.messages.AbstractMessageUtil;
@@ -192,7 +191,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
                 if (current == null) {
                     this.error("===== CodexCore Initialization Failure =====");
                     this.error(rawVersion + " is not currently supported. Is this a new version of Spigot?");
-                    this.error("If this is a new version, please be patient and wait for a new build supporting the new version");
+                    this.error(
+                            "If this is a new version, please be patient and wait for a new build supporting the new version");
                     this.error("If this is a version older than 1.16.5, sorry. We don't support <1.16.5");
                     this.error("============================================");
                 }
@@ -207,7 +207,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         // Placeholder registration
         PlaceholderRegistry.load();
         if (CodexEngine.get().getVault() != null) {
-            PlaceholderRegistry.PLAYER.registerItem("money", player -> (int) CodexEngine.get().getVault().getBalance(player));
+            PlaceholderRegistry.PLAYER.registerItem("money",
+                    player -> (int) CodexEngine.get().getVault().getBalance(player));
         }
 
         setupManagers();

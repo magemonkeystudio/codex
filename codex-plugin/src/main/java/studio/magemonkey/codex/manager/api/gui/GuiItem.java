@@ -26,11 +26,11 @@ public class GuiItem {
     private int                         animStartFrame;
     private TreeMap<Integer, ItemStack> animFrames;
 
-    private String   permission;
+    private String                            permission;
     @Setter
     @Getter
-    private int[]    slots;
-    private GuiClick click;
+    private int[]                             slots;
+    private GuiClick                          click;
     private Map<ClickType, ActionManipulator> customClicks;
 
     public GuiItem(

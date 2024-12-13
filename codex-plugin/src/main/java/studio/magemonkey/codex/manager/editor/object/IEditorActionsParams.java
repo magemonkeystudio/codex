@@ -78,8 +78,8 @@ public class IEditorActionsParams<P extends CodexPlugin<P>> extends NGUI<P> {
                         EditorManager.startEdit(p, IEditorActionsParams.this, type2);
                         p.closeInventory();
 
-                        StringBuilder                    builder  = new StringBuilder();
-                        Set<IParam>                      params   = new HashSet<>(parametized.getParams());
+                        StringBuilder builder = new StringBuilder();
+                        Set<IParam>   params  = new HashSet<>(parametized.getParams());
                         IEditorActionsMain.ActionBuilder abuilder =
                                 section.getEditorMain().getActionBuilder(section.getSectionId());
                         if (abuilder == null) return;

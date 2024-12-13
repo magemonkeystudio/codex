@@ -8,7 +8,6 @@ import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.util.messages.MessageData;
-import studio.magemonkey.codex.util.messages.MessageUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

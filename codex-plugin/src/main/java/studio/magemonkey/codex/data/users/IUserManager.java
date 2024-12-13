@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.CodexDataPlugin;
+import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.data.event.EngineUserCreatedEvent;
 import studio.magemonkey.codex.data.event.EngineUserLoadEvent;
 import studio.magemonkey.codex.data.event.EngineUserUnloadEvent;
@@ -185,7 +185,9 @@ public abstract class IUserManager<P extends CodexDataPlugin<P, U>, U extends IA
         });
 
         this.plugin.info("Created new user data for: '" + uuid + "'");
-        this.plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> this.plugin.getData().addUser(user2));
+        this.plugin.getServer()
+                .getScheduler()
+                .runTaskAsynchronously(plugin, () -> this.plugin.getData().addUser(user2));
         this.activeUsers.put(uuid, user2);
         this.toCreate.remove(user2.getUUID());
         return user2;

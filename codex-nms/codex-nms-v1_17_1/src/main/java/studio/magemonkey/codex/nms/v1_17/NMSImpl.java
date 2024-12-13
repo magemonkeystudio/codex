@@ -54,7 +54,8 @@ public class NMSImpl implements NMS {
 
     @Override
     public void sendPacket(@NotNull Player player, @NotNull Object packet) {
-        Preconditions.checkArgument(packet instanceof Packet, "Packet must be an instance of net.minecraft.server.Packet");
+        Preconditions.checkArgument(packet instanceof Packet,
+                "Packet must be an instance of net.minecraft.server.Packet");
         ((PlayerConnection) getConnection(player)).sendPacket((Packet<?>) packet);
     }
 
@@ -165,7 +166,8 @@ public class NMSImpl implements NMS {
     public void changeSkull(@NotNull Block block, @NotNull String hash) {
         if (!(block.getState() instanceof Skull)) return;
 
-        TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle().getTileEntity(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+        TileEntitySkull skull = (TileEntitySkull) ((CraftWorld) block.getWorld()).getHandle()
+                .getTileEntity(new BlockPosition(block.getX(), block.getY(), block.getZ()));
         if (skull == null) return;
 
         GameProfile profile = getNonPlayerProfile(hash);

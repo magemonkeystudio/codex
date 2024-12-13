@@ -52,7 +52,8 @@ public class Action_Health extends IActionExecutor {
 
             LivingEntity livingEntity = (LivingEntity) target;
             double       hp2          = hp;
-            double       maxHp        = EntityUT.getAttribute(livingEntity, VersionManager.getNms().getAttribute("MAX_HEALTH"));
+            double       maxHp        =
+                    EntityUT.getAttribute(livingEntity, VersionManager.getNms().getAttribute("MAX_HEALTH"));
 
             if (percent) {
                 hp2 = maxHp * (hp / 100D);
