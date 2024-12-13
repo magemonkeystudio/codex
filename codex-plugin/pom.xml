@@ -13,16 +13,20 @@
     <name>CodexCore</name>
     <description>The core plugin for MageMonkeyStudio plugins</description>
 
+    <properties>
+        <outputDir>../../build</outputDir>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>studio.magemonkey</groupId>
             <artifactId>codex-core</artifactId>
-            <version>1.1.0-R0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>studio.magemonkey</groupId>
             <artifactId>codex-bungee</artifactId>
-            <version>1.1.0-R0.1-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 
@@ -31,20 +35,34 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <paperweight-mappings-namespace>spigot</paperweight-mappings-namespace>
+                        </manifestEntries>
+                    </archive>
+                    <outputDirectory>${outputDir}</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <artifactSet>
                         <includes>
-                            <include>${project.groupId}:*</include>
+                            <include>${project.groupId}:codex-*</include>
                         </includes>
                     </artifactSet>
                     <filters>
                         <filter>
-                            <artifact>*:*</artifact>
+                            <artifact>${project.groupId}:codex-*</artifact>
                             <excludes>
-                                <exclude>META-INF/maven/**</exclude>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                                <exclude>LICENSE</exclude>
                             </excludes>
                         </filter>
                     </filters>

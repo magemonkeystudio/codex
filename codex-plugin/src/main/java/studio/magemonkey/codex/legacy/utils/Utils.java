@@ -5,7 +5,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import studio.magemonkey.codex.CodexEngine;
-import studio.magemonkey.codex.util.ItemUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;

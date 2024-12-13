@@ -11,8 +11,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.manager.IManager;
-import studio.magemonkey.codex.util.InventoryUtil;
 
 public class MenuManager extends IManager<JavaPlugin> {
 
@@ -37,8 +37,8 @@ public class MenuManager extends IManager<JavaPlugin> {
             return;
         }
 
-        Inventory top    = InventoryUtil.getTopInventory(event);
-        Inventory bottom = InventoryUtil.getBottomInventory(event);
+        Inventory top    = VersionManager.getCompat().getTopInventory(event);
+        Inventory bottom = VersionManager.getCompat().getBottomInventory(event);
 
         Inventory otherInventory = top == inventory ? bottom : top;
         if (otherInventory.getHolder() instanceof Menu
@@ -71,7 +71,7 @@ public class MenuManager extends IManager<JavaPlugin> {
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         for (Integer rawSlot : event.getRawSlots()) {
-            Inventory inventory = InventoryUtil.getInventory(event, rawSlot);
+            Inventory inventory = VersionManager.getCompat().getInventory(event, rawSlot);
             if (inventory != null && inventory.getHolder() instanceof Menu) {
                 event.setCancelled(true);
                 break;

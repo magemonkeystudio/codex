@@ -238,7 +238,9 @@ public interface NMS {
     }
 
     default Objective registerNewObjective(Scoreboard scoreboard, Objective objective) {
-        return scoreboard.registerNewObjective(objective.getName(), objective.getCriteria(), objective.getDisplayName());
+        return scoreboard.registerNewObjective(objective.getName(),
+                objective.getCriteria(),
+                objective.getDisplayName());
     }
 
     default BaseComponent getTranslatedComponent(@NotNull ItemStack itemStack) {
@@ -266,7 +268,10 @@ public interface NMS {
         return baseComponent;
     }
 
-    default EntityDamageByEntityEvent createEntityDamageEvent(@NotNull Entity entity, @NotNull Entity attacker, @NotNull EntityDamageEvent.DamageCause cause, double damage) {
+    default EntityDamageByEntityEvent createEntityDamageEvent(@NotNull Entity entity,
+                                                              @NotNull Entity attacker,
+                                                              @NotNull EntityDamageEvent.DamageCause cause,
+                                                              double damage) {
         return new EntityDamageByEntityEvent(attacker, entity, cause, damage);
     }
 

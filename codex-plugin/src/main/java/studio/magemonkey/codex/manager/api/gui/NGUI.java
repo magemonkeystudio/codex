@@ -12,11 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.config.api.JYML;
 import studio.magemonkey.codex.manager.IListener;
-import studio.magemonkey.codex.manager.api.task.ITask;
 import studio.magemonkey.codex.manager.api.ClickType;
-import studio.magemonkey.codex.util.InventoryUtil;
+import studio.magemonkey.codex.manager.api.task.ITask;
 import studio.magemonkey.codex.util.ItemUT;
 import studio.magemonkey.codex.util.StringUT;
 import studio.magemonkey.codex.util.actions.ActionManipulator;
@@ -137,7 +137,7 @@ public abstract class NGUI<P extends CodexPlugin<P>> extends IListener<P> implem
     // TODO Experimental
     public void refill() {
         this.getViewers().forEach(player -> {
-            Inventory top = InventoryUtil.getTopInventory(player);
+            Inventory top = VersionManager.getCompat().getTopInventory(player);
             if (!(top.getHolder() instanceof NGUI<?>)) return;
 
             for (int slot = 0; slot < top.getSize(); slot++) {
@@ -515,7 +515,8 @@ public abstract class NGUI<P extends CodexPlugin<P>> extends IListener<P> implem
                 });
             }
 
-            NGUI.this.getViewers().forEach(player -> NGUI.this.fillGUI(InventoryUtil.getTopInventory(player), player));
+            NGUI.this.getViewers()
+                    .forEach(player -> NGUI.this.fillGUI(VersionManager.getCompat().getTopInventory(player), player));
         }
     }
 }

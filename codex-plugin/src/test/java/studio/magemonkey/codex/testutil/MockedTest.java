@@ -1,9 +1,7 @@
 package studio.magemonkey.codex.testutil;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -18,13 +16,13 @@ import org.mockito.MockedStatic;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.commands.CommandRegister;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
+import studio.magemonkey.codex.compat.Compat;
 import studio.magemonkey.codex.compat.NMS;
 import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.core.config.CoreLang;
 import studio.magemonkey.codex.hooks.HookManager;
 import studio.magemonkey.codex.mccore.commands.CommandManager;
 import studio.magemonkey.codex.mccore.scoreboard.Board;
-import studio.magemonkey.codex.util.InventoryUtil;
 import studio.magemonkey.codex.util.Reflex;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 
@@ -48,7 +46,6 @@ public abstract class MockedTest {
     protected MockedStatic<Reflex>          reflex;
     protected MockedStatic<CommandRegister> commandRegister;
     protected MockedStatic<Board>           board;
-    protected MockedStatic<InventoryUtil>   inventoryUtil;
     protected HookManager                   hookManager;
     protected ActionsManager                actionsManager;
     protected CoreLang                      coreLang;
@@ -83,10 +80,10 @@ public abstract class MockedTest {
         }
         board = mockStatic(Board.class);
 
-        inventoryUtil = mockStatic(InventoryUtil.class);
-        inventoryUtil.when(() -> InventoryUtil.getTopInventory(any(Player.class)))
+        Compat compat = mock(Compat.class);
+        when(compat.getTopInventory(any(Player.class)))
                 .thenAnswer(ans -> {
-                    Player    player = ((Player) ans.getArgument(0));
+                    Player    player = ans.getArgument(0);
                     Inventory inv    = player.getOpenInventory().getTopInventory();
                     //noinspection ConstantValue
                     if (inv != null) return inv;
@@ -100,6 +97,7 @@ public abstract class MockedTest {
         when(nms.fixColors(anyString())).thenAnswer(ans -> ans.getArgument(0));
 
         VersionManager.setNms(nms);
+        VersionManager.setCompat(compat);
 
         reflex = mockStatic(Reflex.class);
         reflex.when(() -> Reflex.getClass(startsWith("studio.magemonkey"), anyString()))
@@ -136,7 +134,6 @@ public abstract class MockedTest {
         if (board != null) board.close();
         CommandManager.unregisterAll();
         MockBukkit.unmock();
-        if (inventoryUtil != null) inventoryUtil.close();
     }
 
     @AfterEach
@@ -199,8 +196,8 @@ public abstract class MockedTest {
 
     @NotNull
     private void addFile(FileInputStream f, String sd, ZipOutputStream out) throws IOException {
-        byte            data[] = new byte[BUFFER];
-        FileInputStream fi     = f;
+        byte[]          data = new byte[BUFFER];
+        FileInputStream fi   = f;
         try (BufferedInputStream origin = new BufferedInputStream(fi, BUFFER)) {
             ZipEntry entry = new ZipEntry(sd);
             out.putNextEntry(entry);

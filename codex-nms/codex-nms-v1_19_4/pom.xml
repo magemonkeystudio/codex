@@ -6,7 +6,7 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-nms</artifactId>
-        <version>1.1.0-R0.1-SNAPSHOT</version>
+        <version>1.1.0-R0.2-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex-nms-v1_19_4</artifactId>

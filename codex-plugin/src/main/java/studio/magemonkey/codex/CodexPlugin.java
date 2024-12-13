@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.commands.CommandManager;
 import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import studio.magemonkey.codex.commands.list.MainCommand;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.config.ConfigManager;
 import studio.magemonkey.codex.config.api.IConfigTemplate;
 import studio.magemonkey.codex.core.config.CoreLang;
@@ -29,7 +30,6 @@ import studio.magemonkey.codex.manager.api.gui.NGUI;
 import studio.magemonkey.codex.manager.editor.EditorHandler;
 import studio.magemonkey.codex.modules.ModuleManager;
 import studio.magemonkey.codex.nms.packets.PacketManager;
-import studio.magemonkey.codex.util.InventoryUtil;
 import studio.magemonkey.codex.util.actions.ActionsManager;
 import studio.magemonkey.codex.util.actions.Parametized;
 import studio.magemonkey.codex.util.craft.CraftManager;
@@ -158,7 +158,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         // To prevent take items after unregister listeners
         for (Player p : this.getServer().getOnlinePlayers()) {
             if (p != null) {
-                InventoryHolder ih = InventoryUtil.getTopInventory(p).getHolder();
+                InventoryHolder ih = VersionManager.getCompat().getTopInventory(p).getHolder();
                 if (ih instanceof NGUI) {
                     p.closeInventory();
                 }
