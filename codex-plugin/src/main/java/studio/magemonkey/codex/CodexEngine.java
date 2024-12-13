@@ -202,8 +202,10 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             return false;
         }
 
-        messageUtil.load(LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang",
-                "messages_en.yml"), getResource("lang/messages_en.yml")), this);
+        CodexEngine.get()
+                .getMessageUtil()
+                .load(LegacyConfigManager.loadConfigFile(new File(getDataFolder() + File.separator + "lang",
+                        "messages_en.yml"), getResource("lang/messages_en.yml")), this);
         // Placeholder registration
         PlaceholderRegistry.load();
         if (CodexEngine.get().getVault() != null) {
