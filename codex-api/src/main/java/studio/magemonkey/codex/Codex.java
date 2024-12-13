@@ -3,6 +3,9 @@ package studio.magemonkey.codex;
 import lombok.Setter;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * This will slowly become the central point of reference for all things Codex instead of CodexEngine
+ */
 public class Codex {
     @Setter
     public static JavaPlugin plugin;
