@@ -36,10 +36,7 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
-          mvn clean deploy -pl \!codex-nms,\!codex-nms/codex-nms-v1_16_5,\!codex-nms/codex-nms-v1_17_1,\
-          \!codex-nms/codex-nms-v1_18_2,\!codex-nms/codex-nms-v1_19_4,\!codex-nms/codex-nms-v1_20_2,\
-          \!codex-nms/codex-nms-v1_20_4,\!codex-nms/codex-nms-v1_20_6,\!codex-nms/codex-nms-v1_21_1,\
-          \!codex-nms/codex-nms-v1_21_2,\!codex-nms/codex-nms-v1_21_4 -P gpg,publish -DcreateChecksum=true 2>&1 | tee log.txt
+          mvn clean deploy -f pom-dev.xml -P gpg,publish -DcreateChecksum=true 2>&1 | tee log.txt
           result_code=${PIPESTATUS[0]}
           exit $result_code
       - name: Tag release version

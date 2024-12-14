@@ -9,6 +9,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.api.items.ItemType;
 import studio.magemonkey.codex.compat.VersionManager;
@@ -55,6 +56,8 @@ public class ItemUtils {
         item = item.clone();
 
         ItemMeta im = getItemMeta(item);
+        if (im == null) return item;
+
         if (im.hasDisplayName()) {
             im.setDisplayName(CodexEngine.get()
                     .getMessageUtil()
@@ -104,6 +107,7 @@ public class ItemUtils {
         return null;
     }
 
+    @Nullable
     public static ItemMeta getItemMeta(final ItemStack itemStack) {
         final ItemMeta meta = itemStack.getItemMeta();
         if (meta == null) return Bukkit.getItemFactory().getItemMeta(itemStack.getType());
