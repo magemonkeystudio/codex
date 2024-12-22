@@ -42,7 +42,7 @@ def find_pom_files(directory):
     pom_files = []
     for root, dirs, files in os.walk(directory):
         for file in files:
-            if file == 'pom.xml':
+            if file == 'pom.xml' or file == 'pom-dev.xml':
                 pom_files.append(os.path.join(root, file))
     return pom_files
 

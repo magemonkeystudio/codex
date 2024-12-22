@@ -205,7 +205,17 @@ public class NMSImpl implements NMS {
                 if (hash.startsWith("http")) {
                     textures.setSkin(new URL(hash));
                 } else {
-                    String decoded = new String(java.util.Base64.getDecoder().decode(hash));
+                    String decoded;
+                    try {
+                        decoded = new String(Base64.getDecoder().decode(hash));
+                    } catch (IllegalArgumentException ignored) {
+                        try {
+                            decoded = new String(Base64.getMimeDecoder().decode(hash));
+                        } catch (IllegalArgumentException ignored2) {
+                            decoded = new String(Base64.getUrlDecoder().decode(hash));
+                            // If we throw again... we'll just break out
+                        }
+                    }
                     // Construct the json object
                     JsonObject json = new Gson().fromJson(decoded, JsonObject.class);
                     // Get the textures object
