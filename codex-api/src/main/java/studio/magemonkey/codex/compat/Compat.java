@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 
@@ -135,5 +136,19 @@ public interface Compat {
     default int convertSlot(InventoryEvent event, int slot) {
         InventoryView view = event.getView();
         return view.convertSlot(slot);
+    }
+
+    default String getItemName(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) {
+            return item.getType().toString();
+        }
+
+        String name = null;
+
+        if (meta.hasDisplayName()) name = meta.getDisplayName();
+        if (name == null && meta.getLore() != null && !meta.getLore().isEmpty()) name = meta.getLore().get(0);
+
+        return name == null ? item.getType().toString() : name;
     }
 }

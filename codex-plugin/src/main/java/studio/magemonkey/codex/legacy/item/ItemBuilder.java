@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.legacy.utils.Utils;
 import studio.magemonkey.codex.util.DeserializationWorker;
 import studio.magemonkey.codex.util.ItemUtils;
@@ -50,7 +51,6 @@ public class ItemBuilder implements ConfigurationSerializable {
     @Deprecated
     public ItemBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
-        Bukkit.getServer().getConsoleSender().sendMessage("Building item: " + w.getString("name", "none"));
         this.material = ItemUtils.getMaterial(w.getString("material", "AIR"));
         this.amount = w.getInt("amount", 1);
         this.durability = w.getShort("durability");
@@ -154,8 +154,8 @@ public class ItemBuilder implements ConfigurationSerializable {
         return this;
     }
 
-    public ItemBuilder name(final ItemMeta source) {
-        this.name = source.getDisplayName();//ItemUtils.removeColors(source.getDisplayName());
+    public ItemBuilder name(final ItemStack source) {
+        this.name = VersionManager.getCompat().getItemName(source);
         return this;
     }
 
@@ -298,6 +298,11 @@ public class ItemBuilder implements ConfigurationSerializable {
         if (this.dataBuilder != null) {
             this.dataBuilder.use(meta);
         }
+
+        if (meta.hasCustomModelData()) {
+            this.modelData = meta.getCustomModelData();
+        }
+
         return this;
     }
 
@@ -398,11 +403,12 @@ public class ItemBuilder implements ConfigurationSerializable {
         if (itemStack == null) {
             return new ItemBuilder();
         }
-        final ItemBuilder itemBuilder = new ItemBuilder().material(itemStack).amount(itemStack).durability(itemStack);
+        final ItemBuilder itemBuilder =
+                new ItemBuilder().material(itemStack).amount(itemStack).durability(itemStack).name(itemStack);
         final ItemMeta    meta        = ItemUtils.getItemMeta(itemStack);
         if (meta == null) {
             return itemBuilder;
         }
-        return itemBuilder.name(meta).lore(meta).enchant(meta).flag(meta).unbreakable(meta).data(meta);
+        return itemBuilder.lore(meta).enchant(meta).flag(meta).unbreakable(meta).data(meta);
     }
 }
