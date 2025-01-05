@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.registry.attribute;
+package studio.magemonkey.codex.registry.provider;
 
 import org.bukkit.entity.LivingEntity;
 

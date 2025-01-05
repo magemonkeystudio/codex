@@ -13,6 +13,11 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.Codex;
+import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.api.items.ItemType;
+import studio.magemonkey.codex.api.items.exception.CodexItemException;
+import studio.magemonkey.codex.api.items.providers.VanillaProvider;
 import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.legacy.utils.Utils;
 import studio.magemonkey.codex.util.DeserializationWorker;
@@ -26,7 +31,7 @@ import java.util.stream.Collectors;
 @SerializableAs("Codex_Item")
 public class ItemBuilder implements ConfigurationSerializable {
     @Getter
-    protected Material                  material    = Material.AIR;
+    protected ItemType                  material    = new VanillaProvider.VanillaItemType(Material.AIR);
     @Getter
     protected int                       amount      = 1;
     @Getter
@@ -51,7 +56,14 @@ public class ItemBuilder implements ConfigurationSerializable {
     @Deprecated
     public ItemBuilder(final Map<String, Object> map) {
         final DeserializationWorker w = DeserializationWorker.start(map);
-        this.material = ItemUtils.getMaterial(w.getString("material", "AIR"));
+
+        String matString = w.getString("material", "VANILLA_air");
+        try {
+            this.material = CodexEngine.get().getItemManager().getItemType(matString);
+        } catch (CodexItemException e) {
+            Codex.warn("Invalid item type: " + matString + ". Using AIR instead.");
+        }
+
         this.amount = w.getInt("amount", 1);
         this.durability = w.getShort("durability");
         this.name = w.getString("name", null);
@@ -116,12 +128,12 @@ public class ItemBuilder implements ConfigurationSerializable {
     }
 
     public ItemBuilder material(final Material material) {
-        this.material = material;
+        this.material = new VanillaProvider.VanillaItemType(material);
         return this;
     }
 
     public ItemBuilder material(final ItemStack source) {
-        this.material = source.getType();
+        this.material = CodexEngine.get().getItemManager().getMainItemType(source);
         return this;
     }
 
@@ -307,10 +319,11 @@ public class ItemBuilder implements ConfigurationSerializable {
     }
 
     public ItemStack build() {
-        ItemStack item = new ItemStack(this.material, this.amount);
+        ItemStack item = this.material.create();
+        item.setAmount(this.amount);
 //        this.applyFunc();
         final ItemMeta meta =
-                item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(this.material);
+                item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
 //        if (meta instanceof Damageable) { // 1.13+
         item.setDurability(this.durability); // 1.12
         //((Damageable) meta).setDamage(this.durability); // 1.13+
@@ -346,7 +359,7 @@ public class ItemBuilder implements ConfigurationSerializable {
     }
 
     public ItemBuilder reset() {
-        this.material = Material.AIR;
+        this.material = new VanillaProvider.VanillaItemType(Material.AIR);
         this.amount = 1;
         this.durability = 0;
         this.name = null;
@@ -405,7 +418,7 @@ public class ItemBuilder implements ConfigurationSerializable {
         }
         final ItemBuilder itemBuilder =
                 new ItemBuilder().material(itemStack).amount(itemStack).durability(itemStack).name(itemStack);
-        final ItemMeta    meta        = ItemUtils.getItemMeta(itemStack);
+        final ItemMeta meta = ItemUtils.getItemMeta(itemStack);
         if (meta == null) {
             return itemBuilder;
         }

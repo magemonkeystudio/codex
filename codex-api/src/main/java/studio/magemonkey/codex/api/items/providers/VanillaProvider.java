@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.api.items.ItemType;
 import studio.magemonkey.codex.api.items.PrefixHelper;
 
+import java.util.Locale;
+
 public class VanillaProvider implements ICodexItemProvider<VanillaProvider.VanillaItemType> {
     public static final String NAMESPACE = "VANILLA";
 
@@ -34,6 +36,7 @@ public class VanillaProvider implements ICodexItemProvider<VanillaProvider.Vanil
     public VanillaItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
 
+        id = id.toUpperCase(Locale.US);
         Material material = Material.matchMaterial(PrefixHelper.stripPrefix(NAMESPACE, id).replaceAll("[ -]", "_"));
         if (material == null) return null;
 

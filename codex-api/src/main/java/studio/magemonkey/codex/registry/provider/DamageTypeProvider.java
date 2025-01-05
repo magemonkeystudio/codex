@@ -1,4 +1,4 @@
-package studio.magemonkey.codex.registry.damage;
+package studio.magemonkey.codex.registry.provider;
 
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;

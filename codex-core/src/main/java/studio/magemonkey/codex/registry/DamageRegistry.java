@@ -1,9 +1,10 @@
-package studio.magemonkey.codex.registry.damage;
+package studio.magemonkey.codex.registry;
 
 import org.bukkit.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.Codex;
+import studio.magemonkey.codex.registry.provider.DamageTypeProvider;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -15,7 +16,7 @@ public class DamageRegistry {
     public static void registerProvider(DamageTypeProvider provider) {
         String namespace = provider.getNamespace().toUpperCase(Locale.US);
         if (PROVIDERS.get(namespace) != null) {
-            throw new IllegalArgumentException("Provider with namespace " + namespace + " already exists!");
+            throw new IllegalArgumentException("DamageProvider with namespace " + namespace + " already exists!");
         }
 
         PROVIDERS.put(namespace, provider);
@@ -30,13 +31,16 @@ public class DamageRegistry {
                                      double amount,
                                      String damageType,
                                      @Nullable LivingEntity damager) {
+        boolean damaged = false;
+
         for (Map.Entry<String, DamageTypeProvider> entry : PROVIDERS.entrySet()) {
             String namespace = entry.getKey();
             if (damageType.length() <= namespace.length() + 1) continue;
             if (damageType.substring(0, namespace.length() + 1).equalsIgnoreCase(namespace + '_')) {
-                return entry.getValue().dealDamage(entity, amount, damageType, damager);
+                damaged |= entry.getValue().dealDamage(entity, amount, damageType, damager);
             }
         }
-        return false;
+
+        return damaged;
     }
 }

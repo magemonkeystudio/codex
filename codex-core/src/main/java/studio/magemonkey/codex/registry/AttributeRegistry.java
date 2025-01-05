@@ -1,7 +1,8 @@
-package studio.magemonkey.codex.registry.attribute;
+package studio.magemonkey.codex.registry;
 
 import org.bukkit.entity.LivingEntity;
 import studio.magemonkey.codex.Codex;
+import studio.magemonkey.codex.registry.provider.AttributeProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,7 @@ public class AttributeRegistry {
     public static final String MELEE_DAMAGE       = "melee-damage";
     public static final String MELEE_DEFENSE      = "melee-defense";
 
-    private static List<AttributeProvider> providers = new ArrayList<>();
+    private static final List<AttributeProvider> providers = new ArrayList<>();
 
     public static void registerProvider(AttributeProvider provider) {
         providers.add(provider);
