@@ -45,6 +45,11 @@
         </dependency>
         <dependency>
             <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_20_1</artifactId>
+            <version>${nms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
             <artifactId>codex-nms-v1_20_2</artifactId>
             <version>${nms.version}</version>
         </dependency>
