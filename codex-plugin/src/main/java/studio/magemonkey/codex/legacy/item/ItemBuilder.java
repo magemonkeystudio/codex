@@ -343,8 +343,15 @@ public class ItemBuilder implements ConfigurationSerializable {
             meta.setLore(Utils.fixColors(lore));
         }
         if (this.enchants != null) {
-            for (final Map.Entry<Enchantment, Integer> entry : this.enchants.entrySet()) {
-                meta.addEnchant(entry.getKey(), entry.getValue(), true);
+            if (meta instanceof EnchantmentStorageMeta) {
+                final EnchantmentStorageMeta storage = (EnchantmentStorageMeta) meta;
+                for (final Map.Entry<Enchantment, Integer> entry : this.enchants.entrySet()) {
+                    storage.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                }
+            } else {
+                for (final Map.Entry<Enchantment, Integer> entry : this.enchants.entrySet()) {
+                    meta.addEnchant(entry.getKey(), entry.getValue(), true);
+                }
             }
         }
         if (this.dataBuilder != null) {
