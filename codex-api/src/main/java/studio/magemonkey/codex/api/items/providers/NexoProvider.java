@@ -1,13 +1,16 @@
 package studio.magemonkey.codex.api.items.providers;
 
 import com.nexomc.nexo.api.NexoItems;
-import com.nexomc.nexo.items.ItemBuilder;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
+import studio.magemonkey.codex.Codex;
 import studio.magemonkey.codex.api.items.ItemType;
 import studio.magemonkey.codex.api.items.PrefixHelper;
 
-public class NexoProvider implements ICodexItemProvider<NexoProvider.NexoItemType> {
+import java.util.Objects;
+
+public class NexoProvider implements ICodexItemProvider<NexoProvider.NexoItemType>, Listener {
     public static final String NAMESPACE = "NEXO";
 
     @Override
@@ -29,12 +32,9 @@ public class NexoProvider implements ICodexItemProvider<NexoProvider.NexoItemTyp
     @Nullable
     public NexoItemType getItem(String id) {
         if (id == null || id.isBlank()) return null;
-
         id = PrefixHelper.stripPrefix(NAMESPACE, id);
 
-        ItemBuilder itemBuilder = NexoItems.itemFromId(id);
-        if (itemBuilder == null) return null;
-        return new NexoItemType(id, itemBuilder);
+        return new NexoItemType(id);
     }
 
     @Override
@@ -58,12 +58,10 @@ public class NexoProvider implements ICodexItemProvider<NexoProvider.NexoItemTyp
     }
 
     public static class NexoItemType extends ItemType {
-        private final String      id;
-        private final ItemBuilder itemBuilder;
+        private final String id;
 
-        public NexoItemType(String id, ItemBuilder itemBuilder) {
+        public NexoItemType(String id) {
             this.id = id;
-            this.itemBuilder = itemBuilder;
         }
 
         @Override
@@ -83,7 +81,12 @@ public class NexoProvider implements ICodexItemProvider<NexoProvider.NexoItemTyp
 
         @Override
         public ItemStack create() {
-            return this.itemBuilder.build();
+            if (!NexoItems.exists(this.id)) {
+                Codex.warn("Could not find NEXO item with ID " + this.id + ". Has Nexo fully initialized?");
+                return null;
+            }
+
+            return Objects.requireNonNull(NexoItems.itemFromId(this.id)).build();
         }
 
         @Override
