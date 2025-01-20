@@ -6,12 +6,12 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.1.0-R0.4-SNAPSHOT</version>
+        <version>1.1.0-R0.10-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <artifactId>codex-nms</artifactId>
-    <version>1.1.0-R0.4-SNAPSHOT</version>
+    <version>1.1.0-R0.5-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
         <module>codex-nms-v1_16_5</module>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>studio.magemonkey</groupId>
             <artifactId>codex-api</artifactId>
-            <version>1.1.0-R0.4-SNAPSHOT</version>
+            <version>1.1.0-R0.10-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

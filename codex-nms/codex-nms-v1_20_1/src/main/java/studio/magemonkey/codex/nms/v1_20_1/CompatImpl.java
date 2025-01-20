@@ -22,6 +22,11 @@ public class CompatImpl implements Compat {
     }
 
     @Override
+    public String getAttributeKey(NBTAttribute attribute) {
+        return attribute.getAttribute().getKey().toString();
+    }
+
+    @Override
     public String getItemName(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         if (meta == null) {

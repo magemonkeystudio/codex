@@ -16,4 +16,9 @@ public class CompatImpl implements Compat {
     public String getAttributeKey(AttributeModifier attributeModifier) {
         return attributeModifier.getName();
     }
+
+    @Override
+    public String getAttributeKey(NBTAttribute attribute) {
+        return attribute.getAttribute().getKey().toString();
+    }
 }

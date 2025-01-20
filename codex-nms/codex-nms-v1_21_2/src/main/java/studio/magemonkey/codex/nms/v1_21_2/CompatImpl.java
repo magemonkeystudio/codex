@@ -29,6 +29,11 @@ public class CompatImpl implements Compat {
     }
 
     @Override
+    public String getAttributeKey(NBTAttribute attribute) {
+        return attribute.getAttribute().getKey().toString();
+    }
+
+    @Override
     public Inventory getTopInventory(InventoryEvent event) {
         InventoryView view = event.getView();
         return view.getTopInventory();

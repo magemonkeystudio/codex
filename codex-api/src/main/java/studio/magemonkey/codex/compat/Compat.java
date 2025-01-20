@@ -21,6 +21,8 @@ public interface Compat {
 
     String getAttributeKey(AttributeModifier attributeModifier);
 
+    String getAttributeKey(NBTAttribute attribute);
+
     /**
      * Gets the top inventory from an InventoryEvent's InventoryView. We do
      * this here because InventoryView is an interface in 1.21+.
