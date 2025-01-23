@@ -395,7 +395,7 @@ public class ItemBuilder implements ConfigurationSerializable {
     @Override
     public Map<String, Object> serialize() {
         final SerializationBuilder b = SerializationBuilder.start(7);
-        b.append("material", this.material);
+        b.append("material", this.material.getNamespacedID());
         b.append("amount", this.amount);
         b.append("durability", this.durability);
         b.append("unbreakable", this.unbreakable);
