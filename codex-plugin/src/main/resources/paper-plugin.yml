@@ -23,15 +23,22 @@ permissions:
     default: true
 
 dependencies:
-  - name: Vault
-    required: false
-    bootstrap: true
-  - name: WorldGuard
-    required: false
-    bootstrap: true
-  - name: MythicMobs
-    required: false
-    bootstrap: true
+  server:
+    Vault:
+      load: BEFORE
+      required: false
+    WorldGuard:
+      load: BEFORE
+      required: false
+    MythicMobs:
+      load: BEFORE
+      required: false
+    Nexo:
+      load: BEFORE
+      required: false
+    Oraxen:
+      load: BEFORE
+      required: false
 load-before:
   - name: Fabled
     boostrap: false

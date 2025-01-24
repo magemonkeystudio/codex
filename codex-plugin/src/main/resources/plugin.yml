@@ -3,7 +3,7 @@ main: studio.magemonkey.codex.CodexEngine
 version: ${project.version}
 description: Core plugin for the MageMonkeyStudio suite
 authors: [ Travja, goflish ]
-softdepend: [ Vault, WorldGuard, MythicMobs ]
+softdepend: [ Vault, WorldGuard, MythicMobs, Oraxen, Nexo ]
 api-version: 1.16
 load: STARTUP
 libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
