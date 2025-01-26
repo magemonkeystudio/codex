@@ -2,7 +2,6 @@ package studio.magemonkey.codex;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -110,9 +109,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     @Getter
     private boolean scoreboardsEnabled;
 
-    private UnstuckCommand unstuck;
-    private CycleTask      cTask;
-    private UpdateTask     uTask;
+    private CycleTask  cTask;
+    private UpdateTask uTask;
 
     public CodexEngine() {
         setInstance();
@@ -156,8 +154,6 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     }
 
     final boolean loadCore() {
-        unstuck = new UnstuckCommand();
-
         ConfigurationSerialization.registerClass(ItemBuilder.class);
         ConfigurationSerialization.registerClass(EnchantmentStorageBuilder.class, "Codex_EnchantmentStorageMeta");
         ConfigurationSerialization.registerClass(FireworkEffectBuilder.class, "Codex_FireworkEffectMeta");
@@ -219,9 +215,15 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     }
 
     protected void registerEvents() {
+        if (chatEnabled) {
+            getCommandManager().registerCommand(new ChatCommander<>(this));
+            new ChatListener(this);
+        }
+        setupScoreboards();
+
+
         getPluginManager().registerEvents(this, this);
         getPluginManager().registerEvents(new ArmorListener(), this);
-        getPluginManager().registerEvents(unstuck, this);
         getPluginManager().registerEvents(new BoatListener(), this);
         getPluginManager().registerEvents(new InteractListener(cfg().getJYML()), this);
         getPluginManager().registerEvents(new JoinListener(this, cfg().getJYML()), this);
@@ -296,19 +298,13 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         boolean debug = cfg().getJYML().getBoolean("debug", false);
         Debugger.setDebug(debug);
 
-        if (chatEnabled) {
-            new ChatCommander(this);
-            new ChatListener(this);
-        }
-        setupScoreboards();
-
         this.lang = new CoreLang(this);
         this.lang.setup();
     }
 
     private void setupScoreboards() {
         if (scoreboardsEnabled) {
-            new ScoreboardCommander(this);
+            getCommandManager().registerCommand(new ScoreboardCommander<>(this));
             new BoardListener(this);
             cTask = new CycleTask(this);
             uTask = new UpdateTask(this);
@@ -332,8 +328,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
     @Override
     public void registerCommands(@NotNull IGeneralCommand<CodexEngine> mainCommand) {
-        PluginCommand unstuckCommand = getCommand("stuck");
-        if (unstuckCommand != null) unstuckCommand.setExecutor(unstuck);
+        getCommandManager().registerCommand(new UnstuckCommand<>(this));
     }
 
     @Override

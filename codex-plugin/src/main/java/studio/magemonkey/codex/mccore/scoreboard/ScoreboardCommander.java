@@ -26,47 +26,64 @@
  */
 package studio.magemonkey.codex.mccore.scoreboard;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.IGeneralCommand;
+
+import java.util.List;
 
 /**
  * Handles commands for scoreboards
  */
-public class ScoreboardCommander extends CommandHandler {
+public class ScoreboardCommander<P extends CodexPlugin<P>> extends IGeneralCommand<P> {
 
     /**
      * Constructor
      *
      * @param plugin plugin reference
      */
-    public ScoreboardCommander(Plugin plugin) {
-        super(plugin, "Scoreboard", "board");
+    public ScoreboardCommander(P plugin) {
+        super(plugin, List.of("board"));
+
+        registerSubCommands();
     }
 
     /**
      * Registers commands
      */
-    @Override
-    protected void registerCommands() {
-        registerCommand("cycle", new CycleCommand());
-        registerCommand("list", new ListCommand());
-        registerCommand("show", new ShowCommand());
-        registerCommand("stop", new StopCommand());
-        registerCommand("toggle", new ToggleCommand());
+    protected void registerSubCommands() {
+        this.addSubCommand(new CycleCommand<>(plugin));
+        this.addSubCommand(new ListCommand<>(plugin));
+        this.addSubCommand(new ShowCommand<>(plugin));
+        this.addSubCommand(new StopCommand<>(plugin));
+        this.addSubCommand(new ToggleCommand<>(plugin));
     }
 
-    /**
-     * Displays the usage for chat commands
-     *
-     * @param sender sender of the command
-     */
     @Override
-    public void displayUsage(CommandSender sender) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.DARK_RED + "Scoreboard commands are for players only!");
-        } else super.displayUsage(sender);
+    @NotNull
+    public String usage() {
+        return "/%cmd% cycle - Makes your scoreboard start cycling\n" +
+                "/%cmd% list - Displays your unlocked scoreboards\n" +
+                "/%cmd% show <name> - Shows a scoreboard\n" +
+                "/%cmd% stop - Stops your scoreboard from cycling\n" +
+                "/%cmd% toggle - Toggles your scoreboard cycling";
+    }
+
+    @Override
+    @NotNull
+    public String description() {
+        return "Scoreboard commands";
+    }
+
+    @Override
+    public boolean playersOnly() {
+        return true;
+    }
+
+
+    @Override
+    protected void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+        printUsage(sender);
     }
 }

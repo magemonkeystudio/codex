@@ -28,52 +28,45 @@ package studio.magemonkey.codex.mccore.scoreboard;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Shows a desired scoreboard for the player
  */
-public class ShowCommand implements ICommand {
+public class ShowCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    ShowCommand(P plugin) {
+        super(plugin, List.of("show"), ScoreboardNodes.SHOW.getNode());
+    }
 
     /**
      * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
-        if (args.length > 0) {
-            String name = args[0];
-            for (int i = 1; i < args.length; i++) {
-                name += " " + args[i];
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+        if (args.length > 1) {
+            StringBuilder name = new StringBuilder(args[1]);
+            for (int i = 2; i < args.length; i++) {
+                name.append(" ").append(args[i]);
             }
             PlayerBoards board = BoardManager.getPlayerBoards(sender.getName());
-            if (board.showBoard(name))
+            if (board.showBoard(name.toString()))
                 sender.sendMessage(ChatColor.DARK_GREEN + "Your scoreboard has been changed");
             else
                 sender.sendMessage(ChatColor.DARK_RED + "You do not have a scoreboard with that name");
-        } else handler.displayUsage(sender);
+        } else printUsage(sender);
     }
 
-    /**
-     * @return permission needed for this command
-     */
     @Override
-    public String getPermissionNode() {
-        return ScoreboardNodes.SHOW.getNode();
-    }
-
-    /**
-     * @return args string
-     */
-    @Override
-    public String getArgsString() {
+    @NotNull
+    public String usage() {
         return "<boardName>";
     }
 
@@ -81,15 +74,13 @@ public class ShowCommand implements ICommand {
      * @return description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Shows the scoreboard";
     }
 
-    /**
-     * Sender required for the command
-     */
     @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    public boolean playersOnly() {
+        return true;
     }
 }

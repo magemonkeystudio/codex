@@ -28,44 +28,38 @@ package studio.magemonkey.codex.mccore.scoreboard;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Toggles visibility of scoreboards
  */
-public class ToggleCommand implements ICommand {
+public class ToggleCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    ToggleCommand(P plugin) {
+        super(plugin, List.of("toggle"), ScoreboardNodes.TOGGLE.getNode());
+    }
+
     /**
      * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         PlayerBoards board = BoardManager.getPlayerBoards(sender.getName());
         board.toggle();
         sender.sendMessage(
                 ChatColor.DARK_GREEN + "Your scoreboard is now " + (board.isEnabled() ? "enabled" : "disabled"));
     }
 
-    /**
-     * @return permission needed for this command
-     */
     @Override
-    public String getPermissionNode() {
-        return ScoreboardNodes.TOGGLE.getNode();
-    }
-
-    /**
-     * @return args string
-     */
-    @Override
-    public String getArgsString() {
+    @NotNull
+    public String usage() {
         return "";
     }
 
@@ -73,15 +67,13 @@ public class ToggleCommand implements ICommand {
      * @return description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Toggles scoreboard visibility";
     }
 
-    /**
-     * Sender required for the command
-     */
     @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    public boolean playersOnly() {
+        return true;
     }
 }

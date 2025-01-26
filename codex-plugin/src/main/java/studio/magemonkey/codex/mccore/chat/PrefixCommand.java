@@ -28,47 +28,41 @@ package studio.magemonkey.codex.mccore.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Sets a prefix for a player
  */
-class PrefixCommand implements ICommand {
+class PrefixCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    PrefixCommand(P plugin) {
+        super(plugin, List.of("prefix"), ChatNodes.PREFIX.getNode());
+    }
 
     /**
      * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         ChatData data = Chat.getPlayerData(sender.getName());
-        if (data != null && args.length == 1) {
-            if (data.hasPrefix(args[0])) {
-                data.setPrefix(args[0]);
+        if (data != null && args.length == 2) {
+            if (data.hasPrefix(args[1])) {
+                data.setPrefix(args[1]);
                 sender.sendMessage(ChatColor.DARK_GREEN + "The prefix has been set!");
             } else sender.sendMessage(ChatColor.DARK_RED + "You do not have that prefix!");
-        } else handler.displayUsage(sender);
+        } else printUsage(sender);
     }
 
-    /**
-     * @return permission needed for this command
-     */
-    public String getPermissionNode() {
-        return ChatNodes.PREFIX.getNode();
-    }
-
-    /**
-     * @return args string
-     */
     @Override
-    public String getArgsString() {
+    @NotNull
+    public String usage() {
         return "<prefix>";
     }
 
@@ -76,15 +70,13 @@ class PrefixCommand implements ICommand {
      * @return description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Sets your prefix";
     }
 
-    /**
-     * Sender required for the command
-     */
     @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    public boolean playersOnly() {
+        return true;
     }
 }

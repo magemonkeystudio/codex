@@ -28,47 +28,43 @@ package studio.magemonkey.codex.mccore.scoreboard;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Displays a list of all active scoreboards for a player
  */
-public class ListCommand implements ICommand {
+public class ListCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    ListCommand(P plugin) {
+        super(plugin, List.of("list"), ScoreboardNodes.LIST.getNode());
+    }
 
     /**
      * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
-        String       message = ChatColor.DARK_GREEN + "Active Scoreboards: ";
-        PlayerBoards boards  = BoardManager.getPlayerBoards(sender.getName());
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+        StringBuilder message = new StringBuilder(ChatColor.DARK_GREEN + "Active Scoreboards: ");
+        PlayerBoards  boards  = BoardManager.getPlayerBoards(sender.getName());
         for (Board board : boards.getBoards()) {
-            message += ChatColor.GOLD + ChatColor.stripColor(board.getName()) + ChatColor.GRAY + ", ";
+            message.append(ChatColor.GOLD)
+                    .append(ChatColor.stripColor(board.getName()))
+                    .append(ChatColor.GRAY)
+                    .append(", ");
         }
-        sender.sendMessage(message);
+        sender.sendMessage(message.toString());
     }
 
-    /**
-     * @return permission required by the command
-     */
     @Override
-    public String getPermissionNode() {
-        return ScoreboardNodes.LIST.getNode();
-    }
-
-    /**
-     * @return arguments used by the command
-     */
-    @Override
-    public String getArgsString() {
+    @NotNull
+    public String usage() {
         return "";
     }
 
@@ -76,15 +72,12 @@ public class ListCommand implements ICommand {
      * @return command description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Displays a list of active scoreboards";
     }
 
-    /**
-     * Sender required for the command
-     */
-    @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    public boolean playersOnly() {
+        return true;
     }
 }

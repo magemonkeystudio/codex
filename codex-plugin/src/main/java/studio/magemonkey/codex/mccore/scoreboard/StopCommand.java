@@ -28,26 +28,29 @@ package studio.magemonkey.codex.mccore.scoreboard;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Stops a player's scoreboard from cycling
  */
-public class StopCommand implements ICommand {
+public class StopCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    StopCommand(P plugin) {
+        super(plugin, List.of("stop"), ScoreboardNodes.STOP.getNode());
+    }
 
     /**
      * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         PlayerBoards board = BoardManager.getPlayerBoards(sender.getName());
         if (!board.isCycling())
             sender.sendMessage(ChatColor.DARK_RED + "Your scoreboard is already stopped");
@@ -57,19 +60,9 @@ public class StopCommand implements ICommand {
         }
     }
 
-    /**
-     * @return permission needed for this command
-     */
     @Override
-    public String getPermissionNode() {
-        return ScoreboardNodes.STOP.getNode();
-    }
-
-    /**
-     * @return args string
-     */
-    @Override
-    public String getArgsString() {
+    @NotNull
+    public String usage() {
         return "";
     }
 
@@ -77,15 +70,13 @@ public class StopCommand implements ICommand {
      * @return description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Stops cycling the scoreboard";
     }
 
-    /**
-     * Sender required for the command
-     */
     @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    public boolean playersOnly() {
+        return true;
     }
 }

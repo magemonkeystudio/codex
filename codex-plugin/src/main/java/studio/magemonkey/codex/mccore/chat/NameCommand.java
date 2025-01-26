@@ -28,65 +28,60 @@ package studio.magemonkey.codex.mccore.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Changes a player's display name
  */
-class NameCommand implements ICommand {
+class NameCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    NameCommand(P plugin) {
+        super(plugin, List.of("name"), ChatNodes.NAME.getNode());
+    }
 
     /**
-     * Executs the command
+     * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         ChatData data = Chat.getPlayerData(sender.getName());
-        if (data != null && args.length > 0) {
-            String name = "";
-            for (String piece : args)
-                name += piece.replace('&', ChatColor.COLOR_CHAR) + " ";
-            name = name.substring(0, name.length() - 2);
-            data.setDisplayName(name);
+        if (data != null && args.length > 1) {
+            StringBuilder name = new StringBuilder();
+            // Trim off the first arg (the label)
+            String[] temp = new String[args.length - 1];
+            System.arraycopy(args, 1, temp, 0, args.length - 1);
+            for (String piece : temp)
+                name.append(piece.replace('&', ChatColor.COLOR_CHAR)).append(" ");
+            name = new StringBuilder(name.substring(0, name.length() - 2));
+            data.setDisplayName(name.toString());
             sender.sendMessage(ChatColor.DARK_GREEN + "Your name has been set");
-        } else handler.displayUsage(sender);
-    }
-
-    /**
-     * @return permission needed for this command
-     */
-    public String getPermissionNode() {
-        return ChatNodes.NAME.getNode();
-    }
-
-    /**
-     * @return args string
-     */
-    @Override
-    public String getArgsString() {
-        return "<name>";
+        } else printUsage(sender);
     }
 
     /**
      * @return description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Sets your display name";
     }
 
-    /**
-     * Sender required for the command
-     */
     @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    @NotNull
+    public String usage() {
+        return "<name>";
+    }
+
+    @Override
+    public boolean playersOnly() {
+        return true;
     }
 }

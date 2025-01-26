@@ -3,8 +3,6 @@ package studio.magemonkey.codex.commands;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -15,6 +13,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.IGeneralCommand;
 import studio.magemonkey.codex.config.legacy.LegacyConfigManager;
 import studio.magemonkey.codex.util.messages.MessageData;
 
@@ -28,7 +28,7 @@ unstuck:
   cooldown: 30
   warmup: 5
  */
-public class UnstuckCommand implements CommandExecutor, Listener {
+public class UnstuckCommand<P extends CodexPlugin<P>> extends IGeneralCommand<P> implements Listener {
     private final Map<UUID, LinkedList<Location>> locs      = new HashMap<>();
     private final Map<UUID, Location>             warmingUp = new HashMap<>();
     private final Map<UUID, Long>                 cooldown  = new HashMap<>();
@@ -37,7 +37,10 @@ public class UnstuckCommand implements CommandExecutor, Listener {
     private final FileConfiguration config;
     private final File              destFile;
 
-    public UnstuckCommand() {
+    public UnstuckCommand(@NotNull P plugin) {
+        super(plugin, List.of("unstuck"), "codex.stuck");
+        plugin.getPluginManager().registerEvents(this, plugin);
+
         destFile = new File(CodexEngine.get().getDataFolder(), "unstuck.log");
         config = LegacyConfigManager.loadConfigFile(destFile, null);
     }
@@ -65,15 +68,30 @@ public class UnstuckCommand implements CommandExecutor, Listener {
         }
     }
 
+    @Override
+    public boolean playersOnly() {
+        return true;
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender,
-                             @NotNull Command command,
-                             @NotNull String label,
-                             @NotNull String[] args) {
+    @NotNull
+    public String usage() {
+        return "/unstuck";
+    }
+
+    @Override
+    @NotNull
+    public String description() {
+        return "Get stuck in a hole? Teleport out";
+    }
+
+    @Override
+    public void perform(@NotNull CommandSender sender,
+                        @NotNull String label,
+                        @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "You have to be a player to use that command!");
-            return true;
+            return;
         }
 
         Player player = (Player) sender;
@@ -86,13 +104,13 @@ public class UnstuckCommand implements CommandExecutor, Listener {
                 CodexEngine.get()
                         .getMessageUtil()
                         .sendMessage("general.commands.unstuck.err.cooldown", sender, new MessageData("time", seconds));
-                return true;
+                return;
             } else cooldown.remove(id);
         }
 
         if (warmingUp.containsKey(id)) {
             CodexEngine.get().getMessageUtil().sendMessage("general.commands.unstuck.err.warmingUp", sender);
-            return true;
+            return;
         }
 
         warmingUp.put(id, player.getLocation().getBlock().getLocation());
@@ -128,7 +146,7 @@ public class UnstuckCommand implements CommandExecutor, Listener {
 
         tasks.put(id, task);
 
-        return true;
+        return;
     }
 
     @EventHandler

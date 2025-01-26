@@ -26,46 +26,60 @@
  */
 package studio.magemonkey.codex.mccore.chat;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.IGeneralCommand;
+
+import java.util.List;
 
 /**
  * Controls commands for the chat API
  */
-public class ChatCommander extends CommandHandler {
-
+public class ChatCommander<P extends CodexPlugin<P>> extends IGeneralCommand<P> {
     /**
      * Constructor
      *
      * @param plugin plugin reference
      */
-    public ChatCommander(Plugin plugin) {
-        super(plugin, "Chat", "chat");
+    public ChatCommander(P plugin) {
+        super(plugin, List.of("chat"));
+
+        registerSubCommands();
     }
 
     /**
      * Registers the sub-commands
      */
-    @Override
-    protected void registerCommands() {
-        registerCommand("list", new ListCommand());
-        registerCommand("name", new NameCommand());
-        registerCommand("prefix", new PrefixCommand());
-        registerCommand("reset", new ResetCommand());
+    protected void registerSubCommands() {
+        this.addSubCommand(new ListCommand<>(plugin));
+        this.addSubCommand(new NameCommand<>(plugin));
+        this.addSubCommand(new PrefixCommand<>(plugin));
+        this.addSubCommand(new ResetCommand<>(plugin));
     }
 
-    /**
-     * Displays the usage for chat commands
-     *
-     * @param sender sender of the command
-     */
     @Override
-    public void displayUsage(CommandSender sender) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(ChatColor.DARK_RED + "Chat commands are for players only!");
-        } else super.displayUsage(sender);
+    @NotNull
+    public String usage() {
+        return "/%cmd% list - Displays unlocked prefixes\n" +
+                "/%cmd% name <name> - Sets your chat name\n" +
+                "/%cmd% prefix <prefix> - Sets your chat prefix\n" +
+                "/%cmd% reset - Resets your chat name and prefix";
+    }
+
+    @Override
+    @NotNull
+    public String description() {
+        return "Chat commands";
+    }
+
+    @Override
+    public boolean playersOnly() {
+        return true;
+    }
+
+    @Override
+    protected void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
+        printUsage(sender);
     }
 }

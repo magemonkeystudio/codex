@@ -28,45 +28,39 @@ package studio.magemonkey.codex.mccore.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.Plugin;
-import studio.magemonkey.codex.mccore.commands.CommandHandler;
-import studio.magemonkey.codex.mccore.commands.ICommand;
-import studio.magemonkey.codex.mccore.commands.SenderType;
+import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.CodexPlugin;
+import studio.magemonkey.codex.commands.api.ISubCommand;
+
+import java.util.List;
 
 /**
  * Resets the player's display name
  */
-class ResetCommand implements ICommand {
+class ResetCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
+    ResetCommand(P plugin) {
+        super(plugin, List.of("reset"), ChatNodes.RESET.getNode());
+    }
 
     /**
      * Executes the command
      *
-     * @param handler command handler
-     * @param plugin  plugin reference
      * @param sender  sender of the command
+     * @param label   command label
      * @param args    command arguments
      */
     @Override
-    public void execute(CommandHandler handler, Plugin plugin, CommandSender sender, String[] args) {
+    public void perform(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
         ChatData data = Chat.getPlayerData(sender.getName());
         if (data != null) {
             data.setDisplayName(sender.getName());
             sender.sendMessage(ChatColor.DARK_GREEN + "Your name has been reset to its default");
-        } else handler.displayUsage(sender);
+        } else printUsage(sender);
     }
 
-    /**
-     * @return permission needed for this command
-     */
-    public String getPermissionNode() {
-        return ChatNodes.RESET.getNode();
-    }
-
-    /**
-     * @return args string
-     */
     @Override
-    public String getArgsString() {
+    @NotNull
+    public String usage() {
         return "";
     }
 
@@ -74,15 +68,13 @@ class ResetCommand implements ICommand {
      * @return description
      */
     @Override
-    public String getDescription() {
+    @NotNull
+    public String description() {
         return "Resets your display name";
     }
 
-    /**
-     * Sender required for the command
-     */
     @Override
-    public SenderType getSenderType() {
-        return SenderType.PLAYER_ONLY;
+    public boolean playersOnly() {
+        return true;
     }
 }
