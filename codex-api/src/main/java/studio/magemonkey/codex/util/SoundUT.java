@@ -1,15 +1,21 @@
 package studio.magemonkey.codex.util;
 
 import org.bukkit.Keyed;
-import org.bukkit.Sound;
 import studio.magemonkey.codex.Codex;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Objects;
 
 public class SoundUT {
     @SuppressWarnings("unchecked")
     public static Keyed getSound(String name) {
         try {
-            return Sound.valueOf(name);
-        } catch (IncompatibleClassChangeError e) {
+            Method valueOf = Reflex.getMethod(Objects.requireNonNull(Reflex.getClass("org.bukkit.Sound")),
+                    "valueOf",
+                    String.class);
+            return (Keyed) valueOf.invoke(null, name);
+        } catch (IncompatibleClassChangeError | IllegalAccessException | InvocationTargetException e) {
             try {
                 return (Keyed) Enum.valueOf((Class<Enum>) Class.forName("org.bukkit.Sound"), name);
             } catch (ClassNotFoundException | ClassCastException e1) {
