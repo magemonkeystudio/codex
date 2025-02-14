@@ -64,6 +64,23 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
+            <version>7.0.9-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sk89q.worledit</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>7.3.9-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-core</artifactId>
+            <version>7.3.9-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -216,7 +233,9 @@
                         <configuration>
                             <outputDirectory>${project.basedir}</outputDirectory>
                             <doclint>all,-missing</doclint>
-                            <sourcepath>codex-api/target/javadoc-delombok;codex-core/target/javadoc-delombok;codex-plugin/target/javadoc-delombok</sourcepath>
+                            <sourcepath>
+                                codex-api/target/javadoc-delombok;codex-core/target/javadoc-delombok;codex-plugin/target/javadoc-delombok
+                            </sourcepath>
                         </configuration>
                         <executions>
                             <execution>
