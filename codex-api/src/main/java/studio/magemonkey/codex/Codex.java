@@ -1,6 +1,8 @@
 package studio.magemonkey.codex;
 
+import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -9,6 +11,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Codex {
     @Setter
     public static JavaPlugin plugin;
+
+    @Getter
+    @Setter
+    public static BukkitAudiences audience;
 
     public static JavaPlugin getPlugin() {
         if (plugin == null) {

@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class StringUT {
 
-    public static final Pattern HEX_PATTERN = Pattern.compile("#([A-Fa-f0-9]{6})");
+    public static final Pattern HEX_PATTERN = Pattern.compile("&?#([A-Fa-f0-9]{6})");
 
     @NotNull
     public static String oneSpace(@NotNull String str) {

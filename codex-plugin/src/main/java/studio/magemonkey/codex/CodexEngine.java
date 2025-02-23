@@ -1,6 +1,7 @@
 package studio.magemonkey.codex;
 
 import lombok.Getter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.EventHandler;
@@ -251,6 +252,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
     @Override
     public void enable() {
+        Codex.setAudience(BukkitAudiences.create(this));
         EditorManager.setup();
         getLogger().info("CodexCore has been enabled!");
     }

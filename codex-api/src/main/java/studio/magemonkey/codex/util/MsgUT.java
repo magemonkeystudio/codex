@@ -1,7 +1,7 @@
 package studio.magemonkey.codex.util;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -9,6 +9,7 @@ import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import studio.magemonkey.codex.Codex;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,7 +25,9 @@ public class MsgUT {
     private static final String[] JSON_ARGUMENTS         = new String[]{"hint", "chat-type", "chat-suggest", "url"};
 
     public static void sendActionBar(@NotNull Player player, @NotNull String msg) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(msg));
+        Component component =
+                LegacyComponentSerializer.legacySection().deserialize(msg);
+        Codex.getAudience().player(player).sendActionBar(component);
     }
 
     @Deprecated
