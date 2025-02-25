@@ -82,6 +82,11 @@ public class StringUT {
         return ChatColor.translateAlternateColorCodes('&', colorFix(str));
     }
 
+    @NotNull
+    public static StringBuilder color(@NotNull StringBuilder str) {
+        return str.replace(0, str.length(), color(str.toString()));
+    }
+
     /**
      * Removes multiple color codes that are 'color of color'. Example: '&amp;a&amp;b&amp;cText' -> '&amp;cText'.
      *
@@ -377,10 +382,10 @@ public class StringUT {
         return splitValue;
     }
 
-    public static List<String> wrap(List<String> value, int maxLenght) {
+    public static List<String> wrap(List<String> value, int maxLength) {
         List<String> splitValue = new ArrayList<>();
         for (String aValue : value) {
-            splitValue.addAll(wrap(aValue, maxLenght));
+            splitValue.addAll(wrap(aValue, maxLength));
         }
         return splitValue;
     }

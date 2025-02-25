@@ -35,6 +35,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.magemonkey.codex.mccore.util.TextFormatter;
 import studio.magemonkey.codex.mccore.util.TextSizer;
+import studio.magemonkey.codex.util.StringUT;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -129,7 +130,7 @@ public class LanguageConfig extends Config {
 
             // Filter colors
             if (filterType == FilterType.COLOR || filterType == FilterType.ALL) {
-                TextFormatter.colorString(sb);
+                StringUT.color(sb);
             }
 
             // Filter specials

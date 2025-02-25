@@ -41,6 +41,7 @@ import studio.magemonkey.codex.mccore.config.CommentedConfig;
 import studio.magemonkey.codex.mccore.config.CustomFilter;
 import studio.magemonkey.codex.mccore.config.parse.DataSection;
 import studio.magemonkey.codex.mccore.util.TextFormatter;
+import studio.magemonkey.codex.util.StringUT;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -533,7 +534,7 @@ public class ConfigurableCommand extends Command {
 
         // Check for a cooldown
         if (cooldown > 0 && System.currentTimeMillis() - timer < cooldown * 1000L) {
-            String message = TextFormatter.colorString(CodexEngine.getPlugin(CodexEngine.class).getCommandMessage());
+            String message = StringUT.color(CodexEngine.getPlugin(CodexEngine.class).getCommandMessage());
             int    time    = cooldown - (int) (System.currentTimeMillis() - timer + 999) / 1000;
             message = message.replace("{time}", "" + time);
             sender.sendMessage(message);
@@ -659,7 +660,7 @@ public class ConfigurableCommand extends Command {
         }
 
         // Apply filters before returning
-        String msg = TextFormatter.colorString(msgSection.getString(key));
+        String msg = StringUT.color(msgSection.getString(key));
         for (CustomFilter filter : filters) {
             msg = filter.apply(msg);
         }

@@ -40,6 +40,7 @@ import studio.magemonkey.codex.mccore.config.parse.DataSection;
 import studio.magemonkey.codex.mccore.util.TextFormatter;
 import studio.magemonkey.codex.mccore.util.TextSizer;
 import studio.magemonkey.codex.mccore.util.TextSplitter;
+import studio.magemonkey.codex.util.StringUT;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -516,21 +517,21 @@ public class CommandManager {
         description = getColor(config.getString(DESCRIPTION, null), description);
 
         // Formats
-        pageFormat = TextFormatter.colorString(config.getString(PAGE, pageFormat));
-        noDescription = TextFormatter.colorString(config.getString(NO_DESCRIPTION, noDescription));
-        noCommands = TextFormatter.colorString(config.getString(NO_COMMANDS, noCommands));
-        nextPage = TextFormatter.colorString(config.getString(NEXT_PAGE, nextPage));
-        prevPage = TextFormatter.colorString(config.getString(PREV_PAGE, prevPage));
-        nextPageHover = TextFormatter.colorString(config.getString(NEXT_PAGE_HOVER, nextPageHover));
-        prevPageHover = TextFormatter.colorString(config.getString(PREV_PAGE_HOVER, prevPageHover));
+        pageFormat = StringUT.color(config.getString(PAGE, pageFormat));
+        noDescription = StringUT.color(config.getString(NO_DESCRIPTION, noDescription));
+        noCommands = StringUT.color(config.getString(NO_COMMANDS, noCommands));
+        nextPage = StringUT.color(config.getString(NEXT_PAGE, nextPage));
+        prevPage = StringUT.color(config.getString(PREV_PAGE, prevPage));
+        nextPageHover = StringUT.color(config.getString(NEXT_PAGE_HOVER, nextPageHover));
+        prevPageHover = StringUT.color(config.getString(PREV_PAGE_HOVER, prevPageHover));
         helpWithButton = config.has(HELP_BUTTON) && config.isList(HELP_BUTTON)
-                ? TextFormatter.colorStringList(config.getList(HELP_BUTTON))
+                ? StringUT.color(config.getList(HELP_BUTTON))
                 : helpWithButton;
         helpNoButton = config.has(HELP_NO_BUTTON) && config.isList(HELP_NO_BUTTON)
-                ? TextFormatter.colorStringList(config.getList(HELP_NO_BUTTON))
+                ? StringUT.color(config.getList(HELP_NO_BUTTON))
                 : helpNoButton;
         commandUsage = config.has(COMMAND_USAGE) && config.isList(COMMAND_USAGE)
-                ? TextFormatter.colorStringList(config.getList(COMMAND_USAGE))
+                ? StringUT.color(config.getList(COMMAND_USAGE))
                 : commandUsage;
     }
 
