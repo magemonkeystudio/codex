@@ -28,6 +28,16 @@
             <artifactId>codex-bungee</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.3.4</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -55,6 +65,7 @@
                     <artifactSet>
                         <includes>
                             <include>${project.groupId}:codex-*</include>
+                            <include>net.kyori:adventure-*</include>
                         </includes>
                     </artifactSet>
                     <filters>
@@ -66,6 +77,12 @@
                             </excludes>
                         </filter>
                     </filters>
+                    <relocations>
+                        <relocation>
+                            <pattern>net.kyori.adventure</pattern>
+                            <shadedPattern>studio.magemonkey.codex.adventure</shadedPattern>
+                        </relocation>
+                    </relocations>
                 </configuration>
                 <executions>
                     <execution>
