@@ -252,7 +252,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
     @Override
     public void enable() {
-        // We should be able to remove this when we officially drop Spigot support
+        // We should be able to remove this when we officially drop Spigot support (soon?)
         Codex.setAudience(BukkitAudiences.create(this));
         EditorManager.setup();
         getLogger().info("CodexCore has been enabled!");

@@ -65,7 +65,7 @@
                     <artifactSet>
                         <includes>
                             <include>${project.groupId}:codex-*</include>
-                            <include>net.kyori:adventure-*</include>
+                            <include>net.kyori:*</include>
                         </includes>
                     </artifactSet>
                     <filters>
@@ -79,7 +79,7 @@
                     </filters>
                     <relocations>
                         <relocation>
-                            <pattern>net.kyori.adventure</pattern>
+                            <pattern>net.kyori</pattern>
                             <shadedPattern>studio.magemonkey.codex.adventure</shadedPattern>
                         </relocation>
                     </relocations>
