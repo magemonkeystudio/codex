@@ -157,6 +157,11 @@ public class DoubleEvaluator extends AbstractEvaluator<Double> {
     public static final Function LOG = new Function("log", 1);
 
     /**
+     * Returns the square root of a number
+     */
+    public static final Function SQRT = new Function("sqrt", 1);
+
+    /**
      * Returns a pseudo random number
      */
     public static final Function RANDOM = new Function("random", 0);
@@ -208,7 +213,7 @@ public class DoubleEvaluator extends AbstractEvaluator<Double> {
      * The whole set of predefined functions
      */
     private static final Function[] FUNCTIONS       =
-            new Function[]{SINE, COSINE, TANGENT, ASINE, ACOSINE, ATAN, SINEH, COSINEH, TANGENTH, MIN, MAX, SUM, AVERAGE, LN, LOG, ROUND, CEIL, FLOOR, ABS, RANDOM};
+            new Function[]{SINE, COSINE, TANGENT, ASINE, ACOSINE, ATAN, SINEH, COSINEH, TANGENTH, MIN, MAX, SUM, AVERAGE, LN, LOG, SQRT, ROUND, CEIL, FLOOR, ABS, RANDOM};
     /**
      * The whole set of predefined constants
      */
@@ -390,6 +395,8 @@ public class DoubleEvaluator extends AbstractEvaluator<Double> {
             result = Math.log(arguments.next());
         } else if (LOG.equals(function)) {
             result = Math.log10(arguments.next());
+        } else if (SQRT.equals(function)) {
+            result = Math.sqrt(arguments.next());
         } else if (RANDOM.equals(function)) {
             result = Math.random();
         } else {
