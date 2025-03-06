@@ -8,6 +8,8 @@ import studio.magemonkey.codex.commands.api.ISubCommand;
 import studio.magemonkey.codex.util.StringUT;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AboutCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
@@ -41,7 +43,7 @@ public class AboutCommand<P extends CodexPlugin<P>> extends ISubCommand<P> {
                         + plugin.getAuthor(),
                 "&eType &6/" + plugin.getLabel() + " help&e to list plugin commands.",
                 "&7",
-                "&2Powered by &a&l" + CodexEngine.get().getName() + "&2, © 2019-2022 &a" + CodexEngine.get()
+                "&2Powered by &a&l" + CodexEngine.get().getName() + "&2, © 2019-" + Calendar.getInstance().get(Calendar.YEAR) + " &a" + CodexEngine.get()
                         .getAuthor()
         ));
 
