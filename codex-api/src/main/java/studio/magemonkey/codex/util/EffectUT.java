@@ -41,26 +41,42 @@ public class EffectUT {
                 color = Color.fromRGB(r, g, b);
             }
 
-            Object data = new Particle.DustOptions(color, 1.5f);
-            world.spawnParticle(particle, loc, amount, x, y, z, data);
+            Particle.DustOptions data = new Particle.DustOptions(color, 1.5f);
+            try {
+                world.spawnParticle(particle, loc, amount, x, y, z, speed, data, true);
+            } catch (NoSuchMethodError e) {
+                world.spawnParticle(particle, loc, amount, x, y, z, data);
+            }
             return;
         }
 
         if (partName.equals("block") || partName.equals("block_crack")) {
             Material  m         = particleData != null ? Material.getMaterial(particleData) : Material.STONE;
             BlockData blockData = m != null ? m.createBlockData() : Material.STONE.createBlockData();
-            world.spawnParticle(particle, loc, amount, x, y, z, speed, blockData);
+            try {
+                world.spawnParticle(particle, loc, amount, x, y, z, speed, blockData, true);
+            } catch (NoSuchMethodError e) {
+                world.spawnParticle(particle, loc, amount, x, y, z, speed, blockData);
+            }
             return;
         }
 
         if (partName.equals("item") || partName.equals("item_crack")) { // ITEM_CRACK/ITEM
             Material  m    = particleData != null ? Material.getMaterial(particleData) : Material.STONE;
             ItemStack item = m != null ? new ItemStack(m) : new ItemStack(Material.STONE);
-            world.spawnParticle(particle, loc, amount, x, y, z, speed, item);
+            try {
+                world.spawnParticle(particle, loc, amount, x, y, z, speed, item, true);
+            } catch (NoSuchMethodError e) {
+                world.spawnParticle(particle, loc, amount, x, y, z, speed, item);
+            }
             return;
         }
 
-        world.spawnParticle(particle, loc, amount, x, y, z, speed);
+        try {
+            world.spawnParticle(particle, loc, amount, x, y, z, speed, null, true);
+        } catch (NoSuchMethodError e) {
+            world.spawnParticle(particle, loc, amount, x, y, z, speed);
+        }
     }
 
     public static void drawLine(Location from,
