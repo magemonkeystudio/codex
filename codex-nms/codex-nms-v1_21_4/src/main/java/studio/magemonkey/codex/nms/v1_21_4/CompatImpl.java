@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 import studio.magemonkey.codex.compat.Compat;
 
+import java.util.Locale;
+
 public class CompatImpl implements Compat {
     @Override
     @SuppressWarnings("UnstableApiUsage")
@@ -94,9 +96,14 @@ public class CompatImpl implements Compat {
         if (meta.hasDisplayName()) name = meta.getDisplayName();
         if (name == null && meta.hasItemName()) name = meta.getItemName();
         if (name == null && meta.getLore() != null && !meta.getLore().isEmpty()) name = meta.getLore().get(0);
-        if (name == null) name =
-                LegacyComponentSerializer.legacyAmpersand()
-                        .serializeOrNull(Component.translatable(item.getTranslationKey()));
+        if (name == null) {
+            // Create a translatable component using Adventure's API.
+            Component translatableComponent = Component.translatable(item.getTranslationKey());
+            // Render using our custom renderer. For English, we pass Locale.ENGLISH.
+            // TODO Check for compatibility to other languages. Currently, only EN_US is available.
+            Component resolved = TranslationResolver.NMS_RENDERER.render(translatableComponent, Locale.ENGLISH);
+            name = LegacyComponentSerializer.legacyAmpersand().serializeOrNull(resolved);
+        }
 
         //noinspection ConstantValue
         return name == null ? item.getType().toString() : name;
