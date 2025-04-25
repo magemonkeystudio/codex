@@ -2,11 +2,14 @@ package studio.magemonkey.codex.nms.v1_20_6;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 import studio.magemonkey.codex.compat.Compat;
+
+import java.util.Locale;
 
 public class CompatImpl implements Compat {
     @Override
@@ -38,9 +41,16 @@ public class CompatImpl implements Compat {
         if (meta.hasDisplayName()) name = meta.getDisplayName();
         if (name == null && meta.hasItemName()) name = meta.getItemName();
         if (name == null && meta.getLore() != null && !meta.getLore().isEmpty()) name = meta.getLore().get(0);
-        if (name == null) name =
-                LegacyComponentSerializer.legacyAmpersand()
-                        .serializeOrNull(Component.translatable(item.getTranslationKey()));
+        if (name == null) {
+            // Create a translatable component using Adventure's API.
+            // Then translate it with GlobalTranslator.
+            Component translatableComponent = Component.translatable(item.getTranslationKey());
+            // TODO: Use the locale from Codex's config.yml -- The caveat here is we need the language and region in
+            //  order to create a Locale object.
+            Locale    locale   = Locale.ENGLISH;
+            Component resolved = GlobalTranslator.render(translatableComponent, locale);
+            name = LegacyComponentSerializer.legacyAmpersand().serializeOrNull(resolved);
+        }
 
         //noinspection ConstantValue
         return name == null ? item.getType().toString() : name;

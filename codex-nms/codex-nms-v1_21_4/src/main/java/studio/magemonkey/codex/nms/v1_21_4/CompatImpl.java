@@ -2,6 +2,7 @@ package studio.magemonkey.codex.nms.v1_21_4;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.kyori.adventure.translation.GlobalTranslator;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryEvent;
@@ -98,10 +99,12 @@ public class CompatImpl implements Compat {
         if (name == null && meta.getLore() != null && !meta.getLore().isEmpty()) name = meta.getLore().get(0);
         if (name == null) {
             // Create a translatable component using Adventure's API.
+            // Then translate it with GlobalTranslator.
             Component translatableComponent = Component.translatable(item.getTranslationKey());
-            // Render using our custom renderer. For English, we pass Locale.ENGLISH.
-            // TODO Check for compatibility to other languages. Currently, only EN_US is available.
-            Component resolved = TranslationResolver.NMS_RENDERER.render(translatableComponent, Locale.ENGLISH);
+            // TODO: Use the locale from Codex's config.yml -- The caveat here is we need the language and region in
+            //  order to create a Locale object.
+            Locale    locale   = Locale.ENGLISH;
+            Component resolved = GlobalTranslator.render(translatableComponent, locale);
             name = LegacyComponentSerializer.legacyAmpersand().serializeOrNull(resolved);
         }
 
