@@ -1,8 +1,5 @@
 package studio.magemonkey.codex.nms.v1_21_1;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
-import net.kyori.adventure.translation.GlobalTranslator;
 import net.minecraft.locale.LocaleLanguage;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
@@ -15,8 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 import studio.magemonkey.codex.compat.Compat;
-
-import java.util.Locale;
 
 public class CompatImpl implements Compat {
     @Override
