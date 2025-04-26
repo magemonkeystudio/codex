@@ -1,7 +1,6 @@
 package studio.magemonkey.codex.nms.v1_20_2;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.minecraft.locale.LocaleLanguage;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,11 +36,8 @@ public class CompatImpl implements Compat {
 
         if (meta.hasDisplayName()) name = meta.getDisplayName();
         if (name == null && meta.getLore() != null && !meta.getLore().isEmpty()) name = meta.getLore().get(0);
-        if (name == null) name =
-                LegacyComponentSerializer.legacyAmpersand()
-                        .serializeOrNull(Component.translatable(item.getTranslationKey()));
+        if (name == null) name = LocaleLanguage.a().a(item.getTranslationKey());
 
-        //noinspection ConstantValue
         return name == null ? item.getType().toString() : name;
     }
 }
