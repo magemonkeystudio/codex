@@ -5,7 +5,7 @@ import sys
 
 is_dev = len(sys.argv) >= 3 and bool(sys.argv[2])
 search_string = \
-    r'Uploaded to (ossrh|central): (https:\/\/s01\.oss\.sonatype\.org(:443)?\/.*?\/studio\/magemonkey\/(.*?)\/(.*?)\/(' \
+    r'Uploaded to (ossrh|central): (https:\/\/s01\.oss\.sonatype\.org(:443)?\/.*?\/studio\/magemonkey\/(codex)\/(.*?)\/(' \
     r'.*?)(?<!sources|javadoc)\.jar(?!\.asc)) '
 
 
@@ -13,9 +13,9 @@ def get_info():
     with open('log.txt', 'r') as file:
         content = file.read()
         data = re.findall(search_string, content, re.MULTILINE)
-        found_version = data[0][5]
-        artifact_id = data[0][3]
-        artifact_url = data[0][1]
+        found_version = data[-1][5]
+        artifact_id = data[-1][3]
+        artifact_url = data[-1][1]
         return found_version, artifact_id, artifact_url
 
 
@@ -32,7 +32,7 @@ embed = {
     'username': 'Dev Mage',
     'author': {
         'name': 'New ' + ('Dev ' if is_dev else '') + 'Build Available!',
-        'url': 'https://github.com/promcteam/' + name
+        'url': 'https://github.com/magemonkeystudios/' + name
     },
     'image': {
         'url': 'https://fabled.magemonkey.studio/' + ('dev_build.gif' if is_dev else 'release_build.gif')

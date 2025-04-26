@@ -1,6 +1,0 @@
-name: ${project.name}-Bungee
-author: Travja
-version: ${project.version}
-description: CodexCore for Bungee
-main: studio.magemonkey.codex.BungeeCore
-api-version: 1.16

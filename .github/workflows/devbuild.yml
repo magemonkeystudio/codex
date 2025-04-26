@@ -3,7 +3,7 @@ name: Dev Build
 on:
   push:
     branches: [ dev ]
-    paths: [ src/** ]
+    paths: [ '**/src/**' ]
 
 jobs:
   deploy:
@@ -36,7 +36,7 @@ jobs:
         env:
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
         run: |
-          mvn clean deploy -P gpg,publish -DcreateChecksum=true 2>&1 | tee log.txt
+          mvn clean deploy -f pom-dev.xml -P gpg,publish -DcreateChecksum=true 2>&1 | tee log.txt
           result_code=${PIPESTATUS[0]}
           exit $result_code
       - name: Tag release version

@@ -1,0 +1,40 @@
+name: ${project.name}
+main: studio.magemonkey.codex.CodexEngine
+version: ${project.version}
+description: Core plugin for the MageMonkeyStudio suite
+api-version: '1.19'
+load: STARTUP
+authors:
+  - Travja
+  - goflish
+has-open-classloader: true
+libraries: [ com.mysql:mysql-connector-j:${mysql.version}, org.apache.commons:commons-lang3:${apache.version} ]
+provides:
+  - ProMCCore
+permissions:
+  codex.stuck:
+    description: Allows the player to use the /stuck command.
+    default: true
+
+dependencies:
+  server:
+    Vault:
+      load: BEFORE
+      required: false
+    WorldGuard:
+      load: BEFORE
+      required: false
+    MythicMobs:
+      load: BEFORE
+      required: false
+    Nexo:
+      load: BEFORE
+      required: false
+    Oraxen:
+      load: BEFORE
+      required: false
+load-before:
+  - name: Fabled
+    boostrap: false
+  - name: Divinity
+    boostrap: false
