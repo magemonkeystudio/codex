@@ -18,7 +18,7 @@ public class Codex {
 
     public static JavaPlugin getPlugin() {
         if (plugin == null) {
-            throw new IllegalStateException("Codex has not been initialized");
+            throw new IllegalStateException("Codex has not been initialized!");
         }
 
         return plugin;
