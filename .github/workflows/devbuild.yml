@@ -18,7 +18,7 @@ jobs:
         run: |
           git config user.name "Build Monkey"
           git config user.email "<>"
-      - name: Set up JDK 17
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
