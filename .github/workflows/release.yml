@@ -10,19 +10,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout repo
-        with:
-          token: ${{ secrets.ACTIONS_PAT }}
       - name: Configure git
         run: |
-          git config user.name "Build Monkey"
-          git config user.email "<>"
+          git config --global user.name "Build Monkey"
+          git config --global user.email "<>"
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 21
+          java-version: |
+            11
+            17
+            21
           server-id: ossrh # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
           gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
@@ -50,6 +49,7 @@ jobs:
       - name: Build Spigot 1.21.4
         run: java -jar BuildTools.jar --rev 1.21.4
       - uses: actions/checkout@v4
+        name: Checkout Codex
         with:
           token: ${{ secrets.ACTIONS_PAT }}
       - name: 'Create settings.xml'
