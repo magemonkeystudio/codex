@@ -177,7 +177,7 @@ public abstract class Menu implements InventoryHolder {
         }
         return new Slot(itemStack) {
             public void onLeftClick() {
-                this.menu.open(this.menu.getPage() + 1);
+                this.menu.open(this.menu.getPage() - 1);
             }
         };
     }
