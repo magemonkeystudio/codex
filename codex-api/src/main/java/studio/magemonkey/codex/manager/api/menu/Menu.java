@@ -72,6 +72,11 @@ public abstract class Menu implements InventoryHolder {
         }
     }
 
+    public void clearSlots() {
+        slots.clear();
+        inventory.clear();
+    }
+
     public abstract void setContents();
 
     @Nullable
