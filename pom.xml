@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.9-SNAPSHOT</version>
+            <version>7.0.13</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.sk89q.worledit</groupId>
