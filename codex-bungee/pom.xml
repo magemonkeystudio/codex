@@ -10,6 +10,9 @@
     </parent>
 
     <artifactId>codex-bungee</artifactId>
+    <name>CodexBungee</name>
+    <description>Bungee utilities for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <dependencies>
         <dependency>
@@ -17,4 +20,25 @@
             <artifactId>bungeecord-api</artifactId>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>MageMonkeyStudio</name>
+            <organization>MageMonkeyStudio</organization>
+            <organizationUrl>https://magemonkey.studio</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

@@ -10,6 +10,9 @@
     </parent>
 
     <artifactId>codex-core</artifactId>
+    <name>Codex-Core</name>
+    <description>Core utilities for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <properties>
         <project.type>jar</project.type>
@@ -83,10 +86,26 @@
             <artifactId>codex-nms-v1_21_5</artifactId>
             <version>${nms.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-        </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>MageMonkeyStudio</name>
+            <organization>MageMonkeyStudio</organization>
+            <organizationUrl>https://magemonkey.studio</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

@@ -5,17 +5,28 @@ import sys
 
 is_dev = len(sys.argv) >= 3 and bool(sys.argv[2])
 search_string = \
-    r'Uploaded to (ossrh|central): (https:\/\/s01\.oss\.sonatype\.org(:443)?\/.*?\/studio\/magemonkey\/(codex)\/(.*?)\/(' \
+    r'Uploaded to (ossrh|central): (https:\/\/central\.sonatype\.com(:443)?\/.*?\/studio\/magemonkey\/(codex)\/(.*?)\/(' \
     r'.*?)(?<!sources|javadoc)\.jar(?!\.asc)) '
+
+if not is_dev:
+    # If it's dev, we'll look specifically for 'Generate checksums for dir: xxxx'
+    search_string = r'Generate checksums for dir: studio\/magemonkey\/(codex)\/([^\/]*?)$'
 
 
 def get_info():
     with open('log.txt', 'r') as file:
         content = file.read()
+        content = re.sub(r'\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]', '', content)  # Remove ANSI escape codes
         data = re.findall(search_string, content, re.MULTILINE)
-        found_version = data[-1][5]
-        artifact_id = data[-1][3]
-        artifact_url = data[-1][1]
+        print(data)
+        if is_dev:
+            found_version = data[-1][5]
+            artifact_id = data[-1][3]
+            artifact_url = data[-1][1]
+        else:
+            found_version = data[-1][1]
+            artifact_id = data[-1][0]
+            artifact_url = 'https://repo1.maven.org/maven2/studio/magemonkey/' + artifact_id + '/' + found_version + '/' + artifact_id + '-' + found_version + '.jar'
         return found_version, artifact_id, artifact_url
 
 
@@ -25,14 +36,14 @@ if is_dev:
     version = '-'.join(split)
 if not is_dev:
     url = re.sub(
-        r'https:\/\/s01\.oss\.sonatype\.org:443\/service\/local\/staging\/deployByRepositoryId\/studiomagemonkey-\d+',
-        'https://s01.oss.sonatype.org/service/local/repositories/releases/content',
+        r'https:\/\/central\.sonatype\.com:443\/service\/local\/staging\/deployByRepositoryId\/studiomagemonkey-\d+',
+        'https://repo1.maven.org/maven2',
         url)
 embed = {
     'username': 'Dev Mage',
     'author': {
         'name': 'New ' + ('Dev ' if is_dev else '') + 'Build Available!',
-        'url': 'https://github.com/magemonkeystudios/' + name
+        'url': 'https://github.com/magemonkeystudio/' + name
     },
     'image': {
         'url': 'https://fabled.magemonkey.studio/' + ('dev_build.gif' if is_dev else 'release_build.gif')

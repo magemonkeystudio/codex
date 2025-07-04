@@ -1,5 +1,5 @@
-[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/studio/magemonkey/codex/1.1.1-R0.2-SNAPSHOT)
-[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/studio/magemonkey/codex/1.1.1-R0.2-SNAPSHOT)
+[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://repo1.maven.org/maven2/studio/magemonkey/codex/1.1.1-R0.3-SNAPSHOT)
+[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://central.sonatype.com/repository/maven-snapshots/studio/magemonkey/codex/1.1.1-R0.3-SNAPSHOT)
 [![Discord](https://dcbadge.vercel.app/api/server/6UzkTe6RvW?style=flat)](https://discord.gg/6UzkTe6RvW)
 
 # Codex (Formerly ProMCCore)
@@ -10,13 +10,13 @@ or snapshots through Sonatype.
 ```xml
 <repository>
     <id>sonatype</id>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
 </repository>
 ...
 <dependency>
     <groupId>studio.magemonkey</groupId>
     <artifactId>codex</artifactId>
-    <version>1.1.1-R0.2-SNAPSHOT</version>
+    <version>1.1.1-R0.3-SNAPSHOT</version>
 </dependency>
 ```
 

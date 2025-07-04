@@ -12,6 +12,7 @@
     <artifactId>codex</artifactId>
     <name>CodexCore</name>
     <description>The core plugin for MageMonkeyStudio plugins</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <properties>
         <outputDir>../../build</outputDir>
@@ -95,4 +96,25 @@
             </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>MageMonkeyStudio</name>
+            <organization>MageMonkeyStudio</organization>
+            <organizationUrl>https://magemonkey.studio</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>
