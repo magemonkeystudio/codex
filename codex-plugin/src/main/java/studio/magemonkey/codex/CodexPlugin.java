@@ -42,7 +42,6 @@ import java.util.logging.Logger;
 public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin implements Loggable {
     private       Logger  logger;
     private       boolean isEngine;
-    private final boolean isSpigot = true;
 
     @Getter
     protected ConfigManager<P>  configManager;
@@ -57,7 +56,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
     }
 
     public boolean isSpigot() {
-        return isSpigot;
+        return true;
     }
 
     @NotNull
