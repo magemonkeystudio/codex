@@ -159,15 +159,6 @@ public class ClickText {
             return this;
         }
 
-        private BaseComponent[] toBase(@NotNull ItemStack item) {
-            String json = VersionManager.getNms().toJson(item);
-            if (json != null) {
-                return TextComponent.fromLegacyText(json);
-            }
-
-            return new BaseComponent[0];
-        }
-
         @Deprecated
         public void showEntity(@NotNull String json) {
             this.hover = new HoverEvent(HoverEvent.Action.SHOW_ENTITY, toBase(json));

@@ -131,7 +131,7 @@ public class Hooks {
 
     public static boolean hasPlugin(@NotNull String plugin) {
         Plugin p = ENGINE.getPluginManager().getPlugin(plugin);
-        return p != null;// && p.isEnabled();
+        return p != null && p.isEnabled();
     }
 
     public static boolean hasPlaceholderAPI() {
