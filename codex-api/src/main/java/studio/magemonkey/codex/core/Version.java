@@ -43,7 +43,7 @@ public enum Version {
                 case "1.21.2-R0.1-SNAPSHOT", "1.21.3-R0.1-SNAPSHOT" -> Version.V1_21_R2;
                 case "1.21.4-R0.1-SNAPSHOT" -> Version.V1_21_R3;
                 case "1.21.5-R0.1-SNAPSHOT" -> Version.V1_21_R4;
-                case "1.21.6-R0.1-SNAPSHOT", "1.21.7-R0.1-SNAPSHOT" -> Version.V1_21_R5;
+                case "1.21.6-R0.1-SNAPSHOT", "1.21.7-R0.1-SNAPSHOT", "1.21.8-R0.1-SNAPSHOT" -> Version.V1_21_R5;
                 default -> throw new IllegalStateException("Unexpected version: " + version);
             };
         } else

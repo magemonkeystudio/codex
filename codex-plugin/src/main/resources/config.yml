@@ -49,3 +49,5 @@ removeBoatOnExit: true
 unstuck:
   cooldown: 30
   warmup: 5
+
+action-bar-legacy: false
