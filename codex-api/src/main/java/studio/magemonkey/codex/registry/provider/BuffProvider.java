@@ -1,6 +1,7 @@
 package studio.magemonkey.codex.registry.provider;
 
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public interface BuffProvider {
     /**
@@ -11,7 +12,7 @@ public interface BuffProvider {
      * @param value value to scale
      * @return the scaled value
      */
-    double scaleValue(String name, LivingEntity player, double value);
+    double scaleValue(String name, @NotNull LivingEntity player, double value);
 
     /**
      * Scales the defense relative to the damage being dealt
@@ -21,7 +22,7 @@ public interface BuffProvider {
      * @param damage  damage being dealt
      * @return the scaled defense
      */
-    default double scaleDamageForDefense(String name, LivingEntity entity, double damage) {
+    default double scaleDamageForDefense(String name, @NotNull LivingEntity entity, double damage) {
         // Without being overridden, this method should make no modification to the damage
         return damage;
     }
