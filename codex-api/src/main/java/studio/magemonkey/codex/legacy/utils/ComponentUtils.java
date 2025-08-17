@@ -1,13 +1,9 @@
 package studio.magemonkey.codex.legacy.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.*;
 import net.md_5.bungee.api.chat.ClickEvent.Action;
 import net.md_5.bungee.chat.ComponentSerializer;
-import net.md_5.bungee.chat.TextComponentSerializer;
-import net.md_5.bungee.chat.TranslatableComponentSerializer;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -16,11 +12,6 @@ import java.util.regex.Pattern;
 import static net.md_5.bungee.api.ChatColor.*;
 
 public final class ComponentUtils {
-    private static final Gson    gson   =
-            new GsonBuilder().registerTypeAdapter(BaseComponent.class, new ComponentSerializer())
-                    .registerTypeAdapter(TextComponent.class, new TextComponentSerializer())
-                    .registerTypeAdapter(TranslatableComponent.class, new TranslatableComponentSerializer())
-                    .create();
     private static final Pattern url    = Pattern.compile("^(?:(https?)://)?([-\\w_\\.]{2,}\\.[a-z]{2,4})(/\\S*)?$");
     private static final Pattern format = Pattern.compile("%(?:(\\d+)\\$)?([A-Za-z%]|$)");
 
@@ -28,8 +19,7 @@ public final class ComponentUtils {
     }
 
     public static BaseComponent[] parse(String json) {
-        return json.startsWith("[") ? gson.fromJson(json, BaseComponent[].class)
-                : new BaseComponent[]{gson.fromJson(json, BaseComponent.class)};
+        return ComponentSerializer.parse(json);
     }
 
     public static boolean isEmpty(BaseComponent component) {
@@ -139,15 +129,15 @@ public final class ComponentUtils {
         }
         components.add(component);
 
-        return components.toArray(new BaseComponent[components.size()]);
+        return components.toArray(new BaseComponent[0]);
     }
 
     public static String toString(BaseComponent[] components) {
-        return gson.toJson(components);
+        return ComponentSerializer.toString(components);
     }
 
     public static String toString(BaseComponent components) {
-        return gson.toJson(components);
+        return ComponentSerializer.toString(components);
     }
 
     public static String toPlainText(BaseComponent[] component) {
@@ -209,7 +199,6 @@ public final class ComponentUtils {
                 toLegacyText(e, builder);
             }
         }
-
     }
 
     static void toLegacyText(TranslatableComponent this_, StringBuilder builder) {
@@ -316,10 +305,10 @@ public final class ComponentUtils {
 
     public static BaseComponent[] safeParse(String json, boolean color) {
         try {
-            BaseComponent[] parse = ComponentSerializer.parse(json);
-        } catch (Exception e) {
+            return ComponentSerializer.parse(json);
+        } catch (Exception ignored) {
+            return color ? ChatColorUtils.translateAlternateColorCodes(json) : fromLegacyText(json);
         }
-        return color ? ChatColorUtils.translateAlternateColorCodes(json) : fromLegacyText(json);
     }
 
     public static BaseComponent[][] safeParseMulti(String[] json, boolean color) {
@@ -336,7 +325,6 @@ public final class ComponentUtils {
                               final int limit) {
         return replace_(null, this_, text, component, limit);
     }
-
 
     public static int replace(final BaseComponent this_, final String text, final BaseComponent component) {
         return replace(this_, text, component, -1);
@@ -553,7 +541,6 @@ public final class ComponentUtils {
         return limit;
     }
 
-
     static int replace_(final BaseComponent component_,
                         final ClickEvent this_,
                         final String text,
@@ -606,7 +593,6 @@ public final class ComponentUtils {
         return limit;
     }
 
-
     static int replace_(final BaseComponent component_,
                         final HoverEvent this_,
                         final String text,
@@ -628,6 +614,7 @@ public final class ComponentUtils {
         return new ClickEvent(this_.getAction(), this_.getValue());
     }
 
+    @SuppressWarnings("unchecked")
     public static HoverEvent duplicate(HoverEvent this_) {
         BaseComponent[] value = this_.getValue();
         if (value == null) {

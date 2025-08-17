@@ -57,7 +57,6 @@ public final class SerializationBuilder {
         return this.append(str, sb);
     }
 
-    @SuppressWarnings("TailRecursion")
     public SerializationBuilder append(final String str, Object object) {
         if (object instanceof Enum) {
             return this.append(str, (Enum<?>) object);
