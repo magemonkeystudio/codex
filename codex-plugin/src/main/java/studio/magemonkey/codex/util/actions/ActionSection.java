@@ -7,9 +7,11 @@ import java.util.List;
 
 public class ActionSection {
 
-    private List<String> targetSelectors;
+    private final List<String> targetSelectors;
+    @NotNull
+    private final String       conditionActionOnFail;
+
     private List<String> conditionList;
-    private String       conditionActionOnFail;
     private List<String> actionExecutors;
 
     public ActionSection(
@@ -27,6 +29,7 @@ public class ActionSection {
     public ActionSection(@NotNull ActionSection from) {
         this.targetSelectors = new ArrayList<>(from.getTargetSelectors());
         this.conditionList = new ArrayList<>(from.getConditions()); // New list
+        this.conditionActionOnFail = from.getConditionFailActions();
         this.actionExecutors = new ArrayList<>(from.getActionExecutors()); // New list
     }
 
