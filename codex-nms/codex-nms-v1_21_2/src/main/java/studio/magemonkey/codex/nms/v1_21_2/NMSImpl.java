@@ -290,7 +290,7 @@ public class NMSImpl implements NMS {
 
     @Override
     public Material getMaterial(Boat boat) {
-        String boatClassName = boat.getClass().getSimpleName();
+        String boatClassName = boat.getClass().getSimpleName().replace("Craft", "");
         // Split on capital letters and join with underscores
         // ex: AcaciaBoat -> ACACIA_BOAT
         String   materialName = String.join("_", boatClassName.split("(?=[A-Z])")).toUpperCase(Locale.US);
