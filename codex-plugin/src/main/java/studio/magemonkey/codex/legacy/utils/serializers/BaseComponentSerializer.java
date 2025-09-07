@@ -126,7 +126,6 @@ public class BaseComponentSerializer {
             if (component.getHoverEvent() != null) {
                 hoverEvent = new JsonObject();
                 hoverEvent.addProperty("action", component.getHoverEvent().getAction().toString().toLowerCase());
-                hoverEvent.add("value", context.serialize(component.getHoverEvent().getValue()));
                 object.add("hoverEvent", hoverEvent);
             }
         } finally {

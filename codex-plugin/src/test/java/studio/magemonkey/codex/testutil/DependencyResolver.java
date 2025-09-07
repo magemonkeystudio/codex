@@ -31,7 +31,7 @@ public class DependencyResolver {
 
     private static File downloadArtifact(String groupId, String artifact, String version) throws FileNotFoundException {
         String url = findArtifactUrl(groupId, artifact, version);
-        log.info("Downloading " + artifact + " from " + url);
+        log.info("Downloading {} from {}", artifact, url);
         try (BufferedInputStream inputStream = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOS = new FileOutputStream(artifact + ".jar")) {
             byte data[] = new byte[1024];

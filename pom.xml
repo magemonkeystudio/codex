@@ -7,7 +7,7 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>magemonkey-parent</artifactId>
-        <version>1.21.8-R0.2</version>
+        <version>1.21.8-R1</version>
     </parent>
 
     <artifactId>codex-parent</artifactId>
@@ -30,8 +30,12 @@
 
     <repositories>
         <repository>
-            <id>sonatype</id>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <id>magemonkey-releases</id>
+            <url>https://repo.travja.dev/releases</url>
+        </repository>
+        <repository>
+            <id>magemonkey-snapshots</id>
+            <url>https://repo.travja.dev/releases</url>
         </repository>
     </repositories>
 
@@ -146,17 +150,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.sonatype.central</groupId>
-                <artifactId>central-publishing-maven-plugin</artifactId>
-                <version>0.8.0</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <publishingServerId>central</publishingServerId>
-                    <autoPublish>true</autoPublish>
-                    <waitUntil>validated</waitUntil>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -291,4 +284,15 @@
         <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
         <url>https://github.com/magemonkeystudio/codex</url>
     </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>magemonkey-repo</id>
+            <url>${deploy.url}/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>magemonkey-repo</id>
+            <url>${deploy.url}/releases</url>
+        </repository>
+    </distributionManagement>
 </project>

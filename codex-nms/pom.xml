@@ -6,14 +6,18 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.1.1-R0.3-SNAPSHOT</version>
+        <version>1.1.1-R0.9-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
     <repositories>
         <repository>
-            <id>sonatype</id>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <id>magemonkey-releases</id>
+            <url>https://repo.travja.dev/releases</url>
+        </repository>
+        <repository>
+            <id>magemonkey-snapshots</id>
+            <url>https://repo.travja.dev/releases</url>
         </repository>
     </repositories>
 
