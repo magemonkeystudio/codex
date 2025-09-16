@@ -41,6 +41,7 @@ public interface IFunction {
      * @param plugin  plugin reference
      * @param sender  sender of the command
      * @param args    command arguments
+     * @param silent  whether to suppress output
      */
-    public void execute(ConfigurableCommand command, Plugin plugin, CommandSender sender, String[] args);
+    void execute(ConfigurableCommand command, Plugin plugin, CommandSender sender, String[] args, boolean silent);
 }
