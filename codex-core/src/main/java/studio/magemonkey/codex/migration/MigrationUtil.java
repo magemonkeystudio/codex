@@ -1,5 +1,6 @@
 package studio.magemonkey.codex.migration;
 
+import org.bukkit.Bukkit;
 import studio.magemonkey.codex.Codex;
 
 import java.io.File;
@@ -11,7 +12,7 @@ public class MigrationUtil {
     public static void renameDirectory(String oldPath, String newPath) {
         File oldDir = new File(oldPath);
         File newDir = new File(newPath);
-        if (oldDir.exists()) {
+        if (oldDir.exists() && Bukkit.getPluginManager().getPlugin("Codex") == null) {
             boolean renamed = oldDir.renameTo(newDir);
             if (!renamed) {
                 Codex.warn("Failed to rename directory: " + oldPath + " -> " + newPath);
