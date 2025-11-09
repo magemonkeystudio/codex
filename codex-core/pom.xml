@@ -91,6 +91,11 @@
             <artifactId>codex-nms-v1_21_7</artifactId>
             <version>${nms.version}</version>
         </dependency>
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_21_10</artifactId>
+            <version>${nms.version}</version>
+        </dependency>
     </dependencies>
 
     <licenses>
