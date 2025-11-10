@@ -2,12 +2,14 @@ package studio.magemonkey.codex.nms.v1_21_10;
 
 import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import io.netty.channel.Channel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.chat.TranslatableComponent;
+import net.md_5.bungee.api.chat.hover.content.Content;
 import net.minecraft.core.BlockPosition;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.chat.IChatBaseComponent;
@@ -269,11 +271,36 @@ public class NMSImpl implements NMS {
     @Override
     @SuppressWarnings("deprecation")
     public HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
-        String nbt = String.format("{\"id\":\"%s\",\"count\":%d,\"components\": %s}",
-                itemStack.getType().getKey().getKey(),
-                itemStack.getAmount(),
-                itemStack.getItemMeta() != null ? itemStack.getItemMeta().getAsString() : "{}");
-        return new HoverEvent(HoverEvent.Action.SHOW_ITEM, new BaseComponent[]{new TextComponent(nbt)});
+        String components = itemStack.getItemMeta() != null ? itemStack.getItemMeta().getAsString() : "{}";
+        components = components.replaceAll(": ?0b", ": false")
+                .replaceAll(": ?1b", ": true")
+                .replaceAll(": ?(\\d+\\.\\d+)d", ": $1");
+        return new HoverEvent(HoverEvent.Action.SHOW_ITEM,
+                new ComponentsShowItem(
+                        itemStack.getType().getKey().toString(),
+                        itemStack.getAmount(),
+                        new Gson().fromJson(components, JsonObject.class))
+        );
+    }
+
+    /**
+     * Minimal show_item content carrying components for modern clients.
+     */
+    private static final class ComponentsShowItem extends Content {
+        private final String      id;
+        private final int         count;
+        private final JsonElement components;
+
+        private ComponentsShowItem(final String id, final int count, final JsonElement components) {
+            this.id = id;
+            this.count = count;
+            this.components = components;
+        }
+
+        @Override
+        public HoverEvent.Action requiredAction() {
+            return HoverEvent.Action.SHOW_ITEM;
+        }
     }
 
     @Override
