@@ -169,8 +169,6 @@ public class ClickText {
             this.hover = new HoverEvent(HoverEvent.Action.SHOW_ACHIEVEMENT, toBase(StringUT.colorOff(id)));
         }
 
-        //
-
         @NotNull
         public ClickWord execCmd(@NotNull String cmd) {
             this.click = new ClickEvent(ClickEvent.Action.RUN_COMMAND, cmd);
