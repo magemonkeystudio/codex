@@ -73,7 +73,6 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         long loadTook = System.currentTimeMillis();
         this.logger = this.getLogger();
         this.isEngine = this instanceof CodexEngine;
-
 //		if (!(this.isSpigot = this.getServer().getVersion().toLowerCase().contains("spigot"))) {
 //			this.warn("============== DISCLAIMER ==============");
 //			this.warn("> You're running an unknown Spigot fork.");
