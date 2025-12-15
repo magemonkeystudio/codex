@@ -13,3 +13,6 @@ updates:
     open-pull-requests-limit: 10
     reviewers:
       - Travja
+    ignore:
+      - dependency-name: "org.spigotmc:spigot-api"
+
