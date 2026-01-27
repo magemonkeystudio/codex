@@ -44,7 +44,7 @@
         <dependency>
             <groupId>com.nexomc</groupId>
             <artifactId>nexo</artifactId>
-            <version>1.19.0-dev.2</version>
+            <version>1.19.0-dev.10</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
