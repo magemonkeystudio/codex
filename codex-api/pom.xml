@@ -18,7 +18,7 @@
         <repository>
             <id>nexo</id>
             <name>Nexo Repository</name>
-            <url>https://repo.nexomc.com/snapshots/</url>
+            <url>https://repo.nexomc.com/releases/</url>
         </repository>
         <repository>
             <id>oraxen</id>
@@ -44,7 +44,7 @@
         <dependency>
             <groupId>com.nexomc</groupId>
             <artifactId>nexo</artifactId>
-            <version>1.20.0-dev.8</version>
+            <version>1.19.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
