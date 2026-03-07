@@ -7,8 +7,9 @@ on:
 
 jobs:
   deploy:
-    uses: magemonkeystudio/.github/.github/workflows/reusable-devbuild.yml@main
+    uses: magemonkeystudio/.github/.github/workflows/reusable-build.yml@main
     secrets: inherit
     with:
+      is_dev: true
       maven_args: '-f pom-dev.xml'
       artifact_filter: 'codex'
