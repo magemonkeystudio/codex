@@ -1,6 +1,6 @@
 [![Build](https://github.com/magemonkeystudios/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://repo.travja.dev/releases/studio/magemonkey/codex/${project.version})
 [![Build](https://github.com/magemonkeystudios/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://repo.travja.dev/snapshots/studio/magemonkey/codex/${project.version})
-[![Discord](https://dcbadge.limes.pink/api/server/6UzkTe6RvW?style=flat)](https://discord.gg/6UzkTe6RvW)
+[![Discord](https://dcbadge.limes.pink/api/server/mQrkW4htUA?style=flat)](https://discord.gg/mQrkW4htUA)
 
 # Codex (Formerly ProMCCore)
 
