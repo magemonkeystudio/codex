@@ -13,7 +13,7 @@
     <artifactId>codex-parent</artifactId>
     <version>1.1.1-R0.18-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>The core plugin for MageMonkeyStudio plugins</description>
+    <description>The core plugin for VoidEdge plugins</description>
 
     <modules>
         <module>codex-core</module>
@@ -273,9 +273,9 @@
 
     <developers>
         <developer>
-            <name>MageMonkeyStudio</name>
-            <organization>MageMonkeyStudio</organization>
-            <organizationUrl>https://magemonkey.studio</organizationUrl>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
         </developer>
     </developers>
 

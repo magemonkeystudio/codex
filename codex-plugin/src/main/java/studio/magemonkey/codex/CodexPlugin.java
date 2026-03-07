@@ -251,7 +251,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
     @NotNull
     public String getAuthor() {
         List<String> list = this.getDescription().getAuthors();
-        return list.isEmpty() ? "MageMonkeyStudio" : list.get(0);
+        return list.isEmpty() ? "VoidEdge" : list.get(0);
     }
 
     @NotNull
