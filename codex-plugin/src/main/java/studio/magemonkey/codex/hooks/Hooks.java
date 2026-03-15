@@ -27,6 +27,7 @@ public class Hooks {
     public static final String CITIZENS        = "Citizens";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String MYTHIC_MOBS     = "MythicMobs";
+    public static final String NEXO            = "Nexo";
     public static final String WORLD_GUARD     = "WorldGuard";
 
     @NotNull

@@ -27,9 +27,6 @@ dependencies:
     MythicMobs:
       load: BEFORE
       required: false
-    Nexo:
-      load: BEFORE
-      required: false
     Oraxen:
       load: BEFORE
       required: false

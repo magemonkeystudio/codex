@@ -78,6 +78,8 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
     @Getter
     private              CitizensHK                citizens;
     @Getter
+    private              NexoHK                    nexo;
+    @Getter
     private              WorldGuardHK              worldGuard;
     @Getter
     private              IMythicHook               mythicMobs;
@@ -234,6 +236,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         this.hooksManager = new HookManager(this);
         this.hooksManager.setup();
 
+
         this.itemManager = new CodexItemManager(this);
         this.itemManager.init();
 
@@ -327,6 +330,10 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             this.vault = this.registerHook(Hooks.VAULT, VaultHK.class);
         } catch (Exception ignored) {
         }
+        try {
+            this.nexo = this.registerHook(Hooks.NEXO, NexoHK.class);
+        } catch (Exception ignored) {
+        }
     }
 
     @Override
@@ -384,6 +391,9 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
             }
             if (this.citizens == null && name.equalsIgnoreCase(Hooks.CITIZENS)) {
                 this.citizens = this.registerHook(Hooks.CITIZENS, CitizensHK.class);
+            }
+            if (this.nexo == null && name.equalsIgnoreCase(Hooks.NEXO)) {
+                this.nexo = this.registerHook(Hooks.NEXO, NexoHK.class);
             }
         } catch (Exception ignored) {
         }
