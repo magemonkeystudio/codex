@@ -38,10 +38,16 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * The main class for all Codex plugins. This class is responsible for loading
+ * and managing all plugin components, such as commands, modules, hooks, and
+ * configuration. It also provides utility methods for logging and accessing
+ * plugin information.
+ */
 @NoArgsConstructor
 public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin implements Loggable {
-    private       Logger  logger;
-    private       boolean isEngine;
+    private Logger  logger;
+    private boolean isEngine;
 
     @Getter
     protected ConfigManager<P>  configManager;
