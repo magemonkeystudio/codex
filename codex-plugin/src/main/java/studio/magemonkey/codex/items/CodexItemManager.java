@@ -39,8 +39,11 @@ public class CodexItemManager {
         log = plugin.getLogger();
         registerProvider(VanillaProvider.NAMESPACE, new VanillaProvider());
         registerProvider(OraxenProvider.NAMESPACE, new OraxenProvider());
-        registerProvider(NexoProvider.NAMESPACE, new NexoProvider());
         registerProvider(ItemsAdderProvider.NAMESPACE, new ItemsAdderProvider());
+    }
+
+    public boolean hasProvider(String namespace) {
+        return providers.containsKey(namespace.toUpperCase(Locale.US));
     }
 
     public void registerProvider(String namespace, ICodexItemProvider<?> provider) {

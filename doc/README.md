@@ -1,16 +1,15 @@
-[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://s01.oss.sonatype.org/content/repositories/releases/studio/magemonkey/codex/${project.version})
-[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://s01.oss.sonatype.org/content/repositories/snapshots/studio/magemonkey/codex/${project.version})
-[![Discord](https://dcbadge.vercel.app/api/server/6UzkTe6RvW?style=flat)](https://discord.gg/6UzkTe6RvW)
+[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/release.yml/badge.svg?branch=main)](https://repo.travja.dev/releases/studio/magemonkey/codex/${project.version})
+[![Build](https://github.com/magemonkeystudios/codex/actions/workflows/devbuild.yml/badge.svg?branch=dev)](https://repo.travja.dev/snapshots/studio/magemonkey/codex/${project.version})
+[![Discord](https://dcbadge.limes.pink/api/server/mQrkW4htUA?style=flat)](https://discord.gg/mQrkW4htUA)
 
 # Codex (Formerly ProMCCore)
 
-If you wish to use Codex as a dependency in your projects, Codex is available through Maven Central
-or snapshots through Sonatype.
+If you wish to use Codex as a dependency in your projects, Codex is available through our repository at [repo.travja.dev](https://repo.travja.dev).
 
 ```xml
 <repository>
-    <id>sonatype</id>
-    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    <id>magemonkey-snapshots</id>
+    <url>https://repo.travja.dev/snapshots</url>
 </repository>
 ...
 <dependency>

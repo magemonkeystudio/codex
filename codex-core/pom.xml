@@ -6,14 +6,17 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.1.0-R1</version>
+        <version>1.1.1-R0.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex-core</artifactId>
+    <name>Codex-Core</name>
+    <description>Core utilities for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <properties>
         <project.type>jar</project.type>
-        <nms.version>1.1.0-R0.5-SNAPSHOT</nms.version>
+        <nms.version>1.1.0-R0.6-SNAPSHOT</nms.version>
     </properties>
 
     <dependencies>
@@ -78,10 +81,46 @@
             <artifactId>codex-nms-v1_21_4</artifactId>
             <version>${nms.version}</version>
         </dependency>
-
         <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_21_5</artifactId>
+            <version>${nms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_21_7</artifactId>
+            <version>${nms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_21_10</artifactId>
+            <version>${nms.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-v1_21_11</artifactId>
+            <version>${nms.version}</version>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

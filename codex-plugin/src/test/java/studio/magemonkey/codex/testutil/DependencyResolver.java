@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @Log4j2
 public class DependencyResolver {
     private static List<String> repositories =
-            List.of("https://s01.oss.sonatype.org/content/repositories/snapshots/", "https://repo1.maven.org/maven2");
+            List.of("https://repo.travja.dev/snapshots/", "https://repo1.maven.org/maven2");
 
     public static File resolve(String dependency) throws FileNotFoundException {
         log.info("Attempting to resolve dependency " + dependency);
@@ -31,7 +31,7 @@ public class DependencyResolver {
 
     private static File downloadArtifact(String groupId, String artifact, String version) throws FileNotFoundException {
         String url = findArtifactUrl(groupId, artifact, version);
-        log.info("Downloading " + artifact + " from " + url);
+        log.info("Downloading {} from {}", artifact, url);
         try (BufferedInputStream inputStream = new BufferedInputStream(new URL(url).openStream());
              FileOutputStream fileOS = new FileOutputStream(artifact + ".jar")) {
             byte data[] = new byte[1024];

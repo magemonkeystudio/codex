@@ -57,6 +57,10 @@ public class VersionManager {
             case "1.21", "1.21.1" -> "v1_21_1";
             case "1.21.2", "1.21.3" -> "v1_21_2";
             case "1.21.4" -> "v1_21_4";
+            case "1.21.5" -> "v1_21_5";
+            case "1.21.6", "1.21.7", "1.21.8" -> "v1_21_7";
+            case "1.21.9", "1.21.10" -> "v1_21_10";
+            case "1.21.11" -> "v1_21_11";
             default -> throw new UnsupportedVersionException("Unknown version " + version);
         };
     }

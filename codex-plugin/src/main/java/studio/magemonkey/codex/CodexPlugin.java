@@ -42,7 +42,6 @@ import java.util.logging.Logger;
 public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin implements Loggable {
     private       Logger  logger;
     private       boolean isEngine;
-    private final boolean isSpigot = true;
 
     @Getter
     protected ConfigManager<P>  configManager;
@@ -57,7 +56,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
     }
 
     public boolean isSpigot() {
-        return isSpigot;
+        return true;
     }
 
     @NotNull
@@ -74,7 +73,6 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
         long loadTook = System.currentTimeMillis();
         this.logger = this.getLogger();
         this.isEngine = this instanceof CodexEngine;
-
 //		if (!(this.isSpigot = this.getServer().getVersion().toLowerCase().contains("spigot"))) {
 //			this.warn("============== DISCLAIMER ==============");
 //			this.warn("> You're running an unknown Spigot fork.");
@@ -253,7 +251,7 @@ public abstract class CodexPlugin<P extends CodexPlugin<P>> extends JavaPlugin i
     @NotNull
     public String getAuthor() {
         List<String> list = this.getDescription().getAuthors();
-        return list.isEmpty() ? "MageMonkeyStudio" : list.get(0);
+        return list.isEmpty() ? "VoidEdge" : list.get(0);
     }
 
     @NotNull

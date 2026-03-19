@@ -19,7 +19,7 @@ public class ComponentSerializer implements JsonDeserializer<BaseComponent> {
 
     public static BaseComponent[] parse(String json) {
         return json.startsWith("[") ? gson.fromJson(json, BaseComponent[].class)
-                : new BaseComponent[]{(BaseComponent) gson.fromJson(json, BaseComponent.class)};
+                : new BaseComponent[]{gson.fromJson(json, BaseComponent.class)};
     }
 
     public static String toString(BaseComponent component) {

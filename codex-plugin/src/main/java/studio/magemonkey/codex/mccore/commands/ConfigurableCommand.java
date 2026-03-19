@@ -4,7 +4,7 @@
  * <p>
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2024 MageMonkeyStudio
+ * © 2026 VoidEdge
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
@@ -40,7 +40,6 @@ import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.mccore.config.CommentedConfig;
 import studio.magemonkey.codex.mccore.config.CustomFilter;
 import studio.magemonkey.codex.mccore.config.parse.DataSection;
-import studio.magemonkey.codex.mccore.util.TextFormatter;
 import studio.magemonkey.codex.util.StringUT;
 
 import java.util.*;
@@ -514,7 +513,7 @@ public class ConfigurableCommand extends Command {
      * @return true
      */
     @Override
-    public boolean execute(CommandSender sender, String label, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String label, String[] args) {
         return execute(sender, args);
     }
 
@@ -545,7 +544,19 @@ public class ConfigurableCommand extends Command {
 
         // Execute the attached function if applicable
         if (function != null) {
-            function.execute(this, plugin, sender, args);
+            boolean silent = false;
+            // Check the args for -s or --silent and remove it from the args
+            if (args.length > 0) {
+                List<String> argList = new ArrayList<>(Arrays.asList(args));
+                if (argList.contains("-s") || argList.contains("--silent")) {
+                    silent = true;
+                    argList.remove("-s");
+                    argList.remove("--silent");
+                    args = argList.toArray(new String[0]);
+                }
+            }
+
+            function.execute(this, plugin, sender, args, silent);
         }
 
         // Otherwise search for a sub command
@@ -673,13 +684,27 @@ public class ConfigurableCommand extends Command {
      * @param sender         sender of the command
      * @param key            the message key
      * @param defaultMessage the message to use if not set
+     * @param silent         indicates whether the message should be sent or not
      * @param filters        filters to use on the message
      */
-    public void sendMessage(CommandSender sender, String key, String defaultMessage, CustomFilter... filters) {
+    public void sendMessage(CommandSender sender,
+                            String key,
+                            String defaultMessage,
+                            boolean silent,
+                            CustomFilter... filters) {
+        if (silent) return;
+
         String str = getMessage(key, defaultMessage, filters);
-        if (str.length() > 0) {
+        if (!str.isEmpty()) {
             sender.sendMessage(str);
         }
+    }
+
+    public void sendMessage(CommandSender sender,
+                            String key,
+                            String defaultMessage,
+                            CustomFilter... filters) {
+        sendMessage(sender, key, defaultMessage, false, filters);
     }
 
     /**

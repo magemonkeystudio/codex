@@ -6,12 +6,13 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.1.0-R1</version>
+        <version>1.1.1-R0.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex</artifactId>
     <name>CodexCore</name>
-    <description>The core plugin for MageMonkeyStudio plugins</description>
+    <description>The core plugin for VoidEdge plugins</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <properties>
         <outputDir>../../build</outputDir>
@@ -31,12 +32,12 @@
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.19.0</version>
+            <version>4.26.1</version>
         </dependency>
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.3.4</version>
+            <version>4.4.1</version>
         </dependency>
     </dependencies>
 
@@ -46,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.4.2</version>
+                <version>3.5.0</version>
                 <configuration>
                     <archive>
                         <manifestEntries>
@@ -81,6 +82,9 @@
                         <relocation>
                             <pattern>net.kyori</pattern>
                             <shadedPattern>studio.magemonkey.codex.adventure</shadedPattern>
+<!--                            <excludes>-->
+<!--                                <exclude>net.kyori.adventure.text.serializer.gson.**</exclude>-->
+<!--                            </excludes>-->
                         </relocation>
                     </relocations>
                 </configuration>
@@ -95,4 +99,25 @@
             </plugin>
         </plugins>
     </build>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

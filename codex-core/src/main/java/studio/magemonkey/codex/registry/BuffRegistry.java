@@ -1,6 +1,7 @@
 package studio.magemonkey.codex.registry;
 
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.Codex;
 import studio.magemonkey.codex.registry.provider.BuffProvider;
 
@@ -24,7 +25,7 @@ public class BuffRegistry {
         PROVIDERS.removeIf(p -> p.getClass().equals(provider));
     }
 
-    public static double scaleValue(String name, LivingEntity entity, double value) {
+    public static double scaleValue(String name, @NotNull LivingEntity entity, double value) {
         double scaled = value;
 
         for (BuffProvider provider : PROVIDERS) {

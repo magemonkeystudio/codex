@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>studio.magemonkey</groupId>
+        <artifactId>codex-nms</artifactId>
+        <version>1.1.0-R0.6-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>codex-nms-v1_21_7</artifactId>
+    <name>CodexNMS-1.21.7</name>
+    <description>1.21.7 NMS utilities for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.21.7-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.21.7-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
+</project>

@@ -4,7 +4,7 @@
  * <p>
  * The MIT License (MIT)
  * <p>
- * Copyright (c) 2024 MageMonkeyStudio
+ * © 2026 VoidEdge
  * <p>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software") to deal
@@ -41,6 +41,7 @@ public interface IFunction {
      * @param plugin  plugin reference
      * @param sender  sender of the command
      * @param args    command arguments
+     * @param silent  whether to suppress output
      */
-    public void execute(ConfigurableCommand command, Plugin plugin, CommandSender sender, String[] args);
+    void execute(ConfigurableCommand command, Plugin plugin, CommandSender sender, String[] args, boolean silent);
 }

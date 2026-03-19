@@ -27,6 +27,7 @@ public class Hooks {
     public static final String CITIZENS        = "Citizens";
     public static final String PLACEHOLDER_API = "PlaceholderAPI";
     public static final String MYTHIC_MOBS     = "MythicMobs";
+    public static final String NEXO            = "Nexo";
     public static final String WORLD_GUARD     = "WorldGuard";
 
     @NotNull
@@ -131,7 +132,7 @@ public class Hooks {
 
     public static boolean hasPlugin(@NotNull String plugin) {
         Plugin p = ENGINE.getPluginManager().getPlugin(plugin);
-        return p != null;// && p.isEnabled();
+        return p != null && p.isEnabled();
     }
 
     public static boolean hasPlaceholderAPI() {

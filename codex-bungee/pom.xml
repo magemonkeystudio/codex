@@ -6,15 +6,40 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.1.0-R1</version>
+        <version>1.1.1-R0.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex-bungee</artifactId>
+    <name>CodexBungee</name>
+    <description>Bungee utilities for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <dependencies>
         <dependency>
             <groupId>net.md-5</groupId>
             <artifactId>bungeecord-api</artifactId>
+            <version>1.21-R0.4</version>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

@@ -6,10 +6,17 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-nms</artifactId>
-        <version>1.1.0-R0.5-SNAPSHOT</version>
+        <version>1.1.0-R0.6-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex-nms-v1_20_6</artifactId>
+    <name>CodexNMS-1.20.6</name>
+    <description>1.20.6 NMS utilities for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
+
+    <properties>
+        <java.version>21</java.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -25,4 +32,25 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

@@ -14,10 +14,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemBreakEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -26,10 +23,7 @@ import studio.magemonkey.codex.api.armor.ArmorEquipEvent;
 import studio.magemonkey.codex.api.armor.ArmorType;
 import studio.magemonkey.codex.compat.VersionManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.bukkit.event.inventory.InventoryType.CRAFTING;
 import static studio.magemonkey.codex.api.armor.ArmorEquipEvent.EquipMethod;
@@ -155,6 +149,9 @@ public class ArmorListener implements Listener {
             Material.LOOM,
             Material.STONECUTTER,
             Material.BELL);
+
+    // Track players who drop items via InventoryClickEvent
+    private static final Set<UUID> inventoryDropPlayers = new HashSet<>();
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public final void inventoryClick(final InventoryClickEvent e) {
@@ -370,6 +367,8 @@ public class ArmorListener implements Listener {
                 ArmorType armorType = ArmorType.matchType(item);
                 if (Objects.requireNonNull(armorType).matchesSlot(slot, heldSlot) && (
                         e.getClick() == ClickType.CONTROL_DROP || item.getAmount() == 1)) {
+                    // Mark player as having dropped via inventory
+                    inventoryDropPlayers.add(player.getUniqueId());
                     ArmorEquipEvent armorEquipEvent =
                             new ArmorEquipEvent(player, EquipMethod.DROP, armorType, e.getCurrentItem(), null);
                     if (isChange(armorEquipEvent)) {
@@ -634,4 +633,31 @@ public class ArmorListener implements Listener {
             }
         }
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
+        Player    player    = event.getPlayer();
+        UUID      uuid      = player.getUniqueId();
+        ItemStack dropped   = event.getItemDrop().getItemStack();
+        ItemStack mainHand  = player.getInventory().getItemInMainHand();
+        ArmorType armorType = ArmorType.matchType(dropped);
+
+        // If player dropped via InventoryClickEvent, skip firing ArmorEquipEvent here
+        if (inventoryDropPlayers.contains(uuid)) {
+            inventoryDropPlayers.remove(uuid);
+            return;
+        }
+
+        // Only trigger if dropped item is similar to main hand item and is main hand armor
+        if (armorType == ArmorType.MAIN_HAND && isAirOrNull(mainHand)) {
+            ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(player, EquipMethod.DROP, armorType, dropped, null);
+            if (isChange(armorEquipEvent)) {
+                Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
+                if (armorEquipEvent.isCancelled()) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+    }
 }
+

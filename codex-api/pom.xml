@@ -6,16 +6,19 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.1.0-R1</version>
+        <version>1.1.1-R0.21-SNAPSHOT</version>
     </parent>
 
     <artifactId>codex-api</artifactId>
+    <name>CodexAPI</name>
+    <description>API for Codex</description>
+    <url>https://www.spigotmc.org/resources/93608/</url>
 
     <repositories>
         <repository>
             <id>nexo</id>
             <name>Nexo Repository</name>
-            <url>https://repo.nexomc.com/snapshots/</url>
+            <url>https://repo.nexomc.com/releases/</url>
         </repository>
         <repository>
             <id>oraxen</id>
@@ -41,7 +44,7 @@
         <dependency>
             <groupId>com.nexomc</groupId>
             <artifactId>nexo</artifactId>
-            <version>1.5.0-dev.2</version>
+            <version>1.20.1</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -104,4 +107,25 @@
             </exclusions>
         </dependency>
     </dependencies>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/magemonkeystudio/codex.git</connection>
+        <developerConnection>scm:git:ssh://github.com:magemonkeystudio/codex.git</developerConnection>
+        <url>https://github.com/magemonkeystudio/codex</url>
+    </scm>
 </project>

@@ -2,6 +2,7 @@ package studio.magemonkey.codex.util;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -25,9 +26,16 @@ public class MsgUT {
     private static final String[] JSON_ARGUMENTS         = new String[]{"hint", "chat-type", "chat-suggest", "url"};
 
     public static void sendActionBar(@NotNull Player player, @NotNull String msg) {
+        boolean useLegacyActionBar = Codex.getPlugin().getConfig().getBoolean("action-bar-legacy", false);
+        if (useLegacyActionBar) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR,
+                    net.md_5.bungee.api.chat.TextComponent.fromLegacyText(StringUT.color(msg)));
+        } else {
+            // Send via Adventure API
         Component component =
                 LegacyComponentSerializer.legacySection().deserialize(msg);
         Codex.getAudience().player(player).sendActionBar(component);
+        }
     }
 
     @Deprecated

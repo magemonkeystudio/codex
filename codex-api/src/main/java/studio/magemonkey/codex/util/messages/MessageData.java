@@ -1,11 +1,13 @@
 package studio.magemonkey.codex.util.messages;
 
+import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * Represent placeholder data, name of object and object instance.
  */
+@Getter
 public class MessageData {
     private final String name;
     private final Object object;
@@ -31,14 +33,6 @@ public class MessageData {
      */
     public static MessageData e(String name, Object object) {
         return new MessageData(name, object);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Object getObject() {
-        return object;
     }
 
     @Override

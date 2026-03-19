@@ -7,13 +7,13 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>magemonkey-parent</artifactId>
-        <version>1.21.4-R0.4</version>
+        <version>1.21.11-R1</version>
     </parent>
 
     <artifactId>codex-parent</artifactId>
-    <version>1.1.0-R1</version>
+    <version>1.1.1-R0.21-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <description>The core plugin for MageMonkeyStudio plugins</description>
+    <description>The core plugin for VoidEdge plugins</description>
 
     <modules>
         <module>codex-core</module>
@@ -28,8 +28,20 @@
 
     <repositories>
         <repository>
-            <id>sonatype</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <id>magemonkey-releases</id>
+            <url>https://repo.travja.dev/releases</url>
+        </repository>
+        <repository>
+            <id>magemonkey-snapshots</id>
+            <url>https://repo.travja.dev/snapshots</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>matteodev</id>
+            <url>https://maven.devs.beer/</url>
         </repository>
     </repositories>
 
@@ -64,7 +76,7 @@
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
-            <version>7.0.9-SNAPSHOT</version>
+            <version>7.0.13</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.sk89q.worledit</groupId>
@@ -75,12 +87,12 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.3.9-SNAPSHOT</version>
+            <version>7.3.14</version>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-core</artifactId>
-            <version>7.3.9-SNAPSHOT</version>
+            <version>7.3.14</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
@@ -135,9 +147,9 @@
             <artifactId>commons-io</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.github.LoneDev6</groupId>
+            <groupId>dev.lone</groupId>
             <artifactId>api-itemsadder</artifactId>
-            <version>3.6.3-beta-14</version>
+            <version>4.0.10</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -269,9 +281,9 @@
 
     <developers>
         <developer>
-            <name>MageMonkeyStudio</name>
-            <organization>MageMonkeyStudio</organization>
-            <organizationUrl>https://magemonkey.studio</organizationUrl>
+            <name>VoidEdge</name>
+            <organization>VoidEdge</organization>
+            <organizationUrl>https://void.travja.dev</organizationUrl>
         </developer>
     </developers>
 
@@ -280,4 +292,15 @@
         <developerConnection>scm:git:ssh://github.com:magemonkeystudio/${project.artifactId}.git</developerConnection>
         <url>https://github.com/magemonkeystudio/${project.artifactId}</url>
     </scm>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>magemonkey-repo</id>
+            <url>${deploy.url}/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>magemonkey-repo</id>
+            <url>${deploy.url}/releases</url>
+        </repository>
+    </distributionManagement>
 </project>

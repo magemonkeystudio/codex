@@ -11,7 +11,7 @@ public abstract class ISubCommand<P extends CodexPlugin<P>> extends IAbstractCom
     protected IGeneralCommand<P> parent;
 
     public ISubCommand(@NotNull P plugin, @NotNull List<String> aliases) {
-        this(plugin, aliases.toArray(new String[aliases.size()]));
+        this(plugin, aliases.toArray(new String[0]));
     }
 
     public ISubCommand(@NotNull P plugin, @NotNull String[] aliases) {
@@ -19,7 +19,7 @@ public abstract class ISubCommand<P extends CodexPlugin<P>> extends IAbstractCom
     }
 
     public ISubCommand(@NotNull P plugin, @NotNull List<String> aliases, @Nullable String permission) {
-        this(plugin, aliases.toArray(new String[aliases.size()]), permission);
+        this(plugin, aliases.toArray(new String[0]), permission);
     }
 
     public ISubCommand(@NotNull P plugin, @NotNull String[] aliases, @Nullable String permission) {

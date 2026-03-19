@@ -159,15 +159,6 @@ public class ClickText {
             return this;
         }
 
-        private BaseComponent[] toBase(@NotNull ItemStack item) {
-            String json = VersionManager.getNms().toJson(item);
-            if (json != null) {
-                return TextComponent.fromLegacyText(json);
-            }
-
-            return new BaseComponent[0];
-        }
-
         @Deprecated
         public void showEntity(@NotNull String json) {
             this.hover = new HoverEvent(HoverEvent.Action.SHOW_ENTITY, toBase(json));
@@ -177,8 +168,6 @@ public class ClickText {
         public void achievement(@NotNull String id) {
             this.hover = new HoverEvent(HoverEvent.Action.SHOW_ACHIEVEMENT, toBase(StringUT.colorOff(id)));
         }
-
-        //
 
         @NotNull
         public ClickWord execCmd(@NotNull String cmd) {
