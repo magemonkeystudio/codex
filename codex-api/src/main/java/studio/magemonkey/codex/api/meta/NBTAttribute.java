@@ -209,11 +209,7 @@ public enum NBTAttribute {
             }
         }
 
-        if (last != null) {
-            throw new IllegalArgumentException("Unknown attribute mappings for '" + this.name() + "'.", last);
-        }
-
-        throw new IllegalStateException("Could not resolve attribute mapping for '" + this.name() + "'.");
+        throw new IllegalArgumentException("Unknown attribute mappings for '" + this.name() + "'.", last);
     }
 
     @NotNull
