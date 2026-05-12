@@ -284,12 +284,19 @@ public class NMSImpl implements NMS {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
+        System.out.println("[DEBUG] getHoverEvent FIXED for 1.21.7");
         String components = itemStack.getItemMeta() != null ? itemStack.getItemMeta().getAsString() : "{}";
+
+        // Naprawa booleanów
         components = components.replaceAll(": ?0b", ": false")
-                .replaceAll(": ?1b", ": true")
-                .replaceAll(": ?(\\d+\\.\\d+)d", ": $1");
+                .replaceAll(": ?1b", ": true");
+
+        // Naprawa liczb z przyrostkami f / d (w cudzysłowie lub bez)
+        components = components.replaceAll("(-?\\d+(?:\\.\\d+)?)[fd]", "$1");
+
+        System.out.println("[DEBUG] After fix: " + components);
+
         return new HoverEvent(HoverEvent.Action.SHOW_ITEM,
                 new ComponentsShowItem(
                         itemStack.getType().getKey().toString(),

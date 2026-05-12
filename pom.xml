@@ -7,11 +7,11 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>magemonkey-parent</artifactId>
-        <version>1.21.11-R2</version>
+        <version>1.21.11-R1</version>
     </parent>
 
     <artifactId>codex-parent</artifactId>
-    <version>1.1.1-R0.17-SNAPSHOT</version>
+    <version>1.1.1-R2.1-SNAPSHOT</version>   <!-- zmieniona wersja -->
     <packaging>pom</packaging>
     <name>CodexParent</name>
     <description>The core plugin for VoidEdge plugins</description>
@@ -89,12 +89,12 @@
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-bukkit</artifactId>
-            <version>7.4.2</version>
+            <version>7.4.1</version>
         </dependency>
         <dependency>
             <groupId>com.sk89q.worldedit</groupId>
             <artifactId>worldedit-core</artifactId>
-            <version>7.4.2</version>
+            <version>7.4.1</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
