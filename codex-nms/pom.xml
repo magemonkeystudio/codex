@@ -28,7 +28,7 @@
     <description>A collection of NMS libraries for Codex</description>
 
     <modules>
-        <module>codex-nms-v1_16_5</module>
+
         <module>codex-nms-v1_17_1</module>
         <module>codex-nms-v1_18_2</module>
         <module>codex-nms-v1_19_4</module>
@@ -43,6 +43,7 @@
         <module>codex-nms-v1_21_7</module>
         <module>codex-nms-v1_21_10</module>
         <module>codex-nms-v1_21_11</module>
+
     </modules>
 
     <dependencies>

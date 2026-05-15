@@ -66,7 +66,6 @@ public class NMSImpl implements NMS {
     public String getVersion() {
         return "1.21.11";
     }
-
     @NotNull
     @Override
     public Object getConnection(Player player) {
@@ -272,10 +271,15 @@ public class NMSImpl implements NMS {
     @SuppressWarnings("deprecation")
     public HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
         String components = itemStack.getItemMeta() != null ? itemStack.getItemMeta().getAsString() : "{}";
+
+        // Fixing booleans
         components = components.replaceAll(": ?0b", ": false")
-                .replaceAll(": ?1b", ": true")
-                .replaceAll(": ?(\\d+\\.\\d+)d", ": $1")
-                .replaceAll("\\b(\\d+\\.\\d+)f\\b", "$1");
+                .replaceAll(": ?1b", ": true");
+
+        // Fixing numbers with f/d suffixes (e.g. "1.0f", "-2.5d")
+        // Removes quotes and suffix, leaves blank number (JSON)
+        components = components.replaceAll("\"((-?\\d+(?:\\.\\d+)?)[fd])\"", "$2");
+
         return new HoverEvent(HoverEvent.Action.SHOW_ITEM,
                 new ComponentsShowItem(
                         itemStack.getType().getKey().toString(),
