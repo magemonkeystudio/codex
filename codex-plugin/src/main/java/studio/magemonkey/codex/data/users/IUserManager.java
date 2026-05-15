@@ -36,7 +36,7 @@ public abstract class IUserManager<P extends CodexDataPlugin<P, U>, U extends IA
 
     @Override
     public void setup() {
-        this.activeUsers = new HashMap<>();
+        this.activeUsers = new ConcurrentHashMap<>();
         this.toSave = ConcurrentHashMap.newKeySet();
         this.isPassJoin = ConcurrentHashMap.newKeySet();
         this.toCreate = ConcurrentHashMap.newKeySet();

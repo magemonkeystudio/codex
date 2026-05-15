@@ -23,8 +23,6 @@ import net.minecraft.world.level.block.entity.TileEntitySkull;
 import net.minecraft.world.level.block.state.IBlockData;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
@@ -57,7 +55,6 @@ import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Base64;
-import java.util.Locale;
 import java.util.UUID;
 
 public class NMSImpl implements NMS {
@@ -275,12 +272,6 @@ public class NMSImpl implements NMS {
         } catch (MalformedURLException | NoClassDefFoundError | NoSuchMethodError | IllegalArgumentException e) {
             NMS.super.addSkullTexture(item, value, uuid);
         }
-    }
-
-    @NotNull
-    @Override
-    public Attribute getAttribute(String name) {
-        return Registry.ATTRIBUTE.getOrThrow(NamespacedKey.minecraft(name.toLowerCase(Locale.US)));
     }
 
     @Override
