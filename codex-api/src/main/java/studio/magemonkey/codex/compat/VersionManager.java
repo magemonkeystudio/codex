@@ -17,6 +17,12 @@ public class VersionManager {
         if (Version.CURRENT == Version.TEST) return;
         String version = Bukkit.getServer().getBukkitVersion().split("-")[0];
 
+        // Starting in 26.x, versions look like this: 26.2.build.42-alpha
+        // So we need to clean up the version just to everything prior to `build` to determine the version
+        if (version.contains("build")) {
+            version = version.substring(0, version.indexOf("build") - 1);
+        }
+
         try {
             String packageName = getPackageFromVersion(version);
             VersionManager.setNms((NMS) Class.forName("studio.magemonkey.codex.nms." + packageName + ".NMSImpl")
@@ -61,6 +67,7 @@ public class VersionManager {
             case "1.21.6", "1.21.7", "1.21.8" -> "v1_21_7";
             case "1.21.9", "1.21.10" -> "v1_21_10";
             case "1.21.11" -> "v1_21_11";
+            case "26.2" -> "v26_2";
             default -> throw new UnsupportedVersionException("Unknown version " + version);
         };
     }

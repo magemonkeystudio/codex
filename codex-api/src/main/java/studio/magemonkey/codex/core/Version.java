@@ -25,7 +25,8 @@ public enum Version {
     V1_21_R4,
     V1_21_R5,
     V1_21_R6,
-    V1_21_R7;
+    V1_21_R7,
+    V26_R1;
 
     public static final Version CURRENT;
 
@@ -39,6 +40,13 @@ public enum Version {
 
             // This get version method has been around since 2011
             String version = Bukkit.getServer().getBukkitVersion();
+
+            // Starting in 26.x, versions look like this: 26.2.build.42-alpha
+            // So we need to clean up the version just to everything prior to `build` to determine the version
+            if (version.contains("build")) {
+                version = version.substring(0, version.indexOf("build") - 1);
+            }
+
             CURRENT = switch (version) {
                 case "1.20.6-R0.1-SNAPSHOT" -> Version.V1_20_R4;
                 case "1.21-R0.1-SNAPSHOT", "1.21.1-R0.1-SNAPSHOT" -> Version.V1_21_R1;
@@ -48,6 +56,7 @@ public enum Version {
                 case "1.21.6-R0.1-SNAPSHOT", "1.21.7-R0.1-SNAPSHOT", "1.21.8-R0.1-SNAPSHOT" -> Version.V1_21_R5;
                 case "1.21.9-R0.1-SNAPSHOT", "1.21.10-R0.1-SNAPSHOT" -> Version.V1_21_R6;
                 case "1.21.11-R0.1-SNAPSHOT" -> Version.V1_21_R7;
+                case "26.2-R0.1-SNAPSHOT", "26.2" -> Version.V26_R1;
                 default -> throw new IllegalStateException("Unexpected version: " + version);
             };
         } else

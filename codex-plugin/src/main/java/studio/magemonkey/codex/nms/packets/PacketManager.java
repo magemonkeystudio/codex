@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.CodexEngine;
 import studio.magemonkey.codex.api.events.EnginePlayerPacketEvent;
-import studio.magemonkey.codex.api.events.EngineServerPacketEvent;
 import studio.magemonkey.codex.compat.VersionManager;
 import studio.magemonkey.codex.core.Version;
 import studio.magemonkey.codex.manager.IManager;
@@ -88,17 +87,6 @@ public class PacketManager extends IManager<CodexEngine> {
 
         ChannelDuplexHandler cdx = new ChannelDuplexHandler() {
 
-            // From Player to Server (In)
-            @Override
-            public void channelRead(ChannelHandlerContext cont, Object packet) throws Exception {
-                EngineServerPacketEvent e = new EngineServerPacketEvent(player, packet);
-                plugin.getPluginManager().callEvent(e);
-                if (e.isCancelled()) return;
-
-                //System.out.print("PACKET IN: " + packet.toString());
-                super.channelRead(cont, e.getPacket());
-            }
-
             // From Server to Player (Out)
             @Override
             public void write(ChannelHandlerContext cont, Object packet, ChannelPromise prom) throws Exception {
@@ -132,13 +120,6 @@ public class PacketManager extends IManager<CodexEngine> {
     public void onPacketOut(EnginePlayerPacketEvent e) {
         for (IPacketHandler handler : this.getHandlers()) {
             handler.managePlayerPacket(e);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onPacketIn(EngineServerPacketEvent e) {
-        for (IPacketHandler handler : this.getHandlers()) {
-            handler.manageServerPacket(e);
         }
     }
 }

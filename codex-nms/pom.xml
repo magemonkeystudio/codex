@@ -22,7 +22,7 @@
     </repositories>
 
     <artifactId>codex-nms</artifactId>
-    <version>1.1.0-R0.6-SNAPSHOT</version>
+    <version>1.2.0-R0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>CodexNMS</name>
     <description>A collection of NMS libraries for Codex</description>
@@ -43,6 +43,7 @@
         <module>codex-nms-v1_21_7</module>
         <module>codex-nms-v1_21_10</module>
         <module>codex-nms-v1_21_11</module>
+        <module>codex-nms-v26_2</module>
     </modules>
 
     <dependencies>

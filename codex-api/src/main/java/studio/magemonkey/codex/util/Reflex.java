@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.Codex;
+import studio.magemonkey.codex.core.Version;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -21,14 +22,26 @@ import java.util.List;
  */
 @Deprecated(since = "1.1.0")
 public class Reflex {
-    public static final String VERSION =
-            !Bukkit.getServer().getClass().getPackage().getName().contains("mockbukkit") ? (
-                    Integer.parseInt(Bukkit.getServer().getBukkitVersion().split("[.-]")[1]) < 20 ? Bukkit.getServer()
-                            .getClass()
-                            .getPackage()
-                            .getName()
-                            .replace(".", ",")
-                            .split(",")[3] : Bukkit.getServer().getBukkitVersion().split("-")[0]) : "";
+    public static final String VERSION = resolveVersion();
+
+    @NotNull
+    private static String resolveVersion() {
+        String craftPackage = Bukkit.getServer().getClass().getPackage().getName();
+        if (craftPackage.contains("mockbukkit")) {
+            return "";
+        }
+
+        // <= 1.16.5 still uses versioned CraftBukkit package names.
+        if (Version.CURRENT.isLower(Version.V1_17_R1)) {
+            String[] split = craftPackage.split("\\.");
+            return split[split.length - 1];
+        }
+
+        // Newer builds use a semantic bukkit version and can include ".build.<n>" metadata.
+        String bukkitVersion = Bukkit.getServer().getBukkitVersion().split("-")[0];
+        int    buildIndex    = bukkitVersion.indexOf(".build");
+        return buildIndex >= 0 ? bukkitVersion.substring(0, buildIndex) : bukkitVersion;
+    }
 
     @Nullable
     public static Class<?> getClass(@NotNull String path, @NotNull String name) {
@@ -75,6 +88,10 @@ public class Reflex {
 
     @Nullable
     public static Class<?> getNMSClass(@NotNull String name) {
+        if (Version.CURRENT.isAtLeast(Version.V1_17_R1)) {
+            Codex.error("[Reflex] getNMSClass is legacy-only (<= 1.16.5). Requested class: " + name);
+            return null;
+        }
         return getClass("net.minecraft.server." + VERSION, name);
     }
 

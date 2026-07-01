@@ -9,9 +9,9 @@
         <version>1.2.0-R0.1-SNAPSHOT</version>
     </parent>
 
-    <artifactId>codex-nms-v1_21_10</artifactId>
-    <name>CodexNMS-1.21.10</name>
-    <description>1.21.10 NMS utilities for Codex</description>
+    <artifactId>codex-nms-v26_2</artifactId>
+    <name>CodexNMS-26.2</name>
+    <description>26.2 NMS utilities for Codex</description>
     <url>https://www.spigotmc.org/resources/93608/</url>
 
     <properties>
@@ -22,13 +22,19 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.21.10-R0.1-SNAPSHOT</version>
+            <version>26.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.21.10-R0.1-SNAPSHOT</version>
+            <version>26.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>it.unimi.dsi</groupId>
+            <artifactId>fastutil</artifactId>
+            <version>8.5.18</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
