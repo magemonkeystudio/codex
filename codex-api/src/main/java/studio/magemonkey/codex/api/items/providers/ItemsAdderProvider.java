@@ -82,7 +82,7 @@ public class ItemsAdderProvider implements ICodexItemProvider<ItemsAdderProvider
 
         @Override
         public ItemStack create() {
-            return this.customStack.getItemStack();
+            return this.customStack.getItemStack().clone();
         }
 
         @Override
