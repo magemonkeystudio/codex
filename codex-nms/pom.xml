@@ -43,6 +43,7 @@
         <module>codex-nms-v1_21_7</module>
         <module>codex-nms-v1_21_10</module>
         <module>codex-nms-v1_21_11</module>
+        <module>codex-nms-v26_1</module>
         <module>codex-nms-v26_2</module>
     </modules>
 
