@@ -103,11 +103,6 @@
         </dependency>
         <dependency>
             <groupId>studio.magemonkey</groupId>
-            <artifactId>codex-nms-v26_1</artifactId>
-            <version>${nms.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>studio.magemonkey</groupId>
             <artifactId>codex-nms-v26_2</artifactId>
             <version>${nms.version}</version>
         </dependency>
