@@ -17,6 +17,9 @@ import java.util.UUID;
 public interface Compat {
     UUID ATTRIBUTE_BONUS_UUID = UUID.fromString("11f1173c-6666-4444-8888-02cb0285f9c1");
 
+    /**
+     * Convenience overload for a modifier that applies regardless of equipped slot.
+     */
     default AttributeModifier createAttributeModifier(NBTAttribute attribute,
                                                        double amount,
                                                        AttributeModifier.Operation operation) {
