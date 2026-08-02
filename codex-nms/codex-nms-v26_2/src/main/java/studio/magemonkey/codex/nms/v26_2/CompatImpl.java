@@ -4,12 +4,14 @@ import net.minecraft.locale.Language;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 import studio.magemonkey.codex.compat.Compat;
 
@@ -18,8 +20,22 @@ public class CompatImpl implements Compat {
     @SuppressWarnings("UnstableApiUsage")
     public AttributeModifier createAttributeModifier(NBTAttribute attribute,
                                                      double amount,
-                                                     AttributeModifier.Operation operation) {
-        return new AttributeModifier(attribute.getAttribute().getKey(), amount, operation, EquipmentSlotGroup.ANY);
+                                                     AttributeModifier.Operation operation,
+                                                     @Nullable EquipmentSlot slot) {
+        return new AttributeModifier(attribute.getAttribute().getKey(), amount, operation, toSlotGroup(slot));
+    }
+
+    private static EquipmentSlotGroup toSlotGroup(@Nullable EquipmentSlot slot) {
+        if (slot == null) return EquipmentSlotGroup.ANY;
+        return switch (slot) {
+            case HAND -> EquipmentSlotGroup.MAINHAND;
+            case OFF_HAND -> EquipmentSlotGroup.OFFHAND;
+            case FEET -> EquipmentSlotGroup.FEET;
+            case LEGS -> EquipmentSlotGroup.LEGS;
+            case CHEST -> EquipmentSlotGroup.CHEST;
+            case HEAD -> EquipmentSlotGroup.HEAD;
+            default -> EquipmentSlotGroup.ANY;
+        };
     }
 
     @Override
