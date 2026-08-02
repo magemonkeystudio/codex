@@ -2,17 +2,23 @@ package studio.magemonkey.codex.nms.v1_20_1;
 
 import net.minecraft.locale.LocaleLanguage;
 import org.bukkit.attribute.AttributeModifier;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 import studio.magemonkey.codex.compat.Compat;
+
+import java.util.UUID;
 
 public class CompatImpl implements Compat {
     @Override
     public AttributeModifier createAttributeModifier(NBTAttribute attribute,
                                                      double amount,
-                                                     AttributeModifier.Operation operation) {
-        return new AttributeModifier(ATTRIBUTE_BONUS_UUID, attribute.getNmsName(), amount, operation);
+                                                     AttributeModifier.Operation operation,
+                                                     @Nullable EquipmentSlot slot) {
+        UUID uuid = slot != null ? attribute.getUUID(slot) : ATTRIBUTE_BONUS_UUID;
+        return new AttributeModifier(uuid, attribute.getNmsName(), amount, operation, slot);
     }
 
     @Override

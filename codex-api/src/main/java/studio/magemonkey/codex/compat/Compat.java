@@ -3,11 +3,13 @@ package studio.magemonkey.codex.compat;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import studio.magemonkey.codex.api.meta.NBTAttribute;
 
 import java.util.UUID;
@@ -15,9 +17,20 @@ import java.util.UUID;
 public interface Compat {
     UUID ATTRIBUTE_BONUS_UUID = UUID.fromString("11f1173c-6666-4444-8888-02cb0285f9c1");
 
+    default AttributeModifier createAttributeModifier(NBTAttribute attribute,
+                                                       double amount,
+                                                       AttributeModifier.Operation operation) {
+        return createAttributeModifier(attribute, amount, operation, null);
+    }
+
+    /**
+     * Creates an attribute modifier scoped to a single equipment slot, or one that applies
+     * regardless of equipped slot when {@code slot} is {@code null}.
+     */
     AttributeModifier createAttributeModifier(NBTAttribute attribute,
                                               double amount,
-                                              AttributeModifier.Operation operation);
+                                              AttributeModifier.Operation operation,
+                                              @Nullable EquipmentSlot slot);
 
     String getAttributeKey(AttributeModifier attributeModifier);
 
