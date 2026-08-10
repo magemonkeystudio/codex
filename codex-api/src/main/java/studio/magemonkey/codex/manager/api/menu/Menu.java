@@ -84,6 +84,26 @@ public abstract class Menu implements InventoryHolder {
         return slots.get(i);
     }
 
+    /**
+     * Resolves a raw display slot (0..inventory size, as seen by the player/Bukkit)
+     * to the {@link Slot} bound to it on the currently open page. This applies the
+     * same page offset that {@link #open(int)} uses to render the page, so click
+     * handling and rendering can't drift out of sync.
+     */
+    @Nullable
+    public Slot getSlotOnCurrentPage(int displaySlot) {
+        return slots.get(toVirtualSlot(this.page, this.inventory.getSize(), displaySlot));
+    }
+
+    /**
+     * Maps a page-relative display slot to its virtual index in {@link #slots}.
+     * Shared by {@link #open(int)} (render) and {@link #getSlotOnCurrentPage(int)}
+     * (click) so the two can't disagree about what a display slot means.
+     */
+    static int toVirtualSlot(int page, int pageSize, int displaySlot) {
+        return page * pageSize + displaySlot;
+    }
+
     public void openSync() {
         new BukkitRunnable() {
             @Override
@@ -106,8 +126,9 @@ public abstract class Menu implements InventoryHolder {
         inventory = Bukkit.createInventory(Menu.this, rows * 9, title
                 .replace("%page%", String.valueOf(finalPage + 1))
                 .replace("%pages%", String.valueOf(getPages())));
+        Menu.this.page = finalPage;
         for (int i = 0, last = Menu.this.inventory.getSize(); i < last; i++) {
-            Slot slot = slots.get(finalPage * Menu.this.inventory.getSize() + i);
+            Slot slot = getSlotOnCurrentPage(i);
             if (slot != null) {
                 inventory.setItem(i, slot.getItemStack());
             }
@@ -115,8 +136,6 @@ public abstract class Menu implements InventoryHolder {
         Menu.this.opening = true;
         player.openInventory(inventory);
         Menu.this.opening = false;
-        Menu.this.page = finalPage;
-
     }
 
     public void openSubMenu(Menu menu) {
