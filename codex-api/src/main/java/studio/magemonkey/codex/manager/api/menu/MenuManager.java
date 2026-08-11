@@ -50,7 +50,7 @@ public class MenuManager extends IManager<JavaPlugin> {
         InventoryHolder holder = inventory.getHolder();
         if (holder instanceof Menu) {
             event.setCancelled(true);
-            Slot slot = ((Menu) holder).getSlot(event.getSlot());
+            Slot slot = ((Menu) holder).getSlotOnCurrentPage(event.getSlot());
             if (slot != null) {
                 switch (event.getClick()) {
                     case LEFT -> slot.onLeftClick();
