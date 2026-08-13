@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import io.netty.channel.Channel;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -15,6 +16,8 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.chat.IChatBaseComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.PacketPlayOutAnimation;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
 import net.minecraft.world.entity.EntityLiving;
@@ -271,15 +274,22 @@ public class NMSImpl implements NMS {
     @Override
     @SuppressWarnings("deprecation")
     public HoverEvent getHoverEvent(@NotNull ItemStack itemStack) {
-        String components = itemStack.getItemMeta() != null ? itemStack.getItemMeta().getAsString() : "{}";
-        components = components.replaceAll(": ?0b", ": false")
-                .replaceAll(": ?1b", ": true")
-                .replaceAll(": ?(\\d+\\.\\d+)d", ": $1");
+        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(itemStack);
+        // ItemStack.b is the obfuscated NMS field for ItemStack.CODEC; MinecraftServer.bg() is registryAccess().
+        // Encoding straight from the component map avoids the SNBT-string detour (getAsString()) entirely,
+        // so there's no numeric-suffix text to mis-parse.
+        JsonElement encoded = net.minecraft.world.item.ItemStack.b
+                .encodeStart(RegistryOps.a(JsonOps.INSTANCE, MinecraftServer.getServer().bg()), nmsItem)
+                .getOrThrow();
+        JsonObject encodedObj = encoded.getAsJsonObject();
+        JsonObject componentsObj = encodedObj.has("components")
+                ? encodedObj.getAsJsonObject("components")
+                : new JsonObject();
         return new HoverEvent(HoverEvent.Action.SHOW_ITEM,
                 new ComponentsShowItem(
                         itemStack.getType().getKey().toString(),
                         itemStack.getAmount(),
-                        new Gson().fromJson(components, JsonObject.class))
+                        componentsObj)
         );
     }
 
