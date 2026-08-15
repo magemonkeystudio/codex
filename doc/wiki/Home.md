@@ -1,0 +1,63 @@
+# Codex
+
+**Codex** (formerly *ProMCCore*) is the core library plugin for the MageMonkey Studio / VoidEdge
+plugin suite. It is a dependency plugin: on its own it provides a handful of utility features, but
+its main job is to give downstream plugins such as **Fabled** and **Divinity** a shared foundation —
+version compatibility, menus, hooks, an actions engine, item providers, and configuration handling.
+
+[![Discord](https://dcbadge.limes.pink/api/server/mQrkW4htUA?style=flat)](https://discord.gg/mQrkW4htUA)
+
+---
+
+## For server owners
+
+| Page | What's in it |
+|---|---|
+| **[[Installation]]** | Requirements, supported servers, optional dependencies |
+| **[[Configuration]]** | Every key in `config.yml`, explained |
+| **[[Commands]]** | The full command tree |
+| **[[Permissions]]** | Every permission node |
+| **[[Join and Interact Commands]]** | `onJoin`, `onFirstJoin`, `onInteract` |
+| **[[Chat Module]]** | Player prefixes, display names, chat channels |
+| **[[Scoreboard Module]]** | Scoreboard cycling and display |
+| **[[Localization]]** | Language files and message placeholders |
+| **[[Version Support]]** | Which Minecraft versions are supported |
+
+## For developers
+
+| Page | What's in it |
+|---|---|
+| **[[Developer Getting Started]]** | Maven coordinates, extending `CodexPlugin` |
+| **[[Actions Engine]]** | The YAML-driven action/condition/target system |
+| **[[Item Providers]]** | Cross-plugin item resolution (Oraxen, Nexo, ItemsAdder) |
+| **[[Menus and GUIs]]** | Building paged inventory menus |
+| **[[Compat and NMS]]** | Writing version-independent code |
+| **[[Hooks]]** | Vault, WorldGuard, MythicMobs, Citizens, Nexo |
+| **[[Events]]** | Custom events Codex fires |
+| **[[Utilities]]** | The `*UT` helper classes |
+
+---
+
+## Quick start
+
+1. Download Codex and drop it in `plugins/`.
+2. Start the server once to generate `plugins/Codex/config.yml`.
+3. Install the plugins that depend on Codex (Fabled, Divinity, …).
+
+Codex loads at server **startup** (before worlds load), because dependent plugins need its
+compatibility layer available very early. See [[Installation]] for details.
+
+## A note on the name
+
+Codex was previously called **ProMCCore**. It still declares `provides: ProMCCore`, so plugins that
+depend on the old name continue to resolve it. If you are migrating, remove the old `ProMCCore.jar`
+— running both will cause duplicate class conflicts.
+
+## Contributing
+
+Source lives at [magemonkeystudio/codex](https://github.com/magemonkeystudio/codex). Issues and pull
+requests are welcome.
+
+<a href="https://github.com/magemonkeystudio/codex/graphs/contributors">
+<img src="https://contrib.rocks/image?repo=magemonkeystudio/codex" />
+</a>
