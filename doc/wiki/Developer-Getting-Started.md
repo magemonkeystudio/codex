@@ -134,19 +134,67 @@ Codex registers a main command for your plugin using the labels from your own co
 
 ## Configuration files
 
-Codex provides a config wrapper with comment preservation and an `addMissing` pattern that lets you
-add new keys across versions without clobbering user edits:
+Use **`JYML`**, Codex's current config wrapper. It extends `YamlConfiguration` and adds an
+`addMissing` pattern that lets you introduce new keys across plugin versions without clobbering user
+edits:
 
 ```java
+JYML cfg = JYML.loadOrExtract(plugin, "items.yml");
+
 cfg.addMissing("my.new.setting", true);
+cfg.saveChanges();
 ```
 
-Register additional config files through the engine:
+Useful additions over plain `YamlConfiguration`:
 
-```java
-Config config = CodexEngine.get().getConfigFile(myPlugin, "items.yml");
-CodexEngine.get().registerConfig(config);
-```
+| Method | Purpose |
+|---|---|
+| `loadOrExtract(plugin, path)` | Load a file, extracting the bundled default if absent |
+| `loadAll(path, deep)` | Load every YAML file under a directory |
+| `addMissing(path, value)` | Add a key only if absent; returns whether it was added |
+| `saveChanges()` | Save only if something changed |
+| `getSection(path)` | Child keys at a path |
+| `getLocation(path)` / `setLocation(path, loc)` | Location round-tripping |
+| `getIntArray(path)` / `setIntArray(path, arr)` | Int array handling |
+| `reload()` | Re-read from disk |
+
+Pair it with `IConfigTemplate` for a structured config class, which is what `CoreConfig` uses.
+
+> ### ⚠️ Avoid `getConfigFile` / `registerConfig`
+>
+> ```java
+> // Deprecated — returns the legacy mccore Config type
+> Config config = CodexEngine.get().getConfigFile(myPlugin, "items.yml");
+> CodexEngine.get().registerConfig(config);
+> ```
+>
+> These return `studio.magemonkey.codex.mccore.config.Config`, part of the legacy **mccore**
+> codebase. They still function, and the auto-save behaviour means anything you register will
+> overwrite manual edits made while the server is running. Use `JYML` for new code.
+
+## ⚠️ Legacy: the `mccore` package
+
+Everything under `studio.magemonkey.codex.mccore` is **deprecated**. It is the codebase Codex
+inherited from ProMCCore, kept for backwards compatibility with older plugins. Do not build new code
+against it — it is not actively developed and may be removed.
+
+| Legacy package | Use instead |
+|---|---|
+| `mccore.commands` — `ConfigurableCommand`, `CommandManager` | `codex.commands` — `IGeneralCommand`, `ISubCommand` (see above) |
+| `mccore.config` — `Config`, `CommentedConfig`, `LanguageConfig` | `JYML` and `IConfigTemplate` |
+| `mccore.gui` — `MapMenu`, `MapImage`, map rendering | `codex.manager.api.menu` — see [[Menus and GUIs]] |
+| `mccore.items` — `ItemManager`, `InventoryManager` | `CodexItemManager` — see [[Item Providers]] |
+| `mccore.chat` | A dedicated chat plugin — see [[Chat Module]] |
+| `mccore.scoreboard` | A dedicated scoreboard plugin — see [[Scoreboard Module]] |
+| `mccore.util` — `TextFormatter`, `TextSizer`, `TextSplitter`, `MobManager` | `codex.util` — see [[Utilities]] |
+| `mccore.sql` | Your own persistence layer |
+
+Note that the command framework described earlier on this page (`IGeneralCommand` / `ISubCommand`
+under `codex.commands`) is the **current** one. `mccore.commands` is a separate, older framework with
+a similar name — make sure your imports point at `codex.commands`.
+
+Two config settings also belong to this legacy layer and are documented as deprecated in
+[[Configuration]]: `file-timings`, and the `Features` toggles for the chat and scoreboard modules.
 
 ## Where to go next
 

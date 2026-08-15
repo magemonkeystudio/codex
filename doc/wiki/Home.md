@@ -18,10 +18,10 @@ version compatibility, menus, hooks, an actions engine, item providers, and conf
 | **[[Commands]]** | The full command tree |
 | **[[Permissions]]** | Every permission node |
 | **[[Join and Interact Commands]]** | `onJoin`, `onFirstJoin`, `onInteract` |
-| **[[Chat Module]]** | Player prefixes, display names, chat channels |
-| **[[Scoreboard Module]]** | Scoreboard cycling and display |
 | **[[Localization]]** | Language files and message placeholders |
 | **[[Version Support]]** | Which Minecraft versions are supported |
+| **[[Chat Module]]** ⚠️ | *Deprecated* — player prefixes and display names |
+| **[[Scoreboard Module]]** ⚠️ | *Deprecated* — scoreboard cycling and display |
 
 ## For developers
 

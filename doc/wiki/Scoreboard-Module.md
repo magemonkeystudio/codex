@@ -1,5 +1,15 @@
 # Scoreboard Module
 
+> ## ⚠️ Deprecated
+>
+> The scoreboard module is part of the legacy **mccore** codebase, inherited from ProMCCore. It is
+> **deprecated and not recommended for new setups.** Several of its internal classes are already
+> marked `@Deprecated` in source. It still works and is documented here for servers already relying
+> on it, but it is not actively developed and may be removed in a future release.
+>
+> **Use a dedicated scoreboard plugin instead.** Set `Features.scoreboards-enabled: false` in
+> [[Configuration]] to disable this module.
+
 Codex includes an optional scoreboard module that manages sidebar scoreboards and can cycle between
 several of them automatically.
 

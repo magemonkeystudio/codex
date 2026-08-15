@@ -26,9 +26,11 @@ that admins clicking on configured blocks while building do not fire the attache
 
 ---
 
-## Chat module
+## Chat module (deprecated)
 
-Active only when `Features.chat-enabled` is `true`. See [[Chat Module]].
+> ⚠️ Part of the legacy **mccore** codebase. Deprecated — see [[Chat Module]].
+
+Active only when `Features.chat-enabled` is `true`.
 
 | Node | Grants |
 |---|---|
@@ -41,9 +43,11 @@ Grant the whole module with `general.chat.*`.
 
 ---
 
-## Scoreboard module
+## Scoreboard module (deprecated)
 
-Active only when `Features.scoreboards-enabled` is `true`. See [[Scoreboard Module]].
+> ⚠️ Part of the legacy **mccore** codebase. Deprecated — see [[Scoreboard Module]].
+
+Active only when `Features.scoreboards-enabled` is `true`.
 
 | Node | Grants |
 |---|---|
@@ -88,9 +92,10 @@ for free — see [[Developer Getting Started]].
 - codex.stuck
 - codex.user
 - core.oninteract.bypass
-- general.chat.*
-- general.board.*
 ```
+
+Add `general.chat.*` and `general.board.*` only if you are still running the deprecated chat and
+scoreboard modules.
 
 **Administrators**
 

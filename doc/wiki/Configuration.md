@@ -92,9 +92,12 @@ locale:
 
 ---
 
-## `Features`
+## `Features` (deprecated modules)
 
-Toggles for Codex's two optional built-in modules. Both default to `true`.
+> ⚠️ Both toggles control modules from the legacy **mccore** codebase, which is **deprecated**. New
+> setups should leave both `false` and use dedicated plugins instead.
+
+Both default to `true` for backwards compatibility.
 
 | Key | Effect |
 |---|---|
@@ -103,12 +106,12 @@ Toggles for Codex's two optional built-in modules. Both default to `true`.
 
 ```yaml
 Features:
-  chat-enabled: true
-  scoreboards-enabled: true
+  chat-enabled: false
+  scoreboards-enabled: false
 ```
 
 Turn these off if another plugin already manages chat formatting or scoreboards — running both
-usually produces conflicts.
+produces conflicts, and Minecraft allows only one sidebar objective per player.
 
 ---
 
@@ -127,9 +130,12 @@ Settings:
 
 ## Top-level keys
 
-### `file-timings`
-When `true`, Codex logs how long each configuration file takes to load. Useful for diagnosing slow
-startup on servers with very large config sets. Default `false`.
+### `file-timings` *(deprecated)*
+When `true`, logs how long each configuration file takes to load. Default `false`.
+
+> ⚠️ This setting is read only by the legacy **mccore** config layer and applies solely to files
+> loaded through it. It has no effect on configs using the current `JYML` loader, so on a modern
+> setup it will report little or nothing.
 
 ### `bungee` / `bungee_id`
 Enables BungeeCord messaging support and sets the channel identifier used to talk to the companion

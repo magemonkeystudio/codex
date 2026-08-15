@@ -6,10 +6,12 @@
 - [[Commands]]
 - [[Permissions]]
 - [[Join and Interact Commands]]
-- [[Chat Module]]
-- [[Scoreboard Module]]
 - [[Localization]]
 - [[Version Support]]
+
+**Deprecated**
+- [[Chat Module]] ⚠️
+- [[Scoreboard Module]] ⚠️
 
 **Developers**
 - [[Developer Getting Started]]

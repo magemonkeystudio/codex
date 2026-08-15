@@ -68,7 +68,11 @@ players are meant to be confined to.
 
 ---
 
-## Module commands
+## Module commands (deprecated)
+
+> ⚠️ Both command trees below belong to the legacy **mccore** codebase and are **deprecated**. They
+> are documented for servers already using them; new setups should use a dedicated chat or scoreboard
+> plugin instead.
 
 Available only when the corresponding feature is enabled in [[Configuration]].
 

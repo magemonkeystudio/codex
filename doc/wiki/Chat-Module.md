@@ -1,5 +1,15 @@
 # Chat Module
 
+> ## ⚠️ Deprecated
+>
+> The chat module is part of the legacy **mccore** codebase, inherited from ProMCCore. It is
+> **deprecated and not recommended for new setups.** It still works and is documented here for
+> servers already relying on it, but it is not actively developed and may be removed in a future
+> release.
+>
+> **Use a dedicated chat plugin instead** — EssentialsX Chat, LuckPerms meta prefixes, or any modern
+> chat formatter. Set `Features.chat-enabled: false` in [[Configuration]] to disable this module.
+
 Codex includes an optional chat module providing per-player display names and unlockable prefixes.
 
 **Enable or disable it** in `config.yml` (see [[Configuration]]):
