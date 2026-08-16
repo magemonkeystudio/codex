@@ -35,23 +35,34 @@ Features:
 
 See [[Permissions]] for granting these.
 
-Board names passed to `/board show` may contain spaces — the remaining arguments are joined, so
-`/board show My Server Stats` works without quoting.
+Board names passed to `/board show` may contain spaces — the remaining arguments are joined, so no
+quoting is needed. Two caveats, both bugs:
+
+- **The name must be all lowercase.** The lookup compares against a lowercased value without
+  lowercasing your argument, so `/board show My Server Stats` fails where `my server stats` matches.
+- **It always reports failure.** `/board show` prints "You do not have a scoreboard with that name"
+  even on success — the board does switch, the message is just wrong.
 
 ## Cycling
 
-When cycling is active, Codex rotates through the registered boards on a timer. `/board cycle` starts
-the rotation and `/board stop` halts it, leaving the current board displayed. `/board toggle` hides
-or shows the sidebar entirely without affecting which board is selected.
+**Cycling is on by default** — a player's board state is created with the flag already set, so
+`/board cycle` on a fresh player just replies that it is already cycling. `/board stop` halts it,
+leaving the current board displayed. `/board toggle` hides or shows the sidebar entirely without
+affecting which board is selected.
 
-Cycling is driven by an internal task started when the module is enabled, so it continues across
-player rejoins.
+Two fixed, non-configurable timers drive this: the cycle runs every 200 ticks (10 seconds), and stat
+boards refresh every 10 ticks (0.5 seconds), updating only the active board.
+
+> The timers survive a rejoin, but **per-player state does not** — quitting or being kicked clears
+> the player's boards, current selection, and cycling flag. On rejoin they have no boards until a
+> downstream plugin re-registers them.
 
 ## Boards and their contents
 
-Scoreboards are registered by Codex and by plugins built on it — for example a stats board fed by a
-downstream plugin. `/board list` shows what is currently registered on your server, which will vary
-depending on which Codex-based plugins you have installed.
+> ⚠️ **Codex registers no boards of its own.** On a stock install there is nothing to show, and every
+> `/board` command is effectively a no-op. Boards come entirely from downstream plugins.
+
+`/board list` shows the boards attached to **the player running it**, not a server-wide registry.
 
 The module distinguishes between:
 

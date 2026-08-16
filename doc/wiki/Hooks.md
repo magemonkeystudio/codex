@@ -26,8 +26,15 @@ if (Hooks.hasPlaceholderAPI()) {
 }
 ```
 
-Always guard hook-dependent code. Calling a Vault helper with Vault absent will not silently return a
-default — it will fail.
+The `Hooks` helpers are null-safe: with Vault absent, `getPermGroup` and `getPrefix`/`getSuffix`
+return `""` and `getPermissionGroups` returns an empty set. They will not throw. Guard anyway when an
+empty result is not a meaningful answer for your logic.
+
+> ⚠️ **The engine's hook getters can return `null` even when the plugin is installed.** Only Vault
+> and Nexo are hooked eagerly at startup. WorldGuard, Citizens, and MythicMobs are hooked
+> *exclusively* from the `PluginEnableEvent` path, with no fallback scan — so if Codex misses that
+> event, `getWorldGuard()`, `getCitizens()`, and `getMythicMobs()` stay `null`. Null-check them, or
+> go through the `Hooks` helpers, which handle absence for you.
 
 ## Accessing individual hooks
 
@@ -80,8 +87,22 @@ Map<String, Integer> limits = Map.of(
 int limit = Hooks.getGroupValueInt(player, limits, false);
 ```
 
-The final `boolean` is `isNegaBetter` — when `true`, *lower* values win instead of higher. Use it for
-things like cooldowns, where a smaller number is the better perk.
+The final `boolean` is `isNegaBetter`. By default the **highest** value across the player's groups
+wins. Setting it to `true` does *not* invert that — it makes a **negative** value win outright, which
+is the usual "unlimited / no cap" sentinel. Positive values are still compared highest-first.
+
+```java
+Map.of("default", 3, "vip", 10)   // → 10, with isNegaBetter either way
+Map.of("default", 3, "vip", -1)   // → -1 when isNegaBetter is true, 3 when false
+```
+
+Three things to watch:
+
+- **Map keys must be lowercase.** Group names are lowercased before comparison, but the map lookup is
+  case-sensitive, so a key of `"VIP"` never matches. (`"default"` is the one exception.)
+- **All three return `-1` when nothing matches**, which is indistinguishable from a real `-1`.
+- **`getGroupValueDouble` is broken for fractional values** — its comparator casts the difference to
+  `int`, so `2.5` and `2.1` compare equal. `getGroupValueLong` has the same narrowing cast.
 
 Long and double variants exist too:
 

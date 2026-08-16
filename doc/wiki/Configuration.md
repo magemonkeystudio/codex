@@ -1,6 +1,6 @@
 # Configuration
 
-Codex's main config lives at `plugins/Codex/config.yml`. Reload it in-game with `/codex reload`
+Codex's main config lives at `plugins/CodexCore/config.yml`. Reload it in-game with `/codex reload`
 (see [[Commands]]).
 
 ## Full default file
@@ -46,13 +46,19 @@ action-bar-legacy: false
 
 ## `core`
 
-### `core.lang`
-Language file to load from `plugins/Codex/lang/`. Ships with `en` and `cn`. See [[Localization]].
+### `core.lang` *(inert)*
+Auto-injected on first run, but **nothing reads it**. The value is parsed into a field that has no
+consumers.
+
+The key that actually selects the language file is `general.lang`, which is not in the shipped file
+and must be added by hand:
 
 ```yaml
-core:
+general:
   lang: en
 ```
+
+Ships with `en` and `cn`. See [[Localization]].
 
 ### `core.command-aliases`
 Comma-separated list of labels the main command registers under. The **first entry is the primary
@@ -78,8 +84,11 @@ core:
 
 ## `locale.world-names`
 
-Display names substituted for world folder names in messages. Add an entry per world; worlds without
-an entry fall back to their raw folder name.
+Read into a lookup map and exposed to other plugins via `CoreConfig.getWorldName(world)`.
+
+> ⚠️ **Codex itself never substitutes these.** `getWorldName` has no callers in the codebase, so
+> setting them changes nothing in Codex's own messages. They are only useful if a downstream plugin
+> reads them.
 
 ```yaml
 locale:
@@ -117,9 +126,12 @@ produces conflicts, and Minecraft allows only one sidebar objective per player.
 
 ## `Settings`
 
-### `Settings.command-cooldown-message`
+### `Settings.command-cooldown-message` *(legacy)*
 Shown when a player runs a command still on cooldown. `{time}` is replaced with the remaining
 seconds.
+
+> ⚠️ Consumed only by the legacy **mccore** command framework. The current command system has no
+> cooldown mechanism at all, so this setting does not apply to `/codex` or its subcommands.
 
 ```yaml
 Settings:
@@ -138,36 +150,46 @@ When `true`, logs how long each configuration file takes to load. Default `false
 > setup it will report little or nothing.
 
 ### `bungee` / `bungee_id`
-Enables BungeeCord messaging support and sets the channel identifier used to talk to the companion
-`Codex-Bungee` plugin. Both sides must use the same `bungee_id`.
+Enables BungeeCord messaging support. `bungee_id` **labels this server** in outgoing plugin messages
+— it is not a channel name, and the proxy never compares it against anything. The channel itself is
+the fixed constant `magemonkey:codex`, and the `Codex-Bungee` plugin has no corresponding setting.
 
 ```yaml
 bungee: false
 bungee_id: codexcore
 ```
 
-### `debug`
-Enables verbose debug logging. Noisy — leave off unless you are chasing a bug or have been asked for
-debug output on Discord.
+### `debug` *(effectively inert)*
+Intended to enable verbose logging, and it does toggle the legacy `Debugger`. But that logger has
+essentially no call sites left in the codebase, so enabling it produces no useful output. Do not
+reach for it when troubleshooting.
 
 ### `removeBoatOnExit`
-When `true`, boats are removed once the last passenger exits. Helps with boat litter on public
-servers.
+When `true`, exiting a boat removes it and **gives it back to the exiting player** as an item —
+dropped at their feet if their inventory is full. It is a pick-up-your-boat convenience, not litter
+cleanup, and there is no "last passenger" check: any player exiting any boat triggers it.
+
+> The shipped file sets `true`, but the code reads this key with **no default**, so deleting the line
+> turns the feature off rather than leaving it on.
 
 ### `action-bar-legacy`
 Forces the legacy action bar packet path. Set to `true` if action bar messages do not display
 correctly on your server version. See [[Version Support]].
 
 ### `unstuck`
-Controls the `/stuck` command.
+Controls the `/unstuck` command (**not** `/stuck`, which does not work — see [[Commands]]).
 
 ```yaml
 unstuck:
   cooldown: 30   # seconds between uses, per player
-  warmup: 5      # seconds the player must stand still before teleporting
+  warmup: 5      # seconds the player must stay put before teleporting
 ```
 
-During the warmup the player must not move — moving cancels the teleport. See [[Commands]].
+Cancellation is per **block**, not per movement — turning, jumping in place, or shuffling within the
+same block is fine; stepping off it cancels the teleport.
+
+> Neither key has a code default and neither is auto-injected, so deleting them yields `0` for both:
+> an instant teleport with no cooldown.
 
 ### `onJoin` / `onFirstJoin` / `onInteract`
 Command automation. These have their own page: [[Join and Interact Commands]].
@@ -180,6 +202,19 @@ Command automation. These have their own page: [[Join and Interact Commands]].
 /codex reload
 ```
 
-Requires `codex.admin`. Most keys apply immediately. Changes to `Features.chat-enabled` and
-`Features.scoreboards-enabled` register or unregister listeners and commands, so a full server
-restart is the safer option for those.
+Requires `codexcore.admin`.
+
+> ## ⚠️ `/codex reload` does not re-read `config.yml`
+>
+> On the engine, `reload()` only re-applies settings **already held in memory** — it rebuilds the
+> config template from the existing in-memory document and never re-reads the file from disk.
+>
+> **Edit `config.yml` and restart the server.** No key in this file takes effect from `/codex reload`
+> alone.
+>
+> (Child plugins built on Codex do a fuller reload, so `/fabled reload` and similar may behave
+> differently. This limitation is specific to the engine.)
+
+Even setting that aside, several keys are parsed once during startup and would need a restart
+regardless: `onJoin`, `onFirstJoin`, `onInteract`, and both `Features` toggles all bind listeners,
+tasks, and commands at enable time.

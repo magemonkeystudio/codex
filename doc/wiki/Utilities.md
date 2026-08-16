@@ -43,12 +43,17 @@ List<String> matches = StringUT.getByFirstLetters(arg, allOptions);
 
 `getByFirstLetters` is exactly what you want in a `TabCompleter`.
 
-Placeholder replacement across lists, including multi-line expansion:
+Placeholder replacement across lists, including multi-line expansion. **These return a new list and
+do not mutate the input** — assign the result:
 
 ```java
-StringUT.replace(lore, "%description%", descriptionLines);
-StringUT.replace(lore, "%name%", name);
+lore = StringUT.replace(lore, "%description%", descriptionLines);
+lore = StringUT.replace(lore, "%name%", name);
 ```
+
+> Two traps. An empty replacement list is substituted as the literal `["[]"]`. And a third overload,
+> `replace(String placeholder, List<String> r, String... orig)`, takes its arguments in a different
+> order — check which one you are calling.
 
 ## `MsgUT` — sending messages
 
@@ -62,8 +67,15 @@ MsgUT.sendWithJSON(sender, jsonOrPlainText);
 boolean isJson = MsgUT.isJSON(text);
 ```
 
-`sendWithJSON` detects whether the string is a JSON chat component and sends it appropriately, so you
-can accept either form from config. Title timings are in ticks.
+> `isJSON` does **not** detect a serialized chat component — it literally checks whether the string
+> contains `json:`. Both methods deal with Codex's own inline markup,
+> `{json:~hint:…;~url:…;}text{end-json}`, which `sendWithJSON` expands into a clickable/hoverable
+> component for players and strips to plain text for console. Raw chat-component JSON is not parsed.
+
+Title timings are in ticks. Note `sendTitles` is marked `@Deprecated` in source.
+
+For the string-name `sound` overloads, prefer the enum form (`ENTITY_PLAYER_LEVELUP`) — the name is
+upper-cased before lookup, and an unknown sound is swallowed silently.
 
 Action bar rendering respects the `action-bar-legacy` setting — see [[Configuration]].
 
@@ -85,10 +97,16 @@ NumberUT.toRoman(4);                  // "IV"
 PlayerUT.execCmd(player, "spawn");
 List<String> names = PlayerUT.getPlayerNames();
 String ip = PlayerUT.getIP(player);
-PlayerUT.setExp(player, 5000L);
+
+PlayerUT.setExp(player, 5000L);              // ADDS 5000 XP to the current total
+PlayerUT.setTotalExperience(player, 5000);   // sets the total to exactly 5000
 ```
 
-`setExp` sets total experience rather than level, which is the calculation Bukkit does not give you.
+> ⚠️ Despite the name, **`setExp` adds rather than sets** — it reads the current total, adds your
+> amount, and writes the result back. Negative amounts subtract. Use `setTotalExperience` for an
+> absolute value; it throws `IllegalArgumentException` on negatives.
+
+Both work in total experience rather than levels, which is the calculation Bukkit does not give you.
 
 ## `LocUT` — locations
 
@@ -102,8 +120,15 @@ List<Location> locs  = LocUT.deserialize(rawList);
 Location ground = LocUT.getFirstGroundBlock(loc);
 ```
 
-Use these for storing locations in config — the round trip is stable. `getFirstGroundBlock` finds a
-safe standing position, the same logic behind `/stuck` (see [[Commands]]).
+Use these for storing locations in config — the round trip is stable, preserving yaw and pitch. The
+serialized format is `x,y,z,pitch,yaw,world`.
+
+> Both `serialize` and `deserialize` are `@Nullable` — a null world, or a string without exactly six
+> fields, yields `null`. Check the result.
+
+`getFirstGroundBlock(loc)` walks downward until it finds a solid block and returns the position above
+it. Note this is **not** what `/unstuck` uses — that replays recently-recorded standing positions
+(see [[Commands]]).
 
 ## `EntityUT` — entities
 
@@ -136,9 +161,12 @@ Debugger.warn("Config key missing, using default");
 Debugger.err("Failed to parse item definition");
 ```
 
-`log` output only appears when debug is enabled, which is driven by `debug` in [[Configuration]].
-Prefer `Debugger.log` over `System.out.println` — server owners can then turn your diagnostics on and
-off.
+> ⚠️ **All three are gated**, not just `log` — `warn` and `err` are equally invisible unless `debug`
+> is enabled in [[Configuration]]. They also write to `System.out` with a `[RiseDebugger]` prefix
+> rather than to the plugin logger.
+
+Use these for diagnostics a server owner should be able to switch on. For anything that must always
+reach console, use `plugin.warn(...)` / `plugin.error(...)` instead.
 
 ## Other helpers
 
@@ -146,18 +174,21 @@ off.
 |---|---|
 | `SoundUT` | Resolve sounds by name across versions |
 | `EnumUT` | Version-safe enum name resolution |
-| `EffectUT` | Potion and particle effect helpers |
+| `EffectUT` | Particle spawning and line drawing |
 | `ItemUT` | Item stack helpers (in `codex-plugin`, not `codex-api`) |
-| `CollectionsUT` | Collection utilities |
-| `DataUT` | Persistent data container helpers |
-| `RangeUtil` | Numeric range parsing and checks |
+| `CollectionsUT` | Collection utilities, plus `getEnum`/`getEnums` name resolution |
+| `DataUT` | Persistent data container helpers, incl. types Bukkit lacks (`UUID`, `BOOLEAN`, array types) |
+| `RangeUtil` | Random value from a `DoubleRange`, and percentage chance rolls |
 | `ClickText` | Build clickable chat components |
 | `Reflex` | Reflection helpers |
-| `Zipper` | Zip archive handling |
+| `Zipper` | A single `createBackupZip(dir)` helper |
 | `SerializationBuilder` / `DeserializationWorker` | Config serialisation |
 
-`SoundUT.getSound(name)` and `EnumUT.getName(value)` exist because Mojang renames enum constants
-between versions — resolve by name through these rather than calling `valueOf` directly.
+`SoundUT.getSound(name)` and `EnumUT.getName(value)` exist because several Bukkit types **stopped
+being enums** and became registry-backed `Keyed` values — not because constants were renamed.
+`getSound` reflects `valueOf` and falls back to `Enum.valueOf`, returning `Keyed`; `EnumUT.getName`
+reflectively reads `name()` off a value whose type may or may not still be an enum. Use them instead
+of a direct `Sound.valueOf(...)` or `.name()` call, which breaks across versions.
 
 ## Expression evaluation
 
@@ -175,4 +206,10 @@ they accept a formula string rather than a fixed number.
 | `BuffRegistry` | Buff definitions |
 | `DamageRegistry` | Damage types |
 
-Plus `NamespaceResolver` for namespaced key handling and `MigrationUtil` for config migration.
+Plus `NamespaceResolver`, which resolves `PotionEffectType`s and `Enchantment`s from a list of
+candidate names so they survive Mojang's renames, and `MigrationUtil` for config and data-folder
+migration.
+
+The expression evaluator's entry point is `Evaluator.eval(String expression, int method)` — method
+`0` uses the internal parser, `1` or `2` use the bundled javaluator (falling back to the internal one
+on failure). It lives in `codex-api`.

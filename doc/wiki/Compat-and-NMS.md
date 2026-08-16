@@ -1,13 +1,16 @@
 # Compat and NMS
 
-Codex's compatibility layer is what lets a single plugin jar run from 1.16.5 through 1.21.11 and
-26.2. If you are writing a plugin on Codex, **read this before calling any Bukkit API that has
-changed across versions.**
+Codex's compatibility layer is what lets a single plugin jar run across supported releases from
+1.16.5 to 1.21.11 plus 26.1.2 and 26.2. Not every intermediate version is supported — 1.18,
+1.19–1.19.3 and 1.20 are rejected at startup, see [[Version Support]].
+
+If you are writing a plugin on Codex, **read this before calling any Bukkit API that has changed
+across versions.**
 
 ## The three entry points
 
 ```java
-NMS       nms   = VersionManager.getNms();
+NMS       nms    = VersionManager.getNms();
 Compat    compat = VersionManager.getCompat();
 ArmorUtil armor  = VersionManager.getArmorUtil();
 ```
@@ -47,6 +50,8 @@ through `Compat`.
 Attribute modifier construction changed shape across versions. `Compat` normalises it:
 
 ```java
+NBTAttribute attribute = ...;   // Codex's type, NOT org.bukkit.attribute.Attribute
+
 // Applies regardless of equipped slot
 AttributeModifier mod = compat.createAttributeModifier(
         attribute, amount, AttributeModifier.Operation.ADD_NUMBER);
@@ -55,6 +60,9 @@ AttributeModifier mod = compat.createAttributeModifier(
 AttributeModifier scoped = compat.createAttributeModifier(
         attribute, amount, AttributeModifier.Operation.ADD_NUMBER, EquipmentSlot.HAND);
 ```
+
+Note the first parameter is `studio.magemonkey.codex.api.meta.NBTAttribute`, not Bukkit's
+`Attribute` — an easy mistake given the name.
 
 The three-argument overload is the slot-agnostic form — equivalent to passing `null` as the slot.
 
@@ -98,16 +106,36 @@ String name = compat.getItemName(item);
 | `setKiller(entity, player)` | Attribute a kill to a player |
 | `changeSkull(block, hash)` | Set a skull block's texture |
 | `getMaterial(boat)` | The material a boat is made of |
+| `addSkullTexture(item, hash)` | Apply a texture to a player head |
+| `getNonPlayerProfile(hash)` | Build a profile for a textured head |
+| `getAttributeValue(item, attribute)` | Summed modifier value on an item |
+| `getAttribute(name)` | Resolve an `Attribute` by name across versions |
+| `getHoverEvent(item)` | Build a hover component for an item |
+| `getTranslatedComponent(item)` | Translatable name component |
+| `registerNewObjective(scoreboard, …)` | Version-safe objective creation |
+| `createEntityDamageEvent(…)` | Construct a damage event |
 
 The `getDefault*` methods are useful for building item tooltips: they give you the values Minecraft
 itself would apply before your plugin's modifiers.
 
+`sendAttackPacket`'s `int` is an animation type id.
+
 ---
 
-## `ArmorUtil` and armor events
+## `ArmorUtil` — armor trims
 
-The armor utility backs `ArmorEquipEvent`, which fires whenever a player equips or unequips armor —
-including cases Bukkit gives you no event for, such as dispensers and durability breaks. See
+`ArmorUtil` is the version shim for **armor trims**, nothing else:
+
+```java
+armor.getTrimMaterial(item);
+armor.getTrimPattern(item);
+armor.addTrim(item, material, pattern);
+```
+
+> It is a **silent no-op before 1.19.4** — those version modules ship no implementation, so Codex
+> installs an empty one. Calls succeed and do nothing.
+
+It has no connection to `ArmorEquipEvent`, which is fired by `ArmorListener` in `codex-plugin`. See
 [[Events]].
 
 ---
@@ -131,8 +159,16 @@ including cases Bukkit gives you no event for, such as dispensers and durability
 ## Adding support for a new Minecraft version
 
 1. Add a `codex-nms-vX_XX_X` module, copying the closest existing one.
-2. Update it against the new mappings.
-3. Register it in `VersionManager`.
+2. Update it against the new mappings. `NMSImpl` and `CompatImpl` are **required**; `ArmorUtilImpl`
+   is optional (its absence gives you the silent no-op described above).
+3. Add a `case` to `VersionManager.getPackageFromVersion` mapping the Bukkit version string to the
+   **package** name. The package need not match the module name — `codex-nms-v1_17_1` contains
+   package `v1_17`.
 4. Add the module to `codex-nms/pom.xml`.
+5. **Add it as a dependency in `codex-core/pom.xml`**, or it is never shaded into the jar and the
+   runtime `Class.forName` lookup fails.
+
+Step 5 is easy to miss and produces a confusing "could not find NMS implementation" at runtime even
+though the module built fine.
 
 See [[Version Support]] for the current list.

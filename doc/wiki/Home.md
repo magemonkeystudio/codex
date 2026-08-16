@@ -41,17 +41,29 @@ version compatibility, menus, hooks, an actions engine, item providers, and conf
 ## Quick start
 
 1. Download Codex and drop it in `plugins/`.
-2. Start the server once to generate `plugins/Codex/config.yml`.
+2. Start the server once to generate `plugins/CodexCore/config.yml`.
 3. Install the plugins that depend on Codex (Fabled, Divinity, …).
 
 Codex loads at server **startup** (before worlds load), because dependent plugins need its
 compatibility layer available very early. See [[Installation]] for details.
 
-## A note on the name
+## A note on the names
 
-Codex was previously called **ProMCCore**. It still declares `provides: ProMCCore`, so plugins that
-depend on the old name continue to resolve it. If you are migrating, remove the old `ProMCCore.jar`
-— running both will cause duplicate class conflicts.
+Three names are in play, and they differ on purpose:
+
+| | |
+|---|---|
+| **Codex** | The project |
+| **CodexCore** | The Bukkit plugin name — the data folder, `depend:` entry, and permission prefix |
+| **codex** | The Maven artifactId |
+
+So the config lives at `plugins/CodexCore/config.yml`, permissions read `codexcore.admin`, and Maven
+wants `studio.magemonkey:codex`.
+
+Codex was previously called **ProMCCore** and still declares `provides: ProMCCore`, so plugins
+depending on the old name resolve against it. On first startup it **automatically renames** an
+existing `plugins/ProMCCore/` folder to `plugins/CodexCore/`. Remove the old `ProMCCore.jar` before
+starting — running both causes duplicate class conflicts. Back up first; see [[Installation]].
 
 ## Contributing
 

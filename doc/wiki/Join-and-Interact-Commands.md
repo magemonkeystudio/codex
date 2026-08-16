@@ -13,11 +13,20 @@ All three use the same **delayed command** structure.
   cmd: give {player} cookie 1
 ```
 
-| Field | Meaning |
-|---|---|
-| `delay` | Ticks to wait before running (20 ticks = 1 second). `0` runs immediately. |
-| `as` | Who runs the command — `PLAYER`, `OP`, or `CONSOLE` |
-| `cmd` | The command to run, **without** a leading `/` |
+| Field | Meaning | Default if omitted |
+|---|---|---|
+| `delay` | Ticks to wait **after the previous command in the list ran** (20 ticks = 1 second). `0` runs immediately. | `0` |
+| `as` | Who runs the command — `PLAYER`, `OP`, or `CONSOLE` | `CONSOLE` |
+| `cmd` | The command to run, **without** a leading `/` | *mandatory* |
+
+> ### ⚠️ Delays are cumulative, not absolute
+>
+> Each entry is scheduled only once the previous one has run, so delays add up down the list. Two
+> entries with `delay: 40` and `delay: 45` fire at tick 40 and tick **85**, not 40 and 45.
+
+> **`cmd` is mandatory** — omitting it throws at plugin enable. And `as` is matched
+> **case-sensitively** against the exact enum name, falling back to the default on no match. `as:
+> player` silently becomes `CONSOLE`, which is not a harmless difference. Always write it uppercase.
 
 ### The `as` values
 
@@ -37,7 +46,8 @@ All three use the same **delayed command** structure.
 |---|---|
 | `{player}` | The player's name |
 
-If PlaceholderAPI is installed, its placeholders are also expanded. See [[Hooks]].
+> `{player}` is the **only** placeholder supported here. PlaceholderAPI is *not* expanded in join or
+> interact commands — it applies to the [[Actions Engine]] and to GUI items, not to this feature.
 
 ---
 
@@ -89,12 +99,23 @@ onInteract:
         cmd: give {player} cookie 1
 ```
 
-| Field | Meaning |
-|---|---|
-| `material` | Bukkit material name of the block |
-| `type` | Legacy data value; use `-1` to match any |
-| `cancelAction` | When `true`, suppresses the block's normal behaviour |
-| `delayedCommands` | List of delayed commands, same format as above |
+| Field | Meaning | Default if omitted |
+|---|---|---|
+| `material` | Bukkit material name of the block | — |
+| `type` | Legacy data value — **currently ignored** | `-1` |
+| `cancelAction` | When `true`, suppresses the block's normal behaviour | `true` |
+| `delayedCommands` | List of delayed commands, same format as above | *mandatory* |
+
+> `type` is parsed but never consulted; matching is by `material` alone. Leave it at `-1`.
+>
+> `material` is matched **case-sensitively** against the exact enum name. A mistyped or lowercase
+> value silently becomes `AIR` and never matches — this is the usual cause of "nothing fires".
+
+> ### ⚠️ There is no click-type filter
+>
+> `onInteract` fires on left-click and physical (pressure-plate) interactions as well as right-click.
+> With `cancelAction: true` that means **block breaking is cancelled too**, not just the right-click
+> behaviour described below.
 
 ### `cancelAction`
 
@@ -103,7 +124,7 @@ the crafting GUI does **not** open. Set it to `false` to let the block behave no
 
 ### Bypass permission
 
-Players with `core.oninteract.bypass` do not trigger these blocks at all. See [[Permissions]].
+Players with `general.oninteract.bypass` do not trigger these blocks at all. See [[Permissions]].
 
 ### Multiple entries
 
@@ -133,11 +154,15 @@ onInteract:
 
 ## Troubleshooting
 
-**Nothing fires.** Check the material name matches your server version exactly — material names
-changed in 1.13 and occasionally since. Enable `debug: true` in [[Configuration]] to see what Codex
-matched.
+**Nothing fires.** Almost always a case-sensitivity problem: `material` and `as` are matched against
+exact uppercase enum names, and a mismatch fails silently (`material` becomes `AIR`, `as` becomes
+`CONSOLE`). Check spelling against your server version too — material names changed in 1.13 and
+occasionally since.
 
-**Fires for staff when it shouldn't.** That is `core.oninteract.bypass` not being granted. See
+> `debug: true` will not help here. Despite the name, it gates a legacy logger with essentially no
+> call sites left; neither the interact listener nor the command block logs anything.
+
+**Fires for staff when it shouldn't.** That is `general.oninteract.bypass` not being granted. See
 [[Permissions]].
 
 **Command runs but has no effect on join.** Increase the `delay`. A delay of `0` on join often runs

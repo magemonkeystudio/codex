@@ -52,12 +52,26 @@ what they have been given.
 colour codes are permitted in the supplied name depends on your permission setup and any name
 restrictions your other plugins impose.
 
-## Persistence
+## Persistence — there is none
 
-Player chat data — display names and unlocked prefixes — is stored by Codex per player and survives
-restarts.
+> ⚠️ **Chat data does not survive a restart.** `ChatData` is registered as savable against a `data`
+> config, but nothing ever calls save — not on disable, not on a timer. A hand-written `data.yml`
+> *is* read at startup, so prefixes can be seeded by hand, but anything set in game is lost when the
+> server stops.
+
+## Known defects
+
+Beyond the deprecation, this module has several outright bugs:
+
+- **`/chat name` drops the last character** of the name you give it — `/chat name Bob` sets `Bo`.
+- **`/chat reset` does not clear your prefix**, only the display name, despite the in-game help text
+  claiming otherwise.
+- **`/chat prefix` takes exactly one argument**, so prefixes containing spaces cannot be selected.
+- **Player data leaks on quit** — the quit handler removes by raw name while the store is keyed by
+  lowercase, so entries usually survive the disconnect.
 
 ## Interaction with Vault
 
-When Vault is present, Codex can read permission-group prefixes and suffixes through it. See
-[[Hooks]] for the group-value helpers available to developers.
+`Hooks.getPrefix` / `getSuffix` read the **player's** Vault chat prefix and suffix — not their
+permission group's. Note these helpers have no callers inside Codex, so anything using them is a
+downstream plugin. See [[Hooks]].

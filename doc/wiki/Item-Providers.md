@@ -13,7 +13,7 @@ NAMESPACE_id
 | Namespace | Source plugin | What `id` looks like |
 |---|---|---|
 | `VANILLA` | Vanilla Minecraft materials | Material name |
-| `ORAXEN` | Oraxen | Plain item id |
+| `ORAXEN` | Oraxen (provider is `@Deprecated(forRemoval)`) | Plain item id |
 | `NEXO` | Nexo | Plain item id |
 | `ITEMSADDER` | ItemsAdder | **`ia_namespace:item`** — see below |
 
@@ -47,8 +47,13 @@ Oraxen and Nexo have no equivalent concept; their ids are flat.
 Provider lookup is **case-sensitive**. `ORAXEN_ruby_sword` resolves; `oraxen_ruby_sword` does not —
 it falls through to the vanilla provider, which then fails to find a material by that name.
 
-This trips people up because prefix *stripping* inside each provider is case-insensitive, so the
-inconsistency is not obvious. Always write the namespace in capitals.
+This trips people up because prefix *stripping* inside each provider is case-insensitive, and
+`hasProvider` uppercases its argument — only the lookup itself is strict. Always write the namespace
+in capitals.
+
+(One exception explains inconsistent reports: `vanilla_diamond_sword` *does* work. It fails the
+lookup, falls through to the vanilla provider with the full key, and gets stripped
+case-insensitively there.)
 
 ## For server owners
 
@@ -79,8 +84,19 @@ try {
 }
 ```
 
-The two exceptions are worth distinguishing in your error messages — "install Oraxen" and "check your
-item id" are very different fixes for a server owner.
+Both are **checked** exceptions extending `CodexItemException`, so you must handle or declare them.
+Distinguishing them in your error messages is worthwhile — "install Oraxen" and "check your item id"
+are very different fixes for a server owner.
+
+> ### Nexo behaves differently on both counts
+>
+> Nexo's provider is registered only when Nexo is installed, so `NEXO_x` on a server without it falls
+> through to the **vanilla** provider with the whole key and raises `MissingItemException`, not
+> `MissingProviderException`.
+>
+> And Nexo never validates ids at lookup time — `getItemType("NEXO_anything")` always succeeds, with
+> `create()` returning `null` later for an unknown id. Catch `CodexItemException` to cover both
+> exception types, and null-check `create()` for Nexo items.
 
 You can also pass namespace and id separately, which avoids the parsing rules entirely:
 
@@ -99,15 +115,25 @@ Note the ItemsAdder id retains its own `namespace:item` form. See
 Identify an existing `ItemStack`:
 
 ```java
-ItemType type = items.getMainItemType(stack);      // best match, may be null
-Set<ItemType> all = items.getItemTypes(stack);     // every provider that claims it
-
-boolean custom = items.isCustomItem(stack);
-boolean isRuby = items.isCustomItemOfId(stack, "ruby_sword");
+ItemType type = items.getMainItemType(stack);   // highest-Category match
+Set<ItemType> all = items.getItemTypes(stack);  // every provider that claims it
 ```
 
-`getItemTypes` returns a set because more than one provider can recognise the same stack. Use
-`getMainItemType` unless you specifically need all matches.
+`getItemTypes` returns a set because more than one provider can recognise the same stack.
+`getMainItemType` picks the one with the highest `Category` — the enum's declaration order
+(`VANILLA` < `MOD` < `EXTERNAL` < `PRO`) is load-bearing here.
+
+> **`getMainItemType` is effectively never `null`.** The vanilla provider matches *every* stack, so
+> the result set is never empty. Do not use a null check to mean "not a custom item".
+
+> ### ⚠️ Two manager-level methods are currently unusable
+>
+> - **`isCustomItem(stack)` always returns `true`** for any non-null stack, because the vanilla
+>   provider's implementation is `item != null`.
+> - **`isCustomItemOfId(stack, id)` always returns `false`** for Oraxen, Nexo, and ItemsAdder — a
+>   prefix comparison is off by one and can never match.
+>
+> Until these are fixed, go through the provider directly, or compare with `ItemType.isInstance`.
 
 ### Comparing items
 
@@ -128,7 +154,7 @@ durability, enchantments, or stack size.
 | Method | Returns |
 |---|---|
 | `getNamespace()` | Provider namespace, e.g. `ORAXEN` |
-| `getID()` | The item id within that provider |
+| `getID()` | The item id within that provider — **not uniform**: vanilla returns the lowercased material name, Oraxen and Nexo the raw id, ItemsAdder `namespace:id` |
 | `getNamespacedID()` | Combined `NAMESPACE_id` (plain id for vanilla) |
 | `getCategory()` | `VANILLA`, `MOD`, `EXTERNAL`, or `PRO` |
 | `create()` | A new `ItemStack` |
@@ -136,16 +162,26 @@ durability, enchantments, or stack size.
 
 ### Stripping prefixes
 
+There are two, and they are not the same:
+
 ```java
-String id = PrefixHelper.stripPrefix("ORAXEN", "ORAXEN_ruby_sword");  // "ruby_sword"
+// Strips one known prefix; case-insensitive; returns input unchanged on no match
+PrefixHelper.stripPrefix("ORAXEN", "ORAXEN_ruby_sword");   // "ruby_sword"
+
+// Strips whichever REGISTERED namespace matches
+CodexItemManager.stripPrefix("ORAXEN_ruby_sword");          // "ruby_sword"
 ```
 
-Returns the input unchanged if the prefix does not match, so it is safe to call unconditionally.
+Both split at the **first underscore only**, so an id whose own first segment happens to equal the
+namespace would be mangled.
 
 ### Registering your own provider
 
+`MyItemType` must extend `ItemType`, which is an abstract class requiring `getNamespace`, `getID`,
+`getCategory`, `create`, and `isInstance`.
+
 ```java
-public class MyProvider implements ICodexItemProvider<MyItemType> {
+public class MyProvider implements ICodexItemProvider<MyItemType> {   // T extends ItemType
     public static final String NAMESPACE = "MYPLUGIN";
 
     @Override public String pluginName()   { return "MyPlugin"; }
@@ -169,8 +205,13 @@ CodexEngine.get().getItemManager()
 Once registered, every Codex-based plugin on the server can reference your items as
 `MYPLUGIN_<id>` in its own configs — you do not need to integrate with them individually.
 
-`assertEnabled()` is provided as a default method; call it from your resolution methods to throw
-`MissingProviderException` when your plugin is not enabled.
+`registerProvider` **uppercases the namespace** on insert and throws `IllegalArgumentException` if it
+is already taken. `unregisterProvider(Class)` removes one.
+
+`assertEnabled()` is a default method that checks `isPluginEnabled(pluginName())`. Call it from your
+resolution methods to throw `MissingProviderException` when your plugin is absent — but **never
+return `null` from `pluginName()`** unless you also override `assertEnabled()`, or it will NPE.
+(`VanillaProvider` does exactly that, which is why it gets away with a null name.)
 
 ### Checking availability
 
