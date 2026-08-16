@@ -10,23 +10,45 @@ Oraxen, Nexo, or ItemsAdder — and the plugin asking for it does not need to kn
 NAMESPACE_id
 ```
 
-| Namespace | Source plugin |
-|---|---|
-| `VANILLA` | Vanilla Minecraft materials |
-| `ORAXEN` | Oraxen |
-| `NEXO` | Nexo |
-| `ITEMSADDER` | ItemsAdder |
-
-Vanilla items are the exception: they are referenced by their plain material name with **no** prefix.
+| Namespace | Source plugin | What `id` looks like |
+|---|---|---|
+| `VANILLA` | Vanilla Minecraft materials | Material name |
+| `ORAXEN` | Oraxen | Plain item id |
+| `NEXO` | Nexo | Plain item id |
+| `ITEMSADDER` | ItemsAdder | **`ia_namespace:item`** — see below |
 
 ```
-DIAMOND_SWORD          → vanilla diamond sword
-ORAXEN_ruby_sword      → Oraxen item "ruby_sword"
-NEXO_magic_wand        → Nexo item "magic_wand"
-ITEMSADDER_cool_hat    → ItemsAdder item "cool_hat"
+DIAMOND_SWORD                    → vanilla diamond sword
+ORAXEN_ruby_sword                → Oraxen item "ruby_sword"
+NEXO_magic_wand                  → Nexo item "magic_wand"
+ITEMSADDER_myitems:cool_hat      → ItemsAdder item "cool_hat" in namespace "myitems"
 ```
 
-Namespace matching is case-insensitive.
+### ⚠️ ItemsAdder carries its own namespace
+
+ItemsAdder organises items into its own namespaces, and Codex uses ItemsAdder's *namespaced* ID as
+the item id. That means an ItemsAdder key has **two** namespaces stacked:
+
+```
+ITEMSADDER_myitems:ruby_sword
+└────┬───┘ └──┬──┘ └────┬────┘
+  Codex    ItemsAdder  item
+ namespace  namespace
+```
+
+`ITEMSADDER_ruby_sword` will **not** resolve — the ItemsAdder namespace is required. If you are
+unsure what it is, it is the same `namespace:id` ItemsAdder itself uses in `/iaget` and in its
+configuration.
+
+Oraxen and Nexo have no equivalent concept; their ids are flat.
+
+### ⚠️ The namespace prefix must be UPPERCASE
+
+Provider lookup is **case-sensitive**. `ORAXEN_ruby_sword` resolves; `oraxen_ruby_sword` does not —
+it falls through to the vanilla provider, which then fails to find a material by that name.
+
+This trips people up because prefix *stripping* inside each provider is case-insensitive, so the
+inconsistency is not obvious. Always write the namespace in capitals.
 
 ## For server owners
 
@@ -34,8 +56,9 @@ Wherever a Codex-based plugin asks for an item, you can use any of the forms abo
 source plugin is installed. If it is not, Codex reports a missing provider rather than silently
 substituting something else.
 
-Because vanilla materials carry no prefix, a plain `DIAMOND_SWORD` always works with no extra
-plugins.
+Vanilla items need no prefix, so a plain `DIAMOND_SWORD` always works with no extra plugins. A
+`VANILLA_` prefix is accepted but redundant. Vanilla lookups are also forgiving about separators —
+spaces and hyphens are converted to underscores, so `diamond sword` and `diamond-sword` both resolve.
 
 ---
 
@@ -59,11 +82,17 @@ try {
 The two exceptions are worth distinguishing in your error messages — "install Oraxen" and "check your
 item id" are very different fixes for a server owner.
 
-You can also pass namespace and id separately:
+You can also pass namespace and id separately, which avoids the parsing rules entirely:
 
 ```java
 ItemType type = items.getItemType("ORAXEN", "ruby_sword");
+ItemType hat  = items.getItemType("ITEMSADDER", "myitems:cool_hat");
 ```
+
+The namespace argument is case-sensitive here too — pass it uppercase.
+
+Note the ItemsAdder id retains its own `namespace:item` form. See
+[the ID format](#the-id-format) above.
 
 ### Going the other way
 
@@ -145,10 +174,31 @@ Once registered, every Codex-based plugin on the server can reference your items
 
 ### Checking availability
 
-```java
-if (items.hasProvider("ORAXEN")) {
-    // safe to resolve Oraxen items
-}
+> ⚠️ **`hasProvider` does not tell you the plugin is installed.** Codex registers the `VANILLA`,
+> `ORAXEN`, and `ITEMSADDER` providers eagerly at startup whether or not those plugins are present,
+> so `hasProvider("ORAXEN")` returns `true` on a server with no Oraxen. Only `NEXO` is registered
+> conditionally, by its hook.
 
+To find out whether items can actually be resolved, attempt the lookup and catch
+`MissingProviderException` — that is raised by `assertEnabled()`, which checks the backing plugin is
+really enabled:
+
+```java
+try {
+    ItemType type = items.getItemType("ORAXEN_ruby_sword");
+} catch (MissingProviderException e) {
+    // Oraxen is not installed or not enabled
+}
+```
+
+Or check the plugin directly via [[Hooks]]:
+
+```java
+if (Hooks.hasPlugin("Oraxen")) { ... }
+```
+
+`hasProvider` and `getProviders` remain useful for inspecting what is registered:
+
+```java
 Collection<ICodexItemProvider<?>> all = items.getProviders();
 ```
