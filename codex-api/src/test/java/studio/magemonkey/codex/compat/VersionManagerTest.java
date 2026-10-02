@@ -14,4 +14,13 @@ class VersionManagerTest {
         Object packageName = method.invoke(null, "26.1.2");
         assert packageName.equals("v26_2");
     }
+
+    @Test
+    void getPackageFromVersion_supports263() throws Exception {
+        Method method = VersionManager.class.getDeclaredMethod("getPackageFromVersion", String.class);
+        method.setAccessible(true);
+
+        Object packageName = method.invoke(null, "26.3");
+        assert packageName.equals("v26_3");
+    }
 }

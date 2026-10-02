@@ -68,6 +68,7 @@ public class VersionManager {
             case "1.21.9", "1.21.10" -> "v1_21_10";
             case "1.21.11" -> "v1_21_11";
             case "26.1.2", "26.2" -> "v26_2";
+            case "26.3" -> "v26_3";
             default -> throw new UnsupportedVersionException("Unknown version " + version);
         };
     }
