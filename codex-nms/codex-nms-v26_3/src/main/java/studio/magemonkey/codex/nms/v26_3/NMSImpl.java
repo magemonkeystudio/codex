@@ -21,13 +21,13 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.TridentItem;
 import net.minecraft.world.level.block.state.BlockState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Registry;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.Skull;
@@ -146,7 +146,10 @@ public class NMSImpl implements NMS {
     public boolean isWeapon(@NotNull ItemStack itemStack) {
         net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(itemStack);
         Item                               item    = nmsItem.getItem();
-        return itemStack.getType().name().contains("SWORD") || item instanceof AxeItem || item instanceof TridentItem;
+        // AxeItem was removed in 26.3; axes are plain items now, so identify them by item tag instead
+        return itemStack.getType().name().contains("SWORD")
+                || Tag.ITEMS_AXES.isTagged(itemStack.getType())
+                || item instanceof TridentItem;
     }
 
     @Override
