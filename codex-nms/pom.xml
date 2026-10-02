@@ -6,8 +6,8 @@
     <parent>
         <groupId>studio.magemonkey</groupId>
         <artifactId>codex-parent</artifactId>
-        <version>1.2.0-R0.4-SNAPSHOT</version>
-        <relativePath/>
+        <version>1.2.0-R0.7-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <repositories>
@@ -51,7 +51,7 @@
         <dependency>
             <groupId>studio.magemonkey</groupId>
             <artifactId>codex-api</artifactId>
-            <version>1.2.0-R0.4-SNAPSHOT</version>
+            <version>1.2.0-R0.7-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
