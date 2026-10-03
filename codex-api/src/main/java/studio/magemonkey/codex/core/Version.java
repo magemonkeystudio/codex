@@ -26,7 +26,8 @@ public enum Version {
     V1_21_R5,
     V1_21_R6,
     V1_21_R7,
-    V26_R1;
+    V26_R1,
+    V26_R2;
 
     public static final Version CURRENT;
 
@@ -57,6 +58,7 @@ public enum Version {
                 case "1.21.9-R0.1-SNAPSHOT", "1.21.10-R0.1-SNAPSHOT" -> Version.V1_21_R6;
                 case "1.21.11-R0.1-SNAPSHOT" -> Version.V1_21_R7;
                 case "26.1.2-R0.1-SNAPSHOT", "26.1.2", "26.2-R0.1-SNAPSHOT", "26.2" -> Version.V26_R1;
+                case "26.3-R0.1-SNAPSHOT", "26.3" -> Version.V26_R2;
                 default -> throw new IllegalStateException("Unexpected version: " + version);
             };
         } else
