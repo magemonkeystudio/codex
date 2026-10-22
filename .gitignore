@@ -8,3 +8,4 @@ toolchains.xml
 log.txt
 logs/
 **/build/*.jar
+.flattened-pom.xml
