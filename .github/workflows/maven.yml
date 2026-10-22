@@ -9,9 +9,6 @@ jobs:
     uses: magemonkeystudio/.github/.github/workflows/reusable-maven.yml@main
     secrets: inherit
     with:
-      maven_args: '-f pom-dev.xml'
-      java_version: |
-        11
-        17
-        21
+      maven_args: '-DskipNms'
+      java_version: '25'
 

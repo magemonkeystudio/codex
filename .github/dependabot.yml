@@ -32,14 +32,16 @@ updates:
       - nexo
       - oraxen
     open-pull-requests-limit: 10
+    # Related artifacts are released together and usually need to move together, so they
+    # share one PR instead of each getting their own.
+    groups:
+      enginehub:
+        patterns: [ "com.sk89q.*" ]
+      adventure:
+        patterns: [ "net.kyori:*" ]
+      maven-plugins:
+        patterns: [ "org.apache.maven.plugins:*", "org.projectlombok:lombok-maven-plugin" ]
     reviewers:
       - Travja
     ignore:
       - dependency-name: "org.spigotmc:spigot-api"
-      # WorldEdit 7.4.3+ and WorldGuard 7.0.18+ are compiled for Java 25, which our Java 21 CI
-      # can't read. Codex only uses API that is unchanged since 7.0, so building against the
-      # last Java 21 releases keeps support for older servers. Drop these once CI is on Java 25.
-      - dependency-name: "com.sk89q.worldedit:*"
-        versions: [ ">= 7.4.3" ]
-      - dependency-name: "com.sk89q.worldguard:*"
-        versions: [ ">= 7.0.18" ]
