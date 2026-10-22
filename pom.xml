@@ -71,6 +71,8 @@
             <artifactId>citizens-main</artifactId>
         </dependency>
 
+        <!-- Pinned to the last Java 21 releases. Newer versions need Java 25 to compile against
+             (see .github/dependabot.yml), and building against older API keeps older servers working. -->
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard-bukkit</artifactId>
