@@ -11,5 +11,6 @@ jobs:
     secrets: inherit
     with:
       is_dev: true
-      maven_args: '-f pom-dev.xml'
+      maven_args: '-DskipNms'
+      java_version: '25'
       artifact_filter: 'codex'

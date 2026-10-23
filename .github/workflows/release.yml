@@ -12,4 +12,5 @@ jobs:
     with:
       is_dev: false
       build_spigot: true
+      java_version: '25'
       artifact_filter: 'codex'
