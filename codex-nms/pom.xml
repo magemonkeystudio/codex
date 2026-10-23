@@ -28,11 +28,11 @@
     <description>A collection of NMS libraries for Codex</description>
 
     <properties>
-        <!-- JDK each NMS module compiles with, through a Maven toolchain (see the jdkToolchain below).
-             Since JDK 22, javac also reads type annotations from the Spigot jars and then fails on
-             classes they reference that aren't on the classpath (e.g. datafixerupper), so the older
-             versions compile on 21. The 26.x modules override this with 25, because those Spigot
-             jars are Java 25 class files. -->
+        <!-- JDK each NMS module compiles and runs javadoc with, through Maven toolchains (see the
+             jdkToolchain settings below). Since JDK 22, javac and javadoc also read type annotations
+             from the Spigot jars and then fail on classes they reference that aren't on the classpath
+             (e.g. datafixerupper), so the older versions build on 21. The 26.x modules
+             override this with 25, because those Spigot jars are Java 25 class files. -->
         <nms.jdk>21</nms.jdk>
     </properties>
 
@@ -70,6 +70,15 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <jdkToolchain>
+                        <version>${nms.jdk}</version>
+                    </jdkToolchain>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
                 <configuration>
                     <jdkToolchain>
                         <version>${nms.jdk}</version>
