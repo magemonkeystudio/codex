@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>21</java.version>
+        <nms.jdk>25</nms.jdk>
     </properties>
 
     <dependencies>
