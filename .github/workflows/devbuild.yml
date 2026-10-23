@@ -23,5 +23,6 @@ jobs:
     with:
       mode: dev
       dry_run: ${{ inputs.dry_run || false }}
-      maven_args: '-f pom-dev.xml'
+      maven_args: '-DskipNms'
+      java_version: '25'
       artifact_filter: 'codex'

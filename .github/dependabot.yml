@@ -35,8 +35,16 @@ updates:
       - nexo
       - oraxen
     open-pull-requests-limit: 10
+    # Related artifacts are released together and usually need to move together, so they
+    # share one PR instead of each getting their own.
+    groups:
+      enginehub:
+        patterns: [ "com.sk89q.*" ]
+      adventure:
+        patterns: [ "net.kyori:*" ]
+      maven-plugins:
+        patterns: [ "org.apache.maven.plugins:*", "org.projectlombok:lombok-maven-plugin" ]
     reviewers:
       - Travja
     ignore:
       - dependency-name: "org.spigotmc:spigot-api"
-
