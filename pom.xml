@@ -11,7 +11,10 @@
     </parent>
 
     <artifactId>codex-parent</artifactId>
-    <version>1.2.0-R0.8-SNAPSHOT</version>
+    <!-- CI sets both properties (-Drevision=X.Y.Z, -Dchangelist=-SNAPSHOT or empty) from the
+         last release tag and PR labels; the values in <properties> are only for local builds.
+         The modules' <parent> versions use the same two properties. -->
+    <version>${revision}${changelist}</version>
     <packaging>pom</packaging>
     <name>CodexParent</name>
     <description>The core plugin for VoidEdge plugins</description>
@@ -24,6 +27,8 @@
     </modules>
 
     <properties>
+        <revision>1.2.0</revision>
+        <changelist>-SNAPSHOT</changelist>
         <delombok.dir>${project.build.directory}/javadoc-delombok</delombok.dir>
     </properties>
 
@@ -187,6 +192,32 @@
                             <outputDirectory>${delombok.dir}</outputDirectory>
                             <addOutputDirectory>false</addOutputDirectory>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Writes the resolved version into the published pom instead of ${revision}${changelist} -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.7.3</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten-clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
