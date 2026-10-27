@@ -1,6 +1,6 @@
 name: ${project.name}
 main: studio.magemonkey.codex.CodexEngine
-version: ${project.version}
+version: ${display.version}
 description: Core plugin for the VoidEdge suite
 authors: [ Travja, goflish ]
 softdepend: [ Vault, WorldGuard, MythicMobs, Oraxen ]
