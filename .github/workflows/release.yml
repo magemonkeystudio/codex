@@ -25,6 +25,5 @@ jobs:
       mode: release
       release_branch: main
       dry_run: ${{ inputs.dry_run || false }}
-      build_spigot: true
       java_version: '25'
       artifact_filter: 'codex'

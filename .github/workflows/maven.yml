@@ -9,6 +9,5 @@ jobs:
     uses: magemonkeystudio/.github/.github/workflows/reusable-maven.yml@main
     secrets: inherit
     with:
-      maven_args: '-DskipNms'
       java_version: '25'
 

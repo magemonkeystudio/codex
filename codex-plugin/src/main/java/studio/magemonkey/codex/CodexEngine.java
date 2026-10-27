@@ -177,7 +177,9 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
 
         // This call actually sets up the NMS version in the NMSProvider
         try {
-            VersionManager.setup();
+            VersionManager.setLogger(getLogger());
+            // Under MockBukkit the tests set the NMS implementations themselves
+            if (Version.CURRENT != Version.TEST) VersionManager.setup();
             getLogger().info("Using NMS implementation for version " + VersionManager.getNms().getVersion());
         } catch (Exception e) {
             getLogger().severe("Failed to setup NMSProvider. Plugin will be disabled.");

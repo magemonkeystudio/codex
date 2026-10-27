@@ -44,6 +44,9 @@ updates:
         patterns: [ "net.kyori:*" ]
       maven-plugins:
         patterns: [ "org.apache.maven.plugins:*", "org.projectlombok:lombok-maven-plugin" ]
+      # nms.version, from magemonkeystudio/codex-nms: codex-nms-api and codex-nms-all move together
+      codex-nms:
+        patterns: [ "studio.magemonkey:codex-nms*" ]
     reviewers:
       - Travja
     ignore:

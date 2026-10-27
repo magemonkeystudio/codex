@@ -40,6 +40,12 @@
             <artifactId>codex-bungee</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- VersionManager, NMS, Compat, ArmorUtil, NBTAttribute -->
+        <dependency>
+            <groupId>studio.magemonkey</groupId>
+            <artifactId>codex-nms-api</artifactId>
+            <version>${nms.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.nexomc</groupId>

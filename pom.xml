@@ -32,6 +32,9 @@
         <!-- Version plugin.yml/paper-plugin.yml/bungee.yml show. CI sets it to the build's name
              (X.Y.Z-dev.N for a dev build, X.Y.Z for a release) so users can tell exactly which build they run. -->
         <display.version>${project.version}</display.version>
+        <!-- Release of magemonkeystudio/codex-nms that codex-api (codex-nms-api) and codex-core
+             (codex-nms-all, shaded into the plugin) build with. Dependabot bumps it. -->
+        <nms.version>1.0.0</nms.version>
         <delombok.dir>${project.build.directory}/javadoc-delombok</delombok.dir>
     </properties>
 
@@ -228,19 +231,6 @@
     </build>
 
     <profiles>
-        <!-- The NMS modules need Spigot jars built locally with BuildTools, so they are only built
-             when those are available. Pass -DskipNms to build everything else without them. -->
-        <profile>
-            <id>nms</id>
-            <activation>
-                <property>
-                    <name>!skipNms</name>
-                </property>
-            </activation>
-            <modules>
-                <module>codex-nms</module>
-            </modules>
-        </profile>
         <profile>
             <id>module</id>
             <activation>
