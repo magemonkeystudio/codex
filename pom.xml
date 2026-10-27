@@ -29,6 +29,9 @@
     <properties>
         <revision>1.2.0</revision>
         <changelist>-SNAPSHOT</changelist>
+        <!-- Version plugin.yml/paper-plugin.yml/bungee.yml show. CI sets it to the build's name
+             (X.Y.Z-dev.N for a dev build, X.Y.Z for a release) so users can tell exactly which build they run. -->
+        <display.version>${project.version}</display.version>
         <delombok.dir>${project.build.directory}/javadoc-delombok</delombok.dir>
     </properties>
 
