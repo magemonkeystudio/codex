@@ -53,7 +53,7 @@ public class BuffRegistry {
         double scaled = damage;
 
         for (BuffProvider provider : PROVIDERS) {
-            scaled = provider.scaleDamageForDefense(name, entity, damage);
+            scaled = provider.scaleDamageForDefense(name, entity, scaled);
         }
 
         return scaled;
