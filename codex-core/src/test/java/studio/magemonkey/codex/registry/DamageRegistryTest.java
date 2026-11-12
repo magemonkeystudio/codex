@@ -84,6 +84,20 @@ class DamageRegistryTest {
     }
 
     @Test
+    void deal_withACause_onAServerWithoutDamageSources_damagesTheTargetTheOrdinaryWay() {
+        // The Bukkit version these tests run on has no damage sources
+        DamageRequest request = DamageRequest.builder()
+                .source(caster)
+                .cause(EntityDamageEvent.DamageCause.MAGIC)
+                .amount("fire", 4)
+                .build();
+
+        DamageRegistry.deal(target, request);
+
+        verify(target).damage(4D, caster);
+    }
+
+    @Test
     void deal_announcesTheRequestForTheDurationOfTheHitOnly() {
         List<DamageRequest> seen    = claimOnDamage();
         DamageRequest       request = DamageRequest.builder().source(caster).amount("fire", 4).build();
