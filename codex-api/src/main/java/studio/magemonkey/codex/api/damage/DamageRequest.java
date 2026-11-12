@@ -49,7 +49,7 @@ public final class DamageRequest {
     /** How the attacker's equipment should take part in the hit. */
     @NotNull
     private final WeaponStatsMode     weaponStats;
-    /** Whether the hit should knock the target back. */
+    @Getter(AccessLevel.NONE)
     private final boolean             knockback;
 
     private DamageRequest(Builder builder) {
@@ -64,6 +64,13 @@ public final class DamageRequest {
     @NotNull
     public static Builder builder() {
         return new Builder();
+    }
+
+    /**
+     * @return whether the hit should knock the target back
+     */
+    public boolean hasKnockback() {
+        return knockback;
     }
 
     /**
