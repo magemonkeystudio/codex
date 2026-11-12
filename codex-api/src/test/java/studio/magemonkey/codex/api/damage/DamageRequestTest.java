@@ -85,4 +85,87 @@ class DamageRequestTest {
         assertEquals(1, request.getAmounts().size());
         assertThrows(UnsupportedOperationException.class, () -> request.getAmounts().put("ice", 1D));
     }
+
+    @Test
+    void weaponDamage_isLeftAloneByDefault() {
+        DamageRequest request = DamageRequest.builder().build();
+
+        assertFalse(request.adjustsWeaponDamage());
+        assertEquals(1D, request.getWeaponScale());
+        assertEquals(0D, request.getWeaponBonus());
+        assertEquals(20D, request.adjustWeaponDamage("physical", 20));
+    }
+
+    @Test
+    void weaponScale_multipliesEveryType() {
+        DamageRequest request = DamageRequest.builder().weaponScale(0.5).build();
+
+        assertTrue(request.adjustsWeaponDamage());
+        assertEquals(10D, request.adjustWeaponDamage("physical", 20));
+        assertEquals(5D, request.adjustWeaponDamage("fire", 10));
+    }
+
+    @Test
+    void weaponBonus_isAddedToEveryTypeTheWeaponDeals_andMayBeNegative() {
+        DamageRequest plus  = DamageRequest.builder().weaponBonus(5).build();
+        DamageRequest minus = DamageRequest.builder().weaponBonus(-5).build();
+
+        assertTrue(plus.adjustsWeaponDamage());
+        assertEquals(25D, plus.adjustWeaponDamage("physical", 20));
+        assertEquals(15D, minus.adjustWeaponDamage("physical", 20));
+        assertEquals(-2D, minus.adjustWeaponDamage("fire", 3), "Clamping is left to the caller");
+    }
+
+    @Test
+    void weaponBonus_doesNotGiveAWeaponADamageTypeItDoesNotDeal() {
+        DamageRequest request = DamageRequest.builder().weaponBonus(5).weaponScale(2).build();
+
+        assertEquals(0D, request.adjustWeaponDamage("fire", 0));
+    }
+
+    @Test
+    void weaponScaleAndBonus_scaleFirstThenAdd() {
+        DamageRequest request = DamageRequest.builder().weaponScale(0.5).weaponBonus(3).build();
+
+        // 20 * 0.5 + 3
+        assertEquals(13D, request.adjustWeaponDamage("physical", 20));
+    }
+
+    @Test
+    void weaponScaleAndBonus_forOneType_replaceTheOnesForEveryType() {
+        DamageRequest request = DamageRequest.builder()
+                .weaponScale(0.5)
+                .weaponBonus(1)
+                .weaponScale("fire", 2)
+                .weaponBonus("ice", 10)
+                .build();
+
+        assertTrue(request.adjustsWeaponDamage());
+        // physical: both general values. fire: its own scale, the general bonus. ice: the general scale,
+        // its own bonus.
+        assertEquals(11D, request.adjustWeaponDamage("physical", 20));
+        assertEquals(41D, request.adjustWeaponDamage("fire", 20));
+        assertEquals(20D, request.adjustWeaponDamage("ice", 20));
+        assertEquals(2D, request.getWeaponScale("fire"));
+        assertEquals(0.5D, request.getWeaponScale("ice"));
+        assertEquals(10D, request.getWeaponBonus("ice"));
+        assertEquals(1D, request.getWeaponBonus("fire"));
+    }
+
+    @Test
+    void weaponScaleForOneTypeOnly_countsAsAnAdjustment() {
+        assertTrue(DamageRequest.builder().weaponScale("fire", 1).build().adjustsWeaponDamage());
+        assertTrue(DamageRequest.builder().weaponBonus("fire", 0).build().adjustsWeaponDamage());
+    }
+
+    @Test
+    void weaponScale_rejectsNegativeAndNotANumber_weaponBonusRejectsNotANumber() {
+        DamageRequest.Builder builder = DamageRequest.builder();
+
+        assertThrows(IllegalArgumentException.class, () -> builder.weaponScale(-1));
+        assertThrows(IllegalArgumentException.class, () -> builder.weaponScale(Double.NaN));
+        assertThrows(IllegalArgumentException.class, () -> builder.weaponScale("fire", -1));
+        assertThrows(IllegalArgumentException.class, () -> builder.weaponBonus(Double.NaN));
+        assertThrows(IllegalArgumentException.class, () -> builder.weaponBonus("fire", Double.NaN));
+    }
 }
