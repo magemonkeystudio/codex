@@ -48,7 +48,7 @@ public final class DamageContexts {
         Objects.requireNonNull(target, "target");
         Objects.requireNonNull(request, "request");
         DamageScope scope = new DamageScope(target.getUniqueId(), request);
-        OPEN.computeIfAbsent(scope.target(), id -> new ArrayDeque<>()).push(scope);
+        OPEN.computeIfAbsent(scope.getTarget(), id -> new ArrayDeque<>()).push(scope);
         return scope;
     }
 
@@ -72,11 +72,11 @@ public final class DamageContexts {
         // Newest first. An event that already holds a request keeps it, even if a newer scope has been
         // opened on the same entity since.
         for (DamageScope scope : scopes) {
-            if (scope.claimedBy() == event) return scope.getRequest();
+            if (scope.getClaimedBy() == event) return scope.getRequest();
         }
         for (DamageScope scope : scopes) {
-            if (scope.claimedBy() == null) {
-                scope.claim(event);
+            if (scope.getClaimedBy() == null) {
+                scope.setClaimedBy(event);
                 return scope.getRequest();
             }
         }
@@ -90,13 +90,13 @@ public final class DamageContexts {
         Deque<DamageScope> scopes = OPEN.get(target.getUniqueId());
         if (scopes == null) return false;
         for (DamageScope scope : scopes) {
-            if (scope.claimedBy() == null) return true;
+            if (scope.getClaimedBy() == null) return true;
         }
         return false;
     }
 
     static void remove(@NotNull DamageScope scope) {
-        Deque<DamageScope> scopes = OPEN.get(scope.target());
+        Deque<DamageScope> scopes = OPEN.get(scope.getTarget());
         if (scopes == null) return;
         for (Iterator<DamageScope> it = scopes.iterator(); it.hasNext(); ) {
             if (it.next() == scope) {
@@ -104,6 +104,6 @@ public final class DamageContexts {
                 break;
             }
         }
-        if (scopes.isEmpty()) OPEN.remove(scope.target());
+        if (scopes.isEmpty()) OPEN.remove(scope.getTarget());
     }
 }

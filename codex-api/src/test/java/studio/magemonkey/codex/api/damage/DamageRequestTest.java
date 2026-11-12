@@ -18,7 +18,7 @@ class DamageRequestTest {
 
         assertEquals(DamageOrigin.EXTERNAL, request.getOrigin());
         assertEquals(WeaponStatsMode.ADD, request.getWeaponStats());
-        assertTrue(request.hasKnockback());
+        assertTrue(request.isKnockback());
         assertNull(request.getSource());
         assertNull(request.getCause());
         assertTrue(request.getAmounts().isEmpty());
@@ -43,7 +43,7 @@ class DamageRequestTest {
         assertEquals(DamageCause.MAGIC, request.getCause());
         assertEquals(4D, request.getAmounts().get("DIVINITY_fire"));
         assertEquals(WeaponStatsMode.REPLACE, request.getWeaponStats());
-        assertFalse(request.hasKnockback());
+        assertFalse(request.isKnockback());
     }
 
     @Test

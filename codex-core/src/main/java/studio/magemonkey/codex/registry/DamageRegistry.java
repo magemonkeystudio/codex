@@ -61,7 +61,8 @@ public class DamageRegistry {
      *
      * @param target  the entity to damage
      * @param request the description of the hit
-     * @return whether a damage event claimed the request
+     * @return whether a damage event claimed the request. False does not mean the target was not damaged:
+     * the damage call has been made either way, so do not deal the damage again in response
      */
     public static boolean deal(@NotNull LivingEntity target, @NotNull DamageRequest request) {
         try (DamageScope scope = DamageContexts.open(target, request)) {

@@ -1,5 +1,9 @@
 package studio.magemonkey.codex.api.damage;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -10,21 +14,20 @@ import java.util.UUID;
  * request. Always use it in a try-with-resources statement, so that it is closed even when the damage
  * event is cancelled or something throws.
  */
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public final class DamageScope implements AutoCloseable {
-    private final UUID              target;
-    private final DamageRequest     request;
-    private       EntityDamageEvent claimedBy;
-    private       boolean           closed;
-
-    DamageScope(@NotNull UUID target, @NotNull DamageRequest request) {
-        this.target = target;
-        this.request = request;
-    }
-
+    @Getter(AccessLevel.PACKAGE)
     @NotNull
-    public DamageRequest getRequest() {
-        return request;
-    }
+    private final UUID              target;
+    @Getter
+    @NotNull
+    private final DamageRequest     request;
+    /** The event that claimed the request, or null while nothing has. */
+    @Getter(AccessLevel.PACKAGE)
+    @Setter(AccessLevel.PACKAGE)
+    private       EntityDamageEvent claimedBy;
+    @Getter
+    private       boolean           closed;
 
     /**
      * Whether a damage event picked the request up. If it is still false after the call to
@@ -32,10 +35,6 @@ public final class DamageScope implements AutoCloseable {
      */
     public boolean isClaimed() {
         return claimedBy != null;
-    }
-
-    public boolean isClosed() {
-        return closed;
     }
 
     /**
@@ -46,17 +45,5 @@ public final class DamageScope implements AutoCloseable {
         if (closed) return;
         closed = true;
         DamageContexts.remove(this);
-    }
-
-    @NotNull UUID target() {
-        return target;
-    }
-
-    EntityDamageEvent claimedBy() {
-        return claimedBy;
-    }
-
-    void claim(@NotNull EntityDamageEvent event) {
-        this.claimedBy = event;
     }
 }
