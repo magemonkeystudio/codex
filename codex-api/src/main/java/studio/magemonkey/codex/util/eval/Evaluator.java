@@ -20,6 +20,27 @@ public class Evaluator {
         }
     }
 
+    /**
+     * Parses a math expression once, so it can be evaluated many times with different values for its variables.
+     * Use this instead of {@link #eval(String, int)} when the same formula runs repeatedly.
+     * <p>
+     * The syntax is that of the Javaluator evaluator ({@code + - * / ^ %}, unary minus, brackets, {@code min},
+     * {@code max}, {@code abs}, {@code sqrt}, the constants {@code pi} and {@code e} and so on).
+     *
+     * @param expression the expression, such as {@code max(d / 5, d - 4 * x / max(1, t + 8))}
+     * @param variables  the names of the variables the expression may use. Their values are later given to
+     *                   {@link CompiledExpression#eval(double...)} in this order. A name cannot be a function, a
+     *                   constant or a number, cannot contain an operator, bracket, comma or whitespace, and cannot
+     *                   be repeated.
+     * @return the compiled expression, which is immutable and thread safe
+     * @throws IllegalArgumentException with a message naming the expression, if it has a syntax error, mismatched
+     *                                  brackets, an unknown variable or function, a function with the wrong number
+     *                                  of arguments, or if a variable name is not usable
+     */
+    public static CompiledExpression compile(String expression, String... variables) {
+        return CompiledExpression.compile(expression, variables);
+    }
+
     private static double javaluator(String exp) {
         try {
             return jl.evaluate(exp);
