@@ -66,19 +66,44 @@ public final class DamageContexts {
      */
     @Nullable
     public static DamageRequest claim(@NotNull EntityDamageEvent event) {
+        DamageScope scope = find(event);
+        if (scope == null) return null;
+        if (scope.getClaimedBy() == null) scope.setClaimedBy(event);
+        return scope.getRequest();
+    }
+
+    /**
+     * Returns the request that {@link #claim(EntityDamageEvent)} would return for this event, without claiming
+     * it.
+     * <p>
+     * Use this to decide something about a hit before the plugin that calculates it has run, for example
+     * whether the hit asks for {@link WeaponStatsMode#RAW}. A later {@code claim} with the same event still
+     * gets the same request, unless another event claims it first.
+     *
+     * @param event the damage event being handled
+     * @return the request this event holds or would take, or null if the event was not announced
+     */
+    @Nullable
+    public static DamageRequest peek(@NotNull EntityDamageEvent event) {
+        DamageScope scope = find(event);
+        return scope == null ? null : scope.getRequest();
+    }
+
+    /**
+     * The scope this event holds, else the newest one for its entity that nobody holds yet.
+     */
+    @Nullable
+    private static DamageScope find(@NotNull EntityDamageEvent event) {
         Deque<DamageScope> scopes = OPEN.get(event.getEntity().getUniqueId());
         if (scopes == null) return null;
 
         // Newest first. An event that already holds a request keeps it, even if a newer scope has been
         // opened on the same entity since.
         for (DamageScope scope : scopes) {
-            if (scope.getClaimedBy() == event) return scope.getRequest();
+            if (scope.getClaimedBy() == event) return scope;
         }
         for (DamageScope scope : scopes) {
-            if (scope.getClaimedBy() == null) {
-                scope.setClaimedBy(event);
-                return scope.getRequest();
-            }
+            if (scope.getClaimedBy() == null) return scope;
         }
         return null;
     }

@@ -184,4 +184,66 @@ class DamageContextsTest {
             assertSame(request, DamageContexts.claim(hit(target)));
         }
     }
+
+    @Test
+    void peek_withNothingOpen_returnsNull() {
+        assertNull(DamageContexts.peek(hit(target)));
+    }
+
+    @Test
+    void peek_returnsTheRequestWithoutClaimingIt() {
+        try (DamageScope scope = DamageContexts.open(target, request)) {
+            EntityDamageEvent event = hit(target);
+
+            assertSame(request, DamageContexts.peek(event));
+            assertSame(request, DamageContexts.peek(event));
+
+            assertFalse(scope.isClaimed());
+            assertTrue(DamageContexts.isAnnounced(target));
+            assertSame(request, DamageContexts.claim(event));
+        }
+    }
+
+    @Test
+    void peek_byAnotherEvent_doesNotStopTheRealHitFromClaiming() {
+        try (DamageScope ignored = DamageContexts.open(target, request)) {
+            assertSame(request, DamageContexts.peek(hit(target)));
+            assertSame(request, DamageContexts.claim(hit(target)));
+        }
+    }
+
+    @Test
+    void peek_afterClaim_returnsTheClaimedRequestToThatEventOnly() {
+        try (DamageScope ignored = DamageContexts.open(target, request)) {
+            EntityDamageEvent event = hit(target);
+            DamageContexts.claim(event);
+
+            assertSame(request, DamageContexts.peek(event));
+            assertNull(DamageContexts.peek(hit(target)));
+        }
+    }
+
+    @Test
+    void peek_matchesClaim_whenANewerScopeIsOpenedAfterTheClaim() {
+        try (DamageScope ignored = DamageContexts.open(target, request)) {
+            EntityDamageEvent outer = hit(target);
+            DamageContexts.claim(outer);
+
+            DamageRequest nested = DamageRequest.builder().amount("ice", 2).build();
+            try (DamageScope ignored2 = DamageContexts.open(target, nested)) {
+                assertSame(request, DamageContexts.peek(outer));
+                assertSame(nested, DamageContexts.peek(hit(target)));
+            }
+        }
+    }
+
+    @Test
+    void peek_seesTheWeaponStatsMode() {
+        DamageRequest raw = DamageRequest.builder().weaponStats(WeaponStatsMode.RAW).build();
+        try (DamageScope ignored = DamageContexts.open(target, raw)) {
+            DamageRequest peeked = DamageContexts.peek(hit(target));
+            assertNotNull(peeked);
+            assertEquals(WeaponStatsMode.RAW, peeked.getWeaponStats());
+        }
+    }
 }
