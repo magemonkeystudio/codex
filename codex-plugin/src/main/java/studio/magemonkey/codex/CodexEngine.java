@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.java.JavaPluginLoader;
 import org.jetbrains.annotations.NotNull;
 import studio.magemonkey.codex.api.exception.UnsupportedVersionException;
+import studio.magemonkey.codex.api.damage.FinalDamageFallback;
 import studio.magemonkey.codex.bungee.BungeeListener;
 import studio.magemonkey.codex.bungee.BungeeUtil;
 import studio.magemonkey.codex.commands.UnstuckCommand;
@@ -230,6 +231,7 @@ public class CodexEngine extends CodexPlugin<CodexEngine> implements Listener {
         getPluginManager().registerEvents(new BoatListener(), this);
         getPluginManager().registerEvents(new InteractListener(cfg().getJYML()), this);
         getPluginManager().registerEvents(new JoinListener(this, cfg().getJYML()), this);
+        getPluginManager().registerEvents(new FinalDamageFallback(getPluginManager()), this);
     }
 
     private void setupManagers() {
