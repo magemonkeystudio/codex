@@ -29,8 +29,24 @@ import java.util.function.Predicate;
  * damage of the hit by type, without depending on the provider. A skill plugin such as Fabled, for
  * example, runs its on-hit triggers and buffs here instead of changing the Bukkit event's damage itself.
  * <p>
- * Codex never fires this event. It only defines it, so that plugins which cannot see each other's classes
- * can share it.
+ * <h2>One event for every hit</h2>
+ * This event fires for every hit on a living entity that is still going at {@code HIGHEST}: from a provider
+ * if one will fire it for the hit, else from Codex itself ({@link FinalDamageFallback}). Without a provider,
+ * Codex fires it with all of the Bukkit damage in {@link #DEFAULT_TYPE}, cancels the Bukkit event if this
+ * event is cancelled, and otherwise sets the Bukkit damage to the new total if it changed. So a consumer
+ * listens to this event only, whether or not a provider such as Divinity is installed, and never changes
+ * the Bukkit damage itself. It does not need {@link #willFire(EntityDamageEvent)}, which stays for providers
+ * and diagnostics.
+ * <p>
+ * The event may come for hits a consumer does not care about: hits of 0 damage, fake damage events a plugin
+ * fires only to ask whether an attack would be allowed, and hits whose request asks for
+ * {@link WeaponStatsMode#RAW}. Consumers filter those themselves.
+ * <p>
+ * <b>Ordering.</b> Both providers and Codex fire this event from an {@code EntityDamageEvent} handler at
+ * {@code HIGHEST}. Codex loads before every plugin that depends on it, and Bukkit calls listeners of the
+ * same priority in the order they were registered, so among {@code HIGHEST} damage listeners Codex's
+ * fallback runs before those of the plugins that depend on Codex. Listen to this event, not to
+ * {@code EntityDamageEvent} at {@code HIGHEST}, to see the final numbers.
  *
  * <h2>Damage by type</h2>
  * The damage is kept per damage type, keyed by the provider's type id ({@code physical}, {@code fire} and
@@ -44,13 +60,14 @@ import java.util.function.Predicate;
  * such as life steal, on the per-type amounts).
  *
  * <h2>Cancelling</h2>
- * Cancelling this event cancels the hit: the provider cancels the Bukkit event and deals no damage. Codex
- * only keeps the flag; acting on it is the provider's job.
+ * Cancelling this event cancels the hit: whoever fired it (the provider, or Codex's fallback) cancels the
+ * Bukkit event and deals no damage. The event itself only keeps the flag.
  *
- * <h2>Knowing whether the event will fire</h2>
- * A plugin that changes Bukkit damage itself when no provider is around needs to know whether this event
- * will come for a hit, so that it does not apply its changes twice. Providers announce themselves with
- * {@link #registerProvider(Plugin, Predicate)}; ask with {@link #willFire(EntityDamageEvent)}. See there.
+ * <h2>Providers</h2>
+ * Providers announce themselves with {@link #registerProvider(Plugin, Predicate)}, so that Codex knows
+ * which hits it must not fire this event for; {@link #willFire(EntityDamageEvent)} answers that question.
+ * A provider's predicate must answer true only for hits it really fires the event for (or cancels):
+ * for any other hit, Codex's fallback is skipped too and consumers never see the hit.
  *
  * <h2>Subclassing</h2>
  * A provider may fire this class as it is, or a subclass of its own that adds what only it knows. Listeners
@@ -108,7 +125,7 @@ public class FinalDamageEvent extends Event implements Cancellable {
     private       boolean             cancelled;
 
     /**
-     * Creates the event. Only a provider creates it, right before it calls it.
+     * Creates the event. Only a provider, or Codex's fallback, creates it, right before it calls it.
      *
      * @param victim          the entity that is hit
      * @param attacker        the entity the hit is attributed to: the shooter of a projectile, the caster of a
@@ -186,7 +203,7 @@ public class FinalDamageEvent extends Event implements Cancellable {
     }
 
     /**
-     * The Bukkit event the provider is handling. Read it, but leave its damage alone: the provider sets it
+     * The Bukkit event being handled. Read it, but leave its damage alone: whoever fired this event sets it
      * from this event's total when this event is over. To stop the hit, cancel this event.
      *
      * @return the Bukkit damage event of the hit
@@ -413,20 +430,9 @@ public class FinalDamageEvent extends Event implements Cancellable {
      * Whether a provider will fire this event for a hit, should the hit not be cancelled before the
      * provider's handler runs.
      * <p>
-     * This is what a plugin that otherwise changes the Bukkit event's damage itself asks, from its own damage
-     * handler, to decide between the two ways:
-     * <pre>{@code
-     * @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-     * public void onDamage(EntityDamageByEntityEvent event) {
-     *     if (FinalDamageEvent.willFire(event)) return; // handled in onFinalDamage instead
-     *     event.setDamage(applyBuffs(event.getDamage()));
-     * }
-     *
-     * @EventHandler(ignoreCancelled = true)
-     * public void onFinalDamage(FinalDamageEvent event) {
-     *     event.setTotalDamage(applyBuffs(event.getTotalDamage()));
-     * }
-     * }</pre>
+     * Codex's fallback asks this to decide whether it fires the event itself. Consumers do not need it: the
+     * event comes for every hit either way (see the class description). It stays for providers and for
+     * diagnostics.
      * A provider that has been disabled without unregistering is not counted.
      *
      * @param event the Bukkit damage event of the hit
