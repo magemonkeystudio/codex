@@ -330,7 +330,9 @@ public abstract class AbstractEvaluator<T> implements EvaluationContext {
                     break;
                 case OPERATOR:
                     // If the token is an operator, op1, then:
-                    while (!stack.isEmpty()) {
+                    // A prefix (unary) operator has no left operand, so it must never pop a pending operator:
+                    // in "x * 2^-1" popping "^" would apply it before its right operand has been read.
+                    while (token.getOperator().getOperandCount() > 1 && !stack.isEmpty()) {
                         Token sc = stack.peek();
                         // While there is an operator token, o2, at the top of the stack
                         // op1 is left-associative and its precedence is less than or equal
