@@ -159,11 +159,12 @@ class CompiledExpressionTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"2^-1", "-d^-x", "d^-1"})
-    void unaryMinusRightAfterExponentIsRejectedLikeDoubleEvaluatorDoes(String expression) {
-        // The shared parser pops "^" when it meets a unary minus (lower precedence), leaving it one operand short.
-        assertThrows(RuntimeException.class, () -> reference(expression, NAMES, VALUE_SETS[0]));
-        assertMessage(compileFails(expression, NAMES), expression);
+    @ValueSource(strings = {"2^-1", "-d^-x", "d^-1", "x * 2^-1"})
+    void unaryMinusRightAfterExponentMatchesDoubleEvaluator(String expression) {
+        // A unary minus after "^" binds to its own operand, so these evaluate (see NegativeExponentTest for values).
+        double[] v = VALUE_SETS[0];
+        assertEquals(Double.doubleToLongBits(reference(expression, NAMES, v)),
+                Double.doubleToLongBits(Evaluator.compile(expression, NAMES).eval(v)), expression);
     }
 
     @Test
